@@ -52,6 +52,21 @@ public class AccessPoint implements Persistable<UUID>, Serializable, Comparable<
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AccessPoint that = (AccessPoint) o;
+        return Objects.equals(accessPointID, that.accessPointID)
+                && Objects.equals(createDate, that.createDate)
+                && Objects.equals(accessPointName, that.accessPointName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(accessPointID, createDate, accessPointName);
+    }
+
+    @Override
     public UUID getId() {return getAccessPointID();}
 
     public void setId(UUID id){ this.accessPointID = id;}
