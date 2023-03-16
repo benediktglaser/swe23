@@ -4,15 +4,16 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.domain.Persistable;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+
 @Entity
 public class SensorStation implements Persistable<UUID>, Serializable, Comparable<SensorStation> {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -43,9 +44,12 @@ public class SensorStation implements Persistable<UUID>, Serializable, Comparabl
         this.createDate = createDate;
     }
 
-    @OneToMany(mappedBy = "sensorStation",fetch=FetchType.EAGER,cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "sensorStation", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<SensorData> sensorData = new HashSet<>();
+
+    @ManyToOne
+    private AccessPoint accessPoint;
 
 
     @Override
@@ -65,6 +69,15 @@ public class SensorStation implements Persistable<UUID>, Serializable, Comparabl
 
         this.name = name;
     }
+
+    public AccessPoint getAccessPoint() {
+        return accessPoint;
+    }
+
+    public void setAccessPoint(AccessPoint accessPoint) {
+        this.accessPoint = accessPoint;
+    }
+
 
     public String getCategory() {
         return category;
