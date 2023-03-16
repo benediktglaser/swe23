@@ -59,19 +59,25 @@ public class AccessPoint implements Persistable<UUID>, Serializable, Comparable<
         this.createDate = createDate;
     }
 
+    public Set<SensorStation> getSensorData() {
+        return sensorData;
+    }
+
+    public void setSensorData(Set<SensorStation> sensorData) {
+        this.sensorData = sensorData;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AccessPoint that = (AccessPoint) o;
-        return Objects.equals(id, that.id)
-                && Objects.equals(createDate, that.createDate)
-                && Objects.equals(accessPointName, that.accessPointName);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, createDate, accessPointName);
+        return Objects.hash(id);
     }
 
     @Override
@@ -84,5 +90,6 @@ public class AccessPoint implements Persistable<UUID>, Serializable, Comparable<
 
     @Override
     public int compareTo(AccessPoint o) {return this.id.toString().compareTo(Objects.requireNonNull(o.getId()).toString());}
-}
 
+
+}

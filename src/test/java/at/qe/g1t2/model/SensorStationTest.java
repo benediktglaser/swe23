@@ -20,8 +20,7 @@ import com.openpojo.validation.test.impl.SetterTester;
 
 public class SensorStationTest {
     @Test
-    public void testGetterSetter() {
-
+    public void testGetterSetterSensorStation() {
         Validator validator = ValidatorBuilder.create()
                 .with(new GetterMustExistRule())
                 .with(new SetterMustExistRule())

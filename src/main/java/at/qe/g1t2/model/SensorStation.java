@@ -106,4 +106,5 @@ public class SensorStation implements Persistable<UUID>, Serializable, Comparabl
     public int hashCode() {
         return Objects.hash(id);
     }
+
 }
