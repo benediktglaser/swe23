@@ -76,7 +76,7 @@ public class SensorStation implements Persistable<UUID>, Serializable, Comparabl
 
         this.name = name;
     }
-    
+
     public String getCategory() {
         return category;
     }
