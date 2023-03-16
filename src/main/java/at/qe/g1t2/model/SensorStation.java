@@ -22,6 +22,14 @@ public class SensorStation implements Persistable<UUID>, Serializable, Comparabl
         return sensorData;
     }
 
+    public AccessPoint getAccessPoint() {
+        return accessPoint;
+    }
+
+    public void setAccessPoint(AccessPoint accessPoint) {
+        this.accessPoint = accessPoint;
+    }
+
     public void setSensorData(Set<SensorData> sensorData) {
         this.sensorData = sensorData;
     }
@@ -91,13 +99,11 @@ public class SensorStation implements Persistable<UUID>, Serializable, Comparabl
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SensorStation that = (SensorStation) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(category, that.category);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, category);
+        return Objects.hash(id);
     }
-
-
 }
