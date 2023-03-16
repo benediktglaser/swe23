@@ -1,11 +1,15 @@
 package at.qe.g1t2.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.domain.Persistable;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -20,19 +24,23 @@ public class AccessPoint implements Persistable<UUID>, Serializable, Comparable<
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID accessPointID;
+    private UUID id;
 
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createDate;
 
+    @OneToMany(mappedBy = "accessPoint",fetch=FetchType.EAGER,cascade = CascadeType.MERGE)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Set<SensorStation> sensorData = new HashSet<>();
+
     private String accessPointName;
 
     public UUID getAccessPointID() {
-        return accessPointID;
+        return id;
     }
 
     public void setAccessPointID(UUID accessPointID) {
-        this.accessPointID = accessPointID;
+        this.id = accessPointID;
     }
 
     public String getAccessPointName() {
@@ -56,25 +64,25 @@ public class AccessPoint implements Persistable<UUID>, Serializable, Comparable<
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AccessPoint that = (AccessPoint) o;
-        return Objects.equals(accessPointID, that.accessPointID)
+        return Objects.equals(id, that.id)
                 && Objects.equals(createDate, that.createDate)
                 && Objects.equals(accessPointName, that.accessPointName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(accessPointID, createDate, accessPointName);
+        return Objects.hash(id, createDate, accessPointName);
     }
 
     @Override
     public UUID getId() {return getAccessPointID();}
 
-    public void setId(UUID id){ this.accessPointID = id;}
+    public void setId(UUID id){ this.id = id;}
 
     @Override
     public boolean isNew() { return (null == createDate);}
 
     @Override
-    public int compareTo(AccessPoint o) {return this.accessPointID.toString().compareTo(Objects.requireNonNull(o.getId()).toString());}
+    public int compareTo(AccessPoint o) {return this.id.toString().compareTo(Objects.requireNonNull(o.getId()).toString());}
 }
 
