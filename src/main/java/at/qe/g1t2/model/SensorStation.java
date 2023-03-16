@@ -76,16 +76,7 @@ public class SensorStation implements Persistable<UUID>, Serializable, Comparabl
 
         this.name = name;
     }
-
-    public AccessPoint getAccessPoint() {
-        return accessPoint;
-    }
-
-    public void setAccessPoint(AccessPoint accessPoint) {
-        this.accessPoint = accessPoint;
-    }
-
-
+    
     public String getCategory() {
         return category;
     }
