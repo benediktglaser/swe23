@@ -44,7 +44,7 @@ public class SensorStation implements Persistable<UUID>, Serializable, Comparabl
     private LocalDateTime createDate;
 
     public LocalDateTime getCreateDate() {
-        return LocalDateTime.now();
+        return createDate;
     }
 
     public void setCreateDate(LocalDateTime createDate) {
