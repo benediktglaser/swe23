@@ -107,11 +107,4 @@ public class SensorStation implements Persistable<UUID>, Serializable, Comparabl
         return Objects.hash(id);
     }
 
-    public AccessPoint getAccessPoint() {
-        return accessPoint;
-    }
-
-    public void setAccessPoint(AccessPoint accessPoint) {
-        this.accessPoint = accessPoint;
-    }
 }
