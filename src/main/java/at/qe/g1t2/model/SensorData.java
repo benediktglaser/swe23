@@ -92,11 +92,11 @@ public class SensorData implements Persistable<UUID>, Serializable, Comparable<S
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SensorData that = (SensorData) o;
-        return Double.compare(that.measurement, measurement) == 0 && Objects.equals(id, that.id) && Objects.equals(sensorStation, that.sensorStation) && type == that.type && Objects.equals(createDate, that.createDate);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, measurement, sensorStation, type, createDate);
+        return Objects.hash(id);
     }
 }
