@@ -18,7 +18,25 @@ public class SensorData implements Persistable<UUID>, Serializable, Comparable<S
     @ManyToOne(optional = false)
     private SensorStation sensorStation;
 
-    private SensorType type;
+    private String type;
+
+    private String unit;
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public String getType() {
+        return type;
+    }
 
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -36,13 +54,7 @@ public class SensorData implements Persistable<UUID>, Serializable, Comparable<S
         this.measurement = value;
     }
 
-    public SensorType getType() {
-        return type;
-    }
 
-    public void setType(SensorType type) {
-        this.type = type;
-    }
 
     @Override
     public int compareTo(SensorData o) {
