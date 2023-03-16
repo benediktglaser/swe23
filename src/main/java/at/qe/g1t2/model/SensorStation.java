@@ -47,6 +47,8 @@ public class SensorStation implements Persistable<UUID>, Serializable, Comparabl
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<SensorData> sensorData = new HashSet<>();
 
+    @ManyToOne
+    private AccessPoint accessPoint;
 
     @Override
     public UUID getId() {
