@@ -2,6 +2,7 @@ package at.qe.g1t2.model;
 
 import jakarta.persistence.*;
 import org.springframework.data.domain.Persistable;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -55,10 +56,9 @@ public class SensorData implements Persistable<UUID>, Serializable, Comparable<S
     }
 
 
-
     @Override
     public int compareTo(SensorData o) {
-        return Double.compare(o.measurement,this.measurement);
+        return Double.compare(o.measurement, this.measurement);
     }
 
     @Override
