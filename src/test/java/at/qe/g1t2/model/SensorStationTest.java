@@ -33,7 +33,7 @@ public class SensorStationTest {
                 Set.of("createDate")));
 
         SensorStation sensorStation = new SensorStation();
-        LocalDateTime dateTest = LocalDateTime.now();
+        LocalDateTime dateTest = LocalDateTime.of(1997,9,12,5,5);
         sensorStation.setCreateDate(dateTest);
         Assertions.assertEquals(dateTest, sensorStation.getCreateDate());
 
