@@ -92,11 +92,6 @@ public class AccessPoint implements Persistable<UUID>, Serializable, Comparable<
     @Override
     public int compareTo(AccessPoint o) {return this.id.toString().compareTo(Objects.requireNonNull(o.getId()).toString());}
 
-    public void addSensorStation(SensorStation sensorStation){
-        sensorStation.setAccessPoint(this);
-        sensorStations.add(sensorStation);
-
-    }
 
 
 }

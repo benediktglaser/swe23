@@ -39,7 +39,8 @@ public class SensorStationService {
         if(sensorStation.isNew()){
             LocalDateTime createDate = LocalDateTime.now();
             sensorStation.setCreateDate(createDate);
-            accessPoint.addSensorStation(sensorStation);
+            sensorStation.setAccessPoint(accessPoint);
+            accessPoint.getSensorStations().add(sensorStation);
             accessPointRepository.save(accessPoint);
             return accessPointRepository.save(accessPoint)
                     .getSensorStations()
