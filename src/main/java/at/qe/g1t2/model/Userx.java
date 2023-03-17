@@ -49,16 +49,7 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     private Set<UserRole> roles;
 
 
-    @OneToMany(mappedBy = "gardener", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    private List<SensorStation> sensorStations = new ArrayList<>();
 
-    public List<SensorStation> getSensorStations() {
-        return sensorStations;
-    }
-
-    public void setSensorStations(List<SensorStation> sensorStations) {
-        this.sensorStations = sensorStations;
-    }
 
     public String getUsername() {
         return username;

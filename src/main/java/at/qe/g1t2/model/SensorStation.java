@@ -53,7 +53,8 @@ public class SensorStation implements Persistable<UUID>, Serializable, Comparabl
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<SensorData> sensorData = new ArrayList<>();
 
-    @ManyToOne(optional = true)
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REMOVE})
+    @JoinColumn(nullable = true,name = "gardenerId", referencedColumnName = "username", insertable = false, updatable = true)
     private Userx gardener;
 
     public Userx getGardener() {
