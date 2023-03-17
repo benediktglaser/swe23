@@ -47,7 +47,7 @@ public class AccessPointService {
      */
     @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteAccessPoint(AccessPoint accessPoint){
-        List<SensorStation> sensorStation = sensorStationRepository.findSensorStationByAccessPoint(accessPoint);
+        List<SensorStation> sensorStation = sensorStationRepository.getSensorStationsByAccessPoint(accessPoint);
         sensorStation.forEach(x -> {x.setAccessPoint(null);x.setConnected(false); sensorStationService.saveSensorStation(x);});
         accessPointRepository.delete(accessPoint);
     }
@@ -75,7 +75,7 @@ public class AccessPointService {
     }
 
     public List<SensorStation> getAllSensorStations(AccessPoint accessPoint){
-        return sensorStationRepository.findSensorStationByAccessPoint(accessPoint);
+        return sensorStationRepository.getSensorStationsByAccessPoint(accessPoint);
     }
 
 }
