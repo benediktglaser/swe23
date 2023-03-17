@@ -11,4 +11,6 @@ public interface AccessPointRepository extends JpaRepository<AccessPoint, UUID> 
 
     AccessPoint findAccessPointById(UUID uuid);
 
+
+
 }
