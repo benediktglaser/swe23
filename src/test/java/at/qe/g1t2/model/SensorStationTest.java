@@ -52,17 +52,17 @@ public class SensorStationTest {
         sensorStation2.setId(UUID.randomUUID());
         SensorStation sensorStation3 = new SensorStation();
         sensorStation3.setId(sensorStation1.getId());
-        Userx userx1 = new Userx();
-        userx1.setUsername("Marco");
-        Userx userx2 = new Userx();
-        userx2.setUsername("Marco2");
+        Userx user1 = new Userx();
+        user1.setUsername("Marco");
+        Userx user2 = new Userx();
+        user2.setUsername("Medin");
 
-        EqualsVerifier.forClass(SensorStation.class).withPrefabValues(SensorStation.class, sensorStation1, sensorStation2).withPrefabValues(Userx.class,userx1,userx2).suppress(Warning.STRICT_INHERITANCE, Warning.ALL_FIELDS_SHOULD_BE_USED).verify();
-        Assertions.assertEquals(sensorStation1.hashCode(),sensorStation3.hashCode());
+        EqualsVerifier.forClass(SensorStation.class).withPrefabValues(SensorStation.class, sensorStation1, sensorStation2).withPrefabValues(Userx.class, user1, user2).suppress(Warning.STRICT_INHERITANCE, Warning.ALL_FIELDS_SHOULD_BE_USED).verify();
+        Assertions.assertEquals(sensorStation1.hashCode(), sensorStation3.hashCode());
     }
 
     @Test
-    public void testCompareTo(){
+    public void testCompareTo() {
 
         SensorStation sensorStation1 = new SensorStation();
         SensorStation sensorStation2 = new SensorStation();

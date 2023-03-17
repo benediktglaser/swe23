@@ -57,14 +57,14 @@ public class SensorDataTest {
 
 
         EqualsVerifier.forClass(SensorData.class).
-                withPrefabValues(SensorData.class, sensorData1, sensorData2).withPrefabValues(SensorStation.class,sensorStation1,sensorStation2)
+                withPrefabValues(SensorData.class, sensorData1, sensorData2).withPrefabValues(SensorStation.class, sensorStation1, sensorStation2)
                 .suppress(Warning.STRICT_INHERITANCE, Warning.ALL_FIELDS_SHOULD_BE_USED)
                 .verify();
-        Assertions.assertEquals(sensorData1.hashCode(),sensorData3.hashCode());
+        Assertions.assertEquals(sensorData1.hashCode(), sensorData3.hashCode());
     }
 
     @Test
-    public void testCompareTo(){
+    public void testCompareTo() {
         SensorData sensorData1 = new SensorData();
         SensorData sensorData2 = new SensorData();
         sensorData1.setMeasurement(0.45);
