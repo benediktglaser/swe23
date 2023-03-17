@@ -26,9 +26,7 @@ public class AccessPoint implements Persistable<UUID>, Serializable, Comparable<
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createDate;
 
-    @OneToMany(mappedBy = "accessPoint",fetch=FetchType.EAGER,cascade = CascadeType.MERGE)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<SensorStation> sensorStations = new ArrayList<>();
+
 
     private String accessPointName;
 
@@ -56,13 +54,6 @@ public class AccessPoint implements Persistable<UUID>, Serializable, Comparable<
         this.createDate = createDate;
     }
 
-    public List<SensorStation> getSensorStations() {
-        return sensorStations;
-    }
-
-    public void setSensorStations(List<SensorStation> sensorStations) {
-        this.sensorStations = sensorStations;
-    }
 
     @Override
     public boolean equals(Object o) {

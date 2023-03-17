@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -36,9 +35,7 @@ class SensorStationServiceTest {
     @Autowired
     SensorStationRepository sensorStationRepository;
 
-    /**
-     * Test if Entity is saved correctly in database and in the list from the parent entity
-     */
+
     @Test
     @DirtiesContext
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
@@ -46,31 +43,24 @@ class SensorStationServiceTest {
         SensorStation sensorStation = new SensorStation();
         sensorStation.setName("wheat");
         sensorStation.setCategory("test");
-        AccessPoint accessPoint = accessPointService.loadAccessPoint(UUID.fromString("7269ddec-30c6-44d9-bc1f-8af18da09ed3"));
-        int sizeOfList = accessPoint.getSensorStations().size();
-        UUID sensorId = sensorStationService.saveSensorStation(accessPoint,sensorStation).getId();
-        assertEquals(sensorStationRepository.findSensorStationById(sensorId).getName(),"wheat");
-        assertEquals(accessPoint.getSensorStations().size(),sizeOfList+1);
-        assertEquals(accessPoint.getId(),sensorStationRepository.findSensorStationById(sensorId).getAccessPoint().getAccessPointID());
-
+        sensorStation = sensorStationService.saveSensorStation(sensorStation);
+        LocalDateTime dateTime = sensorStation.getCreateDate();
+        assertEquals(sensorStationService.loadSensorStation(sensorStation.getId()).getName(),"wheat");
+        sensorStation = sensorStationService.saveSensorStation(sensorStation);
+        assertEquals(sensorStation.getCreateDate(), dateTime);
 
     }
-    /**
-     * Test if Entity is deleted correctly in database and in the list from the parent entity
-     */
+
     @Test
     @DirtiesContext
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     void deleteSensorStation() {
-        AccessPoint accessPoint = accessPointService
-                .loadAccessPoint(UUID.fromString("7269ddec-30c6-44d9-bc1f-8af18da09ed3"));
-        int sizeOfList = accessPoint.getSensorStations().size();
-        SensorStation sensorStation = accessPoint.getSensorStations().get(0);
+        SensorStation sensorStation = sensorStationService
+                .loadSensorStation(UUID.fromString("8ccfdfaa-9731-4786-8efa-e2141e5c4095"));
         sensorStationService.deleteSensorStation(sensorStation);
         SensorStation deletedSensorStation = sensorStationRepository
                 .findSensorStationById(sensorStation.getId());
 
-        assertEquals(accessPoint.getSensorStations().size(),sizeOfList-1);
         assertNull(deletedSensorStation);
     }
 
@@ -88,7 +78,7 @@ class SensorStationServiceTest {
                 .findSensorStationById(UUID.fromString("8ccfdfaa-9731-4786-8efa-e2141e5c4095"));
 
         sensorStation.setGardener(gardener);
-        sensorStationService.saveSensorStation(sensorStation.getAccessPoint(),sensorStation);
+        sensorStationService.saveSensorStation(sensorStation);
 
         sensorStationService.removeGardener(sensorStation);
 
@@ -116,7 +106,7 @@ class SensorStationServiceTest {
                 .findSensorStationById(UUID.fromString("8ccfdfaa-9731-4786-8efa-e2141e5c4095"));
 
         sensorStation.setGardener(gardener);
-        sensorStationService.saveSensorStation(sensorStation.getAccessPoint(),sensorStation);
+        sensorStationService.saveSensorStation(sensorStation);
 
         sensorStationService.replaceGardener(sensorStation,gardener2);
 

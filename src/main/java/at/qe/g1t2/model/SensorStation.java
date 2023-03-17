@@ -16,6 +16,16 @@ public class SensorStation implements Persistable<UUID>, Serializable, Comparabl
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    private Boolean connected;
+
+    public Boolean getConnected() {
+        return connected;
+    }
+
+    public void setConnected(Boolean connected) {
+        this.connected = connected;
+    }
+
     public List<SensorData> getSensorData() {
         return sensorData;
     }
@@ -65,7 +75,8 @@ public class SensorStation implements Persistable<UUID>, Serializable, Comparabl
         this.gardener = gardener;
     }
 
-    @ManyToOne
+    @ManyToOne()
+    @JoinColumn(name = "accessPointId", referencedColumnName = "id", insertable = false, updatable = true)
     private AccessPoint accessPoint;
 
     @Override
@@ -116,5 +127,7 @@ public class SensorStation implements Persistable<UUID>, Serializable, Comparabl
     public int hashCode() {
         return Objects.hash(id);
     }
+
+
 
 }
