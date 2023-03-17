@@ -7,10 +7,7 @@ import org.springframework.data.domain.Persistable;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Entity presenting a AccessPoint.
@@ -31,7 +28,7 @@ public class AccessPoint implements Persistable<UUID>, Serializable, Comparable<
 
     @OneToMany(mappedBy = "accessPoint",fetch=FetchType.EAGER,cascade = CascadeType.MERGE)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Set<SensorStation> sensorData = new HashSet<>();
+    private List<SensorStation> sensorStations = new ArrayList<>();
 
     private String accessPointName;
 
@@ -59,12 +56,12 @@ public class AccessPoint implements Persistable<UUID>, Serializable, Comparable<
         this.createDate = createDate;
     }
 
-    public Set<SensorStation> getSensorData() {
-        return sensorData;
+    public List<SensorStation> getSensorStations() {
+        return sensorStations;
     }
 
-    public void setSensorData(Set<SensorStation> sensorData) {
-        this.sensorData = sensorData;
+    public void setSensorStations(List<SensorStation> sensorStations) {
+        this.sensorStations = sensorStations;
     }
 
     @Override
@@ -94,6 +91,7 @@ public class AccessPoint implements Persistable<UUID>, Serializable, Comparable<
 
     @Override
     public int compareTo(AccessPoint o) {return this.id.toString().compareTo(Objects.requireNonNull(o.getId()).toString());}
+
 
 
 }
