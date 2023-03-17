@@ -19,6 +19,10 @@ public class SensorStation implements Persistable<UUID>, Serializable, Comparabl
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @OneToMany(mappedBy = "sensorStation", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    public Set<Image> images = new HashSet<>();
+
     public Set<SensorData> getSensorData() {
         return sensorData;
     }
@@ -108,4 +112,11 @@ public class SensorStation implements Persistable<UUID>, Serializable, Comparabl
         return Objects.hash(id);
     }
 
+    public Set<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(Set<Image> images) {
+        this.images = images;
+    }
 }

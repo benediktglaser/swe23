@@ -9,7 +9,7 @@ package at.qe.g1t2.model;
 public enum UserRole {
 
     ADMIN,
-    MANAGER,
-    EMPLOYEE
+    GARDENER,
+    USER
 
 }
