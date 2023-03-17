@@ -2,19 +2,11 @@ package at.qe.g1t2.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Objects;
-import java.util.Set;
-import jakarta.persistence.CollectionTable;
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import java.util.*;
+
+import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.domain.Persistable;
 
 /**
@@ -55,6 +47,18 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     @CollectionTable(name = "Userx_UserRole")
     @Enumerated(EnumType.STRING)
     private Set<UserRole> roles;
+
+
+    @OneToMany(mappedBy = "gardener", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    private List<SensorStation> sensorStations = new ArrayList<>();
+
+    public List<SensorStation> getSensorStations() {
+        return sensorStations;
+    }
+
+    public void setSensorStations(List<SensorStation> sensorStations) {
+        this.sensorStations = sensorStations;
+    }
 
     public String getUsername() {
         return username;

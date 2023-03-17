@@ -17,7 +17,10 @@ import com.openpojo.validation.rule.impl.GetterMustExistRule;
 import com.openpojo.validation.rule.impl.SetterMustExistRule;
 import com.openpojo.validation.test.impl.GetterTester;
 import com.openpojo.validation.test.impl.SetterTester;
-
+/**
+ * Tests to ensure that each entity's implementation of equals conforms to the
+ * contract. Additionally, compareTo and all getter/setters will be tested.
+ */
 public class SensorStationTest {
     @Test
     public void testGetterSetterSensorStation() {
@@ -49,8 +52,12 @@ public class SensorStationTest {
         sensorStation2.setId(UUID.randomUUID());
         SensorStation sensorStation3 = new SensorStation();
         sensorStation3.setId(sensorStation1.getId());
+        Userx userx1 = new Userx();
+        userx1.setUsername("Marco");
+        Userx userx2 = new Userx();
+        userx2.setUsername("Marco2");
 
-        EqualsVerifier.forClass(SensorStation.class).withPrefabValues(SensorStation.class, sensorStation1, sensorStation2).suppress(Warning.STRICT_INHERITANCE, Warning.ALL_FIELDS_SHOULD_BE_USED).verify();
+        EqualsVerifier.forClass(SensorStation.class).withPrefabValues(SensorStation.class, sensorStation1, sensorStation2).withPrefabValues(Userx.class,userx1,userx2).suppress(Warning.STRICT_INHERITANCE, Warning.ALL_FIELDS_SHOULD_BE_USED).verify();
         Assertions.assertEquals(sensorStation1.hashCode(),sensorStation3.hashCode());
     }
 
