@@ -15,7 +15,10 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
-
+/**
+ * Tests to ensure that each entity's implementation of equals conforms to the
+ * contract. Additionally, compareTo and all getter/setters will be tested.
+ */
 public class SensorDataTest {
     @Test
     public void testGetterSetter() {
@@ -40,7 +43,7 @@ public class SensorDataTest {
 
 
     @Test
-    public void testSensorStationEqualsContract() {
+    public void testSensorDataEqualsContract() {
         SensorStation sensorStation1 = new SensorStation();
         sensorStation1.setId(UUID.randomUUID());
         SensorStation sensorStation2 = new SensorStation();
