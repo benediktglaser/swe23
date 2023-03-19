@@ -16,6 +16,7 @@ public class SensorData implements Persistable<UUID>, Serializable, Comparable<S
 
 
     private double measurement;
+
     @ManyToOne(optional = false)
     private SensorStation sensorStation;
 

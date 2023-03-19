@@ -7,10 +7,7 @@ import org.springframework.data.domain.Persistable;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 public class SensorStation implements Persistable<UUID>, Serializable, Comparable<SensorStation> {
@@ -19,7 +16,17 @@ public class SensorStation implements Persistable<UUID>, Serializable, Comparabl
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    public Set<SensorData> getSensorData() {
+    private Boolean connected;
+
+    public Boolean getConnected() {
+        return connected;
+    }
+
+    public void setConnected(Boolean connected) {
+        this.connected = connected;
+    }
+
+    public List<SensorData> getSensorData() {
         return sensorData;
     }
 
@@ -31,7 +38,7 @@ public class SensorStation implements Persistable<UUID>, Serializable, Comparabl
         this.accessPoint = accessPoint;
     }
 
-    public void setSensorData(Set<SensorData> sensorData) {
+    public void setSensorData(List<SensorData> sensorData) {
         this.sensorData = sensorData;
     }
 
@@ -54,9 +61,22 @@ public class SensorStation implements Persistable<UUID>, Serializable, Comparabl
 
     @OneToMany(mappedBy = "sensorStation", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Set<SensorData> sensorData = new HashSet<>();
+    private List<SensorData> sensorData = new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne()
+    @JoinColumn(nullable = true,name = "gardenerId", referencedColumnName = "username", insertable = false, updatable = true)
+    private Userx gardener;
+
+    public Userx getGardener() {
+        return gardener;
+    }
+
+    public void setGardener(Userx gardener) {
+        this.gardener = gardener;
+    }
+
+    @ManyToOne()
+    @JoinColumn(name = "accessPointId", referencedColumnName = "id", insertable = false, updatable = true)
     private AccessPoint accessPoint;
 
     @Override
@@ -107,5 +127,7 @@ public class SensorStation implements Persistable<UUID>, Serializable, Comparabl
     public int hashCode() {
         return Objects.hash(id);
     }
+
+
 
 }
