@@ -25,13 +25,13 @@ public class SessionInfoBeanTest {
     SessionInfoBean sessionInfoBean;
 
     @Test
-    @WithMockUser(username = "user1", authorities = {"EMPLOYEE"})
+    @WithMockUser(username = "user1", authorities = {"GARDENER"})
     public void testLoggedIn() {
         Assertions.assertTrue(sessionInfoBean.isLoggedIn(), "sessionInfoBean.isLoggedIn does not return true for authenticated user");
         Assertions.assertEquals("user1", sessionInfoBean.getCurrentUserName(), "sessionInfoBean.getCurrentUserName does not return authenticated user's name");
         Assertions.assertEquals("user1", sessionInfoBean.getCurrentUser().getUsername(), "sessionInfoBean.getCurrentUser does not return authenticated user");
-        Assertions.assertEquals("EMPLOYEE", sessionInfoBean.getCurrentUserRoles(), "sessionInfoBean.getCurrentUserRoles does not return authenticated user's roles");
-        Assertions.assertTrue(sessionInfoBean.hasRole("EMPLOYEE"), "sessionInfoBean.hasRole does not return true for a role the authenticated user has");
+        Assertions.assertEquals("GARDENER", sessionInfoBean.getCurrentUserRoles(), "sessionInfoBean.getCurrentUserRoles does not return authenticated user's roles");
+        Assertions.assertTrue(sessionInfoBean.hasRole("GARDENER"), "sessionInfoBean.hasRole does not return true for a role the authenticated user has");
         Assertions.assertFalse(sessionInfoBean.hasRole("ADMIN"), "sessionInfoBean.hasRole does not return false for a role the authenticated user does not have");
     }
 

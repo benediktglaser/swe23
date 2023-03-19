@@ -29,8 +29,8 @@ import org.springframework.security.web.SecurityFilterChain;
 public class WebSecurityConfig {
 
     private static final String ADMIN = UserRole.ADMIN.name();
-    private static final String MANAGER = UserRole.MANAGER.name();
-    private static final String EMPLOYEE = UserRole.EMPLOYEE.name();
+    private static final String USER = UserRole.USER.name();
+    private static final String GARDENER = UserRole.GARDENER.name();
 
     @Autowired
     DataSource dataSource;
@@ -56,8 +56,8 @@ public class WebSecurityConfig {
                 .requestMatchers("/jakarta.faces.resource/**").permitAll()
                 .requestMatchers("/error/**").permitAll()
                 .requestMatchers("/admin/**").hasAnyAuthority(ADMIN)
-                .requestMatchers("/secured/**").hasAnyAuthority(ADMIN, MANAGER, EMPLOYEE)
-                .requestMatchers("/omnifaces.push/**").hasAnyAuthority(ADMIN, MANAGER, EMPLOYEE)
+                .requestMatchers("/secured/**").hasAnyAuthority(ADMIN, GARDENER, USER)
+                .requestMatchers("/omnifaces.push/**").hasAnyAuthority(ADMIN, GARDENER, USER)
                     .anyRequest().authenticated())
                     .formLogin()
                     .loginPage("/login.xhtml")
