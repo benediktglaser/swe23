@@ -9,7 +9,8 @@
         <ui:composition>
             <h:form>
                 <p:menubar>
-                    <p:submenu label="Access Points" rendered="#{sessionInfoBean.hasRole('ADMIN')}" url="/sensorStation/sensorStations.xhtml">
+                    <p:menuitem value="Sensor Stations" rendered="#{sessionInfoBean.hasRole('GARDENER') or sessionInfoBean.hasRole('ADMIN')}" url="/adminGardener/sensorStations/sensorStations.xhtml"/>
+                    <p:submenu label="Access Points" rendered="#{sessionInfoBean.hasRole('ADMIN')}">
                     </p:submenu>
                     <p:submenu label="Admin Submenu" rendered="#{sessionInfoBean.hasRole('ADMIN')}">
                         <p:menuitem value="Manage Users" url="/admin/users.xhtml"/>

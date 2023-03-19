@@ -31,7 +31,7 @@ public class SensorStationService {
     @Autowired
     UserxRepository userRepository;
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+
     public SensorStation loadSensorStation(UUID uuid){
 
         return sensorStationRepository.findSensorStationById(uuid);

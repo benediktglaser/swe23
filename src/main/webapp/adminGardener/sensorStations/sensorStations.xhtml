@@ -23,11 +23,8 @@
                             <h4 class="mb-1">#{sensorStation.name}</h4>
                             <h6 class="mt-0 mb-3">
                             </h6>
-                            <div class="mt-5">
-                                <p:commandButton type="button" icon="pi pi-search" styleClass="rounded-button mr-2" />
-                                <p:commandButton type="button" icon="pi pi-star" styleClass="ui-button-success rounded-button mr-2" />
-                                <p:commandButton type="button" icon="pi pi-cog" styleClass="ui-button-help rounded-button" />
-                            </div>
+                                <p:commandButton value="Sensordata" ajax="false" action ="#{sensorStationListController.redirectToPage(sensorStation.id)}"/>
+
                         </div>
                     </div>
                 </div>
