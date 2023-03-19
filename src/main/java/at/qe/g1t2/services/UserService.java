@@ -4,16 +4,15 @@ import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.model.Userx;
 import at.qe.g1t2.repositories.SensorStationRepository;
 import at.qe.g1t2.repositories.UserxRepository;
-import java.util.Collection;
-import java.time.LocalDateTime;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
+import java.util.Collection;
 
 /**
  * Service for accessing and manipulating user data.

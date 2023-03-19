@@ -7,7 +7,10 @@ import org.springframework.data.domain.Persistable;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 public class SensorStation implements Persistable<UUID>, Serializable, Comparable<SensorStation> {

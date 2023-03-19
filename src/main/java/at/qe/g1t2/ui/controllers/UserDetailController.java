@@ -2,10 +2,11 @@ package at.qe.g1t2.ui.controllers;
 
 import at.qe.g1t2.model.Userx;
 import at.qe.g1t2.services.UserService;
-import java.io.Serializable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
+import java.io.Serializable;
 
 /**
  * Controller for the user detail view.
