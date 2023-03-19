@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml">
+    <ui:define name ="content">
+        <h:form id="form">
+
+        <div class="card">
+            <p:carousel value="#{sensorStationListController.getAllOwnSensorStations()}" var="sensorStation" numVisible="3" numScroll="3">
+                <f:facet name="header">
+                    <h5>Basic</h5>
+                </f:facet>
+                <div class="sensorStation-item">
+                    <div class="sensorStation-item-content">
+                        <div class="mb-3">
+                            <h:graphicImage library="images" name="plant-test1.png" height="100" width="200" />
+                        </div>
+                        <div>
+                            <h4 class="mb-1">#{sensorStation.name}</h4>
+                            <h6 class="mt-0 mb-3">
+                            </h6>
+                            <div class="mt-5">
+                                <p:commandButton type="button" icon="pi pi-search" styleClass="rounded-button mr-2" />
+                                <p:commandButton type="button" icon="pi pi-star" styleClass="ui-button-success rounded-button mr-2" />
+                                <p:commandButton type="button" icon="pi pi-cog" styleClass="ui-button-help rounded-button" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </p:carousel>
+        </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
