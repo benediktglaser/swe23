@@ -852,8 +852,6 @@ body .ui-datascroller .ui-datascroller-content {
 
 body .ui-datatable .ui-datatable-header {
   background: #1f2d40;
-  border: 1px solid #304562;
-  border-width: 0 0 1px 0;
   color: rgba(255, 255, 255, 0.6);
   padding: 1rem 1rem;
   font-weight: 600;
@@ -6382,13 +6380,51 @@ body .ui-accordion .ui-accordion-content:last-of-type {
   border-bottom-left-radius: 4px;
 }
 
+.ui-chart {
+  float: right;
+  margin-bottom: 25px;
+  width: 49%;
+}
+
+.container {
+  position: relative;
+}
+
+.card .right-element {
+  width: 49%;
+  position: absolute !important;
+  top: 0;
+  right: 0;
+}
+
+.sensorDataTable{
+  float: left;
+  position: relative;
+  width: 50%;
+  text-align: center !important;
+}
+
+.sensorStation-item .sensorStation-item-content {
+  border: 1px solid var(--surface-d);
+  border-radius: 3px;
+  margin: .3rem;
+  text-align: center;
+  padding: 2rem 0;
+  background-color: #1f3844;
+}
+
+.sensorStation-item .sensorStation-image {
+  width: 50%;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
+}
+
 body .ui-card {
   margin-left: auto;
   margin-right: auto;
   width: 8em;
   background-color:#4682b4 !important;
   color: rgba(255, 255, 255, 0.87);
-  box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(119, 67, 67, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
   border-radius: 4px;
 }
 body .ui-card .ui-card-body {
