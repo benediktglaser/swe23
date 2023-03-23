@@ -1,6 +1,6 @@
 package at.qe.g1t2.ui.controllers;
 
-import jakarta.annotation.PostConstruct;
+import at.qe.g1t2.model.SensorStation;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Named;
 import org.primefaces.model.charts.ChartData;
@@ -8,6 +8,7 @@ import org.primefaces.model.charts.line.LineChartDataSet;
 import org.primefaces.model.charts.line.LineChartModel;
 import org.primefaces.model.charts.line.LineChartOptions;
 import org.primefaces.model.charts.optionconfig.title.Title;
+
 
 
 import java.util.ArrayList;
@@ -20,7 +21,10 @@ public class ChartsView {
     private LineChartModel lineModel;
 
 
-    @PostConstruct
+    private SensorStation sensorStation;
+
+
+
     public void init() {
         createLineModel();
     }
@@ -32,31 +36,18 @@ public class ChartsView {
 
         LineChartDataSet dataSet = new LineChartDataSet();
         List<Object> values = new ArrayList<>();
-        values.add(65);
-        values.add(59);
-        values.add(80);
-        values.add(81);
-        values.add(56);
-        values.add(55);
-        values.add(40);
+        sensorStation.getSensorData().forEach(x -> values.add(x.getMeasurement()));
         dataSet.setData(values);
         dataSet.setFill(false);
-        dataSet.setLabel("My First Dataset");
+        dataSet.setLabel("SensorData");
         dataSet.setBorderColor("rgb(75, 192, 192)");
         dataSet.setTension(0.1);
         data.addChartDataSet(dataSet);
 
         List<String> labels = new ArrayList<>();
-        labels.add("January");
-        labels.add("February");
-        labels.add("March");
-        labels.add("April");
-        labels.add("May");
-        labels.add("June");
-        labels.add("July");
+        sensorStation.getSensorData().forEach(x -> labels.add(x.getCreateDate().toLocalDate().toString()));
         data.setLabels(labels);
 
-        //Options
         LineChartOptions options = new LineChartOptions();
         Title title = new Title();
         title.setDisplay(true);
@@ -65,10 +56,14 @@ public class ChartsView {
 
         lineModel.setOptions(options);
         lineModel.setData(data);
+
+
     }
 
 
-    public LineChartModel getLineModel() {
+    public LineChartModel getLineModel(SensorStation sensorStation) {
+        this.sensorStation = sensorStation;
+        init();
         return lineModel;
     }
 

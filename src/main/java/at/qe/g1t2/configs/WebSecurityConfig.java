@@ -92,6 +92,7 @@ public class WebSecurityConfig {
         return (request, response, authentication) -> {
             Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
             for (GrantedAuthority grantedAuthority : authorities) {
+                // Todo replace equals with contains
                 if ((grantedAuthority.getAuthority().equals("ADMIN")
                         && grantedAuthority.getAuthority().equals("GARDENER"))
                         || grantedAuthority.getAuthority().equals("GARDENER")       ) {

@@ -10,8 +10,8 @@
     <ui:define name="content">
         <h:form>
             <div class="container">
-                <p:dataTable var="sensorData" value="#{sensorStationListController.getSensorData()}"
-                             class="sensorDataTable">
+                <p:dataTable id = "sensorDataTable" var="sensorData" value="#{sensorDataListController.getSensorData(sessionSensorStationBean.sensorStation)}"
+                             class="sensorDataTable" >
                     <p:column headerText="Measurement" class="ui-datatable-header">
                         <h:outputText value="#{sensorData.measurement}"/>
                     </p:column>
@@ -21,11 +21,14 @@
                     <p:column headerText="Type" class="ui-datatable-header">
                         <h:outputText value="#{sensorData.type}"/>
                     </p:column>
+                    <p:column headerText="Date" class="ui-datatable-header">
+                        <h:outputText value="#{(sensorData.createDate).toLocalDate()}"/>
+                    </p:column>
                 </p:dataTable>
-                <div class="card right-element">
-                    <p:lineChart model="#{chartsView.lineModel}" class="ui-chart"/>
-                </div>
-            </div>
+
+
+                <p:lineChart model="#{chartsView.getLineModel(sessionSensorStationBean.sensorStation)}" class="ui-chart"/>
+           </div>
         </h:form>
     </ui:define>
 </ui:composition>
