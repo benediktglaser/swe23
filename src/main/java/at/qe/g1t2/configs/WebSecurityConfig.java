@@ -10,13 +10,17 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
 import at.qe.g1t2.spring.CustomizedLogoutSuccessHandler;
 import org.springframework.security.web.SecurityFilterChain;
+
+import java.util.Collection;
 
 /**
  * Spring configuration for web security.
@@ -57,6 +61,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/error/**").permitAll()
                 .requestMatchers("/admin/**").hasAnyAuthority(ADMIN)
                 .requestMatchers("/secured/**").hasAnyAuthority(ADMIN, GARDENER, USER)
+                        .requestMatchers("/adminGardener/**").hasAnyAuthority(ADMIN,GARDENER)
                 .requestMatchers("/omnifaces.push/**").hasAnyAuthority(ADMIN, GARDENER, USER)
                     .anyRequest().authenticated())
                     .formLogin()
@@ -65,7 +70,7 @@ public class WebSecurityConfig {
                     .failureUrl("/error/access_denied.xhtml")
                     .defaultSuccessUrl("/secured/welcome.xhtml")
                 .loginProcessingUrl("/login")
-                .successForwardUrl("/secured/welcome.xhtml")
+                    .successHandler(successHandler())
                     .and()
                     .logout()
                     .logoutSuccessUrl("/login.xhtml")
@@ -81,6 +86,26 @@ public class WebSecurityConfig {
                 
         // :TODO: user failureUrl(/login.xhtml?error) and make sure that a corresponding message is displayed
 
+    }
+
+    private AuthenticationSuccessHandler successHandler() {
+        return (request, response, authentication) -> {
+            Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+            for (GrantedAuthority grantedAuthority : authorities) {
+                // Todo replace equals with contains
+                if ((grantedAuthority.getAuthority().equals("ADMIN")
+                        && grantedAuthority.getAuthority().equals("GARDENER"))
+                        || grantedAuthority.getAuthority().equals("GARDENER")       ) {
+                    response.sendRedirect("/adminGardener/sensorStations/sensorStations.xhtml");
+                    return;
+                }
+                if((grantedAuthority.getAuthority().equals("ADMIN"))){
+                    response.sendRedirect("/adminGardener/sensorStations/sensorStations.xhtml");
+                    return;
+                }
+            }
+            response.sendRedirect("/secured/welcome.xhtml");
+        };
     }
 
     @Autowired

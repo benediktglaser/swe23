@@ -51,12 +51,11 @@ public class SensorDataService {
     }
 
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+
     public Collection<SensorData> getAllSensorDataByStation(String uuid) {
         return sensorDataRepository.findBySensorStationId(UUID.fromString(uuid));
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
     public Collection<SensorData> getAllSensorDataByType(String type) {
         return sensorDataRepository.findByType(type);
     }

@@ -1,13 +1,12 @@
 package at.qe.g1t2.ui.websockets;
 
-import java.io.Serializable;
-
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-
 import org.omnifaces.cdi.Push;
 import org.omnifaces.cdi.PushContext;
+
+import java.io.Serializable;
 
 /**
  * Due to technical restrictions (see [1] and [2]), spring cannot initialize the

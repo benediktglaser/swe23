@@ -6,13 +6,14 @@
       xmlns:p="http://primefaces.org/ui" 
       xml:lang="en">
     <body>
+    <h:head>
+        <link href="/resources/css/theme.css" rel="stylesheet" type="text/css"/>
+    </h:head>
         <ui:composition>
             <h:form>
                 <p:menubar>
-                    <p:menuitem value="Sensor Station" rendered="#{sessionInfoBean.hasRole('GARDENER') or sessionInfoBean.hasRole('ADMIN')}" url="/sensorStation/sensorStations.xhtml"/>
+                    <p:menuitem value="Sensor Stations" rendered="#{sessionInfoBean.hasRole('GARDENER') or sessionInfoBean.hasRole('ADMIN')}" url="/adminGardener/sensorStations/sensorStations.xhtml"/>
                     <p:submenu label="Access Points" rendered="#{sessionInfoBean.hasRole('ADMIN')}">
-                        <p:menuitem value="Employee Action 2 - 1"/>
-                        <p:menuitem value="Employee Action 2 - 2"/>
                     </p:submenu>
                     <p:submenu label="Admin Submenu" rendered="#{sessionInfoBean.hasRole('ADMIN')}">
                         <p:menuitem value="Manage Users" url="/admin/users.xhtml"/>
