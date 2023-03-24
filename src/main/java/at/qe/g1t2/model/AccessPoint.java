@@ -29,9 +29,9 @@ public class AccessPoint implements Persistable<UUID>, Serializable, Comparable<
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createDate;
 
-    private boolean connected;
+    private Boolean connected;
 
-    private boolean enabled;
+    private Boolean enabled;
 
     @OneToMany(mappedBy = "accessPoint", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @OnDelete(action = OnDeleteAction.CASCADE)
