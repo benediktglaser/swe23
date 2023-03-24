@@ -11,6 +11,7 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -19,6 +20,7 @@ import java.util.UUID;
  * Tests to ensure that each entity's implementation of equals conforms to the
  * contract. Additionally, compareTo and all getter/setters will be tested.
  */
+@SpringBootTest
 public class SensorDataTest {
     @Test
     public void testGetterSetter() {

@@ -1,12 +1,16 @@
 package at.qe.g1t2.tests;
 
+import net.bytebuddy.utility.dispatcher.JavaDispatcher;
+import org.hibernate.dialect.MySQLDialect;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.internal.util.collections.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import at.qe.g1t2.model.Userx;
@@ -19,9 +23,12 @@ import at.qe.g1t2.services.UserService;
  * This class is part of the skeleton project provided for students of the
  * course "Software Engineering" offered by the University of Innsbruck.
  */
+@ActiveProfiles("test")
 @SpringBootTest
 @WebAppConfiguration
 public class UserServiceTest {
+
+
 
     @Autowired
     UserService userService;
