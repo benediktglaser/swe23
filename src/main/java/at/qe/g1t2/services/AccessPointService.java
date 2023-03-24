@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 /**
@@ -46,9 +47,9 @@ public class AccessPointService {
      *
      * Deleting AccessPoint should also represent a Disconnection for the SensorStation
      */
+
     @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteAccessPoint(AccessPoint accessPoint){
-
         accessPointRepository.delete(accessPoint);
     }
 
@@ -81,6 +82,10 @@ public class AccessPointService {
 
     public List<SensorStation> getAllSensorStations(AccessPoint accessPoint){
         return sensorStationRepository.getSensorStationsByAccessPoint(accessPoint);
+    }
+
+    public Collection<AccessPoint> getAllAccessPoints(){
+        return accessPointRepository.findAll();
     }
 
 }

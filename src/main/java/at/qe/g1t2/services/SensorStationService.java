@@ -50,6 +50,7 @@ public class SensorStationService {
     public void deleteSensorStation(SensorStation sensorStation){
         sensorStationRepository.delete(sensorStation);
     }
+
     @PreAuthorize("hasAuthority('ADMIN')")
     public void removeGardener(SensorStation sensorStation){
         sensorStation.setGardener(null);

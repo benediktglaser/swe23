@@ -14,10 +14,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
-import at.qe.g1t2.spring.CustomizedLogoutSuccessHandler;
 import org.springframework.security.web.SecurityFilterChain;
 
 import java.util.Collection;
@@ -39,10 +37,6 @@ public class WebSecurityConfig {
     @Autowired
     DataSource dataSource;
 
-    @Bean
-    protected LogoutSuccessHandler logoutSuccessHandler() {
-    	return new CustomizedLogoutSuccessHandler();
-    }
 
     
 
