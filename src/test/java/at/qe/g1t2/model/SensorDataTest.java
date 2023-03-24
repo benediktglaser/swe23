@@ -16,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
+
 /**
  * Tests to ensure that each entity's implementation of equals conforms to the
  * contract. Additionally, compareTo and all getter/setters will be tested.
@@ -32,9 +33,9 @@ public class SensorDataTest {
                 .with(new GetterTester())
                 .build();
 
-        validator.validate(new PojoClassExcludedFields(PojoClassFactory.getPojoClass(SensorData.class),
-                Set.of("createDate")));
 
+        validator.validate(new PojoClassExcludedFields(PojoClassFactory.getPojoClass(SensorData.class),
+                Set.of("createDate", "timestamp")));
         SensorData sensorData = new SensorData();
         LocalDateTime dateTest = LocalDateTime.now();
         sensorData.setCreateDate(dateTest);

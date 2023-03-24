@@ -23,10 +23,17 @@ public class SensorStation implements Persistable<UUID>, Serializable, Comparabl
 
     private Boolean connected;
 
+    private Boolean enabled;
+
+    private Long dipId;
+
+
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
     private String category;
+
+    private Double transmissionInterval;
 
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -55,6 +62,36 @@ public class SensorStation implements Persistable<UUID>, Serializable, Comparabl
     public void setSensorData(List<SensorData> sensorData) {
         this.sensorData = sensorData;
     }
+
+    public Double getTransmissionInterval() {
+        return transmissionInterval;
+    }
+
+    public void setTransmissionInterval(Double transmissionInterval) {
+        this.transmissionInterval = transmissionInterval;
+    }
+
+
+    public void setDipId(long dipId) {
+        this.dipId = dipId;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public void setDipId(Long dipId) {
+        this.dipId = dipId;
+    }
+
+    public Long getDipId() {
+        return dipId;
+    }
+
 
     public Boolean getConnected() {
         return connected;
@@ -135,7 +172,6 @@ public class SensorStation implements Persistable<UUID>, Serializable, Comparabl
     public int hashCode() {
         return Objects.hash(id);
     }
-
 
 
 }
