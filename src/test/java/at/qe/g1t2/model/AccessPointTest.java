@@ -32,11 +32,11 @@ public class AccessPointTest {
                 .build();
 
         validator.validate(new PojoClassExcludedFields(PojoClassFactory.getPojoClass(AccessPoint.class),
-                Set.of("createDate","updateDate")));
+                Set.of("createDate", "updateDate")));
     }
 
     @Test
-    public void testAccessPointEqualsContract(){
+    public void testAccessPointEqualsContract() {
         AccessPoint accessPoint1 = new AccessPoint();
         accessPoint1.setAccessPointID(UUID.randomUUID());
         AccessPoint accessPoint2 = new AccessPoint();
