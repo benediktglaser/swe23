@@ -36,10 +36,6 @@ public class AccessPoint implements Persistable<UUID>, Serializable, Comparable<
     @OneToMany(mappedBy = "accessPoint", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<SensorStation> sensorStation = new ArrayList<>();
-    
-    private Boolean connected;
-
-    private Boolean enabled;
 
 
     public Boolean getEnabled() {
@@ -123,17 +119,5 @@ public class AccessPoint implements Persistable<UUID>, Serializable, Comparable<
     @Override
     public int compareTo(AccessPoint o) {
         return this.id.toString().compareTo(Objects.requireNonNull(o.getId()).toString());
-    }
-
-    public void setConnected(Boolean connected) {
-        this.connected = connected;
-    }
-
-    public Boolean getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
     }
 }
