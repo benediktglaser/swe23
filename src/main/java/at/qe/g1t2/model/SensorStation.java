@@ -1,6 +1,8 @@
 package at.qe.g1t2.model;
 
+import at.qe.g1t2.services.SensorStationService;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.domain.Persistable;
@@ -30,14 +32,29 @@ public class SensorStation implements Persistable<UUID>, Serializable, Comparabl
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createDate;
 
+    @OneToMany(mappedBy = "sensorStation", fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<SensorStationGardener> sensorStationGardener = new ArrayList<>();
+
+    public void setSensorStationGardener(List<SensorStationGardener> sensorStationGardener) {
+        this.sensorStationGardener = sensorStationGardener;
+    }
+
+    public List<SensorStationGardener> getSensorStationGardener() {
+        return sensorStationGardener;
+    }
+
     @OneToMany(mappedBy = "sensorStation", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<SensorData> sensorData = new ArrayList<>();
 
-    @ManyToOne()
-    @JoinColumn(nullable = true,name = "gardenerId", referencedColumnName = "username", insertable = false, updatable = true)
-    private Userx gardener;
+    public List<SensorData> getSensorData() {
+        return sensorData;
+    }
 
+    public void setSensorData(List<SensorData> sensorData) {
+        this.sensorData = sensorData;
+    }
 
     public Boolean getConnected() {
         return connected;
@@ -47,9 +64,6 @@ public class SensorStation implements Persistable<UUID>, Serializable, Comparabl
         this.connected = connected;
     }
 
-    public List<SensorData> getSensorData() {
-        return sensorData;
-    }
 
     public AccessPoint getAccessPoint() {
         return accessPoint;
@@ -57,10 +71,6 @@ public class SensorStation implements Persistable<UUID>, Serializable, Comparabl
 
     public void setAccessPoint(AccessPoint accessPoint) {
         this.accessPoint = accessPoint;
-    }
-
-    public void setSensorData(List<SensorData> sensorData) {
-        this.sensorData = sensorData;
     }
 
 
@@ -73,14 +83,6 @@ public class SensorStation implements Persistable<UUID>, Serializable, Comparabl
     }
 
 
-
-    public Userx getGardener() {
-        return gardener;
-    }
-
-    public void setGardener(Userx gardener) {
-        this.gardener = gardener;
-    }
 
     @ManyToOne()
     private AccessPoint accessPoint;

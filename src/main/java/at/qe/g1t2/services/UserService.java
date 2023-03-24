@@ -82,10 +82,7 @@ public class UserService {
      */
     @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteUser(Userx user) {
-        Collection<SensorStation> sensorStation = sensorStationRepository.getSensorStationsByGardener(user);
-        sensorStation.forEach(x -> {x.setGardener(null); sensorStationService.saveSensorStation(x);});
         userRepository.delete(user);
-        // :TODO: write some audit log stating who and when this user was permanently deleated.
     }
 
     private Userx getAuthenticatedUser() {
