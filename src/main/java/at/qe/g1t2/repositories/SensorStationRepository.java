@@ -15,6 +15,5 @@ public interface SensorStationRepository extends JpaRepository<SensorStation, UU
 
     List<SensorStation> getSensorStationsByAccessPoint(AccessPoint accessPoint);
 
-    Collection<SensorStation> getSensorStationsByGardener(Userx gardener);
 }
 

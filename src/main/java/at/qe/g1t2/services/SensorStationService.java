@@ -51,30 +51,13 @@ public class SensorStationService {
         sensorStationRepository.delete(sensorStation);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public void removeGardener(SensorStation sensorStation){
-        sensorStation.setGardener(null);
-        saveSensorStation(sensorStation);
-    }
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public void replaceGardener(SensorStation sensorStation, Userx user){
-        sensorStation.setGardener(user);
-        saveSensorStation(sensorStation);
-    }
 
-    public Collection<SensorStation> getAllOwnSensorStations(){
-        return sensorStationRepository.getSensorStationsByGardener(getAuthenticatedUser());
 
-    }
     public Collection<SensorStation> getAllSensorStations(){
         return sensorStationRepository.findAll();
 
     }
 
 
-    private Userx getAuthenticatedUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return userRepository.findFirstByUsername(auth.getName());
-    }
 
 }

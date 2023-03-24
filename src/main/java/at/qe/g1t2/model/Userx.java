@@ -1,10 +1,14 @@
 package at.qe.g1t2.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.domain.Persistable;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -47,8 +51,18 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     @Enumerated(EnumType.STRING)
     private Set<UserRole> roles;
 
+    @OneToMany(mappedBy = "gardener", fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<SensorStationGardener> sensorStationGardener = new ArrayList<>();
 
 
+    public List<SensorStationGardener> getSensorStationGardener() {
+        return sensorStationGardener;
+    }
+
+    public void setSensorStationGardener(List<SensorStationGardener> sensorStationGardener) {
+        this.sensorStationGardener = sensorStationGardener;
+    }
 
     public String getUsername() {
         return username;
