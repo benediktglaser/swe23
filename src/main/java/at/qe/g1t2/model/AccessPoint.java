@@ -37,6 +37,23 @@ public class AccessPoint implements Persistable<UUID>, Serializable, Comparable<
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<SensorStation> sensorStation = new ArrayList<>();
 
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public Boolean getConnected() {
+        return connected;
+    }
+
+    public void setConnected(Boolean connected) {
+        this.connected = connected;
+    }
+
     public List<SensorStation> getSensorStation() {
         return sensorStation;
     }
@@ -90,7 +107,9 @@ public class AccessPoint implements Persistable<UUID>, Serializable, Comparable<
         return getAccessPointID();
     }
 
-    public void setId(UUID id){ this.id = id;}
+    public void setId(UUID id) {
+        this.id = id;
+    }
 
     @Override
     public boolean isNew() {
@@ -98,21 +117,7 @@ public class AccessPoint implements Persistable<UUID>, Serializable, Comparable<
     }
 
     @Override
-    public int compareTo(AccessPoint o) {return this.id.toString().compareTo(Objects.requireNonNull(o.getId()).toString());}
-
-    public Boolean getConnected() {
-        return connected;
-    }
-
-    public void setConnected(Boolean connected) {
-        this.connected = connected;
-    }
-
-    public Boolean getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
+    public int compareTo(AccessPoint o) {
+        return this.id.toString().compareTo(Objects.requireNonNull(o.getId()).toString());
     }
 }

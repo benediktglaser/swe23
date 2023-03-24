@@ -24,8 +24,16 @@ public class SensorData implements Persistable<UUID>, Serializable, Comparable<S
 
     private String unit;
 
+    private LocalDateTime timestamp;
 
-    
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
+
     public void setType(String type) {
         this.type = type;
     }
