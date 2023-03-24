@@ -14,10 +14,13 @@ import com.openpojo.validation.rule.impl.GetterMustExistRule;
 import com.openpojo.validation.rule.impl.SetterMustExistRule;
 import com.openpojo.validation.test.impl.GetterTester;
 import com.openpojo.validation.test.impl.SetterTester;
+import org.springframework.boot.test.context.SpringBootTest;
+
 /**
  * Tests to ensure that each entity's implementation of equals conforms to the
  * contract. Additionally, compareTo and all getter/setters will be tested.
  */
+@SpringBootTest
 public class AccessPointTest {
     @Test
     public void testGetterSetterAccessPoint() {

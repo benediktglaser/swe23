@@ -6,6 +6,7 @@ import at.qe.g1t2.model.UserRole;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.UUID;
 
@@ -17,6 +18,7 @@ import java.util.UUID;
  * This class is part of the skeleton project provided for students of the
  * course "Software Engineering" offered by the University of Innsbruck.
  */
+@SpringBootTest
 public class EqualsImplementationTest {
 
     @Test
