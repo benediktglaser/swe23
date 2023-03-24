@@ -1,10 +1,14 @@
 package at.qe.g1t2.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.domain.Persistable;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -25,7 +29,17 @@ public class AccessPoint implements Persistable<UUID>, Serializable, Comparable<
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createDate;
 
+    @OneToMany(mappedBy = "accessPoint", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<SensorStation> sensorStation = new ArrayList<>();
 
+    public List<SensorStation> getSensorStation() {
+        return sensorStation;
+    }
+
+    public void setSensorStation(List<SensorStation> sensorStation) {
+        this.sensorStation = sensorStation;
+    }
 
     private String accessPointName;
 

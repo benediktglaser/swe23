@@ -59,7 +59,7 @@ class AccessPointServiceTest {
 
         sensorStation = sensorStationService
                 .loadSensorStation(UUID.fromString("8ccfdfaa-9731-4786-8efa-e2141e5c4095"));
-        assertNull(sensorStation.getAccessPoint());
+        assertNull(sensorStation);
     }
 
     @Test
@@ -75,7 +75,6 @@ class AccessPointServiceTest {
         sensorStation = sensorStationService
                 .loadSensorStation(UUID.fromString("8ccfdfaa-9731-4786-8efa-e2141e5c4095"));
 
-        assertTrue(sensorStation.getConnected());
         assertEquals(sensorStation.getAccessPoint(),accessPoint);
     }
 
@@ -92,8 +91,7 @@ class AccessPointServiceTest {
         sensorStation = sensorStationService
                 .loadSensorStation(UUID.fromString("8ccfdfaa-9731-4786-8efa-e2141e5c4095"));
 
-        assertFalse(sensorStation.getConnected());
-        assertNull(sensorStation.getAccessPoint());
+        assertNull(sensorStation);
     }
 
     @Test

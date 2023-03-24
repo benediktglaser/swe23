@@ -24,6 +24,8 @@ public class SensorData implements Persistable<UUID>, Serializable, Comparable<S
 
     private String unit;
 
+
+    
     public void setType(String type) {
         this.type = type;
     }
