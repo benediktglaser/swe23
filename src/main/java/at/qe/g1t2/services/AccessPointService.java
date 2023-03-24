@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -47,8 +48,7 @@ public class AccessPointService {
      */
     @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteAccessPoint(AccessPoint accessPoint){
-        List<SensorStation> sensorStation = sensorStationRepository.getSensorStationsByAccessPoint(accessPoint);
-        sensorStation.forEach(x -> {x.setAccessPoint(null);x.setConnected(false); sensorStationService.saveSensorStation(x);});
+
         accessPointRepository.delete(accessPoint);
     }
 
@@ -58,9 +58,13 @@ public class AccessPointService {
      */
     @PreAuthorize("hasAuthority('ADMIN')")
     public void addSensorStation(AccessPoint accessPoint, SensorStation sensorStation){
-        sensorStation.setConnected(true);
-        sensorStation.setAccessPoint(accessPoint);
         sensorStationService.saveSensorStation(sensorStation);
+        if(!accessPoint.getSensorStation().contains(sensorStation)){
+            accessPoint.getSensorStation().add(sensorStation);
+        }
+
+        sensorStation.setAccessPoint(accessPoint);
+        saveAccessPoint(accessPoint);
     }
 
     /**
@@ -68,10 +72,11 @@ public class AccessPointService {
      */
 
     @PreAuthorize("hasAuthority('ADMIN')")
+    @Transactional
     public void removeSensorStation(AccessPoint accessPoint, SensorStation sensorStation){
-        sensorStation.setConnected(false);
-        sensorStation.setAccessPoint(null);
-        sensorStationService.saveSensorStation(sensorStation);
+        accessPoint.getSensorStation().remove(sensorStation);
+        saveAccessPoint(accessPoint);
+        sensorStationService.deleteSensorStation(sensorStation);
     }
 
     public List<SensorStation> getAllSensorStations(AccessPoint accessPoint){

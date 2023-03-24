@@ -21,6 +21,24 @@ public class SensorStation implements Persistable<UUID>, Serializable, Comparabl
 
     private Boolean connected;
 
+    @Column(nullable = false)
+    private String name;
+    @Column(nullable = false)
+    private String category;
+
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime createDate;
+
+    @OneToMany(mappedBy = "sensorStation", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<SensorData> sensorData = new ArrayList<>();
+
+    @ManyToOne()
+    @JoinColumn(nullable = true,name = "gardenerId", referencedColumnName = "username", insertable = false, updatable = true)
+    private Userx gardener;
+
+
     public Boolean getConnected() {
         return connected;
     }
@@ -45,14 +63,6 @@ public class SensorStation implements Persistable<UUID>, Serializable, Comparabl
         this.sensorData = sensorData;
     }
 
-    @Column(nullable = false)
-    private String name;
-    @Column(nullable = false)
-    private String category;
-
-    @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime createDate;
 
     public LocalDateTime getCreateDate() {
         return createDate;
@@ -62,13 +72,7 @@ public class SensorStation implements Persistable<UUID>, Serializable, Comparabl
         this.createDate = createDate;
     }
 
-    @OneToMany(mappedBy = "sensorStation", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<SensorData> sensorData = new ArrayList<>();
 
-    @ManyToOne()
-    @JoinColumn(nullable = true,name = "gardenerId", referencedColumnName = "username", insertable = false, updatable = true)
-    private Userx gardener;
 
     public Userx getGardener() {
         return gardener;
@@ -79,7 +83,6 @@ public class SensorStation implements Persistable<UUID>, Serializable, Comparabl
     }
 
     @ManyToOne()
-    @JoinColumn(name = "accessPointId", referencedColumnName = "id", insertable = false, updatable = true)
     private AccessPoint accessPoint;
 
     @Override
