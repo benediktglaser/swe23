@@ -31,7 +31,7 @@ public class AccessPointService {
     SensorStationRepository sensorStationRepository;
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    public AccessPoint loadAccessPoint(UUID uuid){
+    public AccessPoint loadAccessPoint(String uuid){
 
         return accessPointRepository.findAccessPointById(uuid);
     }
@@ -43,34 +43,30 @@ public class AccessPointService {
         return accessPointRepository.save(accessPoint);
     }
 
-    /**
-     *
-     * Deleting AccessPoint should also represent a Disconnection for the SensorStation
-     */
+
 
     @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteAccessPoint(AccessPoint accessPoint){
         accessPointRepository.delete(accessPoint);
     }
 
-    /**
-     * When adding a SensorStation,AccessPoint and SensorStation should be connected physically
-     * the setConnected call is for a correct representation in the database
-     */
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public void addSensorStation(AccessPoint accessPoint, SensorStation sensorStation){
-        sensorStationService.saveSensorStation(sensorStation);
-        if(!accessPoint.getSensorStation().contains(sensorStation)){
-            accessPoint.getSensorStation().add(sensorStation);
-        }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public SensorStation addSensorStation(AccessPoint accessPoint, SensorStation sensorStation){
+        SensorStation checkSensorStation = getSensorStationByAccessPointIdAndDipId(accessPoint.getAccessPointID(),sensorStation.getDipId());
+        if(checkSensorStation != null){
+            return  checkSensorStation;
+        }
+        sensorStation.setCreateDate(LocalDateTime.now());
+        accessPoint.getSensorStation().add(sensorStation);
         sensorStation.setAccessPoint(accessPoint);
         saveAccessPoint(accessPoint);
+
+        return sensorStationService.loadSensorStation(accessPoint
+                .getSensorStation()
+                .get(accessPoint.getSensorStation().size()-1).getId());
     }
 
-    /**
-     * When removing a SensorStation,AccessPoint and SensorStation it is also disconnected
-     */
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @Transactional
@@ -88,4 +84,7 @@ public class AccessPointService {
         return accessPointRepository.findAll();
     }
 
+    public SensorStation getSensorStationByAccessPointIdAndDipId(String accessPointId,Long dipId){
+        return sensorStationRepository.findSensorStationByAccessPointAndDipId(loadAccessPoint(accessPointId),dipId);
+    }
 }

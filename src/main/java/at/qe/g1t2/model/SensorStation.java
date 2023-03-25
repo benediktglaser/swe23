@@ -28,9 +28,9 @@ public class SensorStation implements Persistable<UUID>, Serializable, Comparabl
     private Long dipId;
 
 
-    @Column(nullable = false)
+
     private String name;
-    @Column(nullable = false)
+
     private String category;
 
     private Double transmissionInterval;

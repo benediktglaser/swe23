@@ -21,11 +21,11 @@ import java.util.UUID;
  */
 
 @Entity
-public class AccessPoint implements Persistable<UUID>, Serializable, Comparable<AccessPoint> {
+public class AccessPoint implements Persistable<String>, Serializable, Comparable<AccessPoint> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private String id;
 
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createDate;
@@ -34,10 +34,30 @@ public class AccessPoint implements Persistable<UUID>, Serializable, Comparable<
 
     private Boolean enabled;
 
+    private Double intervall;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime updateDate;
+
+    public LocalDateTime getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(LocalDateTime updateDate) {
+        this.updateDate = updateDate;
+    }
+
     @OneToMany(mappedBy = "accessPoint", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<SensorStation> sensorStation = new ArrayList<>();
 
+    public Double getIntervall() {
+        return intervall;
+    }
+
+    public void setIntervall(Double intervall) {
+        this.intervall = intervall;
+    }
 
     public Boolean getEnabled() {
         return enabled;
@@ -65,11 +85,11 @@ public class AccessPoint implements Persistable<UUID>, Serializable, Comparable<
 
     private String accessPointName;
 
-    public UUID getAccessPointID() {
+    public String getAccessPointID() {
         return id;
     }
 
-    public void setAccessPointID(UUID accessPointID) {
+    public void setAccessPointID(String accessPointID) {
         this.id = accessPointID;
     }
 
@@ -104,11 +124,11 @@ public class AccessPoint implements Persistable<UUID>, Serializable, Comparable<
     }
 
     @Override
-    public UUID getId() {
+    public String getId() {
         return getAccessPointID();
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 

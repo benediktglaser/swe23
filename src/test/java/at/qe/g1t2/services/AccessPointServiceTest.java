@@ -24,8 +24,8 @@ class AccessPointServiceTest {
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     void loadAccessPoint() {
 
-        AccessPoint accessPoint = accessPointService.loadAccessPoint(UUID.fromString("7269ddec-30c6-44d9-bc1f-8af18da09ed3"));
-        assertEquals(accessPoint.getAccessPointID(), UUID.fromString("7269ddec-30c6-44d9-bc1f-8af18da09ed3"));
+        AccessPoint accessPoint = accessPointService.loadAccessPoint("7269ddec-30c6-44d9-bc1f-8af18da09ed3");
+        assertEquals(accessPoint.getAccessPointID(), "7269ddec-30c6-44d9-bc1f-8af18da09ed3");
     }
 
     @Test
@@ -47,7 +47,7 @@ class AccessPointServiceTest {
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     void deleteAccessPoint() {
         AccessPoint accessPoint = accessPointService
-                .loadAccessPoint(UUID.fromString("7269ddec-30c6-44d9-bc1f-8af18da09ed3"));
+                .loadAccessPoint("7269ddec-30c6-44d9-bc1f-8af18da09ed3");
         SensorStation sensorStation = sensorStationService
                 .loadSensorStation(UUID.fromString("8ccfdfaa-9731-4786-8efa-e2141e5c4095"));
         sensorStation.setAccessPoint(accessPoint);
@@ -55,7 +55,7 @@ class AccessPointServiceTest {
         accessPointService.deleteAccessPoint(accessPoint);
 
         assertNull(accessPointService
-                .loadAccessPoint(UUID.fromString("7269ddec-30c6-44d9-bc1f-8af18da09ed3")));
+                .loadAccessPoint("7269ddec-30c6-44d9-bc1f-8af18da09ed3"));
 
         sensorStation = sensorStationService
                 .loadSensorStation(UUID.fromString("8ccfdfaa-9731-4786-8efa-e2141e5c4095"));
@@ -67,7 +67,7 @@ class AccessPointServiceTest {
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     void addSensorStation() {
         AccessPoint accessPoint = accessPointService
-                .loadAccessPoint(UUID.fromString("7269ddec-30c6-44d9-bc1f-8af18da09ed3"));
+                .loadAccessPoint("7269ddec-30c6-44d9-bc1f-8af18da09ed3");
         SensorStation sensorStation = sensorStationService
                 .loadSensorStation(UUID.fromString("8ccfdfaa-9731-4786-8efa-e2141e5c4095"));
 
@@ -83,7 +83,7 @@ class AccessPointServiceTest {
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     void removeSensorStation() {
         AccessPoint accessPoint = accessPointService
-                .loadAccessPoint(UUID.fromString("7269ddec-30c6-44d9-bc1f-8af18da09ed3"));
+                .loadAccessPoint("7269ddec-30c6-44d9-bc1f-8af18da09ed3");
         SensorStation sensorStation = sensorStationService
                 .loadSensorStation(UUID.fromString("8ccfdfaa-9731-4786-8efa-e2141e5c4095"));
 
@@ -99,7 +99,7 @@ class AccessPointServiceTest {
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     void getAllSensorStations() {
         AccessPoint accessPoint = accessPointService
-                .loadAccessPoint(UUID.fromString("7269ddec-30c6-44d9-bc1f-8af18da09ed3"));
+                .loadAccessPoint("7269ddec-30c6-44d9-bc1f-8af18da09ed3");
         SensorStation sensorStation = sensorStationService
                 .loadSensorStation(UUID.fromString("8ccfdfaa-9731-4786-8efa-e2141e5c4095"));
         SensorStation sensorStation2 = sensorStationService
