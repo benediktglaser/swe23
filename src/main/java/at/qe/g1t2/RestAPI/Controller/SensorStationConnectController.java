@@ -2,7 +2,6 @@ package at.qe.g1t2.RestAPI.Controller;
 
 import at.qe.g1t2.RestAPI.model.SensorStationDTO;
 
-import at.qe.g1t2.model.AccessPoint;
 import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.services.AccessPointService;
 import at.qe.g1t2.services.SensorStationService;
@@ -27,7 +26,7 @@ public class SensorStationConnectController {
 
         ModelMapper modelMapper = new ModelMapper();
         SensorStation newSensorStation = modelMapper.map(sensorStationDTO,SensorStation.class);
-        newSensorStation = accessPointService.addSensorStation(accessPointService.loadAccessPoint(sensorStationDTO.getAccessPointId()),newSensorStation);
+        newSensorStation = sensorStationService.saveSensorStation(accessPointService.loadAccessPoint(sensorStationDTO.getAccessPointId()),newSensorStation);
         sensorStationDTO.setId(newSensorStation.getId());
 
         return new ResponseEntity<>(sensorStationDTO, HttpStatus.OK);

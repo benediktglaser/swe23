@@ -27,8 +27,6 @@ public class SensorDataService {
     @Autowired
     private SensorStationRepository sensorStationRepository;
 
-    @Autowired
-    private SensorStationService sensorStationService;
 
 
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -43,8 +41,8 @@ public class SensorDataService {
             sensorData.setCreateDate(createDate);
             sensorData.setSensorStation(sensorStation);
             sensorStation.getSensorData().add(sensorData);
-            sensorStationRepository.save(sensorStation);
-            return sensorStationService.loadSensorStation(sensorStation.getId()).getSensorData().get(sensorStation.getSensorData().size() - 1);
+            sensorStation = sensorStationRepository.save(sensorStation);
+            return sensorStation.getSensorData().get(sensorStation.getSensorData().size() - 1);
         }
         sensorDataRepository.save(sensorData);
         return sensorData;

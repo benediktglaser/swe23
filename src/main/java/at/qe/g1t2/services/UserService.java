@@ -27,11 +27,6 @@ public class UserService {
     @Autowired
     private UserxRepository userRepository;
 
-    @Autowired
-    private SensorStationRepository sensorStationRepository;
-
-    @Autowired
-    private SensorStationService sensorStationService;
 
     /**
      * Returns a collection of all users.

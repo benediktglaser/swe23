@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
+
 /**
  * This Class saves/delete Accesspoints and allows tho remove/add Sensorstations
  */
@@ -23,9 +23,6 @@ public class AccessPointService {
 
     @Autowired
     AccessPointRepository accessPointRepository;
-
-    @Autowired
-    SensorStationService sensorStationService;
 
     @Autowired
     SensorStationRepository sensorStationRepository;
@@ -51,30 +48,8 @@ public class AccessPointService {
     }
 
 
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public SensorStation addSensorStation(AccessPoint accessPoint, SensorStation sensorStation){
-        SensorStation checkSensorStation = getSensorStationByAccessPointIdAndDipId(accessPoint.getAccessPointID(),sensorStation.getDipId());
-        if(checkSensorStation != null){
-            return  checkSensorStation;
-        }
-        sensorStation.setCreateDate(LocalDateTime.now());
-        accessPoint.getSensorStation().add(sensorStation);
-        sensorStation.setAccessPoint(accessPoint);
-        saveAccessPoint(accessPoint);
-
-        return sensorStationService.loadSensorStation(accessPoint
-                .getSensorStation()
-                .get(accessPoint.getSensorStation().size()-1).getId());
-    }
 
 
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @Transactional
-    public void removeSensorStation(AccessPoint accessPoint, SensorStation sensorStation){
-        accessPoint.getSensorStation().remove(sensorStation);
-        saveAccessPoint(accessPoint);
-        sensorStationService.deleteSensorStation(sensorStation);
-    }
 
     public List<SensorStation> getAllSensorStations(AccessPoint accessPoint){
         return sensorStationRepository.getSensorStationsByAccessPoint(accessPoint);
