@@ -51,7 +51,7 @@ class AccessPointServiceTest {
         SensorStation sensorStation = sensorStationService
                 .loadSensorStation(UUID.fromString("8ccfdfaa-9731-4786-8efa-e2141e5c4095"));
         sensorStation.setAccessPoint(accessPoint);
-        sensorStationService.saveSensorStation(sensorStation);
+        sensorStationService.saveSensorStation(accessPoint,sensorStation);
         accessPointService.deleteAccessPoint(accessPoint);
 
         assertNull(accessPointService
@@ -62,37 +62,7 @@ class AccessPointServiceTest {
         assertNull(sensorStation);
     }
 
-    @Test
-    @DirtiesContext
-    @WithMockUser(username = "admin", authorities = {"ADMIN"})
-    void addSensorStation() {
-        AccessPoint accessPoint = accessPointService
-                .loadAccessPoint("7269ddec-30c6-44d9-bc1f-8af18da09ed3");
-        SensorStation sensorStation = sensorStationService
-                .loadSensorStation(UUID.fromString("8ccfdfaa-9731-4786-8efa-e2141e5c4095"));
 
-        accessPointService.addSensorStation(accessPoint,sensorStation);
-        sensorStation = sensorStationService
-                .loadSensorStation(UUID.fromString("8ccfdfaa-9731-4786-8efa-e2141e5c4095"));
-
-        assertEquals(sensorStation.getAccessPoint(),accessPoint);
-    }
-
-    @Test
-    @DirtiesContext
-    @WithMockUser(username = "admin", authorities = {"ADMIN"})
-    void removeSensorStation() {
-        AccessPoint accessPoint = accessPointService
-                .loadAccessPoint("7269ddec-30c6-44d9-bc1f-8af18da09ed3");
-        SensorStation sensorStation = sensorStationService
-                .loadSensorStation(UUID.fromString("8ccfdfaa-9731-4786-8efa-e2141e5c4095"));
-
-        accessPointService.removeSensorStation(accessPoint,sensorStation);
-        sensorStation = sensorStationService
-                .loadSensorStation(UUID.fromString("8ccfdfaa-9731-4786-8efa-e2141e5c4095"));
-
-        assertNull(sensorStation);
-    }
 
     @Test
     @DirtiesContext
@@ -104,8 +74,8 @@ class AccessPointServiceTest {
                 .loadSensorStation(UUID.fromString("8ccfdfaa-9731-4786-8efa-e2141e5c4095"));
         SensorStation sensorStation2 = sensorStationService
                 .loadSensorStation(UUID.fromString("8ccfdfaa-9731-4786-8efa-e2141e5c4095"));
-        accessPointService.addSensorStation(accessPoint,sensorStation);
-        accessPointService.addSensorStation(accessPoint,sensorStation2);
+        sensorStationService.saveSensorStation(accessPoint,sensorStation);
+        sensorStationService.saveSensorStation(accessPoint,sensorStation2);
 
         assertEquals(2,accessPointService.getAllSensorStations(accessPoint).size());
 
