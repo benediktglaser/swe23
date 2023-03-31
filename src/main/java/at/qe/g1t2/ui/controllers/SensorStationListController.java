@@ -2,7 +2,6 @@ package at.qe.g1t2.ui.controllers;
 
 
 import at.qe.g1t2.model.SensorStation;
-import at.qe.g1t2.model.SensorStationGardener;
 import at.qe.g1t2.services.SensorDataService;
 import at.qe.g1t2.services.SensorStationGardenerService;
 import at.qe.g1t2.services.SensorStationService;

@@ -45,7 +45,7 @@ public class SensorDataServiceTest {
     @Test
     @WithMockUser(username = "elvis", authorities = {"ADMIN"})
     public void testLoadSensorData() {
-        SensorData test = sensorDataService.loadSensorData(UUID.fromString("0718665a-5c08-4580-a4de-d8089d8756db"));
+        SensorData test = sensorDataService.loadSensorData("0718665a-5c08-4580-a4de-d8089d8756db");
         Assertions.assertEquals("0718665a-5c08-4580-a4de-d8089d8756db", test.getId().toString());
         Assertions.assertEquals(20.34, test.getMeasurement());
         Assertions.assertEquals("C", test.getUnit());
@@ -59,9 +59,9 @@ public class SensorDataServiceTest {
         newSensorData.setMeasurement(34.21);
         newSensorData.setType("Humidity");
         newSensorData.setUnit("%");
-        SensorStation sensorStation = sensorStationService.loadSensorStation(UUID.fromString("9f98b70c-4de7-46c0-a611-21160743be7e"));
+        SensorStation sensorStation = sensorStationService.loadSensorStation("9f98b70c-4de7-46c0-a611-21160743be7e");
         int sizeOfListBefore = sensorStation.getSensorData().size();
-        UUID sensorDataId = sensorDataService.saveSensorData(sensorStation, newSensorData).getId();
+        String sensorDataId = sensorDataService.saveSensorData(sensorStation, newSensorData).getId();
         Assertions.assertEquals(sizeOfListBefore + 1, sensorStationService.loadSensorStation(sensorStation.getId()).getSensorData().size());
         Assertions.assertEquals(sensorStation.getId(), sensorDataService.loadSensorData(sensorDataId).getSensorStation().getId());
     }

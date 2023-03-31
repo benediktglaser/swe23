@@ -5,14 +5,13 @@ import org.springframework.data.domain.Persistable;
 
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.UUID;
 
 @Entity
-public class SensorStationGardener implements Persistable<UUID>, Serializable, Comparable<SensorStationGardener>{
+public class SensorStationGardener implements Persistable<String>, Serializable, Comparable<SensorStationGardener> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private String id;
 
     @ManyToOne(optional = false)
     private Userx gardener;
@@ -26,7 +25,7 @@ public class SensorStationGardener implements Persistable<UUID>, Serializable, C
     }
 
     @Override
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
@@ -35,7 +34,7 @@ public class SensorStationGardener implements Persistable<UUID>, Serializable, C
         return false;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 

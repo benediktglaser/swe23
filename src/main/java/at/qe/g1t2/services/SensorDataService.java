@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.UUID;
 
 /**
  * Service for accessing and sensor data from the access point
@@ -30,7 +29,7 @@ public class SensorDataService {
 
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    public SensorData loadSensorData(UUID uuid) {
+    public SensorData loadSensorData(String uuid) {
         return sensorDataRepository.findSensorDataById(uuid);
     }
 
@@ -51,7 +50,7 @@ public class SensorDataService {
 
 
     public Collection<SensorData> getAllSensorDataByStation(String uuid) {
-        return sensorDataRepository.findBySensorStationId(UUID.fromString(uuid));
+        return sensorDataRepository.findBySensorStationId(uuid);
     }
 
     public Collection<SensorData> getAllSensorDataByType(String type) {

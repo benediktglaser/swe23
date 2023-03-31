@@ -1,12 +1,7 @@
 package at.qe.g1t2.RestAPI.model;
 
 
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
-
-import java.time.LocalDateTime;
-import java.util.UUID;
 
 
 public class AccessPointDTO {
@@ -14,15 +9,15 @@ public class AccessPointDTO {
 
     private String id;
     @NotNull
-    private Double intervall;
+    private Double interval;
 
-    public Double getIntervall() {
-        return intervall;
+    public Double getInterval() {
+        return interval;
     }
 
 
-    public void setIntervall(Double intervall) {
-        this.intervall = intervall;
+    public void setInterval(Double interval) {
+        this.interval = interval;
     }
 
     @NotNull
