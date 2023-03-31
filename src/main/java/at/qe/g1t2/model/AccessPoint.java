@@ -24,7 +24,7 @@ import java.util.UUID;
 public class AccessPoint implements Persistable<UUID>, Serializable, Comparable<AccessPoint> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    //@GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Temporal(TemporalType.TIMESTAMP)

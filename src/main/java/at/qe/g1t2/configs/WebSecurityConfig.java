@@ -14,6 +14,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
 import org.springframework.security.web.SecurityFilterChain;
@@ -22,7 +23,7 @@ import java.util.Collection;
 
 /**
  * Spring configuration for web security.
- *
+ * <p>
  * This class is part of the skeleton project provided for students of the
  * course "Software Engineering" offered by the University of Innsbruck.
  */
@@ -38,46 +39,47 @@ public class WebSecurityConfig {
     DataSource dataSource;
 
 
-    
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         try {
             http.csrf().disable();
             http.headers().frameOptions().disable(); // needed for H2 console
 
+
             http
-                .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/").permitAll()
-                .requestMatchers("/**.jsf").permitAll()
-                .requestMatchers(antMatcher("/h2-console/**")).permitAll()
-                .requestMatchers("/jakarta.faces.resource/**").permitAll()
-                .requestMatchers("/error/**").permitAll()
-                .requestMatchers("/admin/**").hasAnyAuthority(ADMIN)
-                .requestMatchers("/secured/**").hasAnyAuthority(ADMIN, GARDENER, USER)
-                        .requestMatchers("/adminGardener/**").hasAnyAuthority(ADMIN,GARDENER)
-                .requestMatchers("/omnifaces.push/**").hasAnyAuthority(ADMIN, GARDENER, USER)
-                    .anyRequest().authenticated())
+                    .authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/**").authenticated()).httpBasic()
+                    .and()
+                    .authorizeHttpRequests(authorize -> authorize
+                            .requestMatchers("/").permitAll()
+                            .requestMatchers("/api/**").permitAll()
+                            .requestMatchers("/**.jsf").permitAll()
+                            .requestMatchers(antMatcher("/h2-console/**")).permitAll()
+                            .requestMatchers("/jakarta.faces.resource/**").permitAll()
+                            .requestMatchers("/error/**").permitAll()
+                            .requestMatchers("/admin/**").hasAnyAuthority(ADMIN)
+                            .requestMatchers("/secured/**").hasAnyAuthority(ADMIN, GARDENER, USER)
+                            .requestMatchers("/adminGardener/**").hasAnyAuthority(ADMIN, GARDENER)
+                            .requestMatchers("/omnifaces.push/**").hasAnyAuthority(ADMIN, GARDENER, USER)
+                            .anyRequest().authenticated())
                     .formLogin()
                     .loginPage("/login.xhtml")
                     .permitAll()
                     .failureUrl("/error/access_denied.xhtml")
                     .defaultSuccessUrl("/secured/welcome.xhtml")
-                .loginProcessingUrl("/login")
+                    .loginProcessingUrl("/login")
                     .successHandler(successHandler())
                     .and()
                     .logout()
                     .logoutSuccessUrl("/login.xhtml")
                     .deleteCookies("JSESSIONID");
-            
+
 //            http.exceptionHandling().accessDeniedPage("/error/access_denied.xhtml");
             http.sessionManagement().invalidSessionUrl("/error/invalid_session.xhtml");
-			return http.build();
-            }
-            catch (Exception ex) {
-                    throw new BeanCreationException("Wrong spring security configuration", ex);
-            }
-                
+            return http.build();
+        } catch (Exception ex) {
+            throw new BeanCreationException("Wrong spring security configuration", ex);
+        }
+
         // :TODO: user failureUrl(/login.xhtml?error) and make sure that a corresponding message is displayed
 
     }
@@ -89,11 +91,11 @@ public class WebSecurityConfig {
                 // Todo replace equals with contains
                 if ((grantedAuthority.getAuthority().equals("ADMIN")
                         && grantedAuthority.getAuthority().equals("GARDENER"))
-                        || grantedAuthority.getAuthority().equals("GARDENER")       ) {
+                        || grantedAuthority.getAuthority().equals("GARDENER")) {
                     response.sendRedirect("/adminGardener/sensorStations/sensorStations.xhtml");
                     return;
                 }
-                if((grantedAuthority.getAuthority().equals("ADMIN"))){
+                if ((grantedAuthority.getAuthority().equals("ADMIN"))) {
                     response.sendRedirect("/adminGardener/sensorStations/sensorStations.xhtml");
                     return;
                 }

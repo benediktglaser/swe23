@@ -22,6 +22,7 @@ import java.util.UUID;
  * This Class saves/delete Sensorstations and allows tho remove/swap the gardener of the stations
  */
 public class SensorStationService {
+
     @Autowired
     SensorStationRepository sensorStationRepository;
 
