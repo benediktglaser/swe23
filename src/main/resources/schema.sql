@@ -5,16 +5,14 @@ DROP TABLE IF EXISTS access_point;
 DROP TABLE IF EXISTS userx_user_role;
 DROP TABLE IF EXISTS userx;
 
-
-
 CREATE TABLE access_point
 (
     id                VARCHAR(255) NOT NULL,
-    create_date       datetime     NULL,
-    connected         BIT(1)       NULL,
-    enabled           BIT(1)       NULL,
+    create_date       timestamp    NULL,
+    connected         BOOLEAN      NULL,
+    enabled           BOOLEAN      NULL,
     sending_interval  DOUBLE       NULL,
-    update_date       datetime     NULL,
+    update_date       timestamp    NULL,
     access_point_name VARCHAR(255) NULL,
     CONSTRAINT pk_accesspoint PRIMARY KEY (id)
 );
@@ -26,21 +24,21 @@ CREATE TABLE sensor_data
     sensor_station_id VARCHAR(255) NULL,
     type              VARCHAR(255) NULL,
     unit              VARCHAR(255) NULL,
-    timestamp         datetime     NULL,
-    create_date       datetime     NOT NULL,
+    timestamp         timestamp    NULL,
+    create_date       timestamp    NOT NULL,
     CONSTRAINT pk_sensordata PRIMARY KEY (id)
 );
 
 CREATE TABLE sensor_station
 (
     id                    VARCHAR(255) NOT NULL,
-    connected             BIT(1)       NULL,
-    enabled               BIT(1)       NULL,
+    connected             BOOLEAN      NULL,
+    enabled               BOOLEAN      NULL,
     dip_id                BIGINT       NULL,
     name                  VARCHAR(255) NULL,
     category              VARCHAR(255) NULL,
     transmission_interval DOUBLE       NULL,
-    create_date           datetime     NOT NULL,
+    create_date           timestamp    NOT NULL,
     access_point_id       VARCHAR(255) NULL,
     CONSTRAINT pk_sensorstation PRIMARY KEY (id)
 );
@@ -57,15 +55,15 @@ CREATE TABLE userx
 (
     username             VARCHAR(100) NOT NULL,
     create_user_username VARCHAR(100) NULL,
-    create_date          datetime     NOT NULL,
+    create_date          timestamp    NOT NULL,
     update_user_username VARCHAR(100) NULL,
-    update_date          datetime     NULL,
+    update_date          timestamp    NULL,
     password             VARCHAR(255) NULL,
     first_name           VARCHAR(255) NULL,
     last_name            VARCHAR(255) NULL,
     email                VARCHAR(255) NULL,
     phone                VARCHAR(255) NULL,
-    enabled              BIT(1)       NOT NULL,
+    enabled              BOOLEAN      NOT NULL,
     CONSTRAINT pk_userx PRIMARY KEY (username)
 );
 
