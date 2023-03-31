@@ -89,13 +89,7 @@ public class WebSecurityConfig {
             Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
             for (GrantedAuthority grantedAuthority : authorities) {
                 // Todo replace equals with contains
-                if ((grantedAuthority.getAuthority().equals("ADMIN")
-                        && grantedAuthority.getAuthority().equals("GARDENER"))
-                        || grantedAuthority.getAuthority().equals("GARDENER")       ) {
-                    response.sendRedirect("/adminGardener/sensorStations/sensorStations.xhtml");
-                    return;
-                }
-                if((grantedAuthority.getAuthority().equals("ADMIN"))){
+                if ((grantedAuthority.getAuthority().contains("GARDENER"))){
                     response.sendRedirect("/adminGardener/sensorStations/sensorStations.xhtml");
                     return;
                 }
