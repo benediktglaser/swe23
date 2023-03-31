@@ -4,7 +4,6 @@ import at.qe.g1t2.model.SensorStation;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
 
 @Component
 @Scope("session")

@@ -14,7 +14,7 @@ import java.util.Set;
 
 /**
  * Entity representing users.
- *
+ * <p>
  * This class is part of the skeleton project provided for students of the
  * course "Software Engineering" offered by the University of Innsbruck.
  */
@@ -176,10 +176,7 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
             return false;
         }
         final Userx other = (Userx) obj;
-        if (!Objects.equals(this.username, other.username)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.username, other.username);
     }
 
     @Override
@@ -201,9 +198,9 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
         return (null == createDate);
     }
 
-	@Override
-	public int compareTo(Userx o) {
-		return this.username.compareTo(o.getUsername());
-	}
+    @Override
+    public int compareTo(Userx o) {
+        return this.username.compareTo(o.getUsername());
+    }
 
 }

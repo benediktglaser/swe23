@@ -10,9 +10,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 /**
  * Tests to ensure correct behavior of the methods. Especially for correct interacting with
  * the database
@@ -43,9 +43,9 @@ class SensorStationServiceTest {
         SensorStation sensorStation = new SensorStation();
 
 
-        sensorStation = sensorStationService.saveSensorStation(accessPoint,sensorStation);
+        sensorStation = sensorStationService.saveSensorStation(accessPoint, sensorStation);
 
-        assertEquals(sensorStation.getAccessPoint(),accessPoint);
+        assertEquals(accessPoint, sensorStation.getAccessPoint());
 
     }
 
@@ -54,7 +54,7 @@ class SensorStationServiceTest {
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     void deleteSensorStation() {
         SensorStation sensorStation = sensorStationService
-                .loadSensorStation(UUID.fromString("8ccfdfaa-9731-4786-8efa-e2141e5c4095"));
+                .loadSensorStation("8ccfdfaa-9731-4786-8efa-e2141e5c4095");
         sensorStationService.deleteSensorStation(sensorStation);
         SensorStation deletedSensorStation = sensorStationRepository
                 .findSensorStationById(sensorStation.getId());
@@ -69,11 +69,11 @@ class SensorStationServiceTest {
         AccessPoint accessPoint = accessPointService
                 .loadAccessPoint("7269ddec-30c6-44d9-bc1f-8af18da09ed3");
         SensorStation sensorStation = sensorStationService
-                .loadSensorStation(UUID.fromString("8ccfdfaa-9731-4786-8efa-e2141e5c4095"));
+                .loadSensorStation("8ccfdfaa-9731-4786-8efa-e2141e5c4095");
 
-        sensorStationService.removeSensorStationFromAccessPoint(accessPoint,sensorStation);
+        sensorStationService.removeSensorStationFromAccessPoint(accessPoint, sensorStation);
         sensorStation = sensorStationService
-                .loadSensorStation(UUID.fromString("8ccfdfaa-9731-4786-8efa-e2141e5c4095"));
+                .loadSensorStation("8ccfdfaa-9731-4786-8efa-e2141e5c4095");
 
         assertNull(sensorStation);
     }
@@ -83,7 +83,7 @@ class SensorStationServiceTest {
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     void loadSensorStation() {
         SensorStation sensorStation = sensorStationService
-                .loadSensorStation(UUID.fromString("8ccfdfaa-9731-4786-8efa-e2141e5c4095"));
-        assertEquals(sensorStation.getId(),UUID.fromString("8ccfdfaa-9731-4786-8efa-e2141e5c4095"));
+                .loadSensorStation("8ccfdfaa-9731-4786-8efa-e2141e5c4095");
+        assertEquals(sensorStation.getId(), "8ccfdfaa-9731-4786-8efa-e2141e5c4095");
     }
 }

@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 /**
  * Entity presenting a AccessPoint.
@@ -34,7 +33,7 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
 
     private Boolean enabled;
 
-    private Double intervall;
+    private Double sendingInterval;
 
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime updateDate;
@@ -51,12 +50,12 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<SensorStation> sensorStation = new ArrayList<>();
 
-    public Double getIntervall() {
-        return intervall;
+    public Double getSendingInterval() {
+        return sendingInterval;
     }
 
-    public void setIntervall(Double intervall) {
-        this.intervall = intervall;
+    public void setSendingInterval(Double interval) {
+        this.sendingInterval = interval;
     }
 
     public Boolean getEnabled() {

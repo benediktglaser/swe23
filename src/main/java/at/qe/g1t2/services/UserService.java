@@ -1,8 +1,6 @@
 package at.qe.g1t2.services;
 
-import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.model.Userx;
-import at.qe.g1t2.repositories.SensorStationRepository;
 import at.qe.g1t2.repositories.UserxRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -11,18 +9,19 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
 /**
  * Service for accessing and manipulating user data.
- *
+ * <p>
  * This class is part of the skeleton project provided for students of the
  * course "Software Engineering" offered by the University of Innsbruck.
  */
 @Component
 @Scope("application")
-public class UserService {
+public class UserService implements Serializable {
 
     @Autowired
     private UserxRepository userRepository;

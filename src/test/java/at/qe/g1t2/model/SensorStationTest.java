@@ -50,9 +50,9 @@ public class SensorStationTest {
     public void testSensorStationEqualsContract() {
 
         SensorStation sensorStation1 = new SensorStation();
-        sensorStation1.setId(UUID.randomUUID());
+        sensorStation1.setId(UUID.randomUUID().toString());
         SensorStation sensorStation2 = new SensorStation();
-        sensorStation2.setId(UUID.randomUUID());
+        sensorStation2.setId(UUID.randomUUID().toString());
         SensorStation sensorStation3 = new SensorStation();
         sensorStation3.setId(sensorStation1.getId());
         Userx user1 = new Userx();

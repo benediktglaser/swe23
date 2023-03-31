@@ -30,7 +30,7 @@ public class SensorDataService {
 
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    public SensorData loadSensorData(UUID uuid) {
+    public SensorData loadSensorData(String uuid) {
         return sensorDataRepository.findSensorDataById(uuid);
     }
 
@@ -51,7 +51,7 @@ public class SensorDataService {
 
 
     public Collection<SensorData> getAllSensorDataByStation(String uuid) {
-        return sensorDataRepository.findBySensorStationId(UUID.fromString(uuid));
+        return sensorDataRepository.findBySensorStationId(uuid);
     }
 
     public Collection<SensorData> getAllSensorDataByType(String type) {

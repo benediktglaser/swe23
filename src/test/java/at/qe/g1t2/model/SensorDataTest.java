@@ -48,13 +48,13 @@ public class SensorDataTest {
     @Test
     public void testSensorDataEqualsContract() {
         SensorStation sensorStation1 = new SensorStation();
-        sensorStation1.setId(UUID.randomUUID());
+        sensorStation1.setId(UUID.randomUUID().toString());
         SensorStation sensorStation2 = new SensorStation();
-        sensorStation2.setId(UUID.randomUUID());
+        sensorStation2.setId(UUID.randomUUID().toString());
         SensorData sensorData1 = new SensorData();
-        sensorData1.setId(UUID.randomUUID());
+        sensorData1.setId(UUID.randomUUID().toString());
         SensorData sensorData2 = new SensorData();
-        sensorData2.setId(UUID.randomUUID());
+        sensorData2.setId(UUID.randomUUID().toString());
         SensorData sensorData3 = new SensorData();
         sensorData3.setId(sensorData1.getId());
 

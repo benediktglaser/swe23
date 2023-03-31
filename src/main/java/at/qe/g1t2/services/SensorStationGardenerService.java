@@ -11,11 +11,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+
 
 @Component
 @Scope("application")
@@ -30,24 +29,21 @@ public class SensorStationGardenerService {
     SensorStationRepository sensorStationRepository;
 
 
-
-
-    public SensorStationGardener loadSensorStationGardener(UUID uuid){
+    public SensorStationGardener loadSensorStationGardener(String uuid) {
         return sensorStationGardenerRepository.findSensorStationGardenerById(uuid);
     }
 
 
-    public SensorStationGardener save(Userx gardener, SensorStation sensorStation, SensorStationGardener sensorStationGardener){
+    public SensorStationGardener save(Userx gardener, SensorStation sensorStation, SensorStationGardener sensorStationGardener) {
         gardener.getSensorStationGardener().add(sensorStationGardener);
         sensorStation.getSensorStationGardener().add(sensorStationGardener);
         sensorStationGardener.setSensorStation(sensorStation);
         sensorStationGardener.setGardener(gardener);
         SensorStationGardener sensorStationGardener1 = sensorStationGardenerRepository.save(sensorStationGardener);
-        System.out.println(sensorStationGardener1.getId());
         return sensorStationGardener1;
     }
 
-    public Collection<SensorStation> getAllSensorStationsOfUser(){
+    public Collection<SensorStation> getAllSensorStationsOfUser() {
         return sensorStationGardenerRepository.getSensorStationsByGardener(getAuthenticatedUser());
     }
 

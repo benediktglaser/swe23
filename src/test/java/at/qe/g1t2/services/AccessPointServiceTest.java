@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest
 class AccessPointServiceTest {
     @Autowired
@@ -49,19 +50,18 @@ class AccessPointServiceTest {
         AccessPoint accessPoint = accessPointService
                 .loadAccessPoint("7269ddec-30c6-44d9-bc1f-8af18da09ed3");
         SensorStation sensorStation = sensorStationService
-                .loadSensorStation(UUID.fromString("8ccfdfaa-9731-4786-8efa-e2141e5c4095"));
+                .loadSensorStation("8ccfdfaa-9731-4786-8efa-e2141e5c4095");
         sensorStation.setAccessPoint(accessPoint);
-        sensorStationService.saveSensorStation(accessPoint,sensorStation);
+        sensorStationService.saveSensorStation(accessPoint, sensorStation);
         accessPointService.deleteAccessPoint(accessPoint);
 
         assertNull(accessPointService
                 .loadAccessPoint("7269ddec-30c6-44d9-bc1f-8af18da09ed3"));
 
         sensorStation = sensorStationService
-                .loadSensorStation(UUID.fromString("8ccfdfaa-9731-4786-8efa-e2141e5c4095"));
+                .loadSensorStation("8ccfdfaa-9731-4786-8efa-e2141e5c4095");
         assertNull(sensorStation);
     }
-
 
 
     @Test
@@ -71,13 +71,13 @@ class AccessPointServiceTest {
         AccessPoint accessPoint = accessPointService
                 .loadAccessPoint("7269ddec-30c6-44d9-bc1f-8af18da09ed3");
         SensorStation sensorStation = sensorStationService
-                .loadSensorStation(UUID.fromString("8ccfdfaa-9731-4786-8efa-e2141e5c4095"));
+                .loadSensorStation("8ccfdfaa-9731-4786-8efa-e2141e5c4095");
         SensorStation sensorStation2 = sensorStationService
-                .loadSensorStation(UUID.fromString("8ccfdfaa-9731-4786-8efa-e2141e5c4095"));
-        sensorStationService.saveSensorStation(accessPoint,sensorStation);
-        sensorStationService.saveSensorStation(accessPoint,sensorStation2);
+                .loadSensorStation("8ccfdfaa-9731-4786-8efa-e2141e5c4095");
+        sensorStationService.saveSensorStation(accessPoint, sensorStation);
+        sensorStationService.saveSensorStation(accessPoint, sensorStation2);
 
-        assertEquals(2,accessPointService.getAllSensorStations(accessPoint).size());
+        assertEquals(2, accessPointService.getAllSensorStations(accessPoint).size());
 
     }
 }

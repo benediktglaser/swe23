@@ -9,10 +9,10 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-public class SensorData implements Persistable<UUID>, Serializable, Comparable<SensorData> {
+public class SensorData implements Persistable<String>, Serializable, Comparable<SensorData> {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private String id;
 
 
     private double measurement;
@@ -54,7 +54,7 @@ public class SensorData implements Persistable<UUID>, Serializable, Comparable<S
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createDate;
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -73,7 +73,7 @@ public class SensorData implements Persistable<UUID>, Serializable, Comparable<S
     }
 
     @Override
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
