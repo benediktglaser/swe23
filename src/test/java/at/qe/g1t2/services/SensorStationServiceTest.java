@@ -84,6 +84,6 @@ class SensorStationServiceTest {
     void loadSensorStation() {
         SensorStation sensorStation = sensorStationService
                 .loadSensorStation("8ccfdfaa-9731-4786-8efa-e2141e5c4095");
-        assertEquals(sensorStation.getId(), "8ccfdfaa-9731-4786-8efa-e2141e5c4095");
+        assertEquals("8ccfdfaa-9731-4786-8efa-e2141e5c4095", sensorStation.getId());
     }
 }

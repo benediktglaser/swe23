@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.UUID;
 
 /**
  * Service for accessing and sensor data from the access point

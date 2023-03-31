@@ -39,9 +39,9 @@ public class SensorStationGardenerService {
         sensorStation.getSensorStationGardener().add(sensorStationGardener);
         sensorStationGardener.setSensorStation(sensorStation);
         sensorStationGardener.setGardener(gardener);
-        SensorStationGardener sensorStationGardener1 = sensorStationGardenerRepository.save(sensorStationGardener);
-        return sensorStationGardener1;
+        return sensorStationGardenerRepository.save(sensorStationGardener);
     }
+
 
     public Collection<SensorStation> getAllSensorStationsOfUser() {
         return sensorStationGardenerRepository.getSensorStationsByGardener(getAuthenticatedUser());

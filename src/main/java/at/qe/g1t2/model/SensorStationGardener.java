@@ -5,10 +5,9 @@ import org.springframework.data.domain.Persistable;
 
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.UUID;
 
 @Entity
-public class SensorStationGardener implements Persistable<String>, Serializable, Comparable<SensorStationGardener>{
+public class SensorStationGardener implements Persistable<String>, Serializable, Comparable<SensorStationGardener> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

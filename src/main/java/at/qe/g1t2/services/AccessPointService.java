@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -28,38 +27,35 @@ public class AccessPointService {
     SensorStationRepository sensorStationRepository;
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    public AccessPoint loadAccessPoint(String uuid){
+    public AccessPoint loadAccessPoint(String uuid) {
 
         return accessPointRepository.findAccessPointById(uuid);
     }
+
     @PreAuthorize("hasAuthority('ADMIN')")
-    public AccessPoint saveAccessPoint(AccessPoint accessPoint){
-        if(accessPoint.isNew()){
+    public AccessPoint saveAccessPoint(AccessPoint accessPoint) {
+        if (accessPoint.isNew()) {
             accessPoint.setCreateDate(LocalDateTime.now());
         }
         return accessPointRepository.save(accessPoint);
     }
 
 
-
     @PreAuthorize("hasAuthority('ADMIN')")
-    public void deleteAccessPoint(AccessPoint accessPoint){
+    public void deleteAccessPoint(AccessPoint accessPoint) {
         accessPointRepository.delete(accessPoint);
     }
 
 
-
-
-
-    public List<SensorStation> getAllSensorStations(AccessPoint accessPoint){
+    public List<SensorStation> getAllSensorStations(AccessPoint accessPoint) {
         return sensorStationRepository.getSensorStationsByAccessPoint(accessPoint);
     }
 
-    public Collection<AccessPoint> getAllAccessPoints(){
+    public Collection<AccessPoint> getAllAccessPoints() {
         return accessPointRepository.findAll();
     }
 
-    public SensorStation getSensorStationByAccessPointIdAndDipId(String accessPointId,Long dipId){
-        return sensorStationRepository.findSensorStationByAccessPointAndDipId(loadAccessPoint(accessPointId),dipId);
+    public SensorStation getSensorStationByAccessPointIdAndDipId(String accessPointId, Long dipId) {
+        return sensorStationRepository.findSensorStationByAccessPointAndDipId(loadAccessPoint(accessPointId), dipId);
     }
 }

@@ -9,7 +9,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,7 +25,7 @@ class AccessPointServiceTest {
     void loadAccessPoint() {
 
         AccessPoint accessPoint = accessPointService.loadAccessPoint("7269ddec-30c6-44d9-bc1f-8af18da09ed3");
-        assertEquals(accessPoint.getAccessPointID(), "7269ddec-30c6-44d9-bc1f-8af18da09ed3");
+        assertEquals("7269ddec-30c6-44d9-bc1f-8af18da09ed3", accessPoint.getAccessPointID());
     }
 
     @Test

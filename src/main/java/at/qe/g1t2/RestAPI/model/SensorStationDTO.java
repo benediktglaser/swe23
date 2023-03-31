@@ -2,8 +2,6 @@ package at.qe.g1t2.RestAPI.model;
 
 import jakarta.validation.constraints.NotNull;
 
-import java.util.UUID;
-
 public class SensorStationDTO {
 
     private String id;
@@ -11,7 +9,6 @@ public class SensorStationDTO {
     private Long dipId;
     @NotNull
     private String accessPointId;
-
 
 
     public String getId() {
