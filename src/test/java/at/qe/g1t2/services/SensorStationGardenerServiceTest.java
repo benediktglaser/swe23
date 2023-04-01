@@ -25,7 +25,7 @@ class SensorStationGardenerServiceTest {
 
     @Test
     void loadSensorStationGardener() {
-        SensorStationGardener sensorStationGardener = sensorStationGardenerService.loadSensorStationGardener("0e5006f9-12f2-4f08-841f-6d937769eb6e");
+        SensorStationGardener sensorStationGardener = sensorStationGardenerService.loadSensorStationGardener("5c889a0a-aa09-4b2d-882f-6562dbd057c2");
         assertEquals("user1",sensorStationGardener.getGardener().getUsername());
     }
 

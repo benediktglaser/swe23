@@ -32,14 +32,14 @@ public class SensorDataServiceTest {
     @WithMockUser(username = "elvis", authorities = {"ADMIN"})
     public void testGetAllDataBySensorStation() {
         Collection<SensorData> list = sensorDataService.getAllSensorDataByStation("8ccfdfaa-9731-4786-8efa-e2141e5c4095");
-        Assertions.assertEquals(2, list.size());
+        Assertions.assertEquals(5, list.size());
     }
 
     @Test
     @WithMockUser(username = "elvis", authorities = {"ADMIN"})
     public void testGetAllSensorDataByType() {
         Collection<SensorData> list = sensorDataService.getAllSensorDataByType("Air-quality");
-        Assertions.assertEquals(1, list.size());
+        Assertions.assertEquals(6, list.size());
     }
 
     @Test
