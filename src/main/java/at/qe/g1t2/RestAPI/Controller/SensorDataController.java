@@ -43,7 +43,7 @@ public class SensorDataController {
     private SensorData getOneMeasurement(@PathVariable String id) {
         return sensorDataService.loadSensorData(UUID.fromString(id));
     }
-    
+
     //Do we need to update the
 
     @PatchMapping("/api/measurements/{id}")

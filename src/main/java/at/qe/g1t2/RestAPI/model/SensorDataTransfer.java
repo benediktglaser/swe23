@@ -12,7 +12,7 @@ public class SensorDataTransfer implements Serializable {
 
     private Double measurement;
 
-    private UUID sensorStation;
+    private String sensorStation;
 
     private String type;
 
@@ -30,11 +30,11 @@ public class SensorDataTransfer implements Serializable {
     }
 
 
-    public UUID getSensorStation() {
+    public String getSensorStation() {
         return sensorStation;
     }
 
-    public void setSensorStation(UUID sensorStation) {
+    public void setSensorStation(String sensorStation) {
         this.sensorStation = sensorStation;
     }
 
