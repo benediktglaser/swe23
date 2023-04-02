@@ -23,9 +23,9 @@ INSERT INTO USERX_USER_ROLE (USERX_USERNAME, ROLES) VALUES ('dave', 'ADMIN');
 
 
 
-INSERT INTO access_point (id, create_date, connected, enabled, sending_interval, update_date, access_point_name) VALUES ('7269ddec-30c6-44d9-bc1f-8af18da09ed3','2021-07-08 12:30:00',false,true,3.0,'2022-07-08 12:30:00','office' );
-INSERT INTO access_point (id, create_date, connected, enabled, sending_interval, update_date, access_point_name) VALUES ('4294ba1b-f794-4e3d-b606-896b28237bcb','2021-07-08 12:30:00',false,true,3.0,'2022-07-08 12:30:00','first floor' );
-INSERT INTO access_point (id, create_date, connected, enabled, sending_interval, update_date, access_point_name) VALUES ('43d5aba9-29c5-49b4-b4ec-2d430e34104f','2021-07-08 12:30:00',false,true,3.0,'2022-07-08 12:30:00','second floor' );
+INSERT INTO access_point (id, create_date, connected, enabled, sending_interval, update_date, access_point_name,password,access_Point_Role) VALUES ('7269ddec-30c6-44d9-bc1f-8af18da09ed3','2021-07-08 12:30:00',false,true,3.0,'2022-07-08 12:30:00','office','$2y$10$P7im4OMw6hsnPWLpJ1nVKup1jlEFsLIek9D3lglmZv.Tq05GDEhMS','ACCESS_POINT' );
+INSERT INTO access_point (id, create_date, connected, enabled, sending_interval, update_date, access_point_name,password,access_Point_Role) VALUES ('4294ba1b-f794-4e3d-b606-896b28237bcb','2021-07-08 12:30:00',false,true,3.0,'2022-07-08 12:30:00','first floor','$2y$10$P7im4OMw6hsnPWLpJ1nVKup1jlEFsLIek9D3lglmZv.Tq05GDEhMS','ACCESS_POINT'  );
+INSERT INTO access_point (id, create_date, connected, enabled, sending_interval, update_date, access_point_name,password,access_Point_Role) VALUES ('43d5aba9-29c5-49b4-b4ec-2d430e34104f','2021-07-08 12:30:00',false,true,3.0,'2022-07-08 12:30:00','second floor','$2y$10$P7im4OMw6hsnPWLpJ1nVKup1jlEFsLIek9D3lglmZv.Tq05GDEhMS' ,'ACCESS_POINT' );
 
 INSERT INTO SENSOR_STATION (ID, NAME, CATEGORY, CREATE_DATE, ACCESS_POINT_ID,DIP_ID,connected,enabled,transmission_interval) VALUES ('8ccfdfaa-9731-4786-8efa-e2141e5c4095','rose', 'flower', '2023-05-01 12:00:00', '7269ddec-30c6-44d9-bc1f-8af18da09ed3',1,false,true,12.0);
 INSERT INTO SENSOR_STATION (ID, NAME, CATEGORY, CREATE_DATE,ACCESS_POINT_ID,DIP_ID,connected,enabled,transmission_interval) VALUES ('f11c3324-125f-4b2d-8b82-3692b0772d95', 'bonsai', 'tree', '2022-08-09 11:23:00','7269ddec-30c6-44d9-bc1f-8af18da09ed3',2,false,true,12.0);

@@ -26,13 +26,13 @@ public class AccessPointService {
     @Autowired
     SensorStationRepository sensorStationRepository;
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ACCESS_POINT','ADMIN')")
     public AccessPoint loadAccessPoint(String uuid) {
 
         return accessPointRepository.findAccessPointById(uuid);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ACCESS_POINT','ADMIN')")
     public AccessPoint saveAccessPoint(AccessPoint accessPoint) {
         if (accessPoint.isNew()) {
             accessPoint.setCreateDate(LocalDateTime.now());
@@ -41,7 +41,7 @@ public class AccessPointService {
     }
 
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ACCESS_POINT','ADMIN')")
     public void deleteAccessPoint(AccessPoint accessPoint) {
         accessPointRepository.delete(accessPoint);
     }
@@ -57,5 +57,9 @@ public class AccessPointService {
 
     public SensorStation getSensorStationByAccessPointIdAndDipId(String accessPointId, Long dipId) {
         return sensorStationRepository.findSensorStationByAccessPointAndDipId(loadAccessPoint(accessPointId), dipId);
+    }
+
+    public AccessPoint findAccessPointByUsername(String username){
+        return accessPointRepository.findAccessPointByUsername(username);
     }
 }

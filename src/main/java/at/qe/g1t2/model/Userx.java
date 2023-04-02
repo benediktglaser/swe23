@@ -1,5 +1,6 @@
 package at.qe.g1t2.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -27,7 +28,7 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     @Column(length = 100)
     private String username;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     private Userx createUser;
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)

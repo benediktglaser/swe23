@@ -1,12 +1,12 @@
 
 -- $2y$10$P7im4OMw6hsnPWLpJ1nVKup1jlEFsLIek9D3lglmZv.Tq05GDEhMS -> passwd
-INSERT INTO USERX (ENABLED, FIRST_NAME, LAST_NAME, PASSWORD, USERNAME, CREATE_USER_USERNAME, CREATE_DATE) VALUES(TRUE, 'Admin', 'Istrator', '$2y$10$P7im4OMw6hsnPWLpJ1nVKup1jlEFsLIek9D3lglmZv.Tq05GDEhMS', 'admin', 'admin', '2016-01-01 00:00:00');
+INSERT INTO USERX (ENABLED, FIRST_NAME, LAST_NAME, PASSWORD, USERNAME,CREATE_DATE) VALUES(TRUE, 'Admin', 'Istrator', '$2y$10$P7im4OMw6hsnPWLpJ1nVKup1jlEFsLIek9D3lglmZv.Tq05GDEhMS', 'admin', '2016-01-01 00:00:00');
 INSERT INTO USERX_USER_ROLE (USERX_USERNAME, ROLES) VALUES ('admin', 'ADMIN');
 INSERT INTO USERX (ENABLED, FIRST_NAME, LAST_NAME, PASSWORD, USERNAME, CREATE_USER_USERNAME, CREATE_DATE) VALUES(TRUE, 'Susi', 'Kaufgern', '$2y$10$P7im4OMw6hsnPWLpJ1nVKup1jlEFsLIek9D3lglmZv.Tq05GDEhMS', 'user1', 'admin', '2016-01-01 00:00:00');
 INSERT INTO USERX_USER_ROLE (USERX_USERNAME, ROLES) VALUES ('user1', 'GARDENER');
 INSERT INTO USERX (ENABLED, FIRST_NAME, LAST_NAME, PASSWORD, USERNAME, CREATE_USER_USERNAME, CREATE_DATE) VALUES(TRUE, 'Max', 'Mustermann', '$2y$10$P7im4OMw6hsnPWLpJ1nVKup1jlEFsLIek9D3lglmZv.Tq05GDEhMS', 'user2', 'admin', '2016-01-01 00:00:00');
 INSERT INTO USERX_USER_ROLE (USERX_USERNAME, ROLES) VALUES ('user2', 'USER');
-INSERT INTO USERX (ENABLED, FIRST_NAME, LAST_NAME, PASSWORD, USERNAME, CREATE_USER_USERNAME, CREATE_DATE) VALUES(TRUE, 'Elvis', 'The King', '$2y$10$P7im4OMw6hsnPWLpJ1nVKup1jlEFsLIek9D3lglmZv.Tq05GDEhMS', 'elvis', 'elvis', '2016-01-01 00:00:00');
+INSERT INTO USERX (ENABLED, FIRST_NAME, LAST_NAME, PASSWORD, USERNAME, CREATE_USER_USERNAME, CREATE_DATE) VALUES(TRUE, 'Elvis', 'The King', '$2y$10$P7im4OMw6hsnPWLpJ1nVKup1jlEFsLIek9D3lglmZv.Tq05GDEhMS', 'elvis', 'admin', '2016-01-01 00:00:00');
 INSERT INTO USERX_USER_ROLE (USERX_USERNAME, ROLES) VALUES ('elvis', 'ADMIN');
 INSERT INTO USERX_USER_ROLE (USERX_USERNAME, ROLES) VALUES ('elvis', 'GARDENER');
 
@@ -17,15 +17,15 @@ INSERT INTO USERX (ENABLED, FIRST_NAME, LAST_NAME, PASSWORD, USERNAME, CREATE_US
 INSERT INTO USERX_USER_ROLE (USERX_USERNAME, ROLES) VALUES ('magret1', 'USER');
 INSERT INTO USERX (ENABLED, FIRST_NAME, LAST_NAME, PASSWORD, USERNAME, CREATE_USER_USERNAME, CREATE_DATE) VALUES(TRUE, 'Michael', 'Lutz', '$2y$10$P7im4OMw6hsnPWLpJ1nVKup1jlEFsLIek9D3lglmZv.Tq05GDEhMS', 'michael2', 'admin', '2016-01-01 00:00:00');
 INSERT INTO USERX_USER_ROLE (USERX_USERNAME, ROLES) VALUES ('michael2', 'USER');
-INSERT INTO USERX (ENABLED, FIRST_NAME, LAST_NAME, PASSWORD, USERNAME, CREATE_USER_USERNAME, CREATE_DATE) VALUES(TRUE, 'David', 'Lombach', '$2y$10$P7im4OMw6hsnPWLpJ1nVKup1jlEFsLIek9D3lglmZv.Tq05GDEhMS', 'dave', 'elvis', '2016-01-01 00:00:00');
+INSERT INTO USERX (ENABLED, FIRST_NAME, LAST_NAME, PASSWORD, USERNAME, CREATE_USER_USERNAME, CREATE_DATE) VALUES(TRUE, 'David', 'Lombach', '$2y$10$P7im4OMw6hsnPWLpJ1nVKup1jlEFsLIek9D3lglmZv.Tq05GDEhMS', 'dave', 'admin', '2016-01-01 00:00:00');
 INSERT INTO USERX_USER_ROLE (USERX_USERNAME, ROLES) VALUES ('dave', 'USER');
 INSERT INTO USERX_USER_ROLE (USERX_USERNAME, ROLES) VALUES ('dave', 'ADMIN');
 
 
 
-INSERT INTO access_point (id, create_date, connected, enabled, sending_interval, update_date, access_point_name) VALUES ('7269ddec-30c6-44d9-bc1f-8af18da09ed3','2021-07-08 12:30:00',false,true,3.0,'2022-07-08 12:30:00','office' );
-INSERT INTO access_point (id, create_date, connected, enabled, sending_interval, update_date, access_point_name) VALUES ('4294ba1b-f794-4e3d-b606-896b28237bcb','2021-07-08 12:30:00',false,true,3.0,'2022-07-08 12:30:00','first floor' );
-INSERT INTO access_point (id, create_date, connected, enabled, sending_interval, update_date, access_point_name) VALUES ('43d5aba9-29c5-49b4-b4ec-2d430e34104f','2021-07-08 12:30:00',false,true,3.0,'2022-07-08 12:30:00','second floor' );
+INSERT INTO access_point (id,username, create_date, connected, enabled, sending_interval, update_date, access_point_name,password,access_Point_Role) VALUES ('7269ddec-30c6-44d9-bc1f-8af18da09ed3','test','2021-07-08 12:30:00',false,true,3.0,'2022-07-08 12:30:00','office','$2y$10$P7im4OMw6hsnPWLpJ1nVKup1jlEFsLIek9D3lglmZv.Tq05GDEhMS','ACCESS_POINT');
+INSERT INTO access_point (id,username, create_date, connected, enabled, sending_interval, update_date, access_point_name,password,access_Point_Role) VALUES ('4294ba1b-f794-4e3d-b606-896b28237bcb','test2','2021-07-08 12:30:00',false,true,3.0,'2022-07-08 12:30:00','first floor','$2y$10$P7im4OMw6hsnPWLpJ1nVKup1jlEFsLIek9D3lglmZv.Tq05GDEhMS','ACCESS_POINT');
+INSERT INTO access_point (id,username, create_date, connected, enabled, sending_interval, update_date, access_point_name,password,access_Point_Role) VALUES ('43d5aba9-29c5-49b4-b4ec-2d430e34104f','test3','2021-07-08 12:30:00',false,true,3.0,'2022-07-08 12:30:00','second floor','$2y$10$P7im4OMw6hsnPWLpJ1nVKup1jlEFsLIek9D3lglmZv.Tq05GDEhMS' ,'ACCESS_POINT');
 
 INSERT INTO SENSOR_STATION (ID, NAME, CATEGORY, CREATE_DATE, ACCESS_POINT_ID,DIP_ID,connected,enabled,transmission_interval) VALUES ('8ccfdfaa-9731-4786-8efa-e2141e5c4095','rose', 'flower', '2023-05-01 12:00:00', '7269ddec-30c6-44d9-bc1f-8af18da09ed3',1,false,true,12.0);
 INSERT INTO SENSOR_STATION (ID, NAME, CATEGORY, CREATE_DATE,ACCESS_POINT_ID,DIP_ID,connected,enabled,transmission_interval) VALUES ('f11c3324-125f-4b2d-8b82-3692b0772d95', 'bonsai', 'tree', '2022-08-09 11:23:00','7269ddec-30c6-44d9-bc1f-8af18da09ed3',2,false,true,12.0);

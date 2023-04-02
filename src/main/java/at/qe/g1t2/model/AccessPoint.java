@@ -26,6 +26,10 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
+    private String username;
+    private String password;
+    @Enumerated(EnumType.STRING)
+    private AccessPointRole accessPointRole;
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createDate;
 
@@ -139,5 +143,29 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
     @Override
     public int compareTo(AccessPoint o) {
         return this.id.compareTo(Objects.requireNonNull(o.getId()));
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public AccessPointRole getAccessPointRole() {
+        return accessPointRole;
+    }
+
+    public void setAccessPointRole(AccessPointRole accessPointRole) {
+        this.accessPointRole = accessPointRole;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

@@ -8,12 +8,15 @@ DROP TABLE IF EXISTS userx;
 CREATE TABLE access_point
 (
     id                VARCHAR(255) NOT NULL,
+    username           VARCHAR(255),
     create_date       timestamp    NULL,
     connected         BOOLEAN      NULL,
     enabled           BOOLEAN      NULL,
     sending_interval  DOUBLE       NULL,
     update_date       timestamp    NULL,
     access_point_name VARCHAR(255) NULL,
+    password           VARCHAR(255),
+    access_Point_Role   VARCHAR(100),
     CONSTRAINT pk_accesspoint PRIMARY KEY (id)
 );
 

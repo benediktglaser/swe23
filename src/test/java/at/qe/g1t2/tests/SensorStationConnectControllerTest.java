@@ -23,7 +23,7 @@ class SensorStationConnectControllerTest {
     SensorStationService sensorStationService;
 
     @Test
-    @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    @WithMockUser(username = "test", authorities = {"ACCESS_POINT"})
     void createSensorStation() throws Exception {
         SensorStationDTO sensorStationDTO = new SensorStationDTO();
         sensorStationDTO.setDipId(23L);

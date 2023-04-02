@@ -28,12 +28,12 @@ public class SensorDataService {
 
 
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ACCESS_POINT','ADMIN')")
     public SensorData loadSensorData(String uuid) {
         return sensorDataRepository.findSensorDataById(uuid);
     }
 
-
+    @PreAuthorize("hasAnyAuthority('ACCESS_POINT','ADMIN')")
     public SensorData saveSensorData(SensorStation sensorStation, SensorData sensorData) {
         if (sensorData.isNew()) {
             LocalDateTime createDate = LocalDateTime.now();
