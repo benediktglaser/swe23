@@ -1,0 +1,230 @@
+#include <Arduino.h>
+#include <Wire.h>
+#include <SPI.h>
+#include <Adafruit_Sensor.h>
+#include "Adafruit_BME680.h"
+
+#define BME_SCK 13
+#define BME_MISO 12
+#define BME_MOSI 11
+#define BME_CS 10
+
+#define SEALEVELPRESSURE_HPA (1013.25)
+
+Adafruit_BME680 bme;
+int id;
+
+typedef struct {
+  float temperature;
+  uint32_t pressure;
+  float humidity;
+  uint32_t gas_resistance;
+  float altitude;
+} bmeData_struct;
+
+typedef struct {
+  float temperature;
+  float pressure;
+  float humidity;
+  float gas_resistance;
+  float altitude;
+  float soil;
+  float light;
+} data_struct;
+
+int readDip();
+int readSoil();
+int readLight();
+bmeData_struct readBME688();
+void printData(data_struct data);
+data_struct readData(int time_delay);
+void setColor(int red, int green, int blue);
+data_struct collectData(int samples, int time_delay);
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(A0, OUTPUT);          //buzzer
+
+  pinMode(A1, OUTPUT);          //red
+  pinMode(A2, OUTPUT);          //blue
+  pinMode(A3, OUTPUT);          //green
+
+  pinMode(D2, INPUT_PULLUP);    //outer button
+  pinMode(D3, INPUT_PULLUP);    //inner button
+
+  pinMode(D5, INPUT);  //dip switch MSB
+  pinMode(D6, INPUT);  //dip switch
+  pinMode(D7, INPUT);  //dip switch
+  pinMode(D8, INPUT);  //dip switch
+  pinMode(D9, INPUT);  //dip switch
+  pinMode(D10, INPUT); //dip switch
+  pinMode(D11, INPUT); //dip switch
+  pinMode(D12, INPUT); //dip switch LSB
+
+  if (!bme.begin()) {
+    Serial.println(F("Could not find a valid BME680 sensor, check wiring!"));
+    while (1);
+  }
+  // Set up oversampling and filter initialization
+  bme.setTemperatureOversampling(BME680_OS_8X);
+  bme.setHumidityOversampling(BME680_OS_2X);
+  bme.setPressureOversampling(BME680_OS_4X);
+  bme.setIIRFilterSize(BME680_FILTER_SIZE_3);
+  bme.setGasHeater(320, 150); // 320*C for 150 ms
+
+  id = readDip();
+  Serial.print("Setup, complete, ID is ");
+  Serial.println(id);
+  Serial.println("==========================");
+}
+
+void loop() {
+  printData(collectData(10, 2000));
+  delay(1000);
+}
+
+/*
+Sets a color to the RGB-LED
+*/
+void setColor(int red, int green, int blue)
+{
+  analogWrite(A1, red);
+  analogWrite(A2, blue);  
+  analogWrite(A3, green);
+}
+
+/*
+Reads the soil moisture sensor.
+*/
+int readSoil(){
+  return analogRead(A6);
+}
+
+/*
+Reads the light sensor.
+*/
+int readLight(){
+  return analogRead(A7);
+}
+
+/*
+Reads and returns the BME688-sensor. These are temperature, pressure,
+humidity, gas resistance and altitude. Between reads you must
+wait >= 2000ms. This is ensured in readData(int time_delay).
+*/
+bmeData_struct readBME688(){
+  bmeData_struct bmeData = {0, 0, 0, 0, 0};
+  if (!bme.beginReading()) {
+    Serial.println(F("Failed to begin reading :("));
+    return bmeData;
+  }
+  if (!bme.endReading()) {
+    Serial.println(F("Failed to complete reading :("));
+    return bmeData;
+  }
+
+  bmeData.temperature = bme.temperature;                     //temperature [°C]
+  bmeData.pressure = bme.pressure / 100.0;                   //pressure [hPa]
+  bmeData.humidity = bme.humidity;                           //humidity [%]
+  bmeData.gas_resistance = bme.gas_resistance / 1000.0;      //gas [KOhms]
+  bmeData.altitude = bme.readAltitude(SEALEVELPRESSURE_HPA); //altitude [m]
+  
+  return bmeData;
+}
+
+/*
+Reads data from all sensors and then waits for <time_delay> ms. The casts to float
+happen to later enable the calculation of the average in the collectData() function.
+<time_delay> must be larger than 2000.
+*/
+data_struct readData(int time_delay){
+  data_struct data = {0, 0, 0, 0, 0, 0, 0};
+  if(time_delay < 2000){
+    Serial.print("time_delay for data_struct readData(int time_delay) must be >= 2000, is ");
+    Serial.print(time_delay);
+    return data;
+  }
+  bmeData_struct bmeData = readBME688();
+  data.altitude = bmeData.altitude;
+  data.gas_resistance = (float) bmeData.gas_resistance;
+  data.humidity = bmeData.humidity;
+  data.pressure = (float) bmeData.pressure;
+  data.temperature = bmeData.temperature;
+  data.soil = (float) readSoil();
+  data.light = (float) readLight();
+  delay(time_delay);
+  return data;
+}
+
+/*
+Reads the dip-switch to calculate the id for this Sensor-Station.
+D5 is the MSB, D12 the LSB. Returns a decimal value.
+*/
+int readDip(){
+  int dipSwitchPins[] = {D5, D6, D7, D8, D9, D10, D11, D12};
+  int dipSwitchValues[] = {1, 2, 4, 8, 16, 32, 64, 128};
+  int decimalValue = 0;
+  for (int i = 0; i < 8; i++) {
+    if (digitalRead(dipSwitchPins[i])) {
+        decimalValue += dipSwitchValues[i];
+    }
+  }
+  return decimalValue;
+}
+
+/*
+Takes <samples> data samples and waits <time_delay> ms between
+each of them. The aritmetic average is calculated for all of
+them and then returned. <time_delay> must be larger than 2000.
+*/
+data_struct collectData(int samples, int time_delay){
+  data_struct average = {0, 0, 0, 0, 0, 0, 0};
+  data_struct data;
+  for(int i = 0; i < samples; i++){
+    data = readData(time_delay);
+    average.altitude += data.altitude;
+    average.gas_resistance += data.gas_resistance;
+    average.humidity += data.humidity;
+    average.light += data.light;
+    average.pressure += data.pressure;
+    average.soil += data.soil;
+    average.temperature += data.temperature;
+  }
+
+  average.altitude = average.altitude / samples;
+  average.gas_resistance = average.gas_resistance / samples;
+  average.humidity = average.humidity / samples;
+  average.light = average.light / samples;
+  average.pressure = average.pressure / samples;
+  average.soil = average.soil / samples;
+  average.temperature = average.temperature / samples;
+
+  return average;
+}
+
+/*
+For debugging purposes only. Prints out all data of a data_struct.
+*/
+void printData(data_struct data){
+Serial.println();
+  Serial.print("Altitude: ");
+  Serial.print(data.altitude);
+  Serial.println("m");
+  Serial.print("Pressure: ");
+  Serial.print(data.pressure);
+  Serial.println("hPa");
+  Serial.print("Humidity: ");
+  Serial.print(data.humidity);
+  Serial.println("%");
+  Serial.print("Gas: ");
+  Serial.print(data.gas_resistance);
+  Serial.println("KOhm");
+  Serial.print("Temperature: ");
+  Serial.print(data.temperature);
+  Serial.println("°C");
+  Serial.print("Light: ");
+  Serial.println(data.light);
+  Serial.print("Soil: ");
+  Serial.println(data.soil);
+  Serial.println("============");
+}
