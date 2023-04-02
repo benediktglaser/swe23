@@ -12,7 +12,7 @@ import java.util.UUID;
 
 /**
  * Tests to ensure that each entity's implementation of equals conforms to the
- * contract. See {@linkplain http://www.jqno.nl/equalsverifier/} for more
+ * contract. See {@linkplain 'http://www.jqno.nl/equalsverifier/'} for more
  * information.
  *
  * This class is part of the skeleton project provided for students of the
@@ -28,9 +28,9 @@ public class EqualsImplementationTest {
         Userx user2 = new Userx();
         user2.setUsername("user2");
         SensorStation sensorStation1 = new SensorStation();
-        sensorStation1.setId(UUID.randomUUID());
+        sensorStation1.setId(UUID.randomUUID().toString());
         SensorStation sensorStation2 = new SensorStation();
-        sensorStation2.setId(UUID.randomUUID());
+        sensorStation2.setId(UUID.randomUUID().toString());
         EqualsVerifier.forClass(Userx.class).withPrefabValues(Userx.class, user1, user2).withPrefabValues(SensorStation.class,sensorStation1,sensorStation2).suppress(Warning.STRICT_INHERITANCE, Warning.ALL_FIELDS_SHOULD_BE_USED).verify();
     }
 

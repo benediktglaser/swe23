@@ -20,10 +20,12 @@ class SensorStationGardenerServiceTest {
     UserService userService;
     @Autowired
     SensorStationGardenerService sensorStationGardenerService;
+    @Autowired
+    AccessPointService accessPointService;
 
     @Test
     void loadSensorStationGardener() {
-        SensorStationGardener sensorStationGardener = sensorStationGardenerService.loadSensorStationGardener(UUID.fromString("0e5006f9-12f2-4f08-841f-6d937769eb6e"));
+        SensorStationGardener sensorStationGardener = sensorStationGardenerService.loadSensorStationGardener("0e5006f9-12f2-4f08-841f-6d937769eb6e");
         assertEquals("user1",sensorStationGardener.getGardener().getUsername());
     }
 
@@ -34,7 +36,9 @@ class SensorStationGardenerServiceTest {
         SensorStation sensorStation = new SensorStation();
         sensorStation.setName("wheat");
         sensorStation.setCategory("test");
-        sensorStation = sensorStationService.saveSensorStation(sensorStation);
+        AccessPoint accessPoint = accessPointService
+                .loadAccessPoint("7269ddec-30c6-44d9-bc1f-8af18da09ed3");
+        sensorStation = sensorStationService.saveSensorStation(accessPoint,sensorStation);
         Userx gardener = userService.loadUser("user1");
 
         SensorStationGardener sensorStationGardener = new SensorStationGardener();

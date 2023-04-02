@@ -38,13 +38,13 @@ public class AccessPointTest {
     @Test
     public void testAccessPointEqualsContract() {
         AccessPoint accessPoint1 = new AccessPoint();
-        accessPoint1.setAccessPointID(UUID.randomUUID());
+        accessPoint1.setAccessPointID(UUID.randomUUID().toString());
         AccessPoint accessPoint2 = new AccessPoint();
-        accessPoint2.setAccessPointID(UUID.randomUUID());
+        accessPoint2.setAccessPointID(UUID.randomUUID().toString());
         SensorStation sensorStation1 = new SensorStation();
-        sensorStation1.setId(UUID.randomUUID());
+        sensorStation1.setId(UUID.randomUUID().toString());
         SensorStation sensorStation2 = new SensorStation();
-        sensorStation2.setId(UUID.randomUUID());
+        sensorStation2.setId(UUID.randomUUID().toString());
         EqualsVerifier.forClass(AccessPoint.class)
                 .withPrefabValues(AccessPoint.class, accessPoint1, accessPoint2)
                 .withPrefabValues(SensorStation.class, sensorStation1, sensorStation2)

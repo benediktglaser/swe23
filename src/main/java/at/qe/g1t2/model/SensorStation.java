@@ -1,8 +1,6 @@
 package at.qe.g1t2.model;
 
-import at.qe.g1t2.services.SensorStationService;
 import jakarta.persistence.*;
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.domain.Persistable;
@@ -12,14 +10,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 @Entity
-public class SensorStation implements Persistable<UUID>, Serializable, Comparable<SensorStation> {
+public class SensorStation implements Persistable<String>, Serializable, Comparable<SensorStation> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private String id;
 
     private Boolean connected;
 
@@ -28,9 +25,8 @@ public class SensorStation implements Persistable<UUID>, Serializable, Comparabl
     private Long dipId;
 
 
-    @Column(nullable = false)
     private String name;
-    @Column(nullable = false)
+
     private String category;
 
     private Double transmissionInterval;
@@ -120,16 +116,15 @@ public class SensorStation implements Persistable<UUID>, Serializable, Comparabl
     }
 
 
-
     @ManyToOne()
     private AccessPoint accessPoint;
 
     @Override
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 

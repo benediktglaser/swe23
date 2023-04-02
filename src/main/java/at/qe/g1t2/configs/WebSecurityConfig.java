@@ -45,22 +45,20 @@ public class WebSecurityConfig {
             http.csrf().disable();
             http.headers().frameOptions().disable(); // needed for H2 console
 
-
-            http
-                    .authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/**").authenticated()).httpBasic()
+            http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/**").authenticated()).httpBasic()
                     .and()
-                    .authorizeHttpRequests(authorize -> authorize
-                            .requestMatchers("/").permitAll()
-                            .requestMatchers("/api/**").permitAll()
-                            .requestMatchers("/**.jsf").permitAll()
-                            .requestMatchers(antMatcher("/h2-console/**")).permitAll()
-                            .requestMatchers("/jakarta.faces.resource/**").permitAll()
-                            .requestMatchers("/error/**").permitAll()
-                            .requestMatchers("/admin/**").hasAnyAuthority(ADMIN)
-                            .requestMatchers("/secured/**").hasAnyAuthority(ADMIN, GARDENER, USER)
-                            .requestMatchers("/adminGardener/**").hasAnyAuthority(ADMIN, GARDENER)
-                            .requestMatchers("/omnifaces.push/**").hasAnyAuthority(ADMIN, GARDENER, USER)
-                            .anyRequest().authenticated())
+                .authorizeHttpRequests(authorize -> authorize
+
+                .requestMatchers("/").permitAll()
+                .requestMatchers("/**.jsf").permitAll()
+                .requestMatchers(antMatcher("/h2-console/**")).permitAll()
+                .requestMatchers("/jakarta.faces.resource/**").permitAll()
+                .requestMatchers("/error/**").permitAll()
+                .requestMatchers("/admin/**").hasAnyAuthority(ADMIN)
+                .requestMatchers("/secured/**").hasAnyAuthority(ADMIN, GARDENER, USER)
+                        .requestMatchers("/adminGardener/**").hasAnyAuthority(ADMIN,GARDENER)
+                .requestMatchers("/omnifaces.push/**").hasAnyAuthority(ADMIN, GARDENER, USER)
+                    .anyRequest().authenticated())
                     .formLogin()
                     .loginPage("/login.xhtml")
                     .permitAll()
@@ -89,13 +87,7 @@ public class WebSecurityConfig {
             Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
             for (GrantedAuthority grantedAuthority : authorities) {
                 // Todo replace equals with contains
-                if ((grantedAuthority.getAuthority().equals("ADMIN")
-                        && grantedAuthority.getAuthority().equals("GARDENER"))
-                        || grantedAuthority.getAuthority().equals("GARDENER")) {
-                    response.sendRedirect("/adminGardener/sensorStations/sensorStations.xhtml");
-                    return;
-                }
-                if ((grantedAuthority.getAuthority().equals("ADMIN"))) {
+                if ((grantedAuthority.getAuthority().contains("GARDENER"))){
                     response.sendRedirect("/adminGardener/sensorStations/sensorStations.xhtml");
                     return;
                 }
