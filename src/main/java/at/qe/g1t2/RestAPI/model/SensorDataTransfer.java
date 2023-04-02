@@ -1,9 +1,14 @@
-package at.qe.g1t2.api.model;
+package at.qe.g1t2.RestAPI.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class SensorDataTransfer {
+
+public class SensorDataTransfer implements Serializable {
+
+
+    private String id;
 
     private Double measurement;
 
@@ -24,12 +29,21 @@ public class SensorDataTransfer {
         this.measurement = measurement;
     }
 
+
     public UUID getSensorStation() {
         return sensorStation;
     }
 
     public void setSensorStation(UUID sensorStation) {
         this.sensorStation = sensorStation;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getType() {
@@ -40,6 +54,7 @@ public class SensorDataTransfer {
         this.type = type;
     }
 
+
     public String getUnit() {
         return unit;
     }
@@ -47,6 +62,7 @@ public class SensorDataTransfer {
     public void setUnit(String unit) {
         this.unit = unit;
     }
+
 
     public LocalDateTime getTimestamp() {
         return timestamp;

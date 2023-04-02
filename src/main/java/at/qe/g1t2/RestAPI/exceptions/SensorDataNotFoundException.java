@@ -1,4 +1,4 @@
-package at.qe.g1t2.api.exceptions;
+package at.qe.g1t2.RestAPI.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
