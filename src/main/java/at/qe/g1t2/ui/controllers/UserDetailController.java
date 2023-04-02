@@ -5,6 +5,7 @@ import at.qe.g1t2.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 
@@ -24,6 +25,7 @@ public class UserDetailController implements Serializable {
     /**
      * Attribute to cache the currently displayed user
      */
+
     private Userx user;
 
     /**
@@ -65,6 +67,7 @@ public class UserDetailController implements Serializable {
     /**
      * Action to delete the currently displayed user.
      */
+    @Transactional
     public void doDeleteUser() {
         this.userService.deleteUser(user);
         user = null;

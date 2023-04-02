@@ -5,6 +5,7 @@ import at.qe.g1t2.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -27,6 +28,7 @@ public class UserListController implements Serializable {
      *
      * @return
      */
+    @Transactional
     public Collection<Userx> getUsers() {
         return userService.getAllUsers();
     }

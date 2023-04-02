@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.envers.AuditJoinTable;
+import org.hibernate.envers.Audited;
 import org.springframework.data.domain.Persistable;
 
 import java.io.Serializable;
@@ -20,12 +22,16 @@ import java.util.Objects;
  */
 
 @Entity
+@Audited
 public class AccessPoint implements Persistable<String>, Serializable, Comparable<AccessPoint> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
+    private String password;
+    @Enumerated(EnumType.STRING)
+    private AccessPointRole accessPointRole;
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createDate;
 
@@ -48,6 +54,7 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
 
     @OneToMany(mappedBy = "accessPoint", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @AuditJoinTable
     private List<SensorStation> sensorStation = new ArrayList<>();
 
     public Double getSendingInterval() {
@@ -140,4 +147,21 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
     public int compareTo(AccessPoint o) {
         return this.id.compareTo(Objects.requireNonNull(o.getId()));
     }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public AccessPointRole getAccessPointRole() {
+        return accessPointRole;
+    }
+
+    public void setAccessPointRole(AccessPointRole accessPointRole) {
+        this.accessPointRole = accessPointRole;
+    }
+
 }

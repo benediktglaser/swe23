@@ -1,7 +1,9 @@
 package at.qe.g1t2.tests;
 
 import at.qe.g1t2.RestAPI.model.AccessPointDTO;
+import at.qe.g1t2.RestAPI.model.SensorStationDTO;
 import at.qe.g1t2.services.AccessPointService;
+import at.qe.g1t2.services.SensorStationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,32 +15,28 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @AutoConfigureMockMvc
-class AccessConnectionPointControllerTest {
+public class AccessPointRegisterControllerTest {
     @Autowired
     private MockMvc mockMvc;
-
-
     @Autowired
-    private AccessPointService accessPointService;
+    AccessPointService accessPointService;
 
     @Test
-    @WithMockUser(username = "admin", authorities = {"ADMIN"})
-    void createAccessPoint() throws Exception {
+    void registerAccessPoint() throws Exception {
         AccessPointDTO accessPointDTO = new AccessPointDTO();
-        accessPointDTO.setAccessPointName("Ha");
-        accessPointDTO.setInterval(23.1);
+        accessPointDTO.setSendingInterval(23.0);
+        accessPointDTO.setAccessPointName("TV ROOM");
+
         int size = accessPointService.getAllAccessPoints().size();
         ObjectMapper objectMapper = new ObjectMapper();
         String requestBody = objectMapper.writeValueAsString(accessPointDTO);
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/accessPoint")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/accessPoint/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(MockMvcResultMatchers.status().isOk());
-        assertEquals(size + 1, accessPointService.getAllAccessPoints().size());
+        assertEquals(size+1,accessPointService.getAllAccessPoints().size());
     }
 }

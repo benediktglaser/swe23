@@ -31,12 +31,13 @@ public class SensorStationService {
     @Autowired
     AccessPointRepository accessPointRepository;
 
-
+    @Transactional
     public SensorStation loadSensorStation(String uuid) {
         return sensorStationRepository.findSensorStationById(uuid);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ACCESS_POINT','ADMIN')")
+    @Transactional
     public SensorStation saveSensorStation(AccessPoint accessPoint, SensorStation sensorStation) {
         SensorStation checkSensorStation = getSensorStationByAccessPointIdAndDipId(accessPoint.getAccessPointID(), sensorStation.getDipId());
         if (checkSensorStation != null) {
@@ -54,7 +55,8 @@ public class SensorStationService {
 
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ACCESS_POINT','ADMIN')")
+    @Transactional
     public void deleteSensorStation(SensorStation sensorStation) {
         sensorStationRepository.delete(sensorStation);
     }
@@ -69,7 +71,7 @@ public class SensorStationService {
         return sensorStationRepository.findSensorStationByAccessPointAndDipId((accessPointRepository.findAccessPointById(accessPointId)), dipId);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ACCESS_POINT','ADMIN')")
     @Transactional
     public void removeSensorStationFromAccessPoint(AccessPoint accessPoint, SensorStation sensorStation) {
         accessPoint.getSensorStation().remove(sensorStation);

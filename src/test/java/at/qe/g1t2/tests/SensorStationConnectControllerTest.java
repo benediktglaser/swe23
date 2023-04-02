@@ -23,11 +23,10 @@ class SensorStationConnectControllerTest {
     SensorStationService sensorStationService;
 
     @Test
-    @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    @WithMockUser(username = "7269ddec-30c6-44d9-bc1f-8af18da09ed3", authorities = {"ACCESS_POINT"})
     void createSensorStation() throws Exception {
         SensorStationDTO sensorStationDTO = new SensorStationDTO();
         sensorStationDTO.setDipId(23L);
-        sensorStationDTO.setAccessPointId("4294ba1b-f794-4e3d-b606-896b28237bcb");
 
         int size = sensorStationService.getAllSensorStations().size();
         ObjectMapper objectMapper = new ObjectMapper();

@@ -2,6 +2,7 @@ package at.qe.g1t2.repositories;
 
 import at.qe.g1t2.model.AccessPoint;
 import at.qe.g1t2.model.SensorStation;
+import at.qe.g1t2.model.Userx;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -15,5 +16,6 @@ public interface SensorStationRepository extends JpaRepository<SensorStation, UU
 
     SensorStation findSensorStationByAccessPointAndDipId(AccessPoint accessPoint, Long dipId);
 
+    List<SensorStation> getSensorStationsByGardener(Userx gardener);
 }
 

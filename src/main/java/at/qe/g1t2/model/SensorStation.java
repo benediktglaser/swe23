@@ -1,8 +1,10 @@
 package at.qe.g1t2.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.envers.Audited;
 import org.springframework.data.domain.Persistable;
 
 import java.io.Serializable;
@@ -12,6 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Audited
 public class SensorStation implements Persistable<String>, Serializable, Comparable<SensorStation> {
 
     @Id
@@ -35,18 +38,10 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createDate;
 
-    @OneToMany(mappedBy = "sensorStation", fetch = FetchType.EAGER)
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "gardener_id", referencedColumnName = "username")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<SensorStationGardener> sensorStationGardener = new ArrayList<>();
-
-    public void setSensorStationGardener(List<SensorStationGardener> sensorStationGardener) {
-        this.sensorStationGardener = sensorStationGardener;
-    }
-
-    public List<SensorStationGardener> getSensorStationGardener() {
-        return sensorStationGardener;
-    }
-
+    private Userx gardener;
     @OneToMany(mappedBy = "sensorStation", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<SensorData> sensorData = new ArrayList<>();
@@ -169,4 +164,11 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
     }
 
 
+    public Userx getGardener() {
+        return gardener;
+    }
+
+    public void setGardener(Userx gardener) {
+        this.gardener = gardener;
+    }
 }
