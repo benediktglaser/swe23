@@ -9,6 +9,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -34,6 +35,7 @@ class AccessPointServiceTest {
     void saveAccessPoint() {
         AccessPoint accessPoint = new AccessPoint();
         accessPoint.setAccessPointName("Test");
+        accessPoint.setAccessPointID(UUID.randomUUID().toString());
         accessPoint = accessPointService.saveAccessPoint(accessPoint);
         LocalDateTime dateTime = accessPoint.getCreateDate();
         assertEquals(accessPoint, accessPointService.loadAccessPoint(accessPoint.getAccessPointID()));
