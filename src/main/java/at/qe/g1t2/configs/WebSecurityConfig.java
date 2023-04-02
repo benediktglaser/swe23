@@ -134,8 +134,8 @@ public class WebSecurityConfig {
                 .authoritiesByUsernameQuery("select userx_username, roles from userx_user_role where userx_username=?")
                 .passwordEncoder(passwordEncoder())
                 .and().jdbcAuthentication().dataSource(dataSource)
-                .usersByUsernameQuery("select username, password,enabled from access_point where username=?")
-                .authoritiesByUsernameQuery("select username, access_Point_Role from access_point where username=?")
+                .usersByUsernameQuery("select id, password,enabled from access_point where id=?")
+                .authoritiesByUsernameQuery("select id, access_Point_Role from access_point where id=?")
                 .passwordEncoder(passwordEncoder());
     }
 

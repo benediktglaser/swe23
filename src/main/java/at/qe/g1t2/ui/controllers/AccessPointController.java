@@ -15,6 +15,9 @@ public class AccessPointController {
     @Autowired
     AccessPointService accessPointService;
 
+    public static boolean hasToReload;
+
+
 
     public Collection<AccessPoint> getAllAccessPoints(){
         return accessPointService.getAllAccessPoints();

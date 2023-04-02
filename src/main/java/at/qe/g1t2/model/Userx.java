@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.envers.Audited;
 import org.springframework.data.domain.Persistable;
 
 import java.io.Serializable;
@@ -20,6 +21,7 @@ import java.util.Set;
  * course "Software Engineering" offered by the University of Innsbruck.
  */
 @Entity
+@Audited
 public class Userx implements Persistable<String>, Serializable, Comparable<Userx> {
 
     private static final long serialVersionUID = 1L;
@@ -52,18 +54,7 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     @Enumerated(EnumType.STRING)
     private Set<UserRole> roles;
 
-    @OneToMany(mappedBy = "gardener", fetch = FetchType.EAGER)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<SensorStationGardener> sensorStationGardener = new ArrayList<>();
 
-
-    public List<SensorStationGardener> getSensorStationGardener() {
-        return sensorStationGardener;
-    }
-
-    public void setSensorStationGardener(List<SensorStationGardener> sensorStationGardener) {
-        this.sensorStationGardener = sensorStationGardener;
-    }
 
     public String getUsername() {
         return username;

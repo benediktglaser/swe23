@@ -8,6 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -27,12 +28,15 @@ public class UserService implements Serializable {
     private UserxRepository userRepository;
 
 
+
+
     /**
      * Returns a collection of all users.
      *
      * @return
      */
     @PreAuthorize("hasAuthority('ADMIN')")
+    @Transactional
     public Collection<Userx> getAllUsers() {
         return userRepository.findAll();
     }
@@ -44,6 +48,7 @@ public class UserService implements Serializable {
      * @return the user with the given username
      */
     @PreAuthorize("hasAuthority('ADMIN') or principal.username eq #username")
+    @Transactional
     public Userx loadUser(String username) {
         return userRepository.findFirstByUsername(username);
     }
@@ -58,6 +63,7 @@ public class UserService implements Serializable {
      * @return the updated user
      */
     @PreAuthorize("hasAuthority('ADMIN')")
+    @Transactional
     public Userx saveUser(Userx user) {
         if (user.isNew()) {
             user.setCreateDate(LocalDateTime.now());
@@ -75,7 +81,15 @@ public class UserService implements Serializable {
      * @param user the user to delete
      */
     @PreAuthorize("hasAuthority('ADMIN')")
+    @Transactional
     public void deleteUser(Userx user) {
+
+     /*Collection<SensorStationGardener> sensorStationGardeners = sensorStationGardenerRepository.findSensorStationsGardenersByGardener(user);
+        sensorStationGardeners.forEach(x -> {
+            x.getSensorStation().getSensorStationGardener().remove(x);
+            x.getGardener().getSensorStationGardener().remove(x);
+            sensorStationGardenerRepository.delete(x);
+        });*/
         userRepository.delete(user);
     }
 

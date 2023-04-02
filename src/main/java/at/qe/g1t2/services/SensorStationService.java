@@ -30,12 +30,13 @@ public class SensorStationService {
     @Autowired
     AccessPointRepository accessPointRepository;
 
-
+    @Transactional
     public SensorStation loadSensorStation(String uuid) {
         return sensorStationRepository.findSensorStationById(uuid);
     }
 
     @PreAuthorize("hasAnyAuthority('ACCESS_POINT','ADMIN')")
+    @Transactional
     public SensorStation saveSensorStation(AccessPoint accessPoint, SensorStation sensorStation) {
         SensorStation checkSensorStation = getSensorStationByAccessPointIdAndDipId(accessPoint.getAccessPointID(), sensorStation.getDipId());
         if (checkSensorStation != null) {
@@ -54,6 +55,7 @@ public class SensorStationService {
     }
 
     @PreAuthorize("hasAnyAuthority('ACCESS_POINT','ADMIN')")
+    @Transactional
     public void deleteSensorStation(SensorStation sensorStation) {
         sensorStationRepository.delete(sensorStation);
     }

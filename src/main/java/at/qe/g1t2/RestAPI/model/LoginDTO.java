@@ -2,15 +2,15 @@ package at.qe.g1t2.RestAPI.model;
 
 public class LoginDTO {
 
-    private String username;
+    private String id;
     private String password;
 
-    public String getUsername() {
-        return username;
+    public String getId() {
+        return id;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getPassword() {

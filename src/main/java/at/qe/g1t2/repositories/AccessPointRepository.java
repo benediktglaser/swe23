@@ -7,5 +7,4 @@ public interface AccessPointRepository extends JpaRepository<AccessPoint, String
 
     AccessPoint findAccessPointById(String uuid);
 
-    AccessPoint findAccessPointByUsername(String username);
 }
