@@ -17,3 +17,6 @@ buildNumber.properties
 
 ### JPA-Buddy ###
 .jpb
+
+### Raspberry Database ###
+src/main/python/database.db
