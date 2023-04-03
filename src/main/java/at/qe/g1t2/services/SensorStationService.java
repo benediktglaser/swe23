@@ -3,12 +3,15 @@ package at.qe.g1t2.services;
 
 import at.qe.g1t2.model.AccessPoint;
 import at.qe.g1t2.model.SensorStation;
+import at.qe.g1t2.model.Userx;
 import at.qe.g1t2.repositories.AccessPointRepository;
 import at.qe.g1t2.repositories.SensorStationRepository;
 import at.qe.g1t2.repositories.UserxRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,6 +70,14 @@ public class SensorStationService {
 
     }
 
+    /*public Collection<SensorStation> getAllSensorStationsByName(String plantName){
+        if(plantName!=null){
+            return sensorStationRepository.getSensorStationsByUserAndName(getAuthenticatedUser(),plantName);
+        }
+        return sensorStationRepository.findAll();
+
+    }*/
+
     public SensorStation getSensorStationByAccessPointIdAndDipId(String accessPointId, Long dipId) {
         return sensorStationRepository.findSensorStationByAccessPointAndDipId((accessPointRepository.findAccessPointById(accessPointId)), dipId);
     }
@@ -77,6 +88,11 @@ public class SensorStationService {
         accessPoint.getSensorStation().remove(sensorStation);
         accessPointRepository.save(accessPoint);
         deleteSensorStation(sensorStation);
+    }
+
+    private Userx getAuthenticatedUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return userRepository.findFirstByUsername(auth.getName());
     }
 
 }

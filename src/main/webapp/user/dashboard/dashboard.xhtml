@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3c.org/1999/xhtml"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
@@ -8,15 +9,53 @@
                 xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
                 template="/WEB-INF/templates/main.xhtml">
     <ui:define name="content">
+        <div class="card">
+            <h:form>
+                <p:panel id="panel" header="Search for plants:" styleClass="mb-3">
+                    <p:growl id="messages"/>
 
-        <h:form>
-            <p:panel header="What do you see here?">
-                <div style="height: 50px">This is a simple PrimeFaces 12.0
-                    project running on Spring Boot 3.0.4</div>
-            </p:panel>
-            <p:panel header="JSF 2.3 Bean Access">
-                #{helloWorldBean.hello}
-            </p:panel>
-        </h:form>
+                    <h:panelGrid columns="4" cellpadding="7">
+                        <h:outputLabel for="plant" value="Plant: *"/>
+                        <p:inputText id="plant" value="#{searchViewDashboard.plant}" required="true" label="Plant"
+                                     style="width: 12rem">
+                            <f:validateLength minimum="2"/>
+                        </p:inputText>
+                        <p:message for="plant"/>
+                        <h:outputText value="#{searchViewDashboard.plant}"/>
+
+                        <h:outputLabel for="category" value="Category: *"/>
+                        <p:inputText id="category" value="#{searchViewDashboard.category}" required="true"
+                                     label="Category"
+                                     style="width: 12rem">
+                            <f:validateLength minimum="2"/>
+                        </p:inputText>
+                        <p:message for="category"/>
+                        <h:outputText value="#{searchViewDashboard.category}"/>
+                    </h:panelGrid>
+                    <p:commandButton process="@parent:" update="@form" value="Search"
+                                     styleClass="mr-2"/>
+
+                </p:panel>
+                    <div class="card">
+                        <h:form id="form">
+                            <p:dataView var="plant" value="#{searchViewDashboard.getSensorStationsByName()}" gridIcon="All plants">
+                                <p:dataViewGridItem var="plant" value="#{searchViewDashboard.getSensorStationsByName()}">
+                                    <div class="ui-card">
+                                        <div class="ui-card-title">#{plant.name}</div>
+                                        <div class="ui-card-subtitle ">#{plant.category}</div>
+                                        <p:graphicImage class="ui-card-img" library="images" name="plant-test1.png" height="100" width="200"/>
+                                        <div class="ui-card-bottom centering">
+                                            <p:commandButton type="button"
+                                                             value="Add to favourites"
+                                                             icon="pi pi-star">
+                                            </p:commandButton>
+                                        </div>
+                                    </div>
+                                </p:dataViewGridItem>
+                            </p:dataView>
+                        </h:form>
+                    </div>
+            </h:form>
+        </div>
     </ui:define>
 </ui:composition>

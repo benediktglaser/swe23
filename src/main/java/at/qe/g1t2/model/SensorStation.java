@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Audited
@@ -42,6 +43,10 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
     @JoinColumn(name = "gardener_id", referencedColumnName = "username")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Userx gardener;
+
+    @OneToMany(mappedBy = "sensorStation",fetch = FetchType.EAGER)
+    List<UsersFavourites> usersFavourites;
+
     @OneToMany(mappedBy = "sensorStation", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<SensorData> sensorData = new ArrayList<>();
@@ -170,5 +175,13 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
 
     public void setGardener(Userx gardener) {
         this.gardener = gardener;
+    }
+
+    public List<UsersFavourites> getUsersFavourites() {
+        return usersFavourites;
+    }
+
+    public void setUsersFavourites(List<UsersFavourites> usersFavourites) {
+        this.usersFavourites = usersFavourites;
     }
 }
