@@ -2,16 +2,15 @@ package at.qe.g1t2.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import org.hibernate.envers.Audited;
 import org.hibernate.envers.DefaultRevisionEntity;
 import org.hibernate.envers.RevisionEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
 @RevisionEntity(LogListener.class)
+
 public class LogInfo extends DefaultRevisionEntity {
     @Column(name = "MODIFIED_BY")
     private String username;
@@ -19,7 +18,8 @@ public class LogInfo extends DefaultRevisionEntity {
     @Column(name = "CHANGED_AT")
     private LocalDateTime changeDate = LocalDateTime.now();
 
-
+    @Column(name ="REVTYPE")
+    private Byte revtype;
 
     public String getUsername() {
         return username;
@@ -37,4 +37,11 @@ public class LogInfo extends DefaultRevisionEntity {
         this.changeDate = changeDate;
     }
 
+    public void setType(Byte type) {
+        this.revtype = type;
+    }
+
+    public Byte getType() {
+        return revtype;
+    }
 }

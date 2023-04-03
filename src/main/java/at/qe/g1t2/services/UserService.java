@@ -81,7 +81,6 @@ public class UserService implements Serializable {
      * @param user the user to delete
      */
     @PreAuthorize("hasAuthority('ADMIN')")
-    @Transactional
     public void deleteUser(Userx user) {
 
      /*Collection<SensorStationGardener> sensorStationGardeners = sensorStationGardenerRepository.findSensorStationsGardenersByGardener(user);
