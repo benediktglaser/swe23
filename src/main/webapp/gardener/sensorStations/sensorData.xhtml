@@ -16,7 +16,7 @@
                         <h:outputText value="#{sensorData.measurement}"/>
                     </p:column>
                     <p:column headerText="Unit" class="ui-datatable-header">
-                        <h:outputText value="#{sensorData.unit}"/>
+                        <h:outputText value="#{sensorData.getType().getUnit()}"/>
                     </p:column>
                     <p:column headerText="Type" class="ui-datatable-header">
                         <h:outputText value="#{sensorData.type}"/>

@@ -46,6 +46,10 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<SensorData> sensorData = new ArrayList<>();
 
+    @OneToMany(mappedBy = "sensorStation", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<SensorDataTypeInfo> sensorDataTypeInfos = new ArrayList<>();
+
     public List<SensorData> getSensorData() {
         return sensorData;
     }
@@ -170,5 +174,13 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
 
     public void setGardener(Userx gardener) {
         this.gardener = gardener;
+    }
+
+    public List<SensorDataTypeInfo> getSensorDataTypeInfos() {
+        return sensorDataTypeInfos;
+    }
+
+    public void setSensorDataTypeInfos(List<SensorDataTypeInfo> sensorDataTypeInfos) {
+        this.sensorDataTypeInfos = sensorDataTypeInfos;
     }
 }

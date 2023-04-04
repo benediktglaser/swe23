@@ -3,10 +3,12 @@ DROP TABLE IF EXISTS sensor_station_aud;
 DROP TABLE IF EXISTS access_point_aud;
 DROP TABLE IF EXISTS userx_user_role_aud;
 DROP TABLE IF EXISTS userx_aud;
+DROP TABLE IF EXISTS sensor_data_type_info_aud;
 DROP TABLE IF EXISTS revinfo;
 DROP TABLE IF EXISTS log_info_seq;
 DROP TABLE IF EXISTS log_info;
 DROP TABLE IF EXISTS sensor_data;
+DROP TABLE IF EXISTS sensor_data_type_info;
 DROP TABLE IF EXISTS sensor_station_gardener;
 DROP TABLE IF EXISTS sensor_station;
 DROP TABLE IF EXISTS access_point;
@@ -33,11 +35,22 @@ CREATE TABLE sensor_data
     measurement       DOUBLE       NOT NULL,
     sensor_station_id VARCHAR(255) NULL,
     type              VARCHAR(255) NULL,
-    unit              VARCHAR(255) NULL,
     timestamp         timestamp    NULL,
     create_date       timestamp    NOT NULL,
     CONSTRAINT pk_sensordata PRIMARY KEY (id)
 );
+
+CREATE TABLE sensor_data_type_info(
+    id              VARCHAR(255) NOT NULL,
+    type            VARCHAR(100),
+    minLimit        DOUBLE,
+    maxLimit        DOUBLE,
+    create_date       timestamp    NOT NULL,
+    sensor_station_id VARCHAR(255) NULL,
+    CONSTRAINT pf_sensor_data_type_info PRIMARY KEY (id)
+
+);
+
 
 CREATE TABLE sensor_station
 (
@@ -192,6 +205,9 @@ CREATE TABLE access_point_aud
 */
 ALTER TABLE sensor_data
     ADD CONSTRAINT FK_SENSORDATA_ON_SENSORSTATION FOREIGN KEY (sensor_station_id) REFERENCES sensor_station (id) ON DELETE CASCADE;
+
+ALTER TABLE sensor_data_type_info
+    ADD CONSTRAINT FK_SENSOR_TYPE_INFO_ON_SENSORSTATION FOREIGN KEY (sensor_station_id) REFERENCES sensor_station (id) ON DELETE CASCADE;
 
 ALTER TABLE sensor_station
     ADD CONSTRAINT FK_SENSORSTATIONGARDENER_ON_GARDENER_USERNAME FOREIGN KEY (gardener_id) REFERENCES userx (username) ON DELETE SET NULL;

@@ -81,14 +81,14 @@ public class UserDetailController implements Serializable {
 
     public void doDeleteUser() {
         this.userService.deleteUser(user);
-        System.out.println(logInfoRepository.findAll());
+      /*  System.out.println(logInfoRepository.findAll());
       logInfoRepository.joinAccessAud().forEach(x ->{
 
           System.out.println((Byte)x[0]);
           System.out.println((Integer) x[1]);
           System.out.println((String) x[4] );
               // Fügen Sie hier den Code ein, um mit den Daten zu arbeiten
-      });
+      });*/
         user = null;
     }
 

@@ -2,6 +2,7 @@ package at.qe.g1t2.services;
 
 
 import at.qe.g1t2.model.SensorData;
+import at.qe.g1t2.model.SensorDataType;
 import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.repositories.SensorDataRepository;
 import at.qe.g1t2.repositories.SensorStationRepository;
@@ -56,7 +57,7 @@ public class SensorDataService {
         return sensorDataRepository.findBySensorStationId(uuid);
     }
 
-    public Collection<SensorData> getAllSensorDataByType(String type) {
+    public Collection<SensorData> getAllSensorDataByType(SensorDataType type) {
         return sensorDataRepository.findByType(type);
     }
 

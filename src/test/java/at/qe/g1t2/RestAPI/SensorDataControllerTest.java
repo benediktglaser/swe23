@@ -1,7 +1,9 @@
 package at.qe.g1t2.RestAPI;
 
 
-import at.qe.g1t2.RestAPI.model.SensorDataTransfer;
+import at.qe.g1t2.RestAPI.model.SensorDataDTO;
+import at.qe.g1t2.model.SensorDataType;
+import at.qe.g1t2.model.SensorDataTypeInfo;
 import at.qe.g1t2.services.SensorDataService;
 import at.qe.g1t2.services.SensorStationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,26 +38,25 @@ public class SensorDataControllerTest {
 
 
     @Test
-    @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    @WithMockUser(username = "7269ddec-30c6-44d9-bc1f-8af18da09ed3", authorities = {"ACCESS_POINT"})
     public void testPostMapping() throws Exception {
-        SensorDataTransfer sensorDataTransfer = new SensorDataTransfer();
-        sensorDataTransfer.setSensorStation("f11c3324-125f-4b2d-8b82-3692b0772d95");
-        sensorDataTransfer.setMeasurement(0.9);
-        sensorDataTransfer.setTimestamp(LocalDateTime.now());
-        sensorDataTransfer.setType("Temperature");
-        sensorDataTransfer.setUnit("Fahrenheit");
+        SensorDataDTO sensorDataDTO = new SensorDataDTO();
+        sensorDataDTO.setMeasurement(0.9);
+        sensorDataDTO.setTimestamp(LocalDateTime.now());
+        sensorDataDTO.setType(SensorDataType.TEMPERATURE);
+        sensorDataDTO.setDipId(1L);
 
-        int size = sensorDataService.getAllSensorDataByStation("f11c3324-125f-4b2d-8b82-3692b0772d95").size();
+        int size = sensorDataService.getAllSensorDataByStation("8ccfdfaa-9731-4786-8efa-e2141e5c4095").size();
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
 
-        String requestBody = objectMapper.writeValueAsString(sensorDataTransfer);
+        String requestBody = objectMapper.writeValueAsString(sensorDataDTO);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/sensorData").contentType(MediaType.APPLICATION_JSON)
-                .content(requestBody)).andExpect(MockMvcResultMatchers.status().isOk());
+                .content(requestBody)).andExpect(MockMvcResultMatchers.status().isCreated());
 
-        Assertions.assertEquals(size + 1, sensorDataService.getAllSensorDataByStation("f11c3324-125f-4b2d-8b82-3692b0772d95").size());
+        Assertions.assertEquals(size + 1, sensorDataService.getAllSensorDataByStation("8ccfdfaa-9731-4786-8efa-e2141e5c4095").size());
 
 
     }
