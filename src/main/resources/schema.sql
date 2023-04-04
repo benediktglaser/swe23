@@ -1,4 +1,3 @@
-DROP TABLE IF EXISTS favourites_aud;
 DROP TABLE IF EXISTS sensor_data_aud;
 DROP TABLE IF EXISTS sensor_station_aud;
 DROP TABLE IF EXISTS access_point_aud;
@@ -6,14 +5,15 @@ DROP TABLE IF EXISTS userx_user_role_aud;
 DROP TABLE IF EXISTS userx_aud;
 DROP TABLE IF EXISTS revinfo;
 DROP TABLE IF EXISTS log_info_seq;
+DROP TABLE IF EXISTS users_favourites_aud;
 DROP TABLE IF EXISTS log_info;
 DROP TABLE IF EXISTS sensor_data;
 DROP TABLE IF EXISTS sensor_station_gardener;
+DROP TABLE IF EXISTS users_favourites;
 DROP TABLE IF EXISTS sensor_station;
 DROP TABLE IF EXISTS access_point;
 DROP TABLE IF EXISTS userx_user_role;
 DROP TABLE IF EXISTS userx;
-DROP TABLE IF EXISTS favourites;
 
 CREATE TABLE access_point
 (
@@ -219,7 +219,7 @@ ALTER TABLE userx_user_role
     ADD CONSTRAINT fk_userx_userrole_on_userx FOREIGN KEY (userx_username) REFERENCES userx (username);
 
 ALTER TABLE users_favourites
-    ADD CONSTRAINT fk_user_favourites_on_userx FOREIGN KEY (username) REFERENCES userx(username);
+    ADD CONSTRAINT fk_users_favourites_on_userx FOREIGN KEY (username) REFERENCES userx(username);
 
 ALTER TABLE users_favourites
-    ADD CONSTRAINT fk_user_favourites_on_sensor_station FOREIGN KEY (sensor_station_id) REFERENCES sensor_station(id);
+    ADD CONSTRAINT fk_users_favourites_on_sensor_station FOREIGN KEY (sensor_station_id) REFERENCES sensor_station(id);
