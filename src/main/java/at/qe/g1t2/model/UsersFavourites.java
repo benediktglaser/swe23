@@ -14,11 +14,11 @@ public class UsersFavourites implements Persistable<String>, Serializable, Compa
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "username")
     Userx user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sensor_station_id")
     SensorStation sensorStation;
 

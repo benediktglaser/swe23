@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -44,10 +45,15 @@ public class UsersFavouritesService {
         return userFavouritesRepository.getAllSensorStationsByUser(getAuthenticatedUser());
     }
 
-    public void removeFromUsersFavourites(UsersFavourites usersFavourites){
+    public void removeFromUsersFavourites(SensorStation sensorStation){
+        UsersFavourites usersFavourites = userFavouritesRepository.getUsersFavouritesBySensorStationAndUser(sensorStation, getAuthenticatedUser());
+        sensorStation.getUsersFavourites().remove(usersFavourites);
         getAuthenticatedUser().getUsersFavourites().remove(usersFavourites);
-        usersFavourites.getSensorStation().getUsersFavourites().remove(usersFavourites);
+        sensorStationRepository.save(sensorStation);
+        userRepository.save(getAuthenticatedUser());
+        System.out.println(usersFavourites);
         userFavouritesRepository.delete(usersFavourites);
+
     }
 
 

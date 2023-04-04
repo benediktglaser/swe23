@@ -41,7 +41,8 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     private LocalDateTime updateDate;
 
     @OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
-    List<UsersFavourites> usersFavourites;
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    Set<UsersFavourites> usersFavourites;
 
     private String password;
 
@@ -198,11 +199,11 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
         return this.username.compareTo(o.getUsername());
     }
 
-    public List<UsersFavourites> getUsersFavourites() {
+    public Set<UsersFavourites> getUsersFavourites() {
         return usersFavourites;
     }
 
-    public void setUsersFavourites(List<UsersFavourites> usersFavourites) {
+    public void setUsersFavourites(Set<UsersFavourites> usersFavourites) {
         this.usersFavourites = usersFavourites;
     }
 }

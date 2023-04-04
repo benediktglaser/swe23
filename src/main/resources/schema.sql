@@ -219,7 +219,7 @@ ALTER TABLE userx_user_role
     ADD CONSTRAINT fk_userx_userrole_on_userx FOREIGN KEY (userx_username) REFERENCES userx (username);
 
 ALTER TABLE users_favourites
-    ADD CONSTRAINT fk_users_favourites_on_userx FOREIGN KEY (username) REFERENCES userx(username);
+    ADD CONSTRAINT fk_users_favourites_on_userx FOREIGN KEY (username) REFERENCES userx(username) ON DELETE CASCADE;
 
 ALTER TABLE users_favourites
-    ADD CONSTRAINT fk_users_favourites_on_sensor_station FOREIGN KEY (sensor_station_id) REFERENCES sensor_station(id);
+    ADD CONSTRAINT fk_users_favourites_on_sensor_station FOREIGN KEY (sensor_station_id) REFERENCES sensor_station(id) ON DELETE CASCADE;

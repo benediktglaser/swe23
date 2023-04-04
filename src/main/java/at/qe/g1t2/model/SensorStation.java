@@ -45,7 +45,8 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
     private Userx gardener;
 
     @OneToMany(mappedBy = "sensorStation",fetch = FetchType.EAGER)
-    List<UsersFavourites> usersFavourites;
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    Set<UsersFavourites> usersFavourites;
 
     @OneToMany(mappedBy = "sensorStation", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -177,11 +178,11 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
         this.gardener = gardener;
     }
 
-    public List<UsersFavourites> getUsersFavourites() {
+    public Set<UsersFavourites> getUsersFavourites() {
         return usersFavourites;
     }
 
-    public void setUsersFavourites(List<UsersFavourites> usersFavourites) {
+    public void setUsersFavourites(Set<UsersFavourites> usersFavourites) {
         this.usersFavourites = usersFavourites;
     }
 }

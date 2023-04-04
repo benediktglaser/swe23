@@ -10,61 +10,49 @@
                 template="/WEB-INF/templates/main.xhtml">
     <ui:define name="content">
         <div class="card">
-            <h:form>
-                <div class="card crud-demo">
-                    <h:form id="form">
-                        <p:growl id="messages" showDetail="true"/>
-                        <p:dataTable id="dt-products" widgetVar="dtProducts" var="plant" value="#{dashboardController.sensorStationsByName}"
-                                     reflow="true" styleClass="products-table" selection="#{dashboardController.plant}"
-                                     paginator="true" rows="10" rowSelectMode="add"
-                                     paginatorPosition="bottom">
-                            <f:facet name="header">
-                                <div class="products-table-header">
-                                    <span style="font-weight: bold">Search from all available plants</span>
-                                    <span class="filter-container ui-input-icon-left"> <i class="pi pi-search"></i>
-                                        <p:inputText id="globalFilter" onkeyup="PF('dtProducts').filter()" placeholder="Search"/>
-                                    </span>
-                                </div>
-                            </f:facet>
-
-
-                            <p:column headerText="name" sortBy="#{plant.name}" filterBy="#{plant.name}">
-                                <h:outputText value="#{plant.name}"/>
-                            </p:column>
-                            <p:column>
-                                <p:graphicImage library="images" name="plant-test1.png" height="100" width="200"/>
-                            </p:column>
-                            <!--<p:column headerText="Image" exportable="false">
-                                <p:graphicImage name="images/product/#{plant.image}" library="demo"
-                                                styleClass="product-image"/>
-                            </p:column>-->
-                            <p:column headerText="Category" sortBy="#{plant.category}" filterBy="#{plant.category}">
-                                <h:outputText value="#{plant.category}"/>
-                            </p:column>
-                            <p:column exportable="false">
-                                <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
-                                                 process="@this"
-                                                 oncomplete="PF('deleteProductDialog').show()">
-                                    <f:setPropertyActionListener value="#{plant}"
-                                                                 target="#{dashboardController.plant}"/>
-                                </p:commandButton>
-                            </p:column>
-                        </p:dataTable>
-                    </h:form>
-                    <h:form id="dialogs">
-                        <p:confirmDialog widgetVar="deleteProductDialog" showEffect="fade" width="300"
-                                         message="Delete the product?" header="Confirm" severity="warn">
-                            <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{dashboardController.removeFromUsersFavourite()}"
-                                             process="@this" update="@form"
-                                             oncomplete="PF('deleteProductDialog').hide()"/>
-                            <p:commandButton value="No" type="button" styleClass="ui-button-secondary"
-                                             icon="pi pi-times"
-                                             onclick="PF('deleteProductDialog').hide()"/>
-                        </p:confirmDialog>
-                    </h:form>
-                </div>
-
+            <h:form id="form">
+                <p:dataTable id="dt-products" var="plant" value="#{dashboardController.sensorStationsByName}"
+                             styleClass="products-table">
+                    <!--<f:facet name="header">
+                        <div class="products-table-header">
+                            <span style="font-weight: bold">Search from all available plants</span>
+                            <span class="filter-container ui-input-icon-left"> <i class="pi pi-search"></i>
+                                <p:inputText id="globalFilter" onkeyup="PF('dtProducts').filter()" placeholder="Search"/>
+                            </span>
+                        </div>
+                    </f:facet>-->
+                    <p:column headerText="name">
+                        <h:outputText value="#{plant.name}"/>
+                    </p:column>
+                    <p:column>
+                        <p:graphicImage library="images" name="plant-test1.png" height="100" width="200"/>
+                    </p:column>
+                    <!--<p:column headerText="Image" exportable="false">
+                        <p:graphicImage name="images/product/#{plant.image}" library="demo"
+                                        styleClass="product-image"/>
+                    </p:column>-->
+                    <p:column headerText="Category">
+                        <h:outputText value="#{plant.category}"/>
+                    </p:column>
+                    <p:column>
+                        <p:commandButton update=":form" icon="pi pi-trash"
+                                         action="#{dashboardController.removeFromUsersFavourite(plant)}"/>
+                    </p:column>
+                </p:dataTable>
             </h:form>
+            <!--<h:form id="dialogs">
+                <p:confirmDialog widgetVar="deleteProductDialog" showEffect="fade" width="300"
+                                 message="Delete the product?" header="Confirm" severity="warn">
+                    <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{dashboardController.removeFromUsersFavourite}"
+                                     process="@this" update="@form"
+                                     oncomplete="PF('deleteProductDialog').hide()"/>
+                    <p:commandButton value="No" type="button" styleClass="ui-button-secondary"
+                                     icon="pi pi-times"
+                                     onclick="PF('deleteProductDialog').hide()"/>
+                </p:confirmDialog>
+            </h:form>-->
         </div>
+
+
     </ui:define>
 </ui:composition>

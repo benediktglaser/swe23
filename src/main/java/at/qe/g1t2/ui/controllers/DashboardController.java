@@ -7,6 +7,7 @@ import at.qe.g1t2.services.UsersFavouritesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 
@@ -21,32 +22,24 @@ public class DashboardController {
     private UsersFavouritesService usersFavouritesService;
 
     private UsersFavourites usersFavourites;
-    private String plantName;
-    private String category;
+    private SensorStation sensorStation;
 
-
-    public String getPlant() {
-        return plantName;
+    public SensorStation getSensorStation() {
+        return sensorStation;
     }
 
-    public void setPlant(String text1) {
-        this.plantName = plantName;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String text2) {
-        this.category = category;
+    public void setSensorStation(SensorStation sensorStation) {
+        this.sensorStation = sensorStation;
     }
 
     public Collection<SensorStation> getSensorStationsByName() {
         return usersFavouritesService.getAllFavouritesSensorStationsForUser();
     }
 
-    public void removeFromUsersFavourite(){
-        usersFavouritesService.removeFromUsersFavourites(this.usersFavourites);
+    public void removeFromUsersFavourite(SensorStation sensorStation){
+        System.out.println(sensorStation);
+        usersFavouritesService.removeFromUsersFavourites(sensorStation);
     }
+
 }
 
