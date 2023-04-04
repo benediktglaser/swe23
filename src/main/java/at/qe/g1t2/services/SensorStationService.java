@@ -70,14 +70,6 @@ public class SensorStationService {
 
     }
 
-    /*public Collection<SensorStation> getAllSensorStationsByName(String plantName){
-        if(plantName!=null){
-            return sensorStationRepository.getSensorStationsByUserAndName(getAuthenticatedUser(),plantName);
-        }
-        return sensorStationRepository.findAll();
-
-    }*/
-
     public SensorStation getSensorStationByAccessPointIdAndDipId(String accessPointId, Long dipId) {
         return sensorStationRepository.findSensorStationByAccessPointAndDipId((accessPointRepository.findAccessPointById(accessPointId)), dipId);
     }

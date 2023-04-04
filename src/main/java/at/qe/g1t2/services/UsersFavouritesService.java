@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 
 @Service
 @Scope("application")
@@ -39,6 +40,15 @@ public class UsersFavouritesService {
         return userFavouritesRepository.save(usersFavourites);
     }
 
+    public Collection<SensorStation> getAllFavouritesSensorStationsForUser(){
+        return userFavouritesRepository.getAllSensorStationsByUser(getAuthenticatedUser());
+    }
+
+    public void removeFromUsersFavourites(UsersFavourites usersFavourites){
+        getAuthenticatedUser().getUsersFavourites().remove(usersFavourites);
+        usersFavourites.getSensorStation().getUsersFavourites().remove(usersFavourites);
+        userFavouritesRepository.delete(usersFavourites);
+    }
 
 
     private Userx getAuthenticatedUser() {

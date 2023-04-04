@@ -1,14 +1,9 @@
 package at.qe.g1t2.ui.controllers;
 
 import at.qe.g1t2.model.SensorStation;
+import at.qe.g1t2.model.UsersFavourites;
 import at.qe.g1t2.services.SensorStationService;
-import jakarta.enterprise.context.RequestScoped;
-import jakarta.faces.application.FacesMessage;
-import jakarta.faces.context.FacesContext;
-import jakarta.inject.Named;
-import org.primefaces.event.CloseEvent;
-import org.primefaces.event.DashboardReorderEvent;
-import org.primefaces.event.ToggleEvent;
+import at.qe.g1t2.services.UsersFavouritesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -17,11 +12,15 @@ import java.util.Collection;
 
 @Controller
 @Scope("view")
-public class SearchViewDashboard {
+public class DashboardController {
 
     @Autowired
     private SensorStationService sensorStationService;
 
+    @Autowired
+    private UsersFavouritesService usersFavouritesService;
+
+    private UsersFavourites usersFavourites;
     private String plantName;
     private String category;
 
@@ -42,9 +41,12 @@ public class SearchViewDashboard {
         this.category = category;
     }
 
-    /*public Collection<SensorStation> getSensorStationsByName() {
-        return sensorStationService.getAllSensorStationsByName(this.plantName);
-    }*/
+    public Collection<SensorStation> getSensorStationsByName() {
+        return usersFavouritesService.getAllFavouritesSensorStationsForUser();
+    }
 
+    public void removeFromUsersFavourite(){
+        usersFavouritesService.removeFromUsersFavourites(this.usersFavourites);
+    }
 }
 
