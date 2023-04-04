@@ -16,6 +16,9 @@ public class UsersFavouritesServiceTest {
     UsersFavouritesService usersFavouritesService;
 
     @Autowired
+    UserService userService;
+
+    @Autowired
     SensorStationService sensorStationService;
 
     @Test
@@ -23,6 +26,8 @@ public class UsersFavouritesServiceTest {
     void saveNewUsersFavouritesTest(){
         SensorStation sensorStation = sensorStationService.loadSensorStation("4e9bca4a-5df7-4d5f-af5f-4493458f57f7");
         UsersFavourites usersFavourites = new UsersFavourites();
+        usersFavourites.setUser(userService.loadUser("user2"));
+        usersFavourites.setSensorStation(sensorStation);
         usersFavouritesService.saveUsersFavourites(sensorStation, usersFavourites);
         Assertions.assertEquals(sensorStation.getUsersFavourites().size(), 1);
     }
