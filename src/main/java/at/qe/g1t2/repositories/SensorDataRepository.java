@@ -2,7 +2,9 @@ package at.qe.g1t2.repositories;
 
 import at.qe.g1t2.model.SensorData;
 import at.qe.g1t2.model.SensorDataType;
+import at.qe.g1t2.model.SensorStation;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
 import java.util.UUID;
@@ -11,7 +13,7 @@ import java.util.UUID;
  * Repository for managing {@link SensorData} entities.
  */
 
-public interface SensorDataRepository extends JpaRepository<SensorData, UUID> {
+public interface SensorDataRepository extends JpaRepository<SensorData, String>,JpaSpecificationExecutor<SensorData> {
 
     SensorData findSensorDataById(String uuid);
 

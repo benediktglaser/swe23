@@ -4,11 +4,15 @@ import at.qe.g1t2.model.Userx;
 import at.qe.g1t2.repositories.UserxRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -39,6 +43,12 @@ public class UserService implements Serializable {
     @Transactional
     public Collection<Userx> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @Transactional
+    public Page<Userx> getAllUsers(Specification<Userx> spec, Pageable page) {
+        return userRepository.findAll(spec,page);
     }
 
     /**
@@ -83,12 +93,6 @@ public class UserService implements Serializable {
     @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteUser(Userx user) {
 
-     /*Collection<SensorStationGardener> sensorStationGardeners = sensorStationGardenerRepository.findSensorStationsGardenersByGardener(user);
-        sensorStationGardeners.forEach(x -> {
-            x.getSensorStation().getSensorStationGardener().remove(x);
-            x.getGardener().getSensorStationGardener().remove(x);
-            sensorStationGardenerRepository.delete(x);
-        });*/
         userRepository.delete(user);
     }
 

@@ -3,6 +3,7 @@ package at.qe.g1t2.ui.controllers;
 
 import at.qe.g1t2.model.LogInfo;
 import at.qe.g1t2.services.LogInfoService;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -15,9 +16,12 @@ public class AuditLogController {
     @Autowired
     private LogInfoService logInfoService;
 
+    List<LogInfo> infos;
 
     public List<LogInfo> getLogs(){
-
-        return logInfoService.getAllLogEntry();
+        if(infos == null){
+            infos = logInfoService.getAllLogEntry();
+        }
+        return infos;
     }
 }

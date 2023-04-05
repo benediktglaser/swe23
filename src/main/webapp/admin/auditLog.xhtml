@@ -12,16 +12,16 @@
             <div class="container">
                 <p:dataTable id ="auditLogTable" var="auditLog" value="#{auditLogController.getLogs()}"
                              class="auditLogTable" >
-                    <p:column headerText="Log Id" class="ui-datatable-header">
+                    <p:column headerText="Log Id" class="ui-datatable-header" sortBy ="#{auditLog.getId()}" filterBy="#{auditLog.id}">
                         <h:outputText value="#{auditLog.getId()}"/>
                     </p:column>
-                    <p:column headerText="Modified by" class="ui-datatable-header">
+                    <p:column headerText="Modified by" class="ui-datatable-header" sortBy= "#{auditLog.getUsername()}" filterBy="#{auditLog.username}">
                         <h:outputText value="#{auditLog.getUsername()}"/>
                     </p:column>
-                    <p:column headerText="Type of Operation" class="ui-datatable-header">
+                    <p:column headerText="Type of Operation" class="ui-datatable-header" sortBy= "#{auditLog.type}" filterBy="#{auditLog.type}">
                         <h:outputText value="#{auditLog.getType()}"/>
                     </p:column>
-                    <p:column headerText="Log Date" class="ui-datatable-header">
+                    <p:column headerText="Log Date" class="ui-datatable-header" sortBy="#{auditLog.getChangeDate()}" filterBy="#{auditLog.changeDate}">
                         <h:outputText value="#{(auditLog.getChangeDate()).toLocalDate()}"/>
                     </p:column>
                 </p:dataTable>

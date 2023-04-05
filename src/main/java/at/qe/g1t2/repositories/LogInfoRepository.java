@@ -4,6 +4,7 @@ import at.qe.g1t2.model.LogInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface LogInfoRepository extends JpaRepository<LogInfo, Integer> {
@@ -19,4 +20,6 @@ public interface LogInfoRepository extends JpaRepository<LogInfo, Integer> {
             UNION ALL
             SELECT log_info.id, log_info.timestamp, changed_at, sda.revtype, modified_by from log_info join sensor_data_type_info_aud sda on log_info.id = sda.rev;""", nativeQuery = true)
     List<Object[]> joinAccessAud();
+
+     List<LogInfo> findLogInfoByChangeDateBetween(LocalDateTime firstDate, LocalDateTime lastDate);
 }

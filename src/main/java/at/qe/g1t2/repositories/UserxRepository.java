@@ -1,8 +1,10 @@
 package at.qe.g1t2.repositories;
 
+import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.model.UserRole;
 import at.qe.g1t2.model.Userx;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -14,7 +16,7 @@ import java.util.List;
  * This class is part of the skeleton project provided for students of the
  * course "Software Engineering" offered by the University of Innsbruck.
  */
-public interface UserxRepository extends JpaRepository<Userx, String> {
+public interface UserxRepository extends JpaRepository<Userx, String>, JpaSpecificationExecutor<Userx> {
 
 
     Userx findFirstByUsername(String username);

@@ -5,18 +5,20 @@ import at.qe.g1t2.model.AccessPointRole;
 import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.repositories.AccessPointRepository;
 import at.qe.g1t2.repositories.SensorStationRepository;
-import org.hibernate.envers.AuditReader;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * This Class saves/delete Accesspoints and allows tho remove/add Sensorstations
@@ -56,16 +58,29 @@ public class AccessPointService {
     }
 
 
-    public List<SensorStation> getAllSensorStations(AccessPoint accessPoint) {
+    public List<SensorStation> getAllSensorStationsByAccessPoint(AccessPoint accessPoint) {
         return sensorStationRepository.getSensorStationsByAccessPoint(accessPoint);
     }
 
-    public Collection<AccessPoint> getAllAccessPoints() {
+    public Page<SensorStation> getAllSensorStationsByAccessPoint(Specification<SensorStation> spec,Pageable page,AccessPoint accessPoint) {
+        return sensorStationRepository.getSensorStationsByAccessPoint(spec,page,accessPoint);
+    }
+
+
+
+    public List<AccessPoint> getAllAccessPoints() {
         return accessPointRepository.findAll();
     }
 
+    public Page<AccessPoint> getAllAccessPoints(Specification<AccessPoint> spec,Pageable pageable) {
+        return accessPointRepository.findAll(spec,pageable);
+    }
     public SensorStation getSensorStationByAccessPointIdAndDipId(String accessPointId, Long dipId) {
         return sensorStationRepository.findSensorStationByAccessPointAndDipId(loadAccessPoint(accessPointId), dipId);
+    }
+
+    public Page<SensorStation> getSensorStationByAccessPointIdAndDipId(Specification<SensorStation> spec,Pageable page,AccessPoint accessPoint, Long dipId) {
+        return sensorStationRepository.getSensorStationsByAccessPointAndDipId(spec,page,accessPoint,dipId);
     }
 
     public Long numberOfAccessPoint(){

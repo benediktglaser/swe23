@@ -8,17 +8,17 @@
                 template="/WEB-INF/templates/main.xhtml">
     <ui:define name ="content">
         <h:form id="accessPointForm">
-            <p:dataTable id="accessPointTable" var="accessPoint" value="#{accessPointController.allAccessPoints}">
-                <p:column headerText="UUID">
+            <p:dataTable id="accessPointTable" var="accessPoint" value="#{accessPointController}" lazy="true" rows="3" paginator="true" scrollable="true" scrollHeight="400">
+                <p:column headerText="UUID" sortBy="#{accessPoint.id}" filterBy="#{accessPoint.id}">
                     <h:outputText value="#{accessPoint.id}"/>
                 </p:column>
-                <p:column headerText="AccessPoint name">
+                <p:column headerText="AccessPoint name" sortBy="#{accessPoint.accessPointName}" filterBy="#{accessPoint.accessPointName}">
                     <h:outputText value="#{accessPoint.accessPointName}"/>
                 </p:column>
-                <p:column headerText="connected">
+                <p:column headerText="connected" sortBy="#{accessPoint.connected}" filterBy="#{accessPoint.connected}">
                     <h:selectBooleanCheckbox value="#{accessPoint.connected}" disabled="true"/>
                 </p:column>
-                <p:column headerText="Enabled">
+                <p:column headerText="Enabled" sortBy="#{accessPoint.enabled}" filterBy="#{accessPoint.enabled}">
                     <h:selectBooleanCheckbox value="#{accessPoint.enabled}" disabled="false"/>
                 </p:column>
                 <p:column style="width:100px;text-align: center">
@@ -30,6 +30,9 @@
                         <p:confirm header="Confirmation" message="Are you sure that you want to delete this AccessPoint? You cannot undo this operation." icon="ui-icon-alert" />
                     </p:commandButton>
                 </p:column>
+                <p:column style="width:100px;text-align: center">
+                    <p:commandButton icon="pi pi-link" update=":accessPointForm:accessPointLinkDialog" action="#{sensorStationListController.filterSensorStationsByAccessPoint(accessPoint)}" oncomplete="PF('accessPointLinkDialog').show()" />
+                </p:column>
             </p:dataTable>
 
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300">
@@ -37,6 +40,30 @@
                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
             </p:confirmDialog>
 
+            <p:dialog header="Link AccessPoint" id="accessPointLinkDialog" widgetVar="accessPointLinkDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="accessPointLinkData">
+                <p:dataTable id="ConnectTable" value="#{sensorStationListController}" var="sensorStation" lazy="true" rows="3" paginator="true" scrollable="true" scrollHeight="400">
+                    <p:column headerText="UUID" sortBy="#{sensorStation.id}" filterBy="#{sensorStation.id}">
+                        <h:outputText value="#{sensorStation.id}"/>
+                    </p:column>
+                    <p:column headerText="DIP Id" sortBy="#{sensorStation.dipId}" filterBy="#{sensorStation.dipId}">
+                        <h:outputText value="#{sensorStation.dipId}" />
+                    </p:column>
+                    <p:column headerText="Plant Name" sortBy="#{sensorStation.category}" filterBy="#{sensorStation.category}">
+                        <h:outputText value="#{sensorStation.name}"/>
+                    </p:column>
+                    <p:column headerText="Plant Category" sortBy="#{sensorStation.category}" filterBy="#{sensorStation.category}">
+                        <h:outputText value="#{sensorStation.category}"/>
+                    </p:column>
+                    <p:column headerText="Create Date" sortBy="#{sensorStation.createDate}" filterBy="#{sensorStation.createDate}">
+                        <h:outputText value="#{sensorStation.createDate.toLocalDate()}"/>
+                    </p:column>
+                    <p:column headerText="Gardener" sortBy="#{sensorStation.gardener}" filterBy="#{sensorStation.gardener}" >
+                        <h:outputText value="#{sensorStation.gardener}"/>
+                    </p:column>
+                    </p:dataTable>
+                </p:outputPanel>
+            </p:dialog>
             <p:dialog header="Edit AccessPoint" id="accessPointEditDialog" widgetVar="accessPointEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                 <p:outputPanel id="accessPointData" rendered="#{not empty accessPointDetailController.accessPoint}">
                     <h:panelGrid columns="2">

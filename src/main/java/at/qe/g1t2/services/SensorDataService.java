@@ -8,9 +8,13 @@ import at.qe.g1t2.repositories.SensorDataRepository;
 import at.qe.g1t2.repositories.SensorStationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -49,6 +53,10 @@ public class SensorDataService {
         }
         sensorDataRepository.save(sensorData);
         return sensorData;
+    }
+
+    public Page<SensorData> getAllSensorData(Specification<SensorData> spec, Pageable page){
+        return sensorDataRepository.findAll(spec,page);
     }
 
 
