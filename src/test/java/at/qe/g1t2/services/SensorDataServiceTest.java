@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -54,6 +55,7 @@ public class SensorDataServiceTest {
     @Test
     @DirtiesContext
     @WithMockUser(username = "elvis", authorities = {"ADMIN"})
+    @Transactional
     public void testSaveNewSensorData() {
         SensorData newSensorData = new SensorData();
         newSensorData.setMeasurement(34.21);

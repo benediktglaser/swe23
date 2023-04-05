@@ -6421,7 +6421,7 @@ body .ui-accordion .ui-accordion-content:last-of-type {
 body .ui-card {
   margin-left: auto;
   margin-right: auto;
-  width: 8em;
+  width: 20rem;
   background-color:#4682b4 !important;
   color: rgba(255, 255, 255, 0.87);
   box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(119, 67, 67, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
@@ -6429,13 +6429,16 @@ body .ui-card {
 }
 body .ui-card .ui-card-body {
   padding: 1rem;
+
 }
 body .ui-card .ui-card-title {
+  text-align: center;
   font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
 }
 body .ui-card .ui-card-subtitle {
+  text-align: center;
   font-weight: 700;
   margin-bottom: 0.5rem;
   color: rgba(255, 255, 255, 0.6);
@@ -6445,6 +6448,12 @@ body .ui-card .ui-card-content {
 }
 body .ui-card .ui-card-footer {
   padding: 1rem 0 0 0;
+}
+
+body .ui-card .ui-card-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
 }
 
 body .ui-dashboard .ui-sortable-placeholder {
@@ -7003,4 +7012,14 @@ body .ui-wizard .ui-icon-arrowthick-1-e:before {
     margin-left: auto;
     margin-right: auto;
     width: 8em;
+}
+.icon-text {
+  display: inline-block;
+  padding: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  color: #fff;
+  background-color: #2196f3;
+  border-radius: 3px;
 }

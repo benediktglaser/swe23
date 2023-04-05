@@ -15,6 +15,7 @@ public class SensorDataListController {
 
     public Collection<SensorData> getSensorData(SensorStation sensorStation)  {
 
+
         return sensorStation.getSensorData();
     }
 }

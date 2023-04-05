@@ -9,9 +9,6 @@
     <ui:define name ="content">
         <h:form id="accessPointForm">
             <p:dataTable id="accessPointTable" var="accessPoint" value="#{accessPointController.allAccessPoints}">
-                <p:column headerText="UUID">
-                    <h:outputText value="#{accessPoint.id}"/>
-                </p:column>
                 <p:column headerText="AccessPoint name">
                     <h:outputText value="#{accessPoint.accessPointName}"/>
                 </p:column>
