@@ -1,12 +1,9 @@
 package at.qe.g1t2.tests;
 
-import net.bytebuddy.utility.dispatcher.JavaDispatcher;
-import org.hibernate.dialect.MySQLDialect;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.internal.util.collections.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
@@ -19,7 +16,7 @@ import at.qe.g1t2.services.UserService;
 
 /**
  * Some very basic tests for {@link UserService}.
- *
+ * <p>
  * This class is part of the skeleton project provided for students of the
  * course "Software Engineering" offered by the University of Innsbruck.
  */
@@ -29,13 +26,12 @@ import at.qe.g1t2.services.UserService;
 public class UserServiceTest {
 
 
-
     @Autowired
     UserService userService;
 
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
-    public void testDatainitialization() {
+    public void testDataInitialization() {
         Assertions.assertEquals(8, userService.getAllUsers().size(), "Insufficient amount of users initialized for test data source");
         for (Userx user : userService.getAllUsers()) {
             if ("admin".equals(user.getUsername())) {
@@ -49,14 +45,14 @@ public class UserServiceTest {
                 Assertions.assertNotNull(user.getCreateUser(), "User \"" + user + "\" does not have a createUser defined");
                 Assertions.assertNotNull(user.getCreateDate(), "User \"" + user + "\" does not have a createDate defined");
                 Assertions.assertNull(user.getUpdateUser(), "User \"" + user + "\" has a updateUser defined");
-                Assertions.assertNull(user.getUpdateDate(), "User \"" + user +"\" has a updateDate defined");
+                Assertions.assertNull(user.getUpdateDate(), "User \"" + user + "\" has a updateDate defined");
             } else if ("user2".equals(user.getUsername())) {
                 Assertions.assertTrue(user.getRoles().contains(UserRole.USER), "User \"" + user + "\" does not have role EMPLOYEE");
                 Assertions.assertNotNull(user.getCreateUser(), "User \"" + user + "\" does not have a createUser defined");
                 Assertions.assertNotNull(user.getCreateDate(), "User \"" + user + "\" does not have a createDate defined");
                 Assertions.assertNull(user.getUpdateUser(), "User \"" + user + "\" has a updateUser defined");
                 Assertions.assertNull(user.getUpdateDate(), "User \"" + user + "\" has a updateDate defined");
-            } else  if ("elvis".equals(user.getUsername())) {
+            } else if ("elvis".equals(user.getUsername())) {
                 Assertions.assertTrue(user.getRoles().contains(UserRole.ADMIN), "User \"" + user + "\" does not have role ADMIN");
                 Assertions.assertNotNull(user.getCreateUser(), "User \"" + user + "\" does not have a createUser defined");
                 Assertions.assertNotNull(user.getCreateDate(), "User \"" + user + "\" does not have a createDate defined");
@@ -163,7 +159,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testUnauthenticateddLoadUsers() {
+    public void testUnauthenticatedLoadUsers() {
         Assertions.assertThrows(org.springframework.security.authentication.AuthenticationCredentialsNotFoundException.class, () -> {
             for (Userx user : userService.getAllUsers()) {
                 Assertions.fail("Call to userService.getAllUsers should not work without proper authorization");

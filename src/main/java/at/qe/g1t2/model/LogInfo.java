@@ -2,7 +2,6 @@ package at.qe.g1t2.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import org.hibernate.envers.Audited;
 import org.hibernate.envers.DefaultRevisionEntity;
 import org.hibernate.envers.RevisionEntity;
 

@@ -1,21 +1,19 @@
 package at.qe.g1t2.tests;
 
 import at.qe.g1t2.RestAPI.model.AccessPointDTO;
-import at.qe.g1t2.RestAPI.model.SensorStationDTO;
 import at.qe.g1t2.services.AccessPointService;
-import at.qe.g1t2.services.SensorStationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 public class AccessPointRegisterControllerTest {
@@ -37,6 +35,6 @@ public class AccessPointRegisterControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(MockMvcResultMatchers.status().isOk());
-        assertEquals(size+1,accessPointService.getAllAccessPoints().size());
+        assertEquals(size + 1, accessPointService.getAllAccessPoints().size());
     }
 }

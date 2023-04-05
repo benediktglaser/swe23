@@ -5,7 +5,6 @@ import at.qe.g1t2.model.SensorDataType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Repository for managing {@link SensorData} entities.

@@ -1,4 +1,4 @@
-package at.qe.g1t2.RestAPI.Controller;
+package at.qe.g1t2.RestAPI.controller;
 
 import at.qe.g1t2.RestAPI.model.SensorDataDTO;
 import at.qe.g1t2.model.SensorData;
@@ -42,6 +42,9 @@ public class SensorDataController {
         System.out.println(sensorData);
         Long dipId = data.getDipId();
         SensorStation sensorStation = sensorStationService.getSensorStationByAccessPointIdAndDipId(accessPointId, dipId);
+        if (sensorStation == null) {
+            return new ResponseEntity<>(Boolean.FALSE, HttpStatus.BAD_REQUEST);
+        }
         sensorDataService.saveSensorData(sensorStation, sensorData);
         return new ResponseEntity<>(Boolean.TRUE, HttpStatus.CREATED);
     }

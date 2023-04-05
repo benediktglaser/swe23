@@ -1,11 +1,8 @@
 package at.qe.g1t2.RestAPI.model;
 
 import at.qe.g1t2.model.SensorDataType;
-import at.qe.g1t2.model.SensorDataTypeInfo;
-import at.qe.g1t2.model.SensorStation;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.lang.NonNull;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
