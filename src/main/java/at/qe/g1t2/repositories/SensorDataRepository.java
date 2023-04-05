@@ -11,7 +11,7 @@ import java.util.UUID;
  * Repository for managing {@link SensorData} entities.
  */
 
-public interface SensorDataRepository extends JpaRepository<SensorData, UUID> {
+public interface SensorDataRepository extends JpaRepository<SensorData, String> {
 
     SensorData findSensorDataById(String uuid);
 

@@ -67,7 +67,12 @@ public class SensorStationService {
 
     }
 
+    @PreAuthorize("hasAnyAuthority('ACCESS_POINT','ADMIN')")
+    @Transactional
     public SensorStation getSensorStationByAccessPointIdAndDipId(String accessPointId, Long dipId) {
+        System.out.println(accessPointId);
+        String test = accessPointRepository.findAccessPointById(accessPointId).getAccessPointID();
+        System.out.println(test);
         return sensorStationRepository.findSensorStationByAccessPointAndDipId((accessPointRepository.findAccessPointById(accessPointId)), dipId);
     }
 

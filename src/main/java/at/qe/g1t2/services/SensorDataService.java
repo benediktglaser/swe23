@@ -29,7 +29,6 @@ public class SensorDataService {
     private SensorStationRepository sensorStationRepository;
 
 
-
     @PreAuthorize("hasAnyAuthority('ACCESS_POINT','ADMIN')")
     @Transactional
     public SensorData loadSensorData(String uuid) {
@@ -50,7 +49,6 @@ public class SensorDataService {
         sensorDataRepository.save(sensorData);
         return sensorData;
     }
-
 
 
     public Collection<SensorData> getAllSensorDataByStation(String uuid) {

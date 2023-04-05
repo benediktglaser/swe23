@@ -3,6 +3,7 @@ package at.qe.g1t2.RestAPI.Controller;
 import at.qe.g1t2.RestAPI.model.SensorDataDTO;
 import at.qe.g1t2.model.SensorData;
 import at.qe.g1t2.model.SensorStation;
+import at.qe.g1t2.repositories.SensorStationRepository;
 import at.qe.g1t2.services.SensorDataService;
 import at.qe.g1t2.services.SensorStationService;
 import jakarta.validation.Valid;
@@ -29,6 +30,8 @@ public class SensorDataController {
     @Autowired
     SensorStationService sensorStationService;
 
+    @Autowired
+    SensorStationRepository sensorStationRepository;
 
     @PostMapping
     private ResponseEntity<Boolean> createMeasurement(@Valid @RequestBody SensorDataDTO data) {
@@ -38,10 +41,9 @@ public class SensorDataController {
         String accessPointId = auth.getName();
         System.out.println(sensorData);
         Long dipId = data.getDipId();
-        SensorStation sensorStation = sensorStationService.getSensorStationByAccessPointIdAndDipId(accessPointId,dipId);
-        sensorDataService.saveSensorData(sensorStation,sensorData);
-
-        return new ResponseEntity<>(Boolean.TRUE,HttpStatus.CREATED);
+        SensorStation sensorStation = sensorStationService.getSensorStationByAccessPointIdAndDipId(accessPointId, dipId);
+        sensorDataService.saveSensorData(sensorStation, sensorData);
+        return new ResponseEntity<>(Boolean.TRUE, HttpStatus.CREATED);
     }
 
 
