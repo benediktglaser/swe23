@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 class SensorStationConnectControllerTest {
@@ -35,6 +36,6 @@ class SensorStationConnectControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(MockMvcResultMatchers.status().isOk());
-        assertEquals(size+1,sensorStationService.getAllSensorStations().size());
+        assertEquals(size + 1, sensorStationService.getAllSensorStations().size());
     }
 }

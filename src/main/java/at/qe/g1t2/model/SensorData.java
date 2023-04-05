@@ -25,6 +25,8 @@ public class SensorData implements Persistable<String>, Serializable, Comparable
 
     private LocalDateTime timestamp;
 
+    //TODO add float if limit has been passed
+
     public LocalDateTime getTimestamp() {
         return timestamp;
     }

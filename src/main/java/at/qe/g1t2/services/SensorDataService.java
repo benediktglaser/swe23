@@ -33,7 +33,6 @@ public class SensorDataService {
     private SensorStationRepository sensorStationRepository;
 
 
-
     @PreAuthorize("hasAnyAuthority('ACCESS_POINT','ADMIN')")
     @Transactional
     public SensorData loadSensorData(String uuid) {
@@ -58,7 +57,6 @@ public class SensorDataService {
     public Page<SensorData> getAllSensorData(Specification<SensorData> spec, Pageable page){
         return sensorDataRepository.findAll(spec,page);
     }
-
 
 
     public Collection<SensorData> getAllSensorDataByStation(String uuid) {
