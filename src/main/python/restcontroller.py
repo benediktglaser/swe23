@@ -106,6 +106,6 @@ if __name__ == "__main__":
     prepare_for_jsf(data)
     # new_measurement = post_measurement_2(data[0])
     # new_measurement = post_measurement(
-    # {"measurement": 1.123, "accessPointName": "7269ddec-30c6-44d9-bc1f-8af18da09ed3", "dipId": 2, "unit": "Fahrenheit", "type": "TEST","timestamp": new_timestamp}
+    {"measurement": 1.123, "accessPointName": "7269ddec-30c6-44d9-bc1f-8af18da09ed3", "dipId": 2, "unit": "Fahrenheit", "type": "TEST","timestamp": new_timestamp}
     # )
     # print(new_measurement)
