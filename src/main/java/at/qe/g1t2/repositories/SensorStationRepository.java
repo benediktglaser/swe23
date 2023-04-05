@@ -6,9 +6,8 @@ import at.qe.g1t2.model.Userx;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
-import java.util.UUID;
 
-public interface SensorStationRepository extends JpaRepository<SensorStation, UUID> {
+public interface SensorStationRepository extends JpaRepository<SensorStation, String> {
 
     SensorStation findSensorStationById(String uuid);
 
