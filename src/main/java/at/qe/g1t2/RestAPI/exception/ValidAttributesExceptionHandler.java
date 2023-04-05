@@ -1,4 +1,4 @@
-package at.qe.g1t2.RestAPI.Exception;
+package at.qe.g1t2.RestAPI.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

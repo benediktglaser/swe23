@@ -1,7 +1,6 @@
 package at.qe.g1t2.model;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.envers.Audited;
@@ -51,6 +50,10 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
     @OneToMany(mappedBy = "sensorStation", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<SensorData> sensorData = new ArrayList<>();
+
+    @OneToMany(mappedBy = "sensorStation", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<SensorDataTypeInfo> sensorDataTypeInfos = new ArrayList<>();
 
     public List<SensorData> getSensorData() {
         return sensorData;
@@ -178,11 +181,11 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
         this.gardener = gardener;
     }
 
-    public Set<UsersFavourites> getUsersFavourites() {
-        return usersFavourites;
+    public List<SensorDataTypeInfo> getSensorDataTypeInfos() {
+        return sensorDataTypeInfos;
     }
 
-    public void setUsersFavourites(Set<UsersFavourites> usersFavourites) {
-        this.usersFavourites = usersFavourites;
+    public void setSensorDataTypeInfos(List<SensorDataTypeInfo> sensorDataTypeInfos) {
+        this.sensorDataTypeInfos = sensorDataTypeInfos;
     }
 }

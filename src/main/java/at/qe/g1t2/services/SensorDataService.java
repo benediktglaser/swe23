@@ -2,14 +2,19 @@ package at.qe.g1t2.services;
 
 
 import at.qe.g1t2.model.SensorData;
+import at.qe.g1t2.model.SensorDataType;
 import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.repositories.SensorDataRepository;
 import at.qe.g1t2.repositories.SensorStationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -26,7 +31,6 @@ public class SensorDataService {
 
     @Autowired
     private SensorStationRepository sensorStationRepository;
-
 
 
     @PreAuthorize("hasAnyAuthority('ACCESS_POINT','ADMIN')")
@@ -50,13 +54,16 @@ public class SensorDataService {
         return sensorData;
     }
 
+    public Page<SensorData> getAllSensorData(Specification<SensorData> spec, Pageable page){
+        return sensorDataRepository.findAll(spec,page);
+    }
 
 
     public Collection<SensorData> getAllSensorDataByStation(String uuid) {
         return sensorDataRepository.findBySensorStationId(uuid);
     }
 
-    public Collection<SensorData> getAllSensorDataByType(String type) {
+    public Collection<SensorData> getAllSensorDataByType(SensorDataType type) {
         return sensorDataRepository.findByType(type);
     }
 

@@ -13,7 +13,7 @@ import at.qe.g1t2.ui.beans.SessionInfoBean;
 
 /**
  * Some very basic tests for {@link UserService}.
- *
+ * <p>
  * This class is part of the skeleton project provided for students of the
  * course "Software Engineering" offered by the University of Innsbruck.
  */

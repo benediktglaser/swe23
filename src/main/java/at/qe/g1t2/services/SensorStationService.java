@@ -9,6 +9,9 @@ import at.qe.g1t2.repositories.SensorStationRepository;
 import at.qe.g1t2.repositories.UserxRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 
 @Component
 @Scope("application")
@@ -69,6 +73,13 @@ public class SensorStationService {
         return sensorStationRepository.findAll();
 
     }
+
+    public Page<SensorStation> getAllSensorStations(Specification<SensorStation>spec, Pageable pageable) {
+        return sensorStationRepository.findAll(spec,pageable);
+
+    }
+
+
 
     public SensorStation getSensorStationByAccessPointIdAndDipId(String accessPointId, Long dipId) {
         return sensorStationRepository.findSensorStationByAccessPointAndDipId((accessPointRepository.findAccessPointById(accessPointId)), dipId);

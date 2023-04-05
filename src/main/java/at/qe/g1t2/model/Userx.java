@@ -1,16 +1,12 @@
 package at.qe.g1t2.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.envers.Audited;
 import org.springframework.data.domain.Persistable;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -57,7 +53,6 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     @CollectionTable(name = "Userx_UserRole")
     @Enumerated(EnumType.STRING)
     private Set<UserRole> roles;
-
 
 
     public String getUsername() {

@@ -20,12 +20,12 @@ public class SensorData implements Persistable<String>, Serializable, Comparable
 
     @ManyToOne(optional = false)
     private SensorStation sensorStation;
-
-    private String type;
-
-    private String unit;
+    @Enumerated(EnumType.STRING)
+    private SensorDataType type;
 
     private LocalDateTime timestamp;
+
+    //TODO add float if limit has been passed
 
     public LocalDateTime getTimestamp() {
         return timestamp;
@@ -35,19 +35,14 @@ public class SensorData implements Persistable<String>, Serializable, Comparable
         this.timestamp = timestamp;
     }
 
-    public void setType(String type) {
+
+
+    public void setType(SensorDataType type) {
         this.type = type;
     }
 
-    public String getUnit() {
-        return unit;
-    }
 
-    public void setUnit(String unit) {
-        this.unit = unit;
-    }
-
-    public String getType() {
+    public SensorDataType getType() {
         return type;
     }
 
@@ -111,4 +106,6 @@ public class SensorData implements Persistable<String>, Serializable, Comparable
     public int hashCode() {
         return Objects.hash(id);
     }
+
+
 }
