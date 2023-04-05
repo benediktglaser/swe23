@@ -3,12 +3,14 @@ package at.qe.g1t2.services;
 import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.model.UsersFavourites;
 import at.qe.g1t2.model.Userx;
+import at.qe.g1t2.repositories.UserFavouritesRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @WebAppConfiguration
@@ -20,16 +22,17 @@ public class UsersFavouritesServiceTest {
     UserService userService;
 
     @Autowired
+    UserFavouritesRepository userFavouritesRepository;
+
+    @Autowired
     SensorStationService sensorStationService;
 
     @Test
     @WithMockUser(username = "user2", authorities = {"USER"})
+    @Transactional
     void saveNewUsersFavouritesTest(){
         SensorStation sensorStation = sensorStationService.loadSensorStation("4e9bca4a-5df7-4d5f-af5f-4493458f57f7");
-        UsersFavourites usersFavourites = new UsersFavourites();
-        usersFavourites.setUser(userService.loadUser("user2"));
-        usersFavourites.setSensorStation(sensorStation);
-        usersFavouritesService.saveUsersFavourites(sensorStation, usersFavourites);
+        usersFavouritesService.saveUsersFavourites(sensorStation);
         Assertions.assertEquals(sensorStation.getUsersFavourites().size(), 1);
     }
 

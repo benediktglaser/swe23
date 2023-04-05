@@ -44,11 +44,11 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Userx gardener;
 
-    @OneToMany(mappedBy = "sensorStation",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "sensorStation",fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     Set<UsersFavourites> usersFavourites;
 
-    @OneToMany(mappedBy = "sensorStation", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "sensorStation", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<SensorData> sensorData = new ArrayList<>();
 

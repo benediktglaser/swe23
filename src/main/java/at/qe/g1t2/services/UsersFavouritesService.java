@@ -28,17 +28,18 @@ public class UsersFavouritesService {
     @Autowired
     private UserFavouritesRepository userFavouritesRepository;
 
-    public UsersFavourites saveUsersFavourites(SensorStation sensorStation,UsersFavourites usersFavourites){
-        if(usersFavourites.isNew()){
+    public void saveUsersFavourites(SensorStation sensorStation){
+        if(userFavouritesRepository.getUsersFavouritesBySensorStationAndUser(sensorStation,getAuthenticatedUser())==null){
+            UsersFavourites usersFavourites = new UsersFavourites();
             LocalDateTime createDate = LocalDateTime.now();
             usersFavourites.setCreateDate(createDate);
             usersFavourites.setUser(getAuthenticatedUser());
             usersFavourites.setSensorStation(sensorStation);
             sensorStation.getUsersFavourites().add(usersFavourites);
             getAuthenticatedUser().getUsersFavourites().add(usersFavourites);
-            return userFavouritesRepository.save(usersFavourites);
+            userFavouritesRepository.save(usersFavourites);
         }
-        return userFavouritesRepository.save(usersFavourites);
+        userFavouritesRepository.save(userFavouritesRepository.getUsersFavouritesBySensorStationAndUser(sensorStation,getAuthenticatedUser()));
     }
 
     public Collection<SensorStation> getAllFavouritesSensorStationsForUser(){
@@ -51,9 +52,7 @@ public class UsersFavouritesService {
         getAuthenticatedUser().getUsersFavourites().remove(usersFavourites);
         sensorStationRepository.save(sensorStation);
         userRepository.save(getAuthenticatedUser());
-        System.out.println(usersFavourites);
         userFavouritesRepository.delete(usersFavourites);
-
     }
 
 
