@@ -33,7 +33,6 @@ public class SensorStationGardenerService {
 
 
 
-    @Transactional
     public Collection<SensorStation> getAllSensorStationsOfUser() {
         return sensorStationRepository.getSensorStationsByGardener(getAuthenticatedUser());
     }

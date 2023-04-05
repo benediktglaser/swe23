@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3c.org/1999/xhtml"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
@@ -8,15 +9,50 @@
                 xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
                 template="/WEB-INF/templates/main.xhtml">
     <ui:define name="content">
+        <div class="card">
+            <h:form id="form">
+                <p:dataTable id="dt-products" var="plant" value="#{dashboardController.sensorStationsByName}"
+                             styleClass="products-table">
+                    <!--<f:facet name="header">
+                        <div class="products-table-header">
+                            <span style="font-weight: bold">Search from all available plants</span>
+                            <span class="filter-container ui-input-icon-left"> <i class="pi pi-search"></i>
+                                <p:inputText id="globalFilter" onkeyup="PF('dtProducts').filter()" placeholder="Search"/>
+                            </span>
+                        </div>
+                    </f:facet>-->
+                    <p:column headerText="name">
+                        <h:outputText value="#{plant.name}"/>
+                    </p:column>
+                    <p:column>
+                        <p:graphicImage library="images" name="plant-test1.png" height="100" width="200"/>
+                    </p:column>
+                    <!--<p:column headerText="Image" exportable="false">
+                        <p:graphicImage name="images/product/#{plant.image}" library="demo"
+                                        styleClass="product-image"/>
+                    </p:column>-->
+                    <p:column headerText="Category">
+                        <h:outputText value="#{plant.category}"/>
+                    </p:column>
+                    <p:column>
+                        <p:commandButton update=":form" icon="pi pi-trash"
+                                         action="#{dashboardController.removeFromUsersFavourite(plant)}"/>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+            <!--<h:form id="dialogs">
+                <p:confirmDialog widgetVar="deleteProductDialog" showEffect="fade" width="300"
+                                 message="Delete the product?" header="Confirm" severity="warn">
+                    <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{dashboardController.removeFromUsersFavourite}"
+                                     process="@this" update="@form"
+                                     oncomplete="PF('deleteProductDialog').hide()"/>
+                    <p:commandButton value="No" type="button" styleClass="ui-button-secondary"
+                                     icon="pi pi-times"
+                                     onclick="PF('deleteProductDialog').hide()"/>
+                </p:confirmDialog>
+            </h:form>-->
+        </div>
 
-        <h:form>
-            <p:panel header="What do you see here?">
-                <div style="height: 50px">This is a simple PrimeFaces 12.0
-                    project running on Spring Boot 3.0.4</div>
-            </p:panel>
-            <p:panel header="JSF 2.3 Bean Access">
-                #{helloWorldBean.hello}
-            </p:panel>
-        </h:form>
+
     </ui:define>
 </ui:composition>

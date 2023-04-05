@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Audited
@@ -41,7 +42,12 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
     @JoinColumn(name = "gardener_id", referencedColumnName = "username")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Userx gardener;
-    @OneToMany(mappedBy = "sensorStation", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+
+    @OneToMany(mappedBy = "sensorStation",fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    Set<UsersFavourites> usersFavourites;
+
+    @OneToMany(mappedBy = "sensorStation", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<SensorData> sensorData = new ArrayList<>();
 
@@ -158,7 +164,7 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SensorStation that = (SensorStation) o;
-        return Objects.equals(id, that.id);
+        return Objects.equals(getId(), that.getId());
     }
 
     @Override

@@ -42,6 +42,7 @@ public class SensorDataListController extends AbstractListController<String,Sens
 
     public Collection<SensorData> getSensorData(SensorStation sensorStation)  {
 
+
         return sensorStation.getSensorData();
     }
 }
