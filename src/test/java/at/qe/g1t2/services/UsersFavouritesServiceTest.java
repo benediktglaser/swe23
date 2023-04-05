@@ -38,6 +38,7 @@ public class UsersFavouritesServiceTest {
 
     @Test
     @WithMockUser(username = "user2",authorities = {"USER"})
+    @Transactional
     void removeUserFavouritesTest(){
         SensorStation sensorStation = sensorStationService.loadSensorStation("a1a96ebd-e6b1-426e-87b1-9c9f72118e05");
         Userx user = userService.loadUser("user2");

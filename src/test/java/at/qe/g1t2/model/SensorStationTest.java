@@ -5,6 +5,7 @@ import nl.jqno.equalsverifier.Warning;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -48,11 +49,14 @@ public class SensorStationTest {
 
     @Test
     public void testSensorStationEqualsContract() {
-
         SensorStation sensorStation1 = new SensorStation();
         sensorStation1.setId(UUID.randomUUID().toString());
+
+
         SensorStation sensorStation2 = new SensorStation();
         sensorStation2.setId(UUID.randomUUID().toString());
+
+
         SensorStation sensorStation3 = new SensorStation();
         sensorStation3.setId(sensorStation1.getId());
         Userx user1 = new Userx();
@@ -60,7 +64,8 @@ public class SensorStationTest {
         Userx user2 = new Userx();
         user2.setUsername("Medin");
 
-        EqualsVerifier.forClass(SensorStation.class).withPrefabValues(SensorStation.class, sensorStation1, sensorStation2).withPrefabValues(Userx.class, user1, user2).suppress(Warning.STRICT_INHERITANCE, Warning.ALL_FIELDS_SHOULD_BE_USED).verify();
+
+        EqualsVerifier.forClass(SensorStation.class).withPrefabValues(SensorStation.class, sensorStation1, sensorStation2).withPrefabValues(Userx.class, user1, user2).suppress(Warning.STRICT_INHERITANCE, Warning.ALL_FIELDS_SHOULD_BE_USED).withIgnoredFields("usersFavourites","sensorData").verify();
         Assertions.assertEquals(sensorStation1.hashCode(), sensorStation3.hashCode());
     }
 

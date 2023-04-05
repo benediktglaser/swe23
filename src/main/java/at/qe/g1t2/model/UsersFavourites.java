@@ -6,6 +6,7 @@ import org.springframework.data.domain.Persistable;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Audited
@@ -62,6 +63,19 @@ public class UsersFavourites implements Persistable<String>, Serializable, Compa
 
     public LocalDateTime getCreateDate() {
         return createDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UsersFavourites that = (UsersFavourites) o;
+        return Objects.equals(id, that.id) && Objects.equals(user, that.user) && Objects.equals(sensorStation, that.sensorStation) && Objects.equals(createDate, that.createDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, user, sensorStation, createDate);
     }
 
     public void setCreateDate(LocalDateTime createDate) {

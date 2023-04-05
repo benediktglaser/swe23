@@ -161,7 +161,7 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SensorStation that = (SensorStation) o;
-        return Objects.equals(id, that.id);
+        return Objects.equals(getId(), that.getId());
     }
 
     @Override
