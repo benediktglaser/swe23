@@ -188,4 +188,12 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
     public void setSensorDataTypeInfos(List<SensorDataTypeInfo> sensorDataTypeInfos) {
         this.sensorDataTypeInfos = sensorDataTypeInfos;
     }
+
+    public Set<UsersFavourites> getUsersFavourites() {
+        return usersFavourites;
+    }
+
+    public void setUsersFavourites(Set<UsersFavourites> usersFavourites) {
+        this.usersFavourites = usersFavourites;
+    }
 }
