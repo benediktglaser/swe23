@@ -22,4 +22,4 @@ buildNumber.properties
 src/main/python/database.db
 
 ### py_cache ###
-__py_cache__
+src/main/python/__py_cache__

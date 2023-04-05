@@ -55,3 +55,39 @@ def insert_sensor_data(conn, data):
         cursor.close()
     except sqlite3.Error as e:
         print(e)
+
+
+def get_sensor_data(conn, station_id):
+    cursor = conn.cursor()
+    try:
+        cursor.execute("SELECT * "
+                       "FROM sensor_data "
+                       "WHERE station_id = ?",
+                       (station_id,))
+        record = cursor.fetchall()
+
+        conn.commit()
+        cursor.close()
+
+
+        #convert record [(a, b), (c, d)] into a 2D-array [[a, b], [c, d]]
+        result =[list(x) for x in record]
+
+        return result
+
+    except sqlite3.Error as e:
+        print(e)
+
+def remove_sensor_data(conn, station_id, time):
+    cursor = conn.cursor()
+    try:
+        cursor.execute("DELETE FROM sensor_data "
+                       "WHERE station_id = ? AND time_stamp = ?;",
+                       (station_id, time))
+        
+        conn.commit()
+        cursor.close()
+
+    except sqlite3.Error as e:
+        print(e)
+
