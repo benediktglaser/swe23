@@ -15,7 +15,7 @@
     <ui:define name="content">
         <h:form>
             <div class="container">
-                <p:dataTable id = "sensorDataTable" var="sensorData" value="#{sensorDataListController.getSensorData(sessionSensorStationBean.sensorStation)}"
+                <p:dataTable id = "sensorDataTable" var="sensorData" value="#{sensorDataListController}"
                              class="sensorDataTable" lazy="true" rows="3" paginator="true" >
                     <p:column headerText="Measurement" class="ui-datatable-header" sortBy="#{sensorData.measurement}" filterBy="#{sensorData.measurement}">
                         <h:outputText value="#{sensorData.measurement}"/>
