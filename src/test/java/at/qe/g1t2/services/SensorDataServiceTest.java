@@ -29,21 +29,21 @@ public class SensorDataServiceTest {
 
 
     @Test
-    @WithMockUser(username = "elvis", authorities = {"ADMIN"})
+    @WithMockUser(username = "elvis", authorities = {"GARDENER"})
     public void testGetAllDataBySensorStation() {
         Collection<SensorData> list = sensorDataService.getAllSensorDataByStation("8ccfdfaa-9731-4786-8efa-e2141e5c4095");
         Assertions.assertEquals(5, list.size());
     }
 
     @Test
-    @WithMockUser(username = "elvis", authorities = {"ADMIN"})
+    @WithMockUser(username = "elvis", authorities = {"GARDENER"})
     public void testGetAllSensorDataByType() {
         Collection<SensorData> list = sensorDataService.getAllSensorDataByType(SensorDataType.TEMPERATURE);
         Assertions.assertEquals(7, list.size());
     }
 
     @Test
-    @WithMockUser(username = "elvis", authorities = {"ADMIN"})
+    @WithMockUser(username = "elvis", authorities = {"GARDENER"})
     public void testLoadSensorData() {
         SensorData test = sensorDataService.loadSensorData("0718665a-5c08-4580-a4de-d8089d8756db");
         Assertions.assertEquals("0718665a-5c08-4580-a4de-d8089d8756db", test.getId().toString());
@@ -53,7 +53,7 @@ public class SensorDataServiceTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser(username = "elvis", authorities = {"ADMIN"})
+    @WithMockUser(username = "elvis", authorities = {"GARDENER"})
     @Transactional
     public void testSaveNewSensorData() {
         SensorData newSensorData = new SensorData();

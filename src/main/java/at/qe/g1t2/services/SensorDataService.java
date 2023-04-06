@@ -33,13 +33,13 @@ public class SensorDataService {
     private SensorStationRepository sensorStationRepository;
 
 
-    @PreAuthorize("hasAnyAuthority('ACCESS_POINT','ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ACCESS_POINT','GARDENER')")
     @Transactional
     public SensorData loadSensorData(String uuid) {
         return sensorDataRepository.findSensorDataById(uuid);
     }
 
-    @PreAuthorize("hasAnyAuthority('ACCESS_POINT','ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ACCESS_POINT','GARDENER')")
     @Transactional
     public SensorData saveSensorData(SensorStation sensorStation, SensorData sensorData) {
         if (sensorData.isNew()) {

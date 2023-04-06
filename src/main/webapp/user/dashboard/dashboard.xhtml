@@ -38,6 +38,9 @@
                         <p:commandButton update=":form" icon="pi pi-trash"
                                          action="#{dashboardController.removeFromUsersFavourite(plant)}"/>
                     </p:column>
+                    <p:column>
+                        <p:commandButton value="Plant Data" action="#{dashboardController.redirectToSensorDataPage(plant)}"/>
+                    </p:column>
                 </p:dataTable>
             </h:form>
             <!--<h:form id="dialogs">

@@ -31,9 +31,9 @@ public class SensorStationListController extends AbstractListController<String, 
 
     @Autowired
     SensorStationGardenerService sensorStationGardenerService;
+
     @Autowired
     SessionSensorStationBean sessionSensorStationBean;
-
     @Autowired
     UserService userService;
 

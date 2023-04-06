@@ -40,7 +40,7 @@ public class SecurityTestBean {
     }
 
     @PreAuthorize("hasAuthority('USER')")
-    public void doEmployeeAction() {
+    public void doUserAction() {
         performedAction = "USER";
         showOkDialog = true;
     }
