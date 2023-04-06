@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Component
 @Scope("application")
@@ -68,7 +69,7 @@ public class SensorStationService {
         sensorStationRepository.delete(sensorStation);
     }
 
-
+    @Transactional
     public Collection<SensorStation> getAllSensorStations() {
         return sensorStationRepository.findAll();
 
@@ -96,6 +97,10 @@ public class SensorStationService {
     private Userx getAuthenticatedUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return userRepository.findFirstByUsername(auth.getName());
+    }
+
+    public Set<SensorStation> getAllSensorStationsByUser(SensorStation sensorStation){
+        return sensorStationRepository.getSensorStationsByUserx(getAuthenticatedUser());
     }
 
 }

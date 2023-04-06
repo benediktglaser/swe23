@@ -80,9 +80,9 @@ public abstract class AbstractListController<K,T extends Persistable<K> & Serial
 
         }
 
-        Page<T> accessPoints = collectionToPageConverterFunction.retrieveData(finalSpec,page);
-        setRowCount((int) accessPoints.getTotalElements());
-        return accessPoints.getContent();
+        Page<T> entity = collectionToPageConverterFunction.retrieveData(finalSpec,page);
+        setRowCount((int) entity.getTotalElements());
+        return entity.getContent();
     }
 
     public List<Specification<T>> getExtraSpecs() {
