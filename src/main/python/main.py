@@ -1,15 +1,22 @@
 import dbconnection as db
 import sensordata
-
-
-# global variable for accesspoint id
+import time
 
 
 def main():
-    conn = db.create_database("database.db")
-    db.insert_sensor_data(conn, sensordata.SensorData(1, 1, 2, 3, 4, 5, 6, 7))
-    db.insert_sensor_data(conn, sensordata.SensorData(1, 8, 9, 10, 11, 12, 13, 14))
+    path = "database.db"
+    db.delete_database(path)
+    conn = db.create_database(path)
+    db.init_limits(conn, 1)
+    db.init_limits(conn, 2)
+    db.insert_sensor_data(conn, sensordata.SensorData(1, 28.4, 1.0, 40.3, 23.1, 600, 87.345))
+    time.sleep(1)
+    db.insert_sensor_data(conn, sensordata.SensorData(1, 28.4, 1.0, 40.3, 23.1, 600, 87.345))
+    print(db.get_sensor_data(conn, 1))
+
+    db.remove_sensor_data(conn, 1, db.get_sensor_data(conn, 1)[0][1])
+    print(db.get_sensor_data(conn, 1))
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
