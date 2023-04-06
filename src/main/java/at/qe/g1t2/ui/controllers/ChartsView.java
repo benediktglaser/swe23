@@ -1,26 +1,32 @@
 package at.qe.g1t2.ui.controllers;
 
+import at.qe.g1t2.model.SensorData;
+import at.qe.g1t2.model.SensorDataType;
 import at.qe.g1t2.model.SensorStation;
+import at.qe.g1t2.services.ChartService;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Named;
 import org.primefaces.model.charts.ChartData;
+import org.primefaces.model.charts.bar.BarChartModel;
 import org.primefaces.model.charts.line.LineChartDataSet;
 import org.primefaces.model.charts.line.LineChartModel;
 import org.primefaces.model.charts.line.LineChartOptions;
 import org.primefaces.model.charts.optionconfig.title.Title;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Named
-@RequestScoped
+@Controller
+@Scope("view")
 public class ChartsView {
 
     private LineChartModel lineModel;
-
-
+    @Autowired
+    ChartService chartService;
     private SensorStation sensorStation;
 
 
@@ -61,11 +67,30 @@ public class ChartsView {
     }
 
 
-    public LineChartModel getLineModel(SensorStation sensorStation) {
+    public LineChartModel getLineModelAllTypes(SensorStation sensorStation) {
         this.sensorStation = sensorStation;
-        init();
-        return lineModel;
+
+        return chartService.getLineChartForAllTypes(sensorStation);
     }
+
+    public LineChartModel getLineModelForGas(SensorStation sensorStation) {
+        this.sensorStation = sensorStation;
+
+        return chartService.createDataForType(SensorDataType.GAS,sensorStation);
+    }
+    public LineChartModel getLineModelForTemp(SensorStation sensorStation) {
+        this.sensorStation = sensorStation;
+
+        return chartService.createDataForType(SensorDataType.TEMPERATURE,sensorStation);
+    }
+
+    public LineChartModel getLineModelForLight(SensorStation sensorStation) {
+        this.sensorStation = sensorStation;
+
+        return chartService.createDataForType(SensorDataType.LIGHT,sensorStation);
+    }
+
+
 
     public void setLineModel(LineChartModel lineModel) {
         this.lineModel = lineModel;

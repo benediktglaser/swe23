@@ -32,8 +32,12 @@
                 </p:dataTable>
 
 
-                <p:lineChart model="#{chartsView.getLineModel(sessionSensorStationBean.sensorStation)}" class="ui-chart"/>
-           </div>
+                <p:lineChart model="#{chartsView.getLineModelAllTypes(sessionSensorStationBean.sensorStation)}" class="ui-chart"/>
+                <p:lineChart model="#{chartsView.getLineModelForGas(sessionSensorStationBean.sensorStation)}" class="ui-chart"/>
+                <p:lineChart model="#{chartsView.getLineModelForTemp(sessionSensorStationBean.sensorStation)}" class="ui-chart"/>
+                <p:lineChart model="#{chartsView.getLineModelForLight(sessionSensorStationBean.sensorStation)}" class="ui-chart"/>
+
+            </div>
         </h:form>
     </ui:define>
 </ui:composition>
