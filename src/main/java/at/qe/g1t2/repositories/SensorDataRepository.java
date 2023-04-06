@@ -5,7 +5,10 @@ import at.qe.g1t2.model.SensorDataType;
 import at.qe.g1t2.model.SensorStation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,5 +24,9 @@ public interface SensorDataRepository extends JpaRepository<SensorData, String>,
 
     List<SensorData> findBySensorStationId(String id);
 
+    List<SensorData> findSensorDataBySensorStation(SensorStation sensorStation);
+    List<SensorData> findSensorDataBySensorStationAndTypeOrderByCreateDate(SensorStation sensorStation,SensorDataType type);
+    List<SensorData> findSensorDataBySensorStationOrderByCreateDate(SensorStation sensorStation);
 
+    SensorData findFirstBySensorStationAndTypeAndCreateDate(SensorStation sensorStation, SensorDataType type, LocalDateTime createDate);
 }
