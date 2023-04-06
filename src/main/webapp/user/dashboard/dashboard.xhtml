@@ -8,30 +8,23 @@
                 xmlns:ng="http://xmlns.jcp.org/jsf/passthrough"
                 xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
                 template="/WEB-INF/templates/main.xhtml">
+    <f:metadata>
+        <f:viewAction action="#{dashboardController.filterSensorStationsByUser(sessionInfoBean.getCurrentUser())}" />
+    </f:metadata>
     <ui:define name="content">
         <div class="card">
             <h:form id="form">
-                <p:dataTable id="dt-products" var="plant" value="#{dashboardController.sensorStationsByName}"
-                             styleClass="products-table">
-                    <!--<f:facet name="header">
-                        <div class="products-table-header">
-                            <span style="font-weight: bold">Search from all available plants</span>
-                            <span class="filter-container ui-input-icon-left"> <i class="pi pi-search"></i>
-                                <p:inputText id="globalFilter" onkeyup="PF('dtProducts').filter()" placeholder="Search"/>
-                            </span>
-                        </div>
-                    </f:facet>-->
-                    <p:column headerText="name">
+                <p:dataTable id="dt-products" var="plant" value="#{dashboardController}"
+                             styleClass="products-table" rows="3" lazy="true" paginator="true">
+
+                    <p:column headerText="name" sortBy="#{plant.name}" filterBy="#{plant.name}">
                         <h:outputText value="#{plant.name}"/>
                     </p:column>
                     <p:column>
                         <p:graphicImage library="images" name="plant-test1.png" height="100" width="200"/>
                     </p:column>
-                    <!--<p:column headerText="Image" exportable="false">
-                        <p:graphicImage name="images/product/#{plant.image}" library="demo"
-                                        styleClass="product-image"/>
-                    </p:column>-->
-                    <p:column headerText="Category">
+
+                    <p:column headerText="Category" sortBy="#{plant.category}" filterBy="#{plant.category}">
                         <h:outputText value="#{plant.category}"/>
                     </p:column>
                     <p:column>
@@ -43,17 +36,6 @@
                     </p:column>
                 </p:dataTable>
             </h:form>
-            <!--<h:form id="dialogs">
-                <p:confirmDialog widgetVar="deleteProductDialog" showEffect="fade" width="300"
-                                 message="Delete the product?" header="Confirm" severity="warn">
-                    <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{dashboardController.removeFromUsersFavourite}"
-                                     process="@this" update="@form"
-                                     oncomplete="PF('deleteProductDialog').hide()"/>
-                    <p:commandButton value="No" type="button" styleClass="ui-button-secondary"
-                                     icon="pi pi-times"
-                                     onclick="PF('deleteProductDialog').hide()"/>
-                </p:confirmDialog>
-            </h:form>-->
         </div>
 
 

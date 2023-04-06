@@ -1,5 +1,6 @@
 package at.qe.g1t2.services;
 
+import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.model.Userx;
 import at.qe.g1t2.repositories.UserxRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,5 +101,20 @@ public class UserService implements Serializable {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return userRepository.findFirstByUsername(auth.getName());
     }
+
+    public void addSensorStationToUser(SensorStation sensorStation){
+        Userx userx = getAuthenticatedUser();
+        userx.getSensorStations().add(sensorStation);
+        sensorStation.getUserx().add(userx);
+        userRepository.save(userx);
+    }
+    public void removeSensorStationToUser(SensorStation sensorStation){
+        Userx userx = getAuthenticatedUser();
+        userx.getSensorStations().remove(sensorStation);
+        sensorStation.getUserx().remove(userx);
+        userRepository.save(userx);
+    }
+
+
 
 }

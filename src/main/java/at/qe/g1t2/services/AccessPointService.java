@@ -62,9 +62,6 @@ public class AccessPointService {
         return sensorStationRepository.getSensorStationsByAccessPoint(accessPoint);
     }
 
-    public Page<SensorStation> getAllSensorStationsByAccessPoint(Specification<SensorStation> spec,Pageable page,AccessPoint accessPoint) {
-        return sensorStationRepository.getSensorStationsByAccessPoint(spec,page,accessPoint);
-    }
 
 
 
@@ -79,9 +76,7 @@ public class AccessPointService {
         return sensorStationRepository.findSensorStationByAccessPointAndDipId(loadAccessPoint(accessPointId), dipId);
     }
 
-    public Page<SensorStation> getSensorStationByAccessPointIdAndDipId(Specification<SensorStation> spec,Pageable page,AccessPoint accessPoint, Long dipId) {
-        return sensorStationRepository.getSensorStationsByAccessPointAndDipId(spec,page,accessPoint,dipId);
-    }
+
 
     public Long numberOfAccessPoint(){
         return accessPointRepository.count();
