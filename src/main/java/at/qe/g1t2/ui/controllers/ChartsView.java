@@ -90,6 +90,18 @@ public class ChartsView {
         return chartService.createDataForType(SensorDataType.LIGHT,sensorStation);
     }
 
+    public LineChartModel getLineModelForSoil(SensorStation sensorStation) {
+        this.sensorStation = sensorStation;
+
+        return chartService.createDataForType(SensorDataType.SOIL,sensorStation);
+    }
+
+    public LineChartModel getLineModelForHumidity(SensorStation sensorStation) {
+        this.sensorStation = sensorStation;
+
+        return chartService.createDataForType(SensorDataType.HUMIDITY,sensorStation);
+    }
+
 
 
     public void setLineModel(LineChartModel lineModel) {
@@ -98,4 +110,3 @@ public class ChartsView {
 
 
 }
-

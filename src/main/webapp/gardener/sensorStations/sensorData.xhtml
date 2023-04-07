@@ -32,13 +32,21 @@
                 </p:dataTable>
 
 
-                <p:lineChart model="#{chartsView.getLineModelAllTypes(sessionSensorStationBean.sensorStation)}" class="ui-chart"/>
-                <p:lineChart model="#{chartsView.getLineModelForGas(sessionSensorStationBean.sensorStation)}" class="ui-chart"/>
-                <p:lineChart model="#{chartsView.getLineModelForTemp(sessionSensorStationBean.sensorStation)}" class="ui-chart"/>
-                <p:lineChart model="#{chartsView.getLineModelForLight(sessionSensorStationBean.sensorStation)}" class="ui-chart"/>
-
+                <div class="chart-container">
+                    <p:lineChart model="#{chartsView.getLineModelForGas(sessionSensorStationBean.sensorStation)}"
+                                 class="ui-chart-detailed"/>
+                    <p:lineChart model="#{chartsView.getLineModelAllTypes(sessionSensorStationBean.sensorStation)}"
+                                 class="ui-chart"/>
+                    <p:lineChart model="#{chartsView.getLineModelForTemp(sessionSensorStationBean.sensorStation)}"
+                                 class="ui-chart-detailed"/>
+                    <p:lineChart model="#{chartsView.getLineModelForLight(sessionSensorStationBean.sensorStation)}"
+                                 class="ui-chart-detailed"/>
+                    <p:lineChart model="#{chartsView.getLineModelForHumidity(sessionSensorStationBean.sensorStation)}"
+                                 class="ui-chart-detailed"/>
+                    <p:lineChart model="#{chartsView.getLineModelForSoil(sessionSensorStationBean.sensorStation)}"
+                                 class="ui-chart-detailed"/>
+                </div>
             </div>
         </h:form>
     </ui:define>
 </ui:composition>
-
