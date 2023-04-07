@@ -13,7 +13,7 @@
         </f:metadata>
     </h:head>
     <ui:define name="content">
-        <h:form>
+        <h:form id ="form">
             <div class="container">
                 <p:dataTable id = "sensorDataTable" var="sensorData" value="#{sensorDataListController}"
                              class="sensorDataTable" lazy="true" rows="3" paginator="true" >
@@ -35,8 +35,14 @@
                 <div class="chart-container">
                     <p:lineChart model="#{chartsView.getLineModelForGas(sessionSensorStationBean.sensorStation)}"
                                  class="ui-chart-detailed"/>
-                    <p:lineChart model="#{chartsView.getLineModelAllTypes(sessionSensorStationBean.sensorStation)}"
-                                 class="ui-chart"/>
+                    <p:lineChart id="chart" model="#{chartsView.getLineModelAllTypes(sessionSensorStationBean.sensorStation)}"
+                                 class="ui-chart">
+                        <p:slider for="dateRange" display="chart" style="width: 100%"
+                                  minValue="0" maxValue="30" step="1"
+                                  onSlideEnd="#{chartsView.updateModel(sessionSensorStationBean.sensorStation)}"/>
+                        <h:outputText id="dateRange" value="#{chartsView.sliderValue}"/>
+
+                    </p:lineChart>
                     <p:lineChart model="#{chartsView.getLineModelForTemp(sessionSensorStationBean.sensorStation)}"
                                  class="ui-chart-detailed"/>
                     <p:lineChart model="#{chartsView.getLineModelForLight(sessionSensorStationBean.sensorStation)}"
@@ -45,7 +51,9 @@
                                  class="ui-chart-detailed"/>
                     <p:lineChart model="#{chartsView.getLineModelForSoil(sessionSensorStationBean.sensorStation)}"
                                  class="ui-chart-detailed"/>
+                    <h:graphicImage value="#{test.getChartImage(sessionSensorStationBean.sensorStation)}" />
                 </div>
+
             </div>
         </h:form>
     </ui:define>

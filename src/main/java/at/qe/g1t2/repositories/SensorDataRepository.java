@@ -29,4 +29,7 @@ public interface SensorDataRepository extends JpaRepository<SensorData, String>,
     List<SensorData> findSensorDataBySensorStationOrderByCreateDate(SensorStation sensorStation);
 
     SensorData findFirstBySensorStationAndTypeAndCreateDate(SensorStation sensorStation, SensorDataType type, LocalDateTime createDate);
+
+    List<SensorData> findSensorDataBySensorStationAndType(SensorStation sensorStation,SensorDataType sensorDataType);
+    List<SensorData> findSensorDataBySensorStationAndCreateDateBetweenOrderByCreateDate(SensorStation sensorStation,LocalDateTime start,LocalDateTime end);
 }

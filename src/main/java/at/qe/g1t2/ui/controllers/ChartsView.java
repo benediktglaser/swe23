@@ -6,6 +6,7 @@ import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.services.ChartService;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Named;
+import org.primefaces.PrimeFaces;
 import org.primefaces.model.charts.ChartData;
 import org.primefaces.model.charts.bar.BarChartModel;
 import org.primefaces.model.charts.line.LineChartDataSet;
@@ -17,7 +18,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -28,6 +32,9 @@ public class ChartsView {
     @Autowired
     ChartService chartService;
     private SensorStation sensorStation;
+
+    private LocalDateTime start;
+    private LocalDateTime end;
 
 
 
@@ -67,12 +74,36 @@ public class ChartsView {
     }
 
 
-    public LineChartModel getLineModelAllTypes(SensorStation sensorStation) {
+    private LineChartModel lineChartModel;
+
+    public void createModel(SensorStation sensorStation){
         this.sensorStation = sensorStation;
 
-        return chartService.getLineChartForAllTypes(sensorStation);
+        this.lineChartModel = chartService.getLineChartForAllTypes(sensorStation,start,end);
+    }
+    public LineChartModel getLineModelAllTypes(SensorStation sensorStation) {
+        if(lineChartModel == null){
+            createModel(sensorStation);
+        }
+        return this.lineChartModel;
     }
 
+    private int sliderValue;
+
+    public int getSliderValue() {
+        return sliderValue;
+    }
+
+    public void setSliderValue(int sliderValue) {
+        this.sliderValue = sliderValue;
+    }
+
+    public void updateModel(SensorStation sensorStation) {
+        int days = sliderValue; // sliderValue ist ein Integer-Attribut im chartsView-Bean, das die aktuelle Position des Schiebereglers speichert.
+        start = LocalDateTime.now();
+        end = start.plusDays(days);
+        createModel(sensorStation);
+    }
     public LineChartModel getLineModelForGas(SensorStation sensorStation) {
         this.sensorStation = sensorStation;
 

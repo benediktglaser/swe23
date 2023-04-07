@@ -66,6 +66,9 @@ public class SensorDataService {
     public Collection<SensorData> getAllSensorDataByType(SensorDataType type) {
         return sensorDataRepository.findByType(type);
     }
+    public Collection<SensorData> getAllSensorDataBySensorStationType(SensorStation sensorStation,SensorDataType type) {
+        return sensorDataRepository.findSensorDataBySensorStationAndType(sensorStation,type);
+    }
 
 
 }
