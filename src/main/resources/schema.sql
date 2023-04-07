@@ -51,8 +51,8 @@ CREATE TABLE sensor_data_type_info
 (
     id                VARCHAR(255) NOT NULL,
     type              VARCHAR(100),
-    minLimit          DOUBLE,
-    maxLimit          DOUBLE,
+    min_Limit          DOUBLE,
+    max_Limit          DOUBLE,
     create_date       timestamp    NOT NULL,
     sensor_station_id VARCHAR(255) NULL,
     CONSTRAINT pf_sensor_data_type_info PRIMARY KEY (id)
