@@ -98,14 +98,6 @@ CREATE TABLE userx_user_role
     roles          VARCHAR(255) NULL
 );
 
-CREATE TABLE users_favourites
-(
-    id                VARCHAR(255) NOT NULL,
-    username          VARCHAR(255) NOT NULL,
-    sensor_station_id VARCHAR(255) NOT NULL,
-    create_date       timestamp    NOT NULL,
-    CONSTRAINT pk_usersfavourites PRIMARY KEY (id)
-);
 CREATE TABLE user_sensor_station
 (
     user_id           VARCHAR(255) NOT NULL,
@@ -248,8 +240,3 @@ ALTER TABLE userx
 ALTER TABLE userx_user_role
     ADD CONSTRAINT fk_userx_userrole_on_userx FOREIGN KEY (userx_username) REFERENCES userx (username);
 
-ALTER TABLE users_favourites
-    ADD CONSTRAINT fk_users_favourites_on_userx FOREIGN KEY (username) REFERENCES userx (username) ON DELETE CASCADE;
-
-ALTER TABLE users_favourites
-    ADD CONSTRAINT fk_users_favourites_on_sensor_station FOREIGN KEY (sensor_station_id) REFERENCES sensor_station (id) ON DELETE CASCADE;

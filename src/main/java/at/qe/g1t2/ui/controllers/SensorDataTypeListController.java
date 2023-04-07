@@ -5,6 +5,7 @@ import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.repositories.SensorDataTypeInfoRepository;
 import at.qe.g1t2.services.CollectionToPageConverter;
 import at.qe.g1t2.services.SensorDataTypeInfoService;
+import at.qe.g1t2.services.SensorStationService;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.criteria.Path;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +21,11 @@ import java.util.List;
 @Controller
 @Scope("view")
 public class SensorDataTypeListController{
-
-
     @Autowired
     SensorDataTypeInfoService sensorDataTypeInfoService;
 
+    @Autowired
+    SensorStationService sensorStationService;
 
     private SensorStation sensorStation;
     @Transactional
@@ -35,10 +36,10 @@ public class SensorDataTypeListController{
     }
     @Transactional
     public SensorStation getSensorStation() {
-        return sensorStation;
+        return sensorStationService.loadSensorStation(this.sensorStation.getId());
     }
     @Transactional
     public void setSensorStation(SensorStation sensorStation) {
-        this.sensorStation = sensorStation;
+        this.sensorStation = sensorStationService.loadSensorStation(sensorStation.getId());;
     }
 }

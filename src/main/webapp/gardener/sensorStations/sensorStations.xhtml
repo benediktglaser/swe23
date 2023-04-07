@@ -73,7 +73,7 @@
                     </h:panelGrid>
                     <p:separator />
                     <h:panelGrid columns="1">
-                        <p:commandButton value="Save" action="#{sensorDataTypeInfoController.save(sensorDataTypeListController.getSensorStation())}" update="@form" oncomplete="handleSave()"/>
+                        <p:commandButton value="Save" action="#{sensorDataTypeInfoController.save(sensorDataTypeListController.getSensorStation())}" update=":sensorStationForm sensorStationForm:sensorStationFormEditDialog" oncomplete="handleSave()"/>
                     </h:panelGrid>
 
                 </p:outputPanel>
