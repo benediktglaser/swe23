@@ -5,12 +5,14 @@ import os
 
 
 def create_database(path):
+    """Create database and initialise both tables"""
     conn = sqlite3.connect(path)
     create_tables(conn)
     return conn
 
 
 def create_tables(conn):
+    """Create limits and sensor_data table"""
     cursor = conn.cursor()
     try:
         cursor.execute(
@@ -41,6 +43,7 @@ def create_tables(conn):
 
 
 def init_limits(conn, station_id):
+    """Initialise the limits table with default values"""
     cursor = conn.cursor()
     try:
         # TODO: find reasonable default values for limits
@@ -69,6 +72,7 @@ def init_limits(conn, station_id):
 
 
 def calculate_limit(value, lower_limit, upper_limit):
+    """Calculate the how much teh measurement is of the limits"""
     # TODO: check what value is sent if sensor isn't picking anything up
     # if value == 0 or value is None:
     #     return 0
@@ -195,7 +199,8 @@ def set_limits(conn, station_id, type, lower_limit, upper_limit):
 
 
 def get_limits(conn, station_id, type_limit):
-    """Return a list if type_limit == ALL, otherwise a tupel"""
+    """Return a list of the limits if type_limit == ALL,
+    otherwise a tupel (min, max) for the given type"""
     cursor = conn.cursor()
     try:
         cursor.execute("SELECT * " "FROM limits " "WHERE station_id = ?", (station_id,))
@@ -206,7 +211,7 @@ def get_limits(conn, station_id, type_limit):
             result.append(value)
 
         match type_limit:
-            
+
             case "temp":
                 return (result[1], result[2])
 
@@ -233,6 +238,7 @@ def get_limits(conn, station_id, type_limit):
 
 
 def get_sensor_data(conn, station_id):
+    """Retrieve sensor_data from database"""
     cursor = conn.cursor()
     try:
         cursor.execute(
@@ -248,6 +254,7 @@ def get_sensor_data(conn, station_id):
 
 
 def remove_sensor_data(conn, station_id, time):
+    """Remove sensor_data according to station_id and time"""
     cursor = conn.cursor()
     try:
         cursor.execute(
