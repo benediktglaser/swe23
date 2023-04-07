@@ -23,7 +23,7 @@ public interface SensorDataRepository extends JpaRepository<SensorData, String>,
     List<SensorData> findByType(SensorDataType type);
 
     List<SensorData> findBySensorStationId(String id);
-    @Query("SELECT u.createDate, u.measurement from SensorData u")
+    @Query("SELECT u.createDate, u.measurement from SensorData u order by u.createDate limit 5")
     List<Object[]> gett();
     List<SensorData> findSensorDataBySensorStation(SensorStation sensorStation);
     List<SensorData> findSensorDataBySensorStationAndTypeOrderByCreateDate(SensorStation sensorStation,SensorDataType type);

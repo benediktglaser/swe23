@@ -36,6 +36,7 @@ public class ChartController {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
 
+
         String json = objectMapper.writeValueAsString(dates);
         System.out.println(json);
         return json;
