@@ -6400,7 +6400,7 @@ body .ui-accordion .ui-accordion-content:last-of-type {
 .sensorDataTable{
   float: left;
   position: relative;
-  width: 50%;
+
   text-align: center !important;
 }
 
@@ -7022,4 +7022,14 @@ body .ui-wizard .ui-icon-arrowthick-1-e:before {
   color: #fff;
   background-color: #2196f3;
   border-radius: 3px;
+}
+
+.container-block{
+  display: block;
+}
+.ui-panel-modified {
+  margin-top: 20px;
+}
+.chart-container{
+  float:right;
 }
