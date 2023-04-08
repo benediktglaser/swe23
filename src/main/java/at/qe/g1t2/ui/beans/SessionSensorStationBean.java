@@ -18,6 +18,7 @@ public class SessionSensorStationBean {
     }
 
     public SensorStation getSensorStation() {
+        System.out.println(sensorStation + "Session");
         return sensorStation;
     }
 }

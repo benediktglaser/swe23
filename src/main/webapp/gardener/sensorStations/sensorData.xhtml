@@ -1,73 +1,136 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <title>My Highcharts Example</title>
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/modules/stock.js"></script>
-</head>
-<body>
-<h1>My Highcharts Example</h1>
-<div id="chart-container"></div>
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml">
+    <h:head>
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/modules/stock.js"></script>
+        <script src="https://code.highcharts.com/modules/scrollbar.js"></script>
+        <f:metadata>
+            <f:viewAction action="#{sensorDataListController.filterSensorDataBySensorStation(sessionSensorStationBean.sensorStation)}" />
+        </f:metadata>
 
-<script type="text/javascript">
-    // Define the chart options
-    fetch('/chart')
-        .then(response => response.json())
-        .then(jsonData => {
-            const data2 = jsonData.map(point => {
-                const [year, month, day, hour, minute] = point[0];
-                const timestamp = Date.UTC(year, month - 1, day, hour, minute);
-                return [timestamp, point[1]];
-            });
+    </h:head>
+    <ui:define name="content">
 
-            Highcharts.stockChart('chart-container', {
-                chart: {
-                    type: 'bubble',
-                },
-                title: {
-                    text: 'My Chart'
-                },
-                xAxis: {
-                    type: 'datetime',
-                    labels: {
-                        formatter: function() {
-                            // Format the date label text as "MM/DD/YYYY"
-                            return Highcharts.dateFormat('%m/%d/%Y', this.value);
-                        }
-                    },
-                },
-                rangeSelector: {
-                    buttons: [{
-                        type: 'day',
-                        count: 1,
-                        text: '1d'
-                    }, {
-                        type: 'week',
-                        count: 1,
-                        text: '1w'
-                    }, {
-                        type: 'month',
-                        count: 1,
-                        text: '1m'
-                    }, {
-                        type: 'year',
-                        count: 1,
-                        text: '1y'
-                    }, {
-                        type: 'all',
-                        text: 'All'
-                    }],
-                },
-                series: [{
+        <body>
+        <h:form>
 
-                    name: 'My Series',
-                    data: data2
-                }]
-            });
-        });
-    console.log("Hello, world!");
-</script>
-</body>
-</html>
+
+            <div style="display:flex">
+                <div style="flex:1">
+                    <p:dataTable id="sensorDataTable" var="sensorData" value="#{sensorDataListController}"
+                                 class="sensorDataTable" lazy="true" rows="3" paginator="true">
+                        <p:column headerText="Measurement" class="ui-datatable-header"
+                                  sortBy="#{sensorData.measurement}" filterBy="#{sensorData.measurement}">
+                            <h:outputText value="#{sensorData.measurement}"/>
+                        </p:column>
+                        <p:column headerText="Unit" class="ui-datatable-header" sortBy="#{sensorData.type}"
+                                  filterBy="#{sensorData.type}">
+                            <h:outputText value="#{sensorData.getType().getUnit()}"/>
+                        </p:column>
+                        <p:column headerText="Type" class="ui-datatable-header" sortBy="#{sensorData.type}"
+                                  filterBy="#{sensorData.type}">
+                            <h:outputText value="#{sensorData.type}"/>
+                        </p:column>
+                        <p:column headerText="Date" class="ui-datatable-header" sortBy="#{sensorData.createDate}"
+                                  filterBy="#{sensorData.createDate}">
+                            <h:outputText value="#{(sensorData.createDate).toLocalDate()}"/>
+                        </p:column>
+
+                    </p:dataTable>
+                </div>
+            </div>
+            <p:separator/>
+            <div style="flex:1">
+
+
+                <script type="text/javascript">
+
+                    var selectedSensorId = "${sessionSensorStationBean.sensorStation.id}";
+                    var colors = Highcharts.getOptions().colors;
+                    // Define the chart options
+                    fetch('/chart?id=' + "${sessionSensorStationBean.sensorStation.id}")
+                        .then(response => response.json())
+                        .then(jsonData => {
+                            const data2 = jsonData.map(point => {
+                                const [year, month, day, hour, minute] = point[0];
+                                const timestamp = Date.UTC(year, month - 1, day, hour, minute);
+                                return [timestamp, point[1]];
+                            });
+
+                            Highcharts.chart('chart-container', {
+                                chart: {
+                                    type: 'line',
+                                    zoomType: 'x',
+                                    backgroundColor: '#062942',
+                                    style: {
+                                        color: '#05233d'
+                                    },
+                                },
+                                title: {
+                                    text: '',
+                                },
+
+                                xAxis: {
+                                    type: 'datetime',
+                                    labels: {
+                                        formatter: function () {
+                                            // Format the date label text as "MM/DD/YYYY"
+                                            return Highcharts.dateFormat('%m/%d/%Y %H:%M:%S', this.value);
+                                        }
+                                    },
+                                },
+                                tooltip: {
+                                    stickOnContact: true
+                                },
+                                yAxis: {
+                                    title: {
+                                        text: 'Value'
+                                    },
+                                    gridLineColor: '#090101', // Set the color of the grid lines
+                                    gridLineWidth: 1, // Set the width of the grid lines
+                                    gridLineDashStyle: 'solid' // Set the style of the grid lines
+                                },
+                                rangeSelector: {
+                                    buttons: [{
+                                        type: 'day',
+                                        count: 1,
+                                        text: '1d'
+                                    }, {
+                                        type: 'week',
+                                        count: 1,
+                                        text: '1w'
+                                    }, {
+                                        type: 'month',
+                                        count: 1,
+                                        text: '1m'
+                                    }, {
+                                        type: 'year',
+                                        count: 1,
+                                        text: '1y'
+                                    }, {
+                                        type: 'all',
+                                        text: 'All'
+                                    }],
+                                },
+                                series: [{
+                                    name: 'My Series',
+                                    data: data2,
+                                    color: colors[3]
+                                }]
+                            });
+                        });
+                </script>
+
+            </div>
+        </h:form>
+        </body>
+    </ui:define>
+</ui:composition>

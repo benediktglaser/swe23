@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Service for accessing and sensor data from the access point
@@ -68,6 +69,10 @@ public class SensorDataService {
     }
     public Collection<SensorData> getAllSensorDataBySensorStationType(SensorStation sensorStation,SensorDataType type) {
         return sensorDataRepository.findSensorDataBySensorStationAndType(sensorStation,type);
+    }
+
+    public List<Object[]> getAllSensorDataByStationForChart(SensorStation sensorStation){
+        return sensorDataRepository.getSensorDataBySensorStation(sensorStation);
     }
 
 
