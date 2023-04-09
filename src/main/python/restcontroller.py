@@ -157,6 +157,6 @@ if __name__ == "__main__":
     data = prepare_for_jsf(data)
 
     print(data)
-    # response = post_measurement(data)
+    response = post_measurement(data)
     # print(response)
     # delete_send_sensor_data(conn, response)

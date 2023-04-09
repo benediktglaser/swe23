@@ -54,9 +54,11 @@
             <div id="chart-container"></div>
 
             <script type="text/javascript">
+                let chartsi;
                 function myF(sensorStationId, sensorDataTypeInfoId, sensorDataType) {
-                    var url = '/chart?sensorStationId=' + sensorStationId + '&amp;sensorDataTypeId=' + sensorDataTypeInfoId  + '&amp;typeId=' + sensorDataType;
-                    fetch(url)
+                    var url = '/chart';
+                    var param = '?sensorStationId=' + sensorStationId + '&amp;sensorDataTypeId=' + sensorDataTypeInfoId  + '&amp;typeId=' + sensorDataType;
+                    fetch(url + param)
                         .then(response => response.json())
                         .then(jsonData => {
 
@@ -72,7 +74,10 @@
                             const min = jsonData[0].min;
                             const max = jsonData[0].max;
 
-                            Highcharts.chart('chart-container', {
+
+
+
+                           chartsi = Highcharts.chart('chart-container', {
                                 chart: {
                                     type: 'line',
                                     zoomType: 'x',
@@ -159,6 +164,39 @@
                                     color: colors[0]
                                 }]
                             });
+                            lastTimestamp = transformedData[transformedData.length - 1][0];
+
+                            function updateChart(){
+
+                                let transformedDataNew;
+                                let chartNew = chartis;
+                                var addNewPoints = "/add"
+                                var parame = '&amp;lastDate=' + lastTimestamp;
+                                   fetch(url+addNewPoints+param+parame)
+                                       .then(response => response.json())
+                                       .then(jsonDataNew => {
+
+                                           const dataNew = jsonDataNew;
+                                           const parsedDataNew = JSON.parse(dataNew);
+                                           transformedDataNew = parsedDataNew.map(point => {
+                                               const [year, month, day, hour, minute] = point[0];
+                                               const timestamp = Date.UTC(year, month - 1, day, hour, minute);
+                                               return [timestamp, point[1]];
+
+                                           });
+
+                                           lastTimestamp = transformedDataNew[transformedDataNew.length - 1][0];
+
+
+
+                                       });
+                                transformedDataNew.forEach(point =>{
+                                    chartsi.series[0].addPoint(point);
+                                });
+
+
+                            }
+                            setInterval(updateChart, 5000);
 
                         });
                 }

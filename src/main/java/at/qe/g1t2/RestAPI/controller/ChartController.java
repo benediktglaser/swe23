@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +43,7 @@ public class ChartController {
     SensorDataTypeInfoService sensorDataTypeInfoService;
 
     @GetMapping()
-    public String getSensorDataCSV(@RequestParam String sensorStationId,@RequestParam String sensorDataTypeId,@RequestParam String typeId) throws JsonProcessingException {
+    public String getSensorData(@RequestParam String sensorStationId,@RequestParam String sensorDataTypeId,@RequestParam String typeId) throws JsonProcessingException {
 
         SensorStation sensorStation = sensorStationService.loadSensorStation(sensorStationId);
 
@@ -64,6 +67,28 @@ public class ChartController {
         ObjectNode chartObject = objectMapper.createObjectNode();
         chartObject.set("series", seriesArray);
         String json = writer.writeValueAsString(seriesArray);
+        System.out.println(json);
+        return json;
+    }
+
+    @GetMapping("/add")
+    public String getNewSensorData(@RequestParam String sensorStationId,@RequestParam String sensorDataTypeId,@RequestParam String typeId, @RequestParam String lastDate) throws JsonProcessingException {
+        long timestamp = Long.parseLong(lastDate);
+        Instant instant = Instant.ofEpochMilli(timestamp);
+        LocalDateTime lastTimeStamp = LocalDateTime.of(2020,1,1,1,0,0);
+        SensorStation sensorStation = sensorStationService.loadSensorStation(sensorStationId);
+
+        System.out.println(sensorStation);
+        System.out.println(lastTimeStamp);
+        System.out.println(typeId);
+        List<Object[]> dataset = new ArrayList<>();
+        dataset = sensorDataService.getAllNewSensorDataByStationAndTypeForChart(sensorStation, SensorDataType.valueOf(typeId),lastTimeStamp);
+        System.out.println(dataset.isEmpty());
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        ObjectWriter writer = objectMapper.writer().with(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+        String json = writer.writeValueAsString(dataset);
         System.out.println(json);
         return json;
     }
