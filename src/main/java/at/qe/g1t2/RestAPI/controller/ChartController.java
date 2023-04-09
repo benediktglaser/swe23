@@ -74,8 +74,9 @@ public class ChartController {
     @GetMapping("/add")
     public String getNewSensorData(@RequestParam String sensorStationId,@RequestParam String sensorDataTypeId,@RequestParam String typeId, @RequestParam String lastDate) throws JsonProcessingException {
         long timestamp = Long.parseLong(lastDate);
-        Instant instant = Instant.ofEpochMilli(timestamp);
-        LocalDateTime lastTimeStamp = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+        LocalDateTime lastTimeStamp = Instant.ofEpochMilli(timestamp).atZone(ZoneId.systemDefault()).toLocalDateTime();
+        lastTimeStamp = lastTimeStamp.minusHours(2);
+        //LocalDateTime lastTimeStamp = LocalDateTime.ofInstant(ZoneId.of("CET"));
         SensorStation sensorStation = sensorStationService.loadSensorStation(sensorStationId);
 
         System.out.println(sensorStation);
