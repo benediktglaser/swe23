@@ -8,8 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.support.RequestContext;
 
+import java.awt.event.KeyEvent;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @Scope("view")
@@ -21,16 +24,18 @@ public class SensorDataTypeListController{
     SensorStationService sensorStationService;
 
     private SensorStation sensorStation;
+
     @Transactional
-
     public List<SensorDataTypeInfo> getAllSensorDataTypeBySensorStation(){
-
         return sensorDataTypeInfoService.getAllSensorDataTypeInfosBySensorStation(sensorStation);
     }
+
     @Transactional
     public SensorStation getSensorStation() {
         return sensorStationService.loadSensorStation(this.sensorStation.getId());
     }
+
+
     @Transactional
     public void setSensorStation(SensorStation sensorStation) {
         this.sensorStation = sensorStationService.loadSensorStation(sensorStation.getId());;
