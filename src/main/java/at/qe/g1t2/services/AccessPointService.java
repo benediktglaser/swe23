@@ -35,7 +35,6 @@ public class AccessPointService {
 
 
     @PreAuthorize("hasAnyAuthority('ACCESS_POINT','ADMIN')")
-    @Transactional
     public AccessPoint loadAccessPoint(String uuid) {
 
         return accessPointRepository.findAccessPointById(uuid);
