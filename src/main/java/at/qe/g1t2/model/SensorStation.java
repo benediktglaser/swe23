@@ -38,6 +38,16 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
     public void setUserx(Set<Userx> userx) {
         this.userx = userx;
     }
+    private LocalDateTime lastConnectedDate;
+
+    public LocalDateTime getLastConnectedDate() {
+        return lastConnectedDate;
+    }
+
+    public void setLastConnectedDate(LocalDateTime lastConnectedDate) {
+        this.lastConnectedDate = lastConnectedDate;
+    }
+
 
     private Double transmissionInterval;
 
@@ -102,7 +112,7 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
 
 
     public Boolean getConnected() {
-        return connected;
+        return lastConnectedDate != null && lastConnectedDate.plusSeconds(transmissionInterval.longValue() + accessPoint.getSendingInterval().longValue()).isAfter(LocalDateTime.now());
     }
 
     public void setConnected(Boolean connected) {

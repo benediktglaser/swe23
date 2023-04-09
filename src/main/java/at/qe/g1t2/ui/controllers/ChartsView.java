@@ -2,13 +2,9 @@ package at.qe.g1t2.ui.controllers;
 
 import at.qe.g1t2.model.SensorDataType;
 import at.qe.g1t2.model.SensorDataTypeInfo;
-import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.services.SensorDataTypeInfoService;
 import at.qe.g1t2.ui.beans.SessionSensorStationBean;
 import jakarta.annotation.PostConstruct;
-import jakarta.faces.context.ExternalContext;
-import jakarta.faces.context.FacesContext;
-import jakarta.faces.event.ActionEvent;
 import jakarta.faces.model.SelectItem;
 import jakarta.faces.model.SelectItemGroup;
 import org.primefaces.PrimeFaces;

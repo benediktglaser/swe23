@@ -4,18 +4,12 @@ import at.qe.g1t2.model.SensorData;
 import at.qe.g1t2.model.SensorDataType;
 import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.repositories.SensorDataRepository;
-
-
-import org.primefaces.model.chart.LineChartSeries;
 import org.primefaces.model.charts.ChartData;
 import org.primefaces.model.charts.line.LineChartDataSet;
 import org.primefaces.model.charts.line.LineChartModel;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-
 
 import java.time.LocalDateTime;
 import java.util.*;

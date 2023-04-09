@@ -1,6 +1,6 @@
 package at.qe.g1t2.ui.controllers;
 
-import at.qe.g1t2.services.*;
+import at.qe.g1t2.services.CollectionToPageConverter;
 import jakarta.persistence.criteria.Path;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.LazyDataModel;
