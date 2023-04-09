@@ -9,7 +9,7 @@ host = "http://localhost:8080"
 
 
 def prepare_auth_headers():
-    """Prepare the authentication via HTTPBasic"""
+    """Just for testing. Prepare the authentication via HTTPBasic"""
     return HTTPBasicAuth("7269ddec-30c6-44d9-bc1f-8af18da09ed3", "passwd")
 
 
