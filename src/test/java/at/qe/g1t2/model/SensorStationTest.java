@@ -36,7 +36,7 @@ public class SensorStationTest {
                 .build();
 
         validator.validate(new PojoClassExcludedFields(PojoClassFactory.getPojoClass(SensorStation.class),
-                Set.of("createDate")));
+                Set.of("createDate","lastConnectedDate","connected")));
 
         SensorStation sensorStation = new SensorStation();
         LocalDateTime dateTest = LocalDateTime.now();
@@ -65,7 +65,7 @@ public class SensorStationTest {
         user2.setUsername("Medin");
 
 
-        EqualsVerifier.forClass(SensorStation.class).withPrefabValues(SensorStation.class, sensorStation1, sensorStation2).withPrefabValues(Userx.class, user1, user2).suppress(Warning.STRICT_INHERITANCE, Warning.ALL_FIELDS_SHOULD_BE_USED).withIgnoredFields("usersFavourites","sensorData").verify();
+        EqualsVerifier.forClass(SensorStation.class).withPrefabValues(SensorStation.class, sensorStation1, sensorStation2).withPrefabValues(Userx.class, user1, user2).suppress(Warning.STRICT_INHERITANCE, Warning.ALL_FIELDS_SHOULD_BE_USED).withIgnoredFields("sensorData").verify();
         Assertions.assertEquals(sensorStation1.hashCode(), sensorStation3.hashCode());
     }
 

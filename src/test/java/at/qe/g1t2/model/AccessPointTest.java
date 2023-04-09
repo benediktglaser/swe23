@@ -32,7 +32,7 @@ public class AccessPointTest {
                 .build();
 
         validator.validate(new PojoClassExcludedFields(PojoClassFactory.getPojoClass(AccessPoint.class),
-                Set.of("createDate", "updateDate")));
+                Set.of("createDate", "updateDate","lastConnectedDate","connected")));
     }
 
     @Test

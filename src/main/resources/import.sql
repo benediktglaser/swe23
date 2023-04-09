@@ -27,11 +27,12 @@ INSERT INTO access_point (id,create_date, connected, enabled, sending_interval, 
 INSERT INTO access_point (id,create_date, connected, enabled, sending_interval, update_date, access_point_name,password,access_Point_Role) VALUES ('43d5aba9-29c5-49b4-b4ec-2d430e34104f','2021-07-08 12:30:00',false,true,3.0,'2022-07-08 12:30:00','second floor','$2y$10$P7im4OMw6hsnPWLpJ1nVKup1jlEFsLIek9D3lglmZv.Tq05GDEhMS' ,'ACCESS_POINT');
 
 
-INSERT INTO sensor_station (ID, NAME, CATEGORY, CREATE_DATE, ACCESS_POINT_ID,DIP_ID,connected,enabled,transmission_interval,GARDENER_ID) VALUES('8ccfdfaa-9731-4786-8efa-e2141e5c4095'  ,'rose', 'flower', '2023-05-01 12:00:00', '7269ddec-30c6-44d9-bc1f-8af18da09ed3',1,false,true,12.0,'user1');
-INSERT INTO sensor_station (ID, NAME, CATEGORY, CREATE_DATE,ACCESS_POINT_ID,DIP_ID,connected,enabled,transmission_interval,GARDENER_ID) VALUES ('f11c3324-125f-4b2d-8b82-3692b0772d95'   , 'bonsai', 'tree', '2022-08-09 11:23:00','7269ddec-30c6-44d9-bc1f-8af18da09ed3',2,false,true,12.0,'elvis');
-INSERT INTO sensor_station (ID, NAME, CATEGORY, CREATE_DATE,ACCESS_POINT_ID,DIP_ID,connected,enabled,transmission_interval,GARDENER_ID) VALUES ('b94d9ff0-1366-49b1-b19b-85f73c14d744'  , 'mint', 'mint-family', '2021-10-09 20:24:00','43d5aba9-29c5-49b4-b4ec-2d430e34104f',1,false,true,12.0,'petersen');
-INSERT INTO sensor_station (ID, NAME, CATEGORY, CREATE_DATE,ACCESS_POINT_ID,DIP_ID,connected,enabled,transmission_interval,GARDENER_ID) VALUES ('9f98b70c-4de7-46c0-a611-21160743be7e', 'tomato', 'fruit', '2020-09-07 11:12:00','4294ba1b-f794-4e3d-b606-896b28237bcb',3,false,true,12.0,'user1');
-INSERT INTO sensor_station (ID, NAME, CATEGORY, CREATE_DATE,ACCESS_POINT_ID,DIP_ID,connected,enabled,transmission_interval,GARDENER_ID) VALUES ('c57004cc-ca72-41a0-9432-754e642696cb', 'potato', 'vegetable', '2019-08-01 13:23:00','4294ba1b-f794-4e3d-b606-896b28237bcb',4,false,true,12.0,'elvis');
+
+INSERT INTO SENSOR_STATION (ID, NAME, CATEGORY, CREATE_DATE, ACCESS_POINT_ID,DIP_ID,connected,enabled,transmission_interval,GARDENER_ID) VALUES('8ccfdfaa-9731-4786-8efa-e2141e5c4095'  ,'rose', 'flower', '2023-05-01 12:00:00', '7269ddec-30c6-44d9-bc1f-8af18da09ed3',1,false,true,12.0,'user1');
+INSERT INTO SENSOR_STATION (ID, NAME, CATEGORY, CREATE_DATE,ACCESS_POINT_ID,DIP_ID,connected,enabled,transmission_interval,GARDENER_ID) VALUES ('f11c3324-125f-4b2d-8b82-3692b0772d95'   , 'bonsai', 'tree', '2022-08-09 11:23:00','7269ddec-30c6-44d9-bc1f-8af18da09ed3',2,false,true,12.0,'elvis');
+INSERT INTO SENSOR_STATION (ID, NAME, CATEGORY, CREATE_DATE,ACCESS_POINT_ID,DIP_ID,connected,enabled,transmission_interval,GARDENER_ID) VALUES ('b94d9ff0-1366-49b1-b19b-85f73c14d744'  , 'mint', 'mint-family', '2021-10-09 20:24:00','43d5aba9-29c5-49b4-b4ec-2d430e34104f',1,false,true,12.0,'petersen');
+INSERT INTO SENSOR_STATION (ID, NAME, CATEGORY, CREATE_DATE,ACCESS_POINT_ID,DIP_ID,connected,enabled,transmission_interval,GARDENER_ID) VALUES ('9f98b70c-4de7-46c0-a611-21160743be7e', 'tomato', 'fruit', '2020-09-07 11:12:00','4294ba1b-f794-4e3d-b606-896b28237bcb',3,false,true,12.0,'user1');
+INSERT INTO SENSOR_STATION (ID, NAME, CATEGORY, CREATE_DATE,ACCESS_POINT_ID,DIP_ID,connected,enabled,transmission_interval,GARDENER_ID) VALUES ('c57004cc-ca72-41a0-9432-754e642696cb', 'potato', 'vegetable', '2019-08-01 13:23:00','4294ba1b-f794-4e3d-b606-896b28237bcb',4,false,true,12.0,'elvis');
 
 
 INSERT INTO sensor_station (ID, NAME, CATEGORY, CREATE_DATE, ACCESS_POINT_ID,DIP_ID,connected,enabled,transmission_interval,GARDENER_ID) VALUES('4e9bca4a-5df7-4d5f-af5f-4493458f57f7','rose', 'flower', '2023-05-01 12:00:00', '7269ddec-30c6-44d9-bc1f-8af18da09ed3',3,false,true,12.0,'petersen');
@@ -40,18 +41,18 @@ INSERT INTO sensor_station (ID, NAME, CATEGORY, CREATE_DATE,ACCESS_POINT_ID,DIP_
 INSERT INTO sensor_station (ID, NAME, CATEGORY, CREATE_DATE,ACCESS_POINT_ID,DIP_ID,connected,enabled,transmission_interval,GARDENER_ID) VALUES ('1be4c4f4-2b08-4bc8-8b44-1c0965b58ee9', 'tomato', 'fruit', '2020-09-07 11:12:00','4294ba1b-f794-4e3d-b606-896b28237bcb',5,false,true,12.0,'petersen');
 INSERT INTO sensor_station (ID, NAME, CATEGORY, CREATE_DATE,ACCESS_POINT_ID,DIP_ID,connected,enabled,transmission_interval,GARDENER_ID) VALUES ('e6a456c1-ef03-4c62-8e80-1e7bba2a03a9', 'potato', 'vegetable', '2019-08-01 13:23:00','4294ba1b-f794-4e3d-b606-896b28237bcb',6,false,true,12.0,'user1');
 
+INSERT INTO SENSOR_STATION (ID, NAME, CATEGORY, CREATE_DATE, ACCESS_POINT_ID, DIP_ID, connected, enabled, transmission_interval,GARDENER_ID) VALUES ('a1a96ebd-e6b1-426e-87b1-9c9f72118e05', 'sunflower', 'flower', '2023-05-01 12:00:00', '7269ddec-30c6-44d9-bc1f-8af18da09ed3', 5, false, true, 12.0,'elvis');
+INSERT INTO SENSOR_STATION (ID, NAME, CATEGORY, CREATE_DATE, ACCESS_POINT_ID, DIP_ID, connected, enabled, transmission_interval,GARDENER_ID) VALUES ('78c5e3e5-5c5f-4d91-9cf2-7d39ed098d9c', 'cedar', 'tree', '2022-08-09 11:23:00', '7269ddec-30c6-44d9-bc1f-8af18da09ed3', 6, false, true, 12.0,'petersen');
+INSERT INTO SENSOR_STATION (ID, NAME, CATEGORY, CREATE_DATE, ACCESS_POINT_ID, DIP_ID, connected, enabled, transmission_interval,GARDENER_ID) VALUES ('ce9b6d71-2a2b-4baf-bf52-717d1b3a4ea4', 'peppermint', 'mint-family', '2021-10-09 20:24:00', '43d5aba9-29c5-49b4-b4ec-2d430e34104f', 3, false, true, 12.0,'user1');
+INSERT INTO SENSOR_STATION (ID, NAME, CATEGORY, CREATE_DATE, ACCESS_POINT_ID, DIP_ID, connected, enabled, transmission_interval,GARDENER_ID) VALUES ('dc7d2e05-2953-4b46-a2b4-74705f63e005', 'blueberry', 'fruit', '2020-09-07 11:12:00', '4294ba1b-f794-4e3d-b606-896b28237bcb', 7, false, true, 12.0,'elvis');
+INSERT INTO SENSOR_STATION (ID, NAME, CATEGORY, CREATE_DATE, ACCESS_POINT_ID, DIP_ID, connected, enabled, transmission_interval,GARDENER_ID) VALUES ('fac9c9b9-62cc-4d3d-af5b-06d9965f0f7c', 'carrot', 'vegetable', '2019-08-01 13:23:00', '4294ba1b-f794-4e3d-b606-896b28237bcb', 8, false, true, 12.0,'petersen');
+INSERT INTO SENSOR_STATION (ID, NAME, CATEGORY, CREATE_DATE, ACCESS_POINT_ID, DIP_ID, connected, enabled, transmission_interval,GARDENER_ID) VALUES ('cf6d8d3e-9b9c-4172-98d8-50b29f1e1f87', 'lily', 'flower', '2023-05-01 12:00:00', '7269ddec-30c6-44d9-bc1f-8af18da09ed3', 7, false, true, 12.0,'user1');
 
-INSERT INTO sensor_station (ID, NAME, CATEGORY, CREATE_DATE, ACCESS_POINT_ID, DIP_ID, connected, enabled, transmission_interval,GARDENER_ID) VALUES ('a1a96ebd-e6b1-426e-87b1-9c9f72118e05', 'sunflower', 'flower', '2023-05-01 12:00:00', '7269ddec-30c6-44d9-bc1f-8af18da09ed3', 5, false, true, 12.0,'elvis');
-INSERT INTO sensor_station (ID, NAME, CATEGORY, CREATE_DATE, ACCESS_POINT_ID, DIP_ID, connected, enabled, transmission_interval,GARDENER_ID) VALUES ('78c5e3e5-5c5f-4d91-9cf2-7d39ed098d9c', 'cedar', 'tree', '2022-08-09 11:23:00', '7269ddec-30c6-44d9-bc1f-8af18da09ed3', 6, false, true, 12.0,'petersen');
-INSERT INTO sensor_station (ID, NAME, CATEGORY, CREATE_DATE, ACCESS_POINT_ID, DIP_ID, connected, enabled, transmission_interval,GARDENER_ID) VALUES ('ce9b6d71-2a2b-4baf-bf52-717d1b3a4ea4', 'peppermint', 'mint-family', '2021-10-09 20:24:00', '43d5aba9-29c5-49b4-b4ec-2d430e34104f', 3, false, true, 12.0,'user1');
-INSERT INTO sensor_station (ID, NAME, CATEGORY, CREATE_DATE, ACCESS_POINT_ID, DIP_ID, connected, enabled, transmission_interval,GARDENER_ID) VALUES ('dc7d2e05-2953-4b46-a2b4-74705f63e005', 'blueberry', 'fruit', '2020-09-07 11:12:00', '4294ba1b-f794-4e3d-b606-896b28237bcb', 7, false, true, 12.0,'elvis');
-INSERT INTO sensor_station (ID, NAME, CATEGORY, CREATE_DATE, ACCESS_POINT_ID, DIP_ID, connected, enabled, transmission_interval,GARDENER_ID) VALUES ('fac9c9b9-62cc-4d3d-af5b-06d9965f0f7c', 'carrot', 'vegetable', '2019-08-01 13:23:00', '4294ba1b-f794-4e3d-b606-896b28237bcb', 8, false, true, 12.0,'petersen');
-INSERT INTO sensor_station (ID, NAME, CATEGORY, CREATE_DATE, ACCESS_POINT_ID, DIP_ID, connected, enabled, transmission_interval,GARDENER_ID) VALUES ('cf6d8d3e-9b9c-4172-98d8-50b29f1e1f87', 'lily', 'flower', '2023-05-01 12:00:00', '7269ddec-30c6-44d9-bc1f-8af18da09ed3', 7, false, true, 12.0,'user1');
 
-INSERT INTO sensor_data_type_info(ID, TYPE, MINLIMIT, MAXLIMIT, SENSOR_STATION_ID, CREATE_DATE)
+INSERT INTO SENSOR_DATA_TYPE_INFO(ID, TYPE, MIN_LIMIT, MAX_LIMIT, SENSOR_STATION_ID, CREATE_DATE)
 VALUES
     ('id1cc', 'TEMPERATURE', 0, 100, '8ccfdfaa-9731-4786-8efa-e2141e5c4095', '2023-04-04'),
-    ('id2cc', 'TEMPERATURE', 10, 50, 'f11c3324-125f-4b2d-8b82-3692b0772d95', '2023-04-04'),
+    ('id2cc', 'TEMPERATURE', 10.0, 50.0, 'f11c3324-125f-4b2d-8b82-3692b0772d95', '2023-04-04'),
     ('id3cc', 'TEMPERATURE', -20, 80,'b94d9ff0-1366-49b1-b19b-85f73c14d744', '2023-04-04'),
     ('id4cc', 'TEMPERATURE', 5, 90,  '9f98b70c-4de7-46c0-a611-21160743be7e', '2023-04-04'),
     ('id5cc', 'TEMPERATURE', 15, 75, 'c57004cc-ca72-41a0-9432-754e642696cb', '2023-04-04'),
@@ -63,7 +64,8 @@ VALUES
     ('id11c', 'TEMPERATURE', -15, 105,'78c5e3e5-5c5f-4d91-9cf2-7d39ed098d9c', '2023-04-04'),
     ('id12c', 'TEMPERATURE', 8, 92,   'ce9b6d71-2a2b-4baf-bf52-717d1b3a4ea4', '2023-04-04'),
     ('id13c', 'TEMPERATURE', -35, 55, 'dc7d2e05-2953-4b46-a2b4-74705f63e005', '2023-04-04'),
-    ('id14c', 'TEMPERATURE', -5, 95,  'fac9c9b9-62cc-4d3d-af5b-06d9965f0f7c', '2023-04-04');
+    ('id14c', 'TEMPERATURE', -5, 95,  'fac9c9b9-62cc-4d3d-af5b-06d9965f0f7c', '2023-04-04'),
+    ('id1cc1', 'GAS', 4, 30, '8ccfdfaa-9731-4786-8efa-e2141e5c4095', '2023-04-04');
 
 
 INSERT INTO sensor_data (ID, MEASUREMENT, SENSOR_STATION_ID, TYPE, CREATE_DATE) VALUES ('0e6006f9-12f2-4f08-841f-6d937669eb6e', 0.05, '8ccfdfaa-9731-4786-8efa-e2141e5c4095', 'TEMPERATURE',  '2020-05-06 13:45:00');
@@ -86,7 +88,6 @@ INSERT INTO sensor_data (ID, MEASUREMENT, SENSOR_STATION_ID, TYPE, CREATE_DATE) 
 INSERT INTO sensor_data (ID, MEASUREMENT, SENSOR_STATION_ID, TYPE, CREATE_DATE) VALUES ('b2a9d8c7-dc7d-2e05-2953-4b46-a2b4-74705f63e005', 75.0,'dc7d2e05-2953-4b46-a2b4-74705f63e005', 'GAS',' 1997-04-01 14:39:06');
 INSERT INTO sensor_data (ID, MEASUREMENT, SENSOR_STATION_ID, TYPE, CREATE_DATE) VALUES ('a3b4c6d8-fac9-c9b9-62cc-4d3d-af5b-06d9965f0f7c', 60.0,'fac9c9b9-62cc-4d3d-af5b-06d9965f0f7c', 'TEMPERATURE','2020-04-01 14:39:06');
 
-
-INSERT INTO users_favourites(ID, USERNAME, SENSOR_STATION_ID, CREATE_DATE) VALUES ('c9476b1a-e64c-47e7-8a3a-3d77502e0c10', 'user2','a1a96ebd-e6b1-426e-87b1-9c9f72118e05','2020-06-06 13:45:00');
-INSERT INTO users_favourites(ID, USERNAME, SENSOR_STATION_ID, CREATE_DATE) VALUES ('2f146ea7-2f1b-46e1-87c3-9f3e43c9626c', 'user2','78c5e3e5-5c5f-4d91-9cf2-7d39ed098d9c','2020-07-06 13:45:00');
-INSERT INTO users_favourites(ID, USERNAME, SENSOR_STATION_ID, CREATE_DATE) VALUES ('2e6f7e6f-1c35-443f-9d0f-5346f2c23a7f', 'user2','ce9b6d71-2a2b-4baf-bf52-717d1b3a4ea4','2020-08-06 13:45:00');
+INSERT INTO user_sensor_station(user_id, SENSOR_STATION_ID) VALUES ('user2','a1a96ebd-e6b1-426e-87b1-9c9f72118e05');
+INSERT INTO user_sensor_station(user_id, SENSOR_STATION_ID) VALUES ('user2','78c5e3e5-5c5f-4d91-9cf2-7d39ed098d9c');
+INSERT INTO user_sensor_station(user_id, SENSOR_STATION_ID) VALUES ('user2','ce9b6d71-2a2b-4baf-bf52-717d1b3a4ea4');

@@ -1,6 +1,6 @@
 package at.qe.g1t2.ui.controllers;
 
-import at.qe.g1t2.services.*;
+import at.qe.g1t2.services.CollectionToPageConverter;
 import jakarta.persistence.criteria.Path;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.LazyDataModel;
@@ -80,9 +80,9 @@ public abstract class AbstractListController<K,T extends Persistable<K> & Serial
 
         }
 
-        Page<T> accessPoints = collectionToPageConverterFunction.retrieveData(finalSpec,page);
-        setRowCount((int) accessPoints.getTotalElements());
-        return accessPoints.getContent();
+        Page<T> entity = collectionToPageConverterFunction.retrieveData(finalSpec,page);
+        setRowCount((int) entity.getTotalElements());
+        return entity.getContent();
     }
 
     public List<Specification<T>> getExtraSpecs() {

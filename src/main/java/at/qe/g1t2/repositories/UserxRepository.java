@@ -1,6 +1,5 @@
 package at.qe.g1t2.repositories;
 
-import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.model.UserRole;
 import at.qe.g1t2.model.Userx;
 import org.springframework.data.jpa.repository.JpaRepository;

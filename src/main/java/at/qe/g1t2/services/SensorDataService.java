@@ -15,9 +15,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Service for accessing and sensor data from the access point
@@ -65,6 +65,17 @@ public class SensorDataService {
 
     public Collection<SensorData> getAllSensorDataByType(SensorDataType type) {
         return sensorDataRepository.findByType(type);
+    }
+    public Collection<SensorData> getAllSensorDataBySensorStationType(SensorStation sensorStation,SensorDataType type) {
+        return sensorDataRepository.findSensorDataBySensorStationAndType(sensorStation,type);
+    }
+
+    public List<Object[]> getAllSensorDataByStationForChart(SensorStation sensorStation){
+        return sensorDataRepository.getSensorDataBySensorStation(sensorStation);
+    }
+
+    public List<Object[]> getAllSensorDataByStationAndTypeForChart(SensorStation sensorStation, SensorDataType sensorDataType){
+        return sensorDataRepository.getSensorDataBySensorStationAndType(sensorStation,sensorDataType);
     }
 
 

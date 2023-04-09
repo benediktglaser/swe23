@@ -5,9 +5,7 @@ import at.qe.g1t2.model.AccessPoint;
 import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.model.Userx;
 import at.qe.g1t2.services.*;
-
 import at.qe.g1t2.ui.beans.SessionSensorStationBean;
-import jakarta.annotation.PostConstruct;
 import jakarta.persistence.criteria.Path;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -17,7 +15,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
-import java.util.List;
 
 
 @Component
@@ -84,6 +81,8 @@ public class SensorStationListController extends AbstractListController<String, 
     public Collection<SensorStation> getAllSensorStationByOwner(){
         return sensorStationGardenerService.getAllSensorStationsOfUser();
     }
+
+
 
 }
 

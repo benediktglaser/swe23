@@ -1,6 +1,8 @@
 package at.qe.g1t2.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.envers.Audited;
@@ -8,10 +10,7 @@ import org.springframework.data.domain.Persistable;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Audited
@@ -32,6 +31,24 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
 
     private String category;
 
+    public Set<Userx> getUserx() {
+        return userx;
+    }
+
+    public void setUserx(Set<Userx> userx) {
+        this.userx = userx;
+    }
+    private LocalDateTime lastConnectedDate;
+
+    public LocalDateTime getLastConnectedDate() {
+        return lastConnectedDate;
+    }
+
+    public void setLastConnectedDate(LocalDateTime lastConnectedDate) {
+        this.lastConnectedDate = lastConnectedDate;
+    }
+
+
     private Double transmissionInterval;
 
     @Column(nullable = false)
@@ -43,9 +60,10 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Userx gardener;
 
-    @OneToMany(mappedBy = "sensorStation",fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "sensorStations",fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    Set<UsersFavourites> usersFavourites;
+    @Fetch(FetchMode.SELECT)
+    Set<Userx> userx = new HashSet<>();
 
     @OneToMany(mappedBy = "sensorStation", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -94,7 +112,7 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
 
 
     public Boolean getConnected() {
-        return connected;
+        return lastConnectedDate != null && lastConnectedDate.plusSeconds(transmissionInterval.longValue() + accessPoint.getSendingInterval().longValue()).isAfter(LocalDateTime.now());
     }
 
     public void setConnected(Boolean connected) {
@@ -189,11 +207,4 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
         this.sensorDataTypeInfos = sensorDataTypeInfos;
     }
 
-    public Set<UsersFavourites> getUsersFavourites() {
-        return usersFavourites;
-    }
-
-    public void setUsersFavourites(Set<UsersFavourites> usersFavourites) {
-        this.usersFavourites = usersFavourites;
-    }
 }

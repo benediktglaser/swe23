@@ -5,17 +5,14 @@ import at.qe.g1t2.model.AccessPointRole;
 import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.repositories.AccessPointRepository;
 import at.qe.g1t2.repositories.SensorStationRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,8 +31,7 @@ public class AccessPointService {
     SensorStationRepository sensorStationRepository;
 
 
-    @PreAuthorize("hasAnyAuthority('ACCESS_POINT','ADMIN')")
-    @Transactional
+
     public AccessPoint loadAccessPoint(String uuid) {
 
         return accessPointRepository.findAccessPointById(uuid);
@@ -62,9 +58,6 @@ public class AccessPointService {
         return sensorStationRepository.getSensorStationsByAccessPoint(accessPoint);
     }
 
-    public Page<SensorStation> getAllSensorStationsByAccessPoint(Specification<SensorStation> spec,Pageable page,AccessPoint accessPoint) {
-        return sensorStationRepository.getSensorStationsByAccessPoint(spec,page,accessPoint);
-    }
 
 
 
@@ -79,9 +72,7 @@ public class AccessPointService {
         return sensorStationRepository.findSensorStationByAccessPointAndDipId(loadAccessPoint(accessPointId), dipId);
     }
 
-    public Page<SensorStation> getSensorStationByAccessPointIdAndDipId(Specification<SensorStation> spec,Pageable page,AccessPoint accessPoint, Long dipId) {
-        return sensorStationRepository.getSensorStationsByAccessPointAndDipId(spec,page,accessPoint,dipId);
-    }
+
 
     public Long numberOfAccessPoint(){
         return accessPointRepository.count();

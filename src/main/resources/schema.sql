@@ -1,4 +1,6 @@
+DROP TABLE IF EXISTS user_sensor_station;
 DROP TABLE IF EXISTS sensor_data_aud;
+DROP TABLE IF EXISTS user_sensor_station_aud;
 DROP TABLE IF EXISTS sensor_station_aud;
 DROP TABLE IF EXISTS access_point_aud;
 DROP TABLE IF EXISTS userx_user_role_aud;
@@ -31,6 +33,9 @@ CREATE TABLE access_point
     CONSTRAINT pk_accesspoint PRIMARY KEY (id)
 );
 
+
+
+
 CREATE TABLE sensor_data
 (
     id                VARCHAR(255) NOT NULL,
@@ -42,11 +47,12 @@ CREATE TABLE sensor_data
     CONSTRAINT pk_sensordata PRIMARY KEY (id)
 );
 
-CREATE TABLE sensor_data_type_info(
-    id              VARCHAR(255) NOT NULL,
-    type            VARCHAR(100),
-    minLimit        DOUBLE,
-    maxLimit        DOUBLE,
+CREATE TABLE sensor_data_type_info
+(
+    id                VARCHAR(255) NOT NULL,
+    type              VARCHAR(100),
+    min_Limit          DOUBLE,
+    max_Limit          DOUBLE,
     create_date       timestamp    NOT NULL,
     sensor_station_id VARCHAR(255) NULL,
     CONSTRAINT pf_sensor_data_type_info PRIMARY KEY (id)
@@ -65,7 +71,7 @@ CREATE TABLE sensor_station
     transmission_interval DOUBLE       NULL,
     create_date           timestamp    NOT NULL,
     access_point_id       VARCHAR(255) NULL,
-    gardener_id           VARCHAR(255) NULL ,
+    gardener_id           VARCHAR(255) NULL,
     CONSTRAINT pk_sensorstation PRIMARY KEY (id)
 );
 
@@ -92,13 +98,13 @@ CREATE TABLE userx_user_role
     roles          VARCHAR(255) NULL
 );
 
-CREATE TABLE users_favourites
+CREATE TABLE user_sensor_station
 (
-    id             VARCHAR(255) NOT NULL,
-    username       VARCHAR(255) NOT NULL,
+    user_id           VARCHAR(255) NOT NULL,
     sensor_station_id VARCHAR(255) NOT NULL,
-    create_date          timestamp    NOT NULL,
-    CONSTRAINT pk_usersfavourites PRIMARY KEY (id)
+    PRIMARY KEY (user_id, sensor_station_id),
+    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES userx (username) ON DELETE CASCADE,
+    CONSTRAINT fk_sensor_station FOREIGN KEY (sensor_station_id) REFERENCES sensor_station (id) ON DELETE CASCADE
 );
 /*
 CREATE TABLE revinfo
@@ -234,8 +240,3 @@ ALTER TABLE userx
 ALTER TABLE userx_user_role
     ADD CONSTRAINT fk_userx_userrole_on_userx FOREIGN KEY (userx_username) REFERENCES userx (username);
 
-ALTER TABLE users_favourites
-    ADD CONSTRAINT fk_users_favourites_on_userx FOREIGN KEY (username) REFERENCES userx(username) ON DELETE CASCADE;
-
-ALTER TABLE users_favourites
-    ADD CONSTRAINT fk_users_favourites_on_sensor_station FOREIGN KEY (sensor_station_id) REFERENCES sensor_station(id) ON DELETE CASCADE;

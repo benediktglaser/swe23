@@ -248,6 +248,8 @@ def get_sensor_data(conn, station_id):
         # convert record [(a, b), (c, d)] into a 2D-array [[a, b], [c, d]]
         result = [list(x) for x in record]
         return result
+    except sqlite3.Error as e:
+        print(e)
 
     except sqlite3.Error as e:
         print(e)

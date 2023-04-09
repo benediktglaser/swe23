@@ -1,6 +1,5 @@
 package at.qe.g1t2.ui.controllers;
 
-import at.qe.g1t2.model.AccessPoint;
 import at.qe.g1t2.model.SensorData;
 import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.services.CollectionToPageConverter;
@@ -22,6 +21,7 @@ public class SensorDataListController extends AbstractListController<String,Sens
     SensorDataService sensorDataService;
 
     SensorStation sensorStation;
+
 
     public void filterSensorDataBySensorStation(SensorStation sensorStation) {
         this.sensorStation = sensorStation;

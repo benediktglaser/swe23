@@ -1,6 +1,5 @@
 package at.qe.g1t2.ui.controllers;
 
-import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.model.Userx;
 import at.qe.g1t2.services.CollectionToPageConverter;
 import at.qe.g1t2.services.UserService;
@@ -10,10 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
-import java.util.Collection;
 
 /**
  * Controller for the user list view.

@@ -1,5 +1,7 @@
 package at.qe.g1t2.tests;
 
+import at.qe.g1t2.model.SensorStation;
+import at.qe.g1t2.services.SensorStationService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.internal.util.collections.Sets;
@@ -28,6 +30,9 @@ public class UserServiceTest {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    SensorStationService sensorStationService;
 
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
@@ -81,6 +86,28 @@ public class UserServiceTest {
         for (Userx remainingUser : userService.getAllUsers()) {
             Assertions.assertNotEquals(toBeDeletedUser.getUsername(), remainingUser.getUsername(), "Deleted User \"" + username + "\" could still be loaded from test data source via UserService.getAllUsers");
         }
+    }
+
+    @DirtiesContext
+    @Test
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    public void testDeleteUserHasSensorStation() {
+        String username = "user2";
+        Userx adminUser = userService.loadUser("admin");
+        Assertions.assertNotNull(adminUser, "Admin user could not be loaded from test data source");
+        Userx toBeDeletedUser = userService.loadUser(username);
+        Assertions.assertNotNull(toBeDeletedUser, "User \"" + username + "\" could not be loaded from test data source");
+
+        userService.deleteUser(toBeDeletedUser);
+
+        Assertions.assertEquals(7, userService.getAllUsers().size(), "No user has been deleted after calling UserService.deleteUser");
+        Userx deletedUser = userService.loadUser(username);
+        Assertions.assertNull(deletedUser, "Deleted User \"" + username + "\" could still be loaded from test data source via UserService.loadUser");
+
+        for (Userx remainingUser : userService.getAllUsers()) {
+            Assertions.assertNotEquals(toBeDeletedUser.getUsername(), remainingUser.getUsername(), "Deleted User \"" + username + "\" could still be loaded from test data source via UserService.getAllUsers");
+        }
+        Assertions.assertTrue(sensorStationService.getAllSensorStations().contains(sensorStationService.loadSensorStation("a1a96ebd-e6b1-426e-87b1-9c9f72118e05")));
     }
 
     @DirtiesContext
@@ -212,6 +239,36 @@ public class UserServiceTest {
             Assertions.assertEquals("user1", user.getUsername(), "Call to userService.loadUser returned wrong user");
             userService.deleteUser(user);
         });
+    }
+
+    @Test
+    @WithMockUser(username = "user2", authorities = {"USER"})
+
+    void addSensorStationToUser() {
+        SensorStation sensorStation = sensorStationService.loadSensorStation("8ccfdfaa-9731-4786-8efa-e2141e5c4095");
+
+
+        userService.addSensorStationToUser(sensorStation);
+
+        Userx user = userService.loadUser("user2");
+        Assertions.assertTrue(user.getSensorStations().contains(sensorStation));
+        sensorStation = sensorStationService.loadSensorStation("8ccfdfaa-9731-4786-8efa-e2141e5c4095");
+        Assertions.assertTrue(sensorStation.getUserx().contains(user));
+
+    }
+
+    @Test
+    @WithMockUser(username = "user2", authorities = {"USER"})
+    void removeSensorStationToUser() {
+        SensorStation sensorStation = sensorStationService.loadSensorStation("a1a96ebd-e6b1-426e-87b1-9c9f72118e05");
+
+
+        userService.removeSensorStationToUser(sensorStation);
+
+        Userx user = userService.loadUser("user2");
+        Assertions.assertFalse(user.getSensorStations().contains(sensorStation));
+        sensorStation = sensorStationService.loadSensorStation("a1a96ebd-e6b1-426e-87b1-9c9f72118e05");
+        Assertions.assertFalse(sensorStation.getUserx().contains(user));
     }
 
 }

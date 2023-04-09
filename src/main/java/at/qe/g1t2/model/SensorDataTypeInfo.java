@@ -65,7 +65,7 @@ public class SensorDataTypeInfo implements Persistable<String>, Serializable, Co
 
     @Override
     public int compareTo(SensorDataTypeInfo o) {
-        return o.getId().compareTo(this.id);
+        return String.valueOf(o.getId()).compareTo(this.id);
     }
 
     @Override
@@ -86,4 +86,8 @@ public class SensorDataTypeInfo implements Persistable<String>, Serializable, Co
         this.sensorStation = sensorStation;
     }
 
+    @Override
+    public String toString() {
+        return "Min Limit: "+ minLimit + " Max Limit" + maxLimit + " Date: " + createDate;
+    }
 }
