@@ -23,21 +23,19 @@
                                     <h4 class="mb-1">#{sensorStation.name}</h4>
                                     <h6 class="mt-0 mb-3">
                                     </h6>
-                                    <p:commandButton id="sensordata" value="Sensordata"
-                                                     action="#{sensorStationListController.redirectToSensorDataPage(sensorStation)}"/>
                                     <p:commandButton id="edit"
                                                      update=":sensorStationForm"
                                                      oncomplete="PF('sensorStationFormEditDialog').show()"
                                                      icon="pi pi-pencil"
                                                      action="#{sensorDataTypeListController.setSensorStation(sensorStation)}"/>
+                                    <p:commandButton id="sensordata" value="Sensordata"
+                                                     action="#{sensorStationListController.redirectToSensorDataPage(sensorStation)}"/>
                                 </div>
                             </div>
                         </div>
                     </p:carousel>
                 </p:outputPanel>
             </div>
-        </h:form>
-        <h:form id="editForm">
             <p:dialog header="Sensor Station Info" id="sensorStationFormEditDialog"
                       widgetVar="sensorStationFormEditDialog" modal="true" showEffect="fade" hideEffect="fade"
                       resizable="false" onHide="sensorDataTypeInfoController.resetSensorDataTypeInfoController()">
@@ -69,9 +67,8 @@
                     <p:messages id="msgs"/>
                     <h:panelGrid columns="2" styleClass="mb-3">
                         <p:outputLabel for="min" value="Min Limit: "/>
-                        <p:inputText id="min" value="#{sensorDataTypeInfoController.type.minLimit}">
+                        <p:inputText id="min" value="#{sensorDataTypeInfoController.type.minLimit}" >
                         </p:inputText>
-
                         <p:outputLabel for="max" value="Max Limit: "/>
                         <p:inputText id="max" value="#{sensorDataTypeInfoController.type.maxLimit}">
                         </p:inputText>
@@ -80,16 +77,17 @@
                     <p:separator/>
                     <h:panelGrid columns="1">
                         <p:commandButton value="Save"
-                                         id="savebutton"
+                                         id="saveButton"
                                          action="#{sensorDataTypeInfoController.save(sensorDataTypeListController.getSensorStation())}"
-                                         update=":editForm editForm:sensorStationFormEditDialog"
-                                         process="@parent:@parent" oncomplete="handleSave()" styleClass="mr-2"/>
+                                         update=":sensorStationForm sensorStationForm:sensorStationFormEditDialog"
+                                         process="@parent:@parent" oncomplete="handleSave()" styleClass="mr-2">
+                        </p:commandButton>
                     </h:panelGrid>
 
                 </p:outputPanel>
                 <script>
                     function handleSave() {
-                        PF('sensorStationFormEditDialog').show();
+-                        PF('sensorStationFormEditDialog').show();
                     }
                 </script>
 

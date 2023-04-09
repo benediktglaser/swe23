@@ -2,23 +2,24 @@ package at.qe.g1t2.ui.controllers;
 
 import at.qe.g1t2.model.SensorDataTypeInfo;
 import at.qe.g1t2.model.SensorStation;
-import at.qe.g1t2.repositories.SensorDataTypeInfoRepository;
-import at.qe.g1t2.services.CollectionToPageConverter;
 import at.qe.g1t2.services.SensorDataTypeInfoService;
 import at.qe.g1t2.services.SensorStationService;
-import jakarta.annotation.PostConstruct;
-import jakarta.faces.application.FacesMessage;
+import jakarta.faces.component.behavior.Behavior;
+import jakarta.faces.component.behavior.ClientBehaviorBase;
+import jakarta.faces.component.behavior.ClientBehaviorContext;
 import jakarta.faces.context.FacesContext;
-import jakarta.persistence.criteria.Path;
+import jakarta.faces.event.AjaxBehaviorEvent;
+
+import org.primefaces.PrimeFaces;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.support.RequestContext;
 
+import java.awt.event.KeyEvent;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @Scope("view")
@@ -40,6 +41,7 @@ public class SensorDataTypeListController{
     public SensorStation getSensorStation() {
         return sensorStationService.loadSensorStation(this.sensorStation.getId());
     }
+
 
     @Transactional
     public void setSensorStation(SensorStation sensorStation) {

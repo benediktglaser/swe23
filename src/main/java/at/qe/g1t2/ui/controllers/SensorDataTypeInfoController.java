@@ -23,8 +23,6 @@ import java.util.List;
 @Scope("view")
 @RequestScoped
 public class SensorDataTypeInfoController {
-
-
     @Autowired
     SensorDataTypeInfoService sensorDataTypeInfoService;
 
@@ -33,19 +31,19 @@ public class SensorDataTypeInfoController {
     private SensorDataType sensorDataType;
 
     @Transactional
-    public void resetSensorDataTypeInfoController(){
+    public void resetSensorDataTypeInfoController() {
         sensorDataType = null;
     }
 
     @Transactional
     public SensorDataTypeInfo getType() {
-        if(type == null){
+        if (type == null) {
             type = new SensorDataTypeInfo();
         }
         return type;
     }
 
-    public List<SensorDataType> getAllTypes(){
+    public List<SensorDataType> getAllTypes() {
         return Arrays.stream(SensorDataType.values()).toList();
     }
 
@@ -54,13 +52,22 @@ public class SensorDataTypeInfoController {
     }
 
     @Transactional
-    public void save(SensorStation sensorStation){
-        type.setType(sensorDataType );
-        sensorDataTypeInfoService.save(sensorStation,type);
-        FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(type.getType() + ": Min value set to " + type.getMinLimit() + " and the max value is set to " + type.getMaxLimit()));
-        type = null;
+    public void save(SensorStation sensorStation) {
+        type.setType(sensorDataType);
+        if (type.getMaxLimit() == null || type.getMinLimit() == null) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: The input value cannot be null. Please enter a valid value.", null));
+        } else if (type.getMinLimit() >= type.getMaxLimit()) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: Max has to be greater than min value.", null));
+        } else {
+            sensorDataTypeInfoService.save(sensorStation, type);
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(type.getType() + ": Min value set to " + type.getMinLimit() + " and the max value is set to " + type.getMaxLimit()));
+            type = null;
+        }
     }
+
     @Transactional
     public SensorDataType getSensorDataType() {
         return sensorDataType;
