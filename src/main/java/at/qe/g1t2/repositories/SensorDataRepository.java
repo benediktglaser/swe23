@@ -35,4 +35,6 @@ public interface SensorDataRepository extends JpaRepository<SensorData, String>,
     List<SensorData> findSensorDataBySensorStationAndCreateDateBetweenOrderByCreateDate(SensorStation sensorStation,LocalDateTime start,LocalDateTime end);
     @Query("SELECT u.createDate, u.measurement from SensorData u where u.sensorStation = :sensorStation order by u.createDate")
     List<Object[]> getSensorDataBySensorStation(SensorStation sensorStation);
+    @Query("SELECT u.createDate, u.measurement from SensorData u where u.sensorStation = :sensorStation and u.type = :sensorDataType order by u.createDate")
+    List<Object[]> getSensorDataBySensorStationAndType(@Param("sensorStation")SensorStation sensorStation,@Param("sensorDataType") SensorDataType sensorDataType);
 }

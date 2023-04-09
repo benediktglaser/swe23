@@ -75,5 +75,9 @@ public class SensorDataService {
         return sensorDataRepository.getSensorDataBySensorStation(sensorStation);
     }
 
+    public List<Object[]> getAllSensorDataByStationAndTypeForChart(SensorStation sensorStation, SensorDataType sensorDataType){
+        return sensorDataRepository.getSensorDataBySensorStationAndType(sensorStation,sensorDataType);
+    }
+
 
 }

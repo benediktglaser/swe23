@@ -63,5 +63,14 @@ public class SensorDataTypeInfoService {
         return sensorDataTypeInfoRepository.getSensorDataTypeInfoBySensorStationAndTypeAndCreateDateAfter(sensorStation,type,createDate);
     }
 
+    public Object[] getSensorDataTypInfoLimits(String id) {
+
+        return sensorDataTypeInfoRepository.getTypeInfoById(id);
+
+    }
+
+    public List<SensorDataTypeInfo> getTypeInfoByStationAndType(SensorStation sensorStation, SensorDataType type){
+        return sensorDataTypeInfoRepository.getSensorDataTypeInfosBySensorStationAndType(sensorStation,type);
+    }
 }
 

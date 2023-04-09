@@ -7,130 +7,163 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/main.xhtml">
-    <h:head>
-        <script src="https://code.highcharts.com/highcharts.js"></script>
-        <script src="https://code.highcharts.com/highcharts.js"></script>
-        <script src="https://code.highcharts.com/modules/stock.js"></script>
-        <script src="https://code.highcharts.com/modules/scrollbar.js"></script>
-        <f:metadata>
-            <f:viewAction action="#{sensorDataListController.filterSensorDataBySensorStation(sessionSensorStationBean.sensorStation)}" />
-        </f:metadata>
 
-    </h:head>
     <ui:define name="content">
+        <h:head>
+        <f:metadata>
+            <f:viewAction
+                    action="#{sensorDataListController.filterSensorDataBySensorStation(sessionSensorStationBean.sensorStation)}"/>
+        </f:metadata>
+            <link href="/resources/css/theme.css" rel="stylesheet" type="text/css"/>
+            <script src="https://code.highcharts.com/highcharts.js"></script>
+            <script src="https://code.highcharts.com/highcharts.js"></script>
+            <script src="https://code.highcharts.com/modules/stock.js"></script>
+            <script src="https://code.highcharts.com/modules/scrollbar.js"></script>
 
-        <body>
-        <h:form>
+        </h:head>
+<h:form id="sensorDataForm">
+    <div class="card">
+    <p:multiSelectListbox value="#{chartsView.selection}" effect="slide" header="Select Type and Limits" showHeaders="true" required="true">
+        <f:selectItems value="#{chartsView.categories}"/>
+    </p:multiSelectListbox>
+    </div>
+    <p:commandButton id="chartButton" value="Chart" onclick="myF('#{sessionSensorStationBean.sensorStation.id}', '#{chartsView.selection}')" />
+    <p:dataTable id="sensorDataTable" var="sensorData" value="#{sensorDataListController}"
+                             class="sensorDataTable" lazy="true" rows="3" paginator="true">
+                    <p:column headerText="Measurement" class="ui-datatable-header" sortBy="#{sensorData.measurement}"
+                              filterBy="#{sensorData.measurement}">
+                        <h:outputText value="#{sensorData.measurement}"/>
+                    </p:column>
+                    <p:column headerText="Unit" class="ui-datatable-header" sortBy="#{sensorData.type}"
+                              filterBy="#{sensorData.type}">
+                        <h:outputText value="#{sensorData.getType().getUnit()}"/>
+                    </p:column>
+                    <p:column headerText="Type" class="ui-datatable-header" sortBy="#{sensorData.type}"
+                              filterBy="#{sensorData.type}">
+                        <h:outputText value="#{sensorData.type}"/>
+                    </p:column>
+                    <p:column headerText="Date" class="ui-datatable-header" sortBy="#{sensorData.createDate}"
+                              filterBy="#{sensorData.createDate}">
+                        <h:outputText value="#{(sensorData.createDate).toLocalDate()}"/>
+                    </p:column>
+                </p:dataTable>
 
+        <p:separator/>
+        <div style="flex:1">
+            <!-- Hier steht der Code für das Highcharts-Diagramm -->
+            <div id="chart-container"></div>
 
-            <div style="display:flex">
-                <div style="flex:1">
-                    <p:dataTable id="sensorDataTable" var="sensorData" value="#{sensorDataListController}"
-                                 class="sensorDataTable" lazy="true" rows="3" paginator="true">
-                        <p:column headerText="Measurement" class="ui-datatable-header"
-                                  sortBy="#{sensorData.measurement}" filterBy="#{sensorData.measurement}">
-                            <h:outputText value="#{sensorData.measurement}"/>
-                        </p:column>
-                        <p:column headerText="Unit" class="ui-datatable-header" sortBy="#{sensorData.type}"
-                                  filterBy="#{sensorData.type}">
-                            <h:outputText value="#{sensorData.getType().getUnit()}"/>
-                        </p:column>
-                        <p:column headerText="Type" class="ui-datatable-header" sortBy="#{sensorData.type}"
-                                  filterBy="#{sensorData.type}">
-                            <h:outputText value="#{sensorData.type}"/>
-                        </p:column>
-                        <p:column headerText="Date" class="ui-datatable-header" sortBy="#{sensorData.createDate}"
-                                  filterBy="#{sensorData.createDate}">
-                            <h:outputText value="#{(sensorData.createDate).toLocalDate()}"/>
-                        </p:column>
+            <script type="text/javascript">
+               async function myF(sensorStationId, sensorDataTypeInfoId, sensorDataType) {
+                    let response = await fetch('/chart', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            sensorStationId: sensorStationId,
+                            sensorDataTypeInfoId: sensorDataTypeInfoId
+                        })
+                    });
+                    let json = await response.json();
 
-                    </p:dataTable>
-                </div>
-            </div>
-            <p:separator/>
-            <div style="flex:1">
-
-
-                <script type="text/javascript">
-
-                    var selectedSensorId = "${sessionSensorStationBean.sensorStation.id}";
                     var colors = Highcharts.getOptions().colors;
-                    // Define the chart options
-                    fetch('/chart?id=' + "${sessionSensorStationBean.sensorStation.id}")
-                        .then(response => response.json())
-                        .then(jsonData => {
-                            const data2 = jsonData.map(point => {
-                                const [year, month, day, hour, minute] = point[0];
-                                const timestamp = Date.UTC(year, month - 1, day, hour, minute);
-                                return [timestamp, point[1]];
-                            });
+                    const data = json[0].data;
+                    const parsedData = JSON.parse(data);
 
-                            Highcharts.chart('chart-container', {
-                                chart: {
-                                    type: 'line',
-                                    zoomType: 'x',
-                                    backgroundColor: '#062942',
+                    const transformedData = parsedData.map(point => {
+                        const [year, month, day, hour, minute] = point[0];
+                        const timestamp = Date.UTC(year, month - 1, day, hour, minute);
+                        return [timestamp, point[1]];
+                    });
+                    const min = json[0].min;
+                    const max = json[0].max;
+
+                    Highcharts.chart('chart-container', {
+                        chart: {
+                            type: 'line',
+                            zoomType: 'x',
+                            backgroundColor: '#062942',
+                            style: {
+                                color: '#05233d'
+                            },
+                        },
+                        title: {
+                            text: sensorDataType,
+                        },
+                        xAxis: {
+                            type: 'datetime',
+                        },
+                        tooltip: {
+                            stickOnContact: true
+                        },
+                        yAxis: {
+                            plotLines: [{
+                                value: min, // Set the value where the line will appear
+                                color: 'red', // Set the color of the line
+                                dashStyle: 'dash', // Set the style of the line (solid, shortdash, shortdot, dot, longdash, dashdot, longdashdot)
+                                width: 2, // Set the width of the line
+                                label: {
+                                    text: 'Minimum', // Set the label for the line
+                                    align: 'center', // Set the alignment of the label relative to the line
                                     style: {
-                                        color: '#05233d'
-                                    },
-                                },
-                                title: {
-                                    text: '',
-                                },
+                                        color: 'red' // Set the style of the label
+                                    }
+                                }
+                            }, {
+                                value: max, // Set the value where the line will appear
+                                color: 'red', // Set the color of the line
+                                dashStyle: 'dash', // Set the style of the line (solid, shortdash, shortdot, dot, longdash, dashdot, longdashdot)
+                                width: 2, // Set the width of the line
+                                label: {
+                                    text: 'Maximum', // Set the label for the line
+                                    align: 'center', // Set the alignment of the label relative to the line
+                                    style: {
+                                        color: 'red' // Set the style of the label
+                                    }
+                                }
+                            }],
+                            title: {
+                                text: 'Value'
+                            },
+                            gridLineColor: '#090101',
+                            gridLineWidth: 1,
+                            gridLineDashStyle: 'solid'
+                        },
+                        rangeSelector: {
+                            buttons: [{
+                                type: 'day',
+                                count: 1,
+                                text: '1d'
+                            }, {
+                                type: 'week',
+                                count: 1,
+                                text: '1w'
+                            }, {
+                                type: 'month',
+                                count: 1,
+                                text: '1m'
+                            }, {
+                                type: 'year',
+                                count: 1,
+                                text: '1y'
+                            }, {
+                                type: 'all',
+                                text: 'All'
+                            }],
+                        },
+                        series: [{
+                            name: sensorDataType,
+                            data: transformedData,
+                            color: colors[0]
+                        }]
+                    });
+                }
+            </script>
 
-                                xAxis: {
-                                    type: 'datetime',
-                                    labels: {
-                                        formatter: function () {
-                                            // Format the date label text as "MM/DD/YYYY"
-                                            return Highcharts.dateFormat('%m/%d/%Y %H:%M:%S', this.value);
-                                        }
-                                    },
-                                },
-                                tooltip: {
-                                    stickOnContact: true
-                                },
-                                yAxis: {
-                                    title: {
-                                        text: 'Value'
-                                    },
-                                    gridLineColor: '#090101', // Set the color of the grid lines
-                                    gridLineWidth: 1, // Set the width of the grid lines
-                                    gridLineDashStyle: 'solid' // Set the style of the grid lines
-                                },
-                                rangeSelector: {
-                                    buttons: [{
-                                        type: 'day',
-                                        count: 1,
-                                        text: '1d'
-                                    }, {
-                                        type: 'week',
-                                        count: 1,
-                                        text: '1w'
-                                    }, {
-                                        type: 'month',
-                                        count: 1,
-                                        text: '1m'
-                                    }, {
-                                        type: 'year',
-                                        count: 1,
-                                        text: '1y'
-                                    }, {
-                                        type: 'all',
-                                        text: 'All'
-                                    }],
-                                },
-                                series: [{
-                                    name: 'My Series',
-                                    data: data2,
-                                    color: colors[3]
-                                }]
-                            });
-                        });
-                </script>
 
-            </div>
-        </h:form>
-        </body>
+        </div>
+
+</h:form>
     </ui:define>
 </ui:composition>

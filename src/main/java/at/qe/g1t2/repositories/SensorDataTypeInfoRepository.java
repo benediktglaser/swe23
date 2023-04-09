@@ -22,6 +22,10 @@ public interface SensorDataTypeInfoRepository extends JpaRepository<SensorDataTy
     SensorDataTypeInfo findSensorDataTypeInfoByCreateDateMax(@Param("sensorStation") SensorStation sensorStation,@Param("type") SensorDataType type);
     List<SensorDataTypeInfo> getSensorDataTypeInfoBySensorStationAndTypeAndCreateDateAfter(SensorStation sensorStation, SensorDataType type, LocalDateTime createDate);
 
+    @Query("SELECT u.createDate, u.minLimit from SensorDataTypeInfo u where u.sensorStation = :sensorStation and u.type = :sensorDataType order by u.createDate")
+    List<Object[]> getTypeInfoBySensorStationAndTypeMinLimit(@Param("sensorStation")SensorStation sensorStation,@Param("sensorDataType") SensorDataType sensorDataType);
+    @Query("SELECT u.minLimit, u.maxLimit from SensorDataTypeInfo u where u.id = :id")
+    Object[] getTypeInfoById(@Param("id")String id);
 
-
+    List<SensorDataTypeInfo> getSensorDataTypeInfosBySensorStationAndType(SensorStation sensorStation,SensorDataType type);
 }

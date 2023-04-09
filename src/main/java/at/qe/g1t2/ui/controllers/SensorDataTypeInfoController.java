@@ -34,6 +34,7 @@ public class SensorDataTypeInfoController {
         if(type == null){
             type = new SensorDataTypeInfo();
         }
+
         return type;
     }
 

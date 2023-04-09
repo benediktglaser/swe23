@@ -1,143 +1,82 @@
 package at.qe.g1t2.ui.controllers;
 
-import at.qe.g1t2.model.SensorData;
 import at.qe.g1t2.model.SensorDataType;
+import at.qe.g1t2.model.SensorDataTypeInfo;
 import at.qe.g1t2.model.SensorStation;
-import at.qe.g1t2.services.ChartService;
-import jakarta.enterprise.context.RequestScoped;
-import jakarta.inject.Named;
-import org.primefaces.PrimeFaces;
-import org.primefaces.model.charts.ChartData;
-import org.primefaces.model.charts.bar.BarChartModel;
-import org.primefaces.model.charts.line.LineChartDataSet;
-import org.primefaces.model.charts.line.LineChartModel;
-import org.primefaces.model.charts.line.LineChartOptions;
-import org.primefaces.model.charts.optionconfig.title.Title;
+import at.qe.g1t2.services.SensorDataTypeInfoService;
+import at.qe.g1t2.ui.beans.SessionSensorStationBean;
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.model.SelectItem;
+import jakarta.faces.model.SelectItemGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @Scope("view")
 public class ChartsView {
 
-    private LineChartModel lineModel;
+    private List<SelectItem> typeInfos;
+    private String selection;
+
     @Autowired
-    ChartService chartService;
-    private SensorStation sensorStation;
+    SessionSensorStationBean sessionSensorStationBean;
+    @Autowired
+    SensorDataTypeInfoService sensorDataTypeInfoService;
 
-    private LocalDateTime start;
-    private LocalDateTime end;
-
-
-
+    private Map<String,String> typeInfoMap = new HashMap<>();
+    @PostConstruct
     public void init() {
-        createLineModel();
-    }
-
-
-    public void createLineModel() {
-        lineModel = new LineChartModel();
-        ChartData data = new ChartData();
-
-        LineChartDataSet dataSet = new LineChartDataSet();
-        List<Object> values = new ArrayList<>();
-        sensorStation.getSensorData().forEach(x -> values.add(x.getMeasurement()));
-        dataSet.setData(values);
-        dataSet.setFill(false);
-        dataSet.setLabel("SensorData");
-        dataSet.setBorderColor("rgb(75, 192, 192)");
-        dataSet.setTension(0.1);
-        data.addChartDataSet(dataSet);
-
-        List<String> labels = new ArrayList<>();
-        sensorStation.getSensorData().forEach(x -> labels.add(x.getCreateDate().toLocalDate().toString()));
-        data.setLabels(labels);
-
-        LineChartOptions options = new LineChartOptions();
-        Title title = new Title();
-        title.setDisplay(true);
-        title.setText("Line Chart");
-        options.setTitle(title);
-
-        lineModel.setOptions(options);
-        lineModel.setData(data);
-
-
-    }
-
-
-    private LineChartModel lineChartModel;
-
-    public void createModel(SensorStation sensorStation){
-        this.sensorStation = sensorStation;
-
-        this.lineChartModel = chartService.getLineChartForAllTypes(sensorStation,start,end);
-    }
-    public LineChartModel getLineModelAllTypes(SensorStation sensorStation) {
-        if(lineChartModel == null){
-            createModel(sensorStation);
+        typeInfos = new ArrayList<>();
+        List<SelectItemGroup> groups = new ArrayList<>();
+        List<SensorDataType> typeList = Arrays.stream(SensorDataType.values()).collect(Collectors.toList());
+        for (SensorDataType type:typeList) {
+            groups.add(new SelectItemGroup(type.name()));
         }
-        return this.lineChartModel;
+
+        List<List<SelectItem>> selectItemList = new ArrayList<>();
+
+        for(SensorDataType type:typeList){
+            List<SensorDataTypeInfo> sensorDataTypeInfo = sensorDataTypeInfoService.getTypeInfoByStationAndType(sessionSensorStationBean.getSensorStation(),type);
+            List<SelectItem> items = new ArrayList<>();
+            sensorDataTypeInfo.forEach(x -> {
+                items.add(new SelectItem(x.getId(),x.toString()));
+            });
+            selectItemList.add(items);
+            }
+        int i = 0;
+        for(SelectItemGroup group: groups){
+            group.setSelectItems(selectItemList.get(i));
+            i++;
+            typeInfos.add(group);
+        }
     }
 
-    private int sliderValue;
-
-    public int getSliderValue() {
-        return sliderValue;
+    public List<SelectItem> getCategories() {
+        return typeInfos;
     }
 
-    public void setSliderValue(int sliderValue) {
-        this.sliderValue = sliderValue;
+    public String getSelection() {
+        System.out.println(selection + "here in getter");
+        return selection;
     }
 
-    public void updateModel(SensorStation sensorStation) {
-        int days = sliderValue; // sliderValue ist ein Integer-Attribut im chartsView-Bean, das die aktuelle Position des Schiebereglers speichert.
-        start = LocalDateTime.now();
-        end = start.plusDays(days);
-        createModel(sensorStation);
-    }
-    public LineChartModel getLineModelForGas(SensorStation sensorStation) {
-        this.sensorStation = sensorStation;
-
-        return chartService.createDataForType(SensorDataType.GAS,sensorStation);
-    }
-    public LineChartModel getLineModelForTemp(SensorStation sensorStation) {
-        this.sensorStation = sensorStation;
-
-        return chartService.createDataForType(SensorDataType.TEMPERATURE,sensorStation);
+    public void setSelection(String selection) {
+        this.selection = selection;
+        System.out.println(this.selection +"here in setter");
     }
 
-    public LineChartModel getLineModelForLight(SensorStation sensorStation) {
-        this.sensorStation = sensorStation;
-
-        return chartService.createDataForType(SensorDataType.LIGHT,sensorStation);
+    public SensorDataTypeInfo convertSelection(){
+        System.out.println(selection);
+        return sensorDataTypeInfoService.loadSensorDataTypeInfo(selection);
     }
+    public void waitFor(){
+        while(selection == null){
 
-    public LineChartModel getLineModelForSoil(SensorStation sensorStation) {
-        this.sensorStation = sensorStation;
-
-        return chartService.createDataForType(SensorDataType.SOIL,sensorStation);
+        }
+        return;
     }
-
-    public LineChartModel getLineModelForHumidity(SensorStation sensorStation) {
-        this.sensorStation = sensorStation;
-
-        return chartService.createDataForType(SensorDataType.HUMIDITY,sensorStation);
-    }
-
-
-
-    public void setLineModel(LineChartModel lineModel) {
-        this.lineModel = lineModel;
-    }
-
-
 }

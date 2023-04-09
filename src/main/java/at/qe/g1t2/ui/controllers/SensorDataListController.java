@@ -5,6 +5,7 @@ import at.qe.g1t2.model.SensorData;
 import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.services.CollectionToPageConverter;
 import at.qe.g1t2.services.SensorDataService;
+import at.qe.g1t2.ui.beans.SessionSensorStationBean;
 import jakarta.persistence.criteria.Path;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -22,6 +23,7 @@ public class SensorDataListController extends AbstractListController<String,Sens
     SensorDataService sensorDataService;
 
     SensorStation sensorStation;
+
 
     public void filterSensorDataBySensorStation(SensorStation sensorStation) {
         this.sensorStation = sensorStation;
