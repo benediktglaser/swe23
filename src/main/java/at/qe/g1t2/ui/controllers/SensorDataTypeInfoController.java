@@ -34,6 +34,7 @@ public class SensorDataTypeInfoController {
         if(type == null){
             type = new SensorDataTypeInfo();
         }
+
         return type;
     }
 
@@ -45,11 +46,11 @@ public class SensorDataTypeInfoController {
     }
     @Transactional
     public void save(SensorStation sensorStation){
-        System.out.println(sensorStation + "here save");
-        System.out.println(sensorDataType + "here save");
-        type.setType(sensorDataType );
+
+        type.setType(sensorDataType);
 
         sensorDataTypeInfoService.save(sensorStation,type);
+
         type = null;
     }
     @Transactional

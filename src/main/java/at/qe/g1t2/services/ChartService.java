@@ -6,14 +6,16 @@ import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.repositories.SensorDataRepository;
 
 
+import org.primefaces.model.chart.LineChartSeries;
 import org.primefaces.model.charts.ChartData;
 import org.primefaces.model.charts.line.LineChartDataSet;
 import org.primefaces.model.charts.line.LineChartModel;
-import org.primefaces.model.charts.line.LineChartOptions;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
+
+
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -27,23 +29,30 @@ public class ChartService {
 
     List<LineChartModel> lineChartModels;
 
+    private Random rand = new Random();
 
-
-    public LineChartModel getLineChartForAllTypes(SensorStation sensorStation){
+    public LineChartModel getLineChartForAllTypes(SensorStation sensorStation, LocalDateTime start, LocalDateTime end){
         LineChartModel model = new LineChartModel();
 
-        model.setData(createData(sensorStation));
+        model.setData(createData(sensorStation,start,end));
 
         return model;
     }
 
-    public ChartData createData(SensorStation sensorStation){
+    public ChartData createData(SensorStation sensorStation, LocalDateTime start, LocalDateTime end){
         ChartData data = new ChartData();
         List<String> labels = new ArrayList<>();
         Map<SensorDataType, List<Object>> dataSets = new HashMap<>();
         Set<LocalDateTime> allTimestamps = new TreeSet<>();
 
-        for(SensorData sensorData: sensorDataRepository.findSensorDataBySensorStationOrderByCreateDate(sensorStation)){
+        List<SensorData> sensorDataList;
+        if(start != null && end != null){
+            sensorDataList = sensorDataRepository.findSensorDataBySensorStationAndCreateDateBetweenOrderByCreateDate(sensorStation, start, end);
+        } else {
+            sensorDataList = sensorDataRepository.findSensorDataBySensorStationOrderByCreateDate(sensorStation);
+        }
+
+        for(SensorData sensorData: sensorDataList){
             allTimestamps.add(sensorData.getCreateDate());
         }
 
@@ -59,10 +68,8 @@ public class ChartService {
             }
             dataSets.put(type, values);
         }
-
         for(Map.Entry<SensorDataType,List<Object>> dataSet: dataSets.entrySet()){
             LineChartDataSet chartSet = new LineChartDataSet();
-            Random rand = new Random();
             int r = rand.nextInt(256);
             int g = rand.nextInt(256);
             int b = rand.nextInt(256);
@@ -96,7 +103,7 @@ public class ChartService {
 
         }
 
-        Random rand = new Random();
+
         int r = rand.nextInt(256);
         int g = rand.nextInt(256);
         int b = rand.nextInt(256);
@@ -110,7 +117,10 @@ public class ChartService {
         data.setLabels(labels);
         LineChartModel lineChartModel = new LineChartModel();
         lineChartModel.setData(data);
+
         return lineChartModel;
     }
+
+
 }
 
