@@ -36,7 +36,7 @@ public class SensorStationTest {
                 .build();
 
         validator.validate(new PojoClassExcludedFields(PojoClassFactory.getPojoClass(SensorStation.class),
-                Set.of("createDate")));
+                Set.of("createDate","lastConnectedDate","connected")));
 
         SensorStation sensorStation = new SensorStation();
         LocalDateTime dateTest = LocalDateTime.now();

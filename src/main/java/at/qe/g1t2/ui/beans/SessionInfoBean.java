@@ -1,15 +1,16 @@
 package at.qe.g1t2.ui.beans;
 
-import at.qe.g1t2.model.Userx;
 import at.qe.g1t2.model.UserRole;
+import at.qe.g1t2.model.Userx;
 import at.qe.g1t2.services.UserService;
-import java.io.Serializable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+
+import java.io.Serializable;
 
 /**
  * Session information bean to retrieve session-specific parameters.

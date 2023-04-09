@@ -1,6 +1,5 @@
 package at.qe.g1t2.repositories;
 
-import at.qe.g1t2.model.SensorData;
 import at.qe.g1t2.model.SensorDataType;
 import at.qe.g1t2.model.SensorDataTypeInfo;
 import at.qe.g1t2.model.SensorStation;

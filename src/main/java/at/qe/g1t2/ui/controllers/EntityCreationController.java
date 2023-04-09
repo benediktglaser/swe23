@@ -1,7 +1,6 @@
 package at.qe.g1t2.ui.controllers;
 
 import org.springframework.data.domain.Persistable;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.io.Serializable;
 

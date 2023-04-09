@@ -1,7 +1,6 @@
 package at.qe.g1t2.model;
 
 import jakarta.persistence.*;
-
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.envers.AuditJoinTable;
@@ -34,6 +33,12 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
     private AccessPointRole accessPointRole;
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createDate;
+
+    private LocalDateTime lastConnectedDate;
+
+    public LocalDateTime getLastConnectedDate() {
+        return lastConnectedDate;
+    }
 
     private Boolean connected;
 
@@ -74,7 +79,7 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
     }
 
     public Boolean getConnected() {
-        return connected;
+        return lastConnectedDate != null && LocalDateTime.now().minusSeconds(sendingInterval.longValue()).isBefore(lastConnectedDate);
     }
 
     public void setConnected(Boolean connected) {
@@ -164,4 +169,7 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
         this.accessPointRole = accessPointRole;
     }
 
+    public void setLastConnectedDate(LocalDateTime lastConnectedDate) {
+        this.lastConnectedDate = lastConnectedDate;
+    }
 }

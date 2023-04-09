@@ -1,7 +1,8 @@
 package at.qe.g1t2.RestAPI.model;
 
 import at.qe.g1t2.model.SensorDataType;
-import jakarta.persistence.*;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;

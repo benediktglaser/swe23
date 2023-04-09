@@ -3,7 +3,6 @@ package at.qe.g1t2.configs;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
-
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.annotation.Configuration;
 

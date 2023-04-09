@@ -1,7 +1,5 @@
 package at.qe.g1t2.configs;
 
-import javax.sql.DataSource;
-
 import at.qe.g1t2.model.AccessPointRole;
 import at.qe.g1t2.model.UserRole;
 import org.springframework.beans.factory.BeanCreationException;
@@ -14,20 +12,15 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
-import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
-
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-
+import javax.sql.DataSource;
 import java.util.Collection;
+
+import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
 /**
  * Spring configuration for web security.
@@ -60,6 +53,7 @@ public class WebSecurityConfig {
 
             http.authorizeHttpRequests(authorize -> authorize
                             .requestMatchers("/api/accessPoint/register").permitAll()
+                            .requestMatchers("/api/accessPoint/register/**").hasAnyAuthority(ACCESS_POINT)
                             .requestMatchers("/api/sensorStation/connect").hasAnyAuthority(ACCESS_POINT)
                             .requestMatchers("/").permitAll()
                             .requestMatchers("/**.jsf").permitAll()

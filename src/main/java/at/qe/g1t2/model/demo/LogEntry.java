@@ -1,8 +1,8 @@
 package at.qe.g1t2.model.demo;
 
-import java.util.Date;
-
 import at.qe.g1t2.model.Userx;
+
+import java.util.Date;
 
 /**
  * A class which represents a logEntry.
