@@ -65,7 +65,8 @@ VALUES
     ('id12c', 'TEMPERATURE', 8, 92,   'ce9b6d71-2a2b-4baf-bf52-717d1b3a4ea4', '2023-04-04'),
     ('id13c', 'TEMPERATURE', -35, 55, 'dc7d2e05-2953-4b46-a2b4-74705f63e005', '2023-04-04'),
     ('id14c', 'TEMPERATURE', -5, 95,  'fac9c9b9-62cc-4d3d-af5b-06d9965f0f7c', '2023-04-04'),
-    ('id1cc1', 'GAS', 4, 30, '8ccfdfaa-9731-4786-8efa-e2141e5c4095', '2023-04-04');
+    ('id1cc1', 'GAS', 4, 30, '8ccfdfaa-9731-4786-8efa-e2141e5c4095', '2023-04-04'),
+    ('id1cc2', 'LIGHT', 4, 30, 'ce9b6d71-2a2b-4baf-bf52-717d1b3a4ea4', '2023-04-04');
 
 
 INSERT INTO sensor_data (ID, MEASUREMENT, SENSOR_STATION_ID, TYPE, CREATE_DATE) VALUES ('0e6006f9-12f2-4f08-841f-6d937669eb6e', 0.05, '8ccfdfaa-9731-4786-8efa-e2141e5c4095', 'TEMPERATURE',  '2020-05-06 13:45:00');
