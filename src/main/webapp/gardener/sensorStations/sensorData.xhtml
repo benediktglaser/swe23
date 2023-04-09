@@ -23,11 +23,11 @@
         </h:head>
 <h:form id="sensorDataForm">
     <div class="card">
-    <p:multiSelectListbox value="#{chartsView.selection}" effect="slide" header="Select Type and Limits" showHeaders="true" required="true">
+    <p:multiSelectListbox value="#{chartsView.selection}" effect="slide" header="Select Type and Limits" showHeaders="true" required="true" >
         <f:selectItems value="#{chartsView.categories}"/>
+        <p:ajax listener="#{chartsView.doUpdate()}" />
     </p:multiSelectListbox>
     </div>
-    <p:commandButton id="chartButton" value="Chart" onclick="myF('#{sessionSensorStationBean.sensorStation.id}', '#{chartsView.selection}')" />
     <p:dataTable id="sensorDataTable" var="sensorData" value="#{sensorDataListController}"
                              class="sensorDataTable" lazy="true" rows="3" paginator="true">
                     <p:column headerText="Measurement" class="ui-datatable-header" sortBy="#{sensorData.measurement}"
@@ -54,110 +54,113 @@
             <div id="chart-container"></div>
 
             <script type="text/javascript">
-               async function myF(sensorStationId, sensorDataTypeInfoId, sensorDataType) {
-                    let response = await fetch('/chart', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            sensorStationId: sensorStationId,
-                            sensorDataTypeInfoId: sensorDataTypeInfoId
-                        })
-                    });
-                    let json = await response.json();
+                function myF(sensorStationId, sensorDataTypeInfoId, sensorDataType) {
+                    var url = '/chart?sensorStationId=' + sensorStationId + '&amp;sensorDataTypeId=' + sensorDataTypeInfoId  + '&amp;typeId=' + sensorDataType;
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(jsonData => {
 
-                    var colors = Highcharts.getOptions().colors;
-                    const data = json[0].data;
-                    const parsedData = JSON.parse(data);
+                            var colors = Highcharts.getOptions().colors;
+                            const data = jsonData[0].data;
+                            const parsedData = JSON.parse(data);
 
-                    const transformedData = parsedData.map(point => {
-                        const [year, month, day, hour, minute] = point[0];
-                        const timestamp = Date.UTC(year, month - 1, day, hour, minute);
-                        return [timestamp, point[1]];
-                    });
-                    const min = json[0].min;
-                    const max = json[0].max;
+                            const transformedData = parsedData.map(point => {
+                                const [year, month, day, hour, minute] = point[0];
+                                const timestamp = Date.UTC(year, month - 1, day, hour, minute);
+                                return [timestamp, point[1]];
+                            });
+                            const min = jsonData[0].min;
+                            const max = jsonData[0].max;
 
-                    Highcharts.chart('chart-container', {
-                        chart: {
-                            type: 'line',
-                            zoomType: 'x',
-                            backgroundColor: '#062942',
-                            style: {
-                                color: '#05233d'
-                            },
-                        },
-                        title: {
-                            text: sensorDataType,
-                        },
-                        xAxis: {
-                            type: 'datetime',
-                        },
-                        tooltip: {
-                            stickOnContact: true
-                        },
-                        yAxis: {
-                            plotLines: [{
-                                value: min, // Set the value where the line will appear
-                                color: 'red', // Set the color of the line
-                                dashStyle: 'dash', // Set the style of the line (solid, shortdash, shortdot, dot, longdash, dashdot, longdashdot)
-                                width: 2, // Set the width of the line
-                                label: {
-                                    text: 'Minimum', // Set the label for the line
-                                    align: 'center', // Set the alignment of the label relative to the line
+                            Highcharts.chart('chart-container', {
+                                chart: {
+                                    type: 'line',
+                                    zoomType: 'x',
+                                    backgroundColor: '#062942',
                                     style: {
-                                        color: 'red' // Set the style of the label
-                                    }
-                                }
-                            }, {
-                                value: max, // Set the value where the line will appear
-                                color: 'red', // Set the color of the line
-                                dashStyle: 'dash', // Set the style of the line (solid, shortdash, shortdot, dot, longdash, dashdot, longdashdot)
-                                width: 2, // Set the width of the line
-                                label: {
-                                    text: 'Maximum', // Set the label for the line
-                                    align: 'center', // Set the alignment of the label relative to the line
-                                    style: {
-                                        color: 'red' // Set the style of the label
-                                    }
-                                }
-                            }],
-                            title: {
-                                text: 'Value'
-                            },
-                            gridLineColor: '#090101',
-                            gridLineWidth: 1,
-                            gridLineDashStyle: 'solid'
-                        },
-                        rangeSelector: {
-                            buttons: [{
-                                type: 'day',
-                                count: 1,
-                                text: '1d'
-                            }, {
-                                type: 'week',
-                                count: 1,
-                                text: '1w'
-                            }, {
-                                type: 'month',
-                                count: 1,
-                                text: '1m'
-                            }, {
-                                type: 'year',
-                                count: 1,
-                                text: '1y'
-                            }, {
-                                type: 'all',
-                                text: 'All'
-                            }],
-                        },
-                        series: [{
-                            name: sensorDataType,
-                            data: transformedData,
-                            color: colors[0]
-                        }]
-                    });
+                                        color: '#05233d'
+                                    },
+                                },
+                                title: {
+                                    text: sensorDataType,
+                                },
+                                xAxis: {
+                                    title: {
+                                        text: 'Measure Date'
+                                    },
+                                    type: 'datetime',
+                                },
+                                tooltip: {
+                                    stickOnContact: true
+                                },
+                                yAxis: {
+                                    plotBands: [{
+                                        color: 'rgba(0, 255, 0, 0.2)', // green with 20% opacity
+                                        from: min,
+                                        to: max
+                                    }],
+                                    plotLines: [{
+                                        value: min, // Set the value where the line will appear
+                                        color: 'red', // Set the color of the line
+                                        dashStyle: 'dash', // Set the style of the line (solid, shortdash, shortdot, dot, longdash, dashdot, longdashdot)
+                                        width: 2, // Set the width of the line
+                                        label: {
+                                            text: 'Minimum', // Set the label for the line
+                                            align: 'center', // Set the alignment of the label relative to the line
+                                            style: {
+                                                color: 'red' // Set the style of the label
+                                            }
+                                        }
+                                    }, {
+                                        value: max, // Set the value where the line will appear
+                                        color: 'red', // Set the color of the line
+                                        dashStyle: 'dash', // Set the style of the line (solid, shortdash, shortdot, dot, longdash, dashdot, longdashdot)
+                                        width: 2, // Set the width of the line
+                                        label: {
+                                            text: 'Maximum', // Set the label for the line
+                                            align: 'center', // Set the alignment of the label relative to the line
+                                            style: {
+                                                color: 'red' // Set the style of the label
+                                            }
+                                        }
+                                    }],
+                                    title: {
+                                        text: 'Measurement'
+                                    },
+                                    gridLineColor: '#090101',
+                                    gridLineWidth: 1,
+                                    gridLineDashStyle: 'solid'
+                                },
+                                rangeSelector: {
+                                    buttons: [{
+                                        type: 'day',
+                                        count: 1,
+                                        text: '1d'
+                                    }, {
+                                        type: 'week',
+                                        count: 1,
+                                        text: '1w'
+                                    }, {
+                                        type: 'month',
+                                        count: 1,
+                                        text: '1m'
+                                    }, {
+                                        type: 'year',
+                                        count: 1,
+                                        text: '1y'
+                                    }, {
+                                        type: 'all',
+                                        text: 'All'
+                                    }],
+                                },
+                                series: [{
+                                    name: sensorDataType,
+                                    data: transformedData,
+                                    color: colors[0]
+                                }]
+                            });
+
+                        });
                 }
             </script>
 

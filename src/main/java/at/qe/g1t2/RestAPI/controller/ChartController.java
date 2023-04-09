@@ -1,7 +1,5 @@
 package at.qe.g1t2.RestAPI.controller;
 
-import at.qe.g1t2.RestAPI.model.ChartDTO;
-import at.qe.g1t2.model.SensorData;
 import at.qe.g1t2.model.SensorDataType;
 import at.qe.g1t2.model.SensorDataTypeInfo;
 import at.qe.g1t2.model.SensorStation;
@@ -17,17 +15,9 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -46,15 +36,15 @@ public class ChartController {
     @Autowired
     SensorDataTypeInfoService sensorDataTypeInfoService;
 
-    @PostMapping()
-    public String getSensorDataCSV(@RequestBody ChartDTO chartDTO) throws JsonProcessingException {
-        System.out.println(chartDTO.getSensorDataTypeInfoId());
-        SensorStation sensorStation = sensorStationService.loadSensorStation(chartDTO.getSensorStationId());
+    @GetMapping()
+    public String getSensorDataCSV(@RequestParam String sensorStationId,@RequestParam String sensorDataTypeId,@RequestParam String typeId) throws JsonProcessingException {
 
-        System.out.println(chartDTO.getSensorDataTypeInfoId());
-        SensorDataTypeInfo sensorDataTypeInfo = sensorDataTypeInfoService.loadSensorDataTypeInfo(chartDTO.getSensorDataTypeInfoId());
+        SensorStation sensorStation = sensorStationService.loadSensorStation(sensorStationId);
+
+
+        SensorDataTypeInfo sensorDataTypeInfo = sensorDataTypeInfoService.loadSensorDataTypeInfo(sensorDataTypeId);
         List<Object[]> dataset = new ArrayList<>();
-        dataset = sensorDataService.getAllSensorDataByStationAndTypeForChart(sensorStation, sensorDataTypeInfo.getType());
+        dataset = sensorDataService.getAllSensorDataByStationAndTypeForChart(sensorStation, SensorDataType.valueOf(typeId));
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
@@ -63,9 +53,10 @@ public class ChartController {
         ArrayNode seriesArray = objectMapper.createArrayNode();
         ObjectNode seriesObject = objectMapper.createObjectNode();
         seriesObject.put("data", objectMapper.writeValueAsString(dataset));
-
-        seriesObject.put("min", sensorDataTypeInfo.getMinLimit());
-        seriesObject.put("max", sensorDataTypeInfo.getMaxLimit());
+        if(sensorDataTypeInfo != null){
+            seriesObject.put("min", sensorDataTypeInfo.getMinLimit());
+            seriesObject.put("max", sensorDataTypeInfo.getMaxLimit());
+        }
         seriesArray.add(seriesObject);
         ObjectNode chartObject = objectMapper.createObjectNode();
         chartObject.set("series", seriesArray);

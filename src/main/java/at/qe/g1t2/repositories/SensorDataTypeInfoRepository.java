@@ -27,5 +27,5 @@ public interface SensorDataTypeInfoRepository extends JpaRepository<SensorDataTy
     @Query("SELECT u.minLimit, u.maxLimit from SensorDataTypeInfo u where u.id = :id")
     Object[] getTypeInfoById(@Param("id")String id);
 
-    List<SensorDataTypeInfo> getSensorDataTypeInfosBySensorStationAndType(SensorStation sensorStation,SensorDataType type);
+    List<SensorDataTypeInfo> getSensorDataTypeInfosBySensorStationAndTypeOrderByCreateDate(SensorStation sensorStation,SensorDataType type);
 }

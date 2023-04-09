@@ -70,7 +70,7 @@ public class SensorDataTypeInfoService {
     }
 
     public List<SensorDataTypeInfo> getTypeInfoByStationAndType(SensorStation sensorStation, SensorDataType type){
-        return sensorDataTypeInfoRepository.getSensorDataTypeInfosBySensorStationAndType(sensorStation,type);
+        return sensorDataTypeInfoRepository.getSensorDataTypeInfosBySensorStationAndTypeOrderByCreateDate(sensorStation,type);
     }
 }
 

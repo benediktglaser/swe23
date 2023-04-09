@@ -6,8 +6,12 @@ import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.services.SensorDataTypeInfoService;
 import at.qe.g1t2.ui.beans.SessionSensorStationBean;
 import jakarta.annotation.PostConstruct;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.ActionEvent;
 import jakarta.faces.model.SelectItem;
 import jakarta.faces.model.SelectItemGroup;
+import org.primefaces.PrimeFaces;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -42,9 +46,14 @@ public class ChartsView {
         for(SensorDataType type:typeList){
             List<SensorDataTypeInfo> sensorDataTypeInfo = sensorDataTypeInfoService.getTypeInfoByStationAndType(sessionSensorStationBean.getSensorStation(),type);
             List<SelectItem> items = new ArrayList<>();
-            sensorDataTypeInfo.forEach(x -> {
-                items.add(new SelectItem(x.getId(),x.toString()));
-            });
+            if(!sensorDataTypeInfo.isEmpty()){
+                sensorDataTypeInfo.forEach(x -> {
+                    items.add(new SelectItem(x.getId(),x.toString()));
+                });
+            }
+            else{
+                items.add(new SelectItem(type.name(),"Show Chart"));
+            }
             selectItemList.add(items);
             }
         int i = 0;
@@ -70,13 +79,17 @@ public class ChartsView {
     }
 
     public SensorDataTypeInfo convertSelection(){
-        System.out.println(selection);
+
         return sensorDataTypeInfoService.loadSensorDataTypeInfo(selection);
     }
-    public void waitFor(){
-        while(selection == null){
 
+   public void doUpdate(){
+        List<String> types = Arrays.stream(SensorDataType.values()).map(x -> x.name()).collect(Collectors.toList());
+        if(types.contains(selection)){
+            PrimeFaces.current().executeScript("myF('" + sessionSensorStationBean.getSensorStation().getId() + "', '" + "Empty" + "', '" + SensorDataType.valueOf(selection) + "')");
+            return;
         }
-        return;
+       PrimeFaces.current().executeScript("myF('" + sessionSensorStationBean.getSensorStation().getId() + "', '" + convertSelection().getId() + "', '" + convertSelection().getType().name() + "')");
     }
+
 }

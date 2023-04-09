@@ -86,4 +86,8 @@ public class SensorDataTypeInfo implements Persistable<String>, Serializable, Co
         this.sensorStation = sensorStation;
     }
 
+    @Override
+    public String toString() {
+        return "Min Limit: "+ minLimit + " Max Limit" + maxLimit + " Date: " + createDate;
+    }
 }
