@@ -75,7 +75,7 @@ public class ChartController {
     public String getNewSensorData(@RequestParam String sensorStationId,@RequestParam String sensorDataTypeId,@RequestParam String typeId, @RequestParam String lastDate) throws JsonProcessingException {
         long timestamp = Long.parseLong(lastDate);
         Instant instant = Instant.ofEpochMilli(timestamp);
-        LocalDateTime lastTimeStamp = LocalDateTime.of(2020,1,1,1,0,0);
+        LocalDateTime lastTimeStamp = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
         SensorStation sensorStation = sensorStationService.loadSensorStation(sensorStationId);
 
         System.out.println(sensorStation);
@@ -87,8 +87,12 @@ public class ChartController {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         ObjectWriter writer = objectMapper.writer().with(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        ArrayNode seriesArray = objectMapper.createArrayNode();
+        ObjectNode seriesObject = objectMapper.createObjectNode();
+        seriesObject.put("data", objectMapper.writeValueAsString(dataset));
 
-        String json = writer.writeValueAsString(dataset);
+        seriesArray.add(seriesObject);
+        String json = writer.writeValueAsString(seriesArray);
         System.out.println(json);
         return json;
     }

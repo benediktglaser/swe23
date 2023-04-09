@@ -55,14 +55,15 @@
 
             <script type="text/javascript">
                 let chartsi;
+                let transformedDataNew;
                 function myF(sensorStationId, sensorDataTypeInfoId, sensorDataType) {
-                    var url = '/chart';
-                    var param = '?sensorStationId=' + sensorStationId + '&amp;sensorDataTypeId=' + sensorDataTypeInfoId  + '&amp;typeId=' + sensorDataType;
+                    const url = '/chart';
+                    const param = '?sensorStationId=' + sensorStationId + '&amp;sensorDataTypeId=' + sensorDataTypeInfoId + '&amp;typeId=' + sensorDataType;
                     fetch(url + param)
                         .then(response => response.json())
                         .then(jsonData => {
 
-                            var colors = Highcharts.getOptions().colors;
+                            let colors = Highcharts.getOptions().colors;
                             const data = jsonData[0].data;
                             const parsedData = JSON.parse(data);
 
@@ -71,13 +72,13 @@
                                 const timestamp = Date.UTC(year, month - 1, day, hour, minute);
                                 return [timestamp, point[1]];
                             });
-                            const min = jsonData[0].min;
-                            const max = jsonData[0].max;
+                            let min = jsonData[0].min;
+                            let max = jsonData[0].max;
 
 
 
 
-                           chartsi = Highcharts.chart('chart-container', {
+                           chartsi = Highcharts.stockChart('chart-container', {
                                 chart: {
                                     type: 'line',
                                     zoomType: 'x',
@@ -164,41 +165,33 @@
                                     color: colors[0]
                                 }]
                             });
-                            lastTimestamp = transformedData[transformedData.length - 1][0];
+                            let lastTimestamp = transformedData[transformedData.length - 1][0];
 
                             function updateChart(){
-
-                                let transformedDataNew;
-                                let chartNew = chartis;
-                                var addNewPoints = "/add"
-                                var parame = '&amp;lastDate=' + lastTimestamp;
+                                let addNewPoints = "/add";
+                                let parame = '&amp;lastDate=' + lastTimestamp;
                                    fetch(url+addNewPoints+param+parame)
                                        .then(response => response.json())
                                        .then(jsonDataNew => {
-
-                                           const dataNew = jsonDataNew;
-                                           const parsedDataNew = JSON.parse(dataNew);
+                                           let dataNew = jsonDataNew[0].data;
+                                           let parsedDataNew = JSON.parse(dataNew);
                                            transformedDataNew = parsedDataNew.map(point => {
                                                const [year, month, day, hour, minute] = point[0];
                                                const timestamp = Date.UTC(year, month - 1, day, hour, minute);
-                                               return [timestamp, point[1]];
+                                               chartsi.series[0].addPoint([timestamp, point[1]]);
 
                                            });
 
                                            lastTimestamp = transformedDataNew[transformedDataNew.length - 1][0];
-
+                                           chartsi.redraw(true);
 
 
                                        });
-                                transformedDataNew.forEach(point =>{
-                                    chartsi.series[0].addPoint(point);
-                                });
-
 
                             }
                             setInterval(updateChart, 5000);
-
                         });
+
                 }
             </script>
 
