@@ -40,6 +40,7 @@
                     <h:outputText value="#{(sensorData.createDate).toLocalDate()}"/>
                 </p:column>
             </p:dataTable>
+            <p:poll interval="10" update=":sensorDataForm:sensorDataTable"></p:poll>
 
             <p:separator/>
             <div class="card">
@@ -55,13 +56,17 @@
                 <div id="chart-container"></div>
 
                 <script type="text/javascript">
+                    let chartsi;
+                    let transformedDataNew;
+
                     function myF(sensorStationId, sensorDataTypeInfoId, sensorDataType) {
-                        var url = '/chart?sensorStationId=' + sensorStationId + '&amp;sensorDataTypeId=' + sensorDataTypeInfoId + '&amp;typeId=' + sensorDataType;
-                        fetch(url)
+                        const url = '/chart';
+                        const param = '?sensorStationId=' + sensorStationId + '&amp;sensorDataTypeId=' + sensorDataTypeInfoId + '&amp;typeId=' + sensorDataType;
+                        fetch(url + param)
                             .then(response => response.json())
                             .then(jsonData => {
 
-                                var colors = Highcharts.getOptions().colors;
+                                let colors = Highcharts.getOptions().colors;
                                 const data = jsonData[0].data;
                                 const parsedData = JSON.parse(data);
 
@@ -70,10 +75,11 @@
                                     const timestamp = Date.UTC(year, month - 1, day, hour, minute);
                                     return [timestamp, point[1]];
                                 });
-                                const min = jsonData[0].min;
-                                const max = jsonData[0].max;
+                                let min = jsonData[0].min;
+                                let max = jsonData[0].max;
 
-                                Highcharts.chart('chart-container', {
+
+                                chartsi = Highcharts.stockChart('chart-container', {
                                     chart: {
                                         type: 'line',
                                         zoomType: 'x',
@@ -93,6 +99,7 @@
                                             text: 'Measure Date'
                                         },
                                         type: 'datetime',
+                                        maxZoom: 24 * 3600000,
                                     },
                                     tooltip: {
                                         stickOnContact: true
@@ -136,40 +143,52 @@
                                         gridLineDashStyle: 'solid'
                                     },
                                     rangeSelector: {
-                                        buttons: [{
-                                            type: 'day',
-                                            count: 1,
-                                            text: '1d'
-                                        }, {
-                                            type: 'week',
-                                            count: 1,
-                                            text: '1w'
-                                        }, {
-                                            type: 'month',
-                                            count: 1,
-                                            text: '1m'
-                                        }, {
-                                            type: 'year',
-                                            count: 1,
-                                            text: '1y'
-                                        }, {
-                                            type: 'all',
-                                            text: 'All'
-                                        }],
+                                        floating: true,
+                                        y: 250,
                                     },
+
                                     series: [{
                                         name: sensorDataType,
                                         data: transformedData,
-                                        color: colors[0]
+                                        color: colors[0],
+                                        tooltip: {
+                                            valueDecimals: 2
+                                        }
                                     }],
-                                    legend: {
-                                        itemStyle: {
-                                            color: 'white'
+                                    navigation: {
+                                        menuStyle: {
+                                            background: '#01243f'
                                         }
                                     }
                                 });
+                                let lastTimestamp = transformedData[transformedData.length - 1][0];
 
+                                function updateChart() {
+                                    let addNewPoints = "/add";
+                                    let parame = '&amp;lastDate=' + lastTimestamp;
+                                    fetch(url + addNewPoints + param + parame)
+                                        .then(response => response.json())
+                                        .then(jsonDataNew => {
+                                            let dataNew = jsonDataNew[0].data;
+                                            let parsedDataNew = JSON.parse(dataNew);
+                                            transformedDataNew = parsedDataNew.map(point => {
+                                                const [year, month, day, hour, minute] = point[0];
+                                                const timestamp = Date.UTC(year, month - 1, day, hour, minute);
+                                                chartsi.series[0].addPoint([timestamp, point[1]]);
+                                                return [timestamp,point[1]];
+                                            });
+
+                                            lastTimestamp = transformedDataNew[transformedDataNew.length - 1][0];
+                                            chartsi.redraw(true);
+
+
+                                        });
+
+                                }
+
+                                setInterval(updateChart, 100);
                             });
+
                     }
                 </script>
 

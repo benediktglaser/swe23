@@ -76,12 +76,8 @@ public class ChartController {
         long timestamp = Long.parseLong(lastDate);
         LocalDateTime lastTimeStamp = Instant.ofEpochMilli(timestamp).atZone(ZoneId.systemDefault()).toLocalDateTime();
         lastTimeStamp = lastTimeStamp.minusHours(2);
-        //LocalDateTime lastTimeStamp = LocalDateTime.ofInstant(ZoneId.of("CET"));
         SensorStation sensorStation = sensorStationService.loadSensorStation(sensorStationId);
 
-        System.out.println(sensorStation);
-        System.out.println(lastTimeStamp);
-        System.out.println(typeId);
         List<Object[]> dataset = new ArrayList<>();
         dataset = sensorDataService.getAllNewSensorDataByStationAndTypeForChart(sensorStation, SensorDataType.valueOf(typeId),lastTimeStamp);
         System.out.println(dataset.isEmpty());
