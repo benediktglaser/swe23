@@ -51,8 +51,8 @@ public class SensorDataService {
             sensorStation = sensorStationRepository.save(sensorStation);
             return sensorStation.getSensorData().get(sensorStation.getSensorData().size() - 1);
         }
-        sensorDataRepository.save(sensorData);
-        return sensorData;
+
+        return sensorDataRepository.save(sensorData);
     }
 
     public Page<SensorData> getAllSensorData(Specification<SensorData> spec, Pageable page){

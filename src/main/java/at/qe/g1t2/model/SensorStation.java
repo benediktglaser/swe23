@@ -73,6 +73,9 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<SensorDataTypeInfo> sensorDataTypeInfos = new ArrayList<>();
 
+    @OneToMany(mappedBy = "sensorStation", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<Picture> pictures = new ArrayList<>();
     public List<SensorData> getSensorData() {
         return sensorData;
     }
@@ -89,6 +92,13 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
         this.transmissionInterval = transmissionInterval;
     }
 
+    public List<Picture> getPictures() {
+        return pictures;
+    }
+
+    public void setPictures(List<Picture> pictures) {
+        this.pictures = pictures;
+    }
 
     public void setDipId(long dipId) {
         this.dipId = dipId;
