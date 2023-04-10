@@ -43,6 +43,7 @@ public class SensorDataService {
     @Transactional
     public SensorData saveSensorData(SensorStation sensorStation, SensorData sensorData) {
         if (sensorData.isNew()) {
+            System.out.println("In new");
             LocalDateTime createDate = LocalDateTime.now();
             sensorData.setCreateDate(createDate);
             sensorData.setSensorStation(sensorStation);
@@ -77,6 +78,7 @@ public class SensorDataService {
     public List<Object[]> getAllSensorDataByStationAndTypeForChart(SensorStation sensorStation, SensorDataType sensorDataType){
         return sensorDataRepository.getSensorDataBySensorStationAndType(sensorStation,sensorDataType);
     }
-
-
+    public List<Object[]> getAllNewSensorDataByStationAndTypeForChart(SensorStation sensorStation, SensorDataType sensorDataType,LocalDateTime lastDate){
+        return sensorDataRepository.getNewSensorDataBySensorStationAndType(sensorStation,sensorDataType,lastDate);
+    }
 }

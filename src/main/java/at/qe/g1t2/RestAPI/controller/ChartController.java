@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +43,7 @@ public class ChartController {
     SensorDataTypeInfoService sensorDataTypeInfoService;
 
     @GetMapping()
-    public String getSensorDataCSV(@RequestParam String sensorStationId,@RequestParam String sensorDataTypeId,@RequestParam String typeId) throws JsonProcessingException {
+    public String getSensorData(@RequestParam String sensorStationId,@RequestParam String sensorDataTypeId,@RequestParam String typeId) throws JsonProcessingException {
 
         SensorStation sensorStation = sensorStationService.loadSensorStation(sensorStationId);
 
@@ -63,6 +66,33 @@ public class ChartController {
         seriesArray.add(seriesObject);
         ObjectNode chartObject = objectMapper.createObjectNode();
         chartObject.set("series", seriesArray);
+        String json = writer.writeValueAsString(seriesArray);
+        System.out.println(json);
+        return json;
+    }
+
+    @GetMapping("/add")
+    public String getNewSensorData(@RequestParam String sensorStationId,@RequestParam String sensorDataTypeId,@RequestParam String typeId, @RequestParam String lastDate) throws JsonProcessingException {
+        long timestamp = Long.parseLong(lastDate);
+        LocalDateTime lastTimeStamp = Instant.ofEpochMilli(timestamp).atZone(ZoneId.systemDefault()).toLocalDateTime();
+        lastTimeStamp = lastTimeStamp.minusHours(2);
+        //LocalDateTime lastTimeStamp = LocalDateTime.ofInstant(ZoneId.of("CET"));
+        SensorStation sensorStation = sensorStationService.loadSensorStation(sensorStationId);
+
+        System.out.println(sensorStation);
+        System.out.println(lastTimeStamp);
+        System.out.println(typeId);
+        List<Object[]> dataset = new ArrayList<>();
+        dataset = sensorDataService.getAllNewSensorDataByStationAndTypeForChart(sensorStation, SensorDataType.valueOf(typeId),lastTimeStamp);
+        System.out.println(dataset.isEmpty());
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        ObjectWriter writer = objectMapper.writer().with(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        ArrayNode seriesArray = objectMapper.createArrayNode();
+        ObjectNode seriesObject = objectMapper.createObjectNode();
+        seriesObject.put("data", objectMapper.writeValueAsString(dataset));
+
+        seriesArray.add(seriesObject);
         String json = writer.writeValueAsString(seriesArray);
         System.out.println(json);
         return json;
