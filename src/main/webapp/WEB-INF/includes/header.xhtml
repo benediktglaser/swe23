@@ -17,6 +17,7 @@
                     <p:menuitem value="All Plants" rendered="#{sessionInfoBean.hasRole('USER')}" url="/user/usersAllSensorStations.xhtml"/>
                     <p:menuitem value="Manage Users" rendered="#{sessionInfoBean.hasRole('ADMIN')}" url="/admin/users.xhtml"/>
                     <p:menuitem value="AccessPoints" rendered="#{sessionInfoBean.hasRole('ADMIN')}" url="/admin/accessPoint.xhtml"/>
+                    <p:menuitem value="Plant Galery" rendered="#{sessionInfoBean.hasRole('GARDENER')}" url="/gardener/galery.xhtml"/>
                     <p:menuitem value="Audit Log" rendered="#{sessionInfoBean.hasRole('ADMIN')}" url="/admin/auditLog.xhtml"/>
                     <p:menuitem value="Security Test" rendered="#{sessionInfoBean.loggedIn}" url="/secured/test.xhtml"/>
                     <p:menuitem value="Login" url="/login.xhtml" rendered="#{!sessionInfoBean.loggedIn}"/>

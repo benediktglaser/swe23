@@ -9,18 +9,6 @@
                 template="/WEB-INF/templates/main.xhtml">
 
     <ui:define name="content">
-        <body>
-        <h1>File Upload Example</h1>
-
-        <form method="post" enctype="multipart/form-data" action="/upload">
-            <input type="file" name="file"/>
-            <br/><br/>
-            <label for="sensorStationId">Name:</label>
-            <input type="text" id="sensorStationId" name="sensorStationId" value="8ccfdfaa-9731-4786-8efa-e2141e5c4095"/>
-            <br/><br/>
-            <input type="submit" value="Upload"/>
-        </form>
-        </body>
 
         <h:form id="sensorStationForm">
             <div class="card">
