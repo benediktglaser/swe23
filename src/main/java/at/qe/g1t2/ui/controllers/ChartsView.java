@@ -65,13 +65,11 @@ public class ChartsView {
     }
 
     public String getSelection() {
-        System.out.println(selection + "here in getter");
         return selection;
     }
 
     public void setSelection(String selection) {
         this.selection = selection;
-        System.out.println(this.selection +"here in setter");
     }
 
     public SensorDataTypeInfo convertSelection(){

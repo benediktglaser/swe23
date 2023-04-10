@@ -18,19 +18,11 @@
             </h:body>
             <link href="/resources/css/theme.css" rel="stylesheet" type="text/css"/>
             <script src="https://code.highcharts.com/highcharts.js"></script>
-            <script src="https://code.highcharts.com/highcharts.js"></script>
             <script src="https://code.highcharts.com/modules/stock.js"></script>
             <script src="https://code.highcharts.com/modules/scrollbar.js"></script>
 
         </h:head>
         <h:form id="sensorDataForm">
-            <div class="card">
-                <p:multiSelectListbox value="#{chartsView.selection}" effect="slide" header="Select Type and Limits"
-                                      showHeaders="true" required="true">
-                    <f:selectItems value="#{chartsView.categories}"/>
-                    <p:ajax listener="#{chartsView.doUpdate()}"/>
-                </p:multiSelectListbox>
-            </div>
             <p:dataTable id="sensorDataTable" var="sensorData" value="#{sensorDataListController}"
                          class="sensorDataTable" lazy="true" rows="3" paginator="true">
                 <p:column headerText="Measurement" class="ui-datatable-header" sortBy="#{sensorData.measurement}"
@@ -51,6 +43,14 @@
                 </p:column>
             </p:dataTable>
 
+            <p:separator/>
+            <div class="card">
+                <p:cascadeSelect placeholder="Select a dataType for chart" value="#{chartsView.selection}"
+                                 effect="slide" header="Select Type and Limits" showHeaders="true" required="true">
+                    <f:selectItems value="#{chartsView.categories}"/>
+                    <p:ajax listener="#{chartsView.doUpdate()}"/>
+                </p:cascadeSelect>
+            </div>
             <p:separator/>
             <div style="flex:1">
                 <!-- Hier steht der Code für das Highcharts-Diagramm -->
@@ -91,6 +91,9 @@
                                     },
                                     title: {
                                         text: sensorDataType,
+                                        style: {
+                                            color: 'white'
+                                        }
                                     },
                                     xAxis: {
                                         title: {
@@ -103,7 +106,7 @@
                                     },
                                     yAxis: {
                                         plotBands: [{
-                                            color: 'rgba(0, 255, 0, 0.2)', // green with 20% opacity
+                                            color: 'rgba(120,243,120,0.2)', // green with 20% opacity
                                             from: min,
                                             to: max
                                         }],
