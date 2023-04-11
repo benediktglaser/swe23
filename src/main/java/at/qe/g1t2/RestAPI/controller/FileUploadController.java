@@ -41,7 +41,7 @@ public class FileUploadController {
                 String uniqueFileName = System.currentTimeMillis() + extension;
 
                 // Get the path to the directory where the file should be saved
-                String uploadDir = request.getServletContext().getRealPath("/uploads");
+                String uploadDir = request.getServletContext().getRealPath("/resources/images");
 
                 // Create the upload directory if it doesn't already exist
                 File uploadDirFile = new File(uploadDir);
@@ -54,7 +54,7 @@ public class FileUploadController {
                 file.transferTo(serverFile);
                 SensorStation sensorStation = sensorStationService.loadSensorStation(sensorStationId);
                 Picture picture = new Picture();
-                picture.setPath(serverFile.getPath());
+                picture.setPath(uniqueFileName);
                 pictureService.save(sensorStation,picture);
                 return "redirect:/success";
             } catch (IOException e) {

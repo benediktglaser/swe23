@@ -40,16 +40,31 @@
         </style>
         <body>
         <h1>Upload your picture of a plant here:</h1>
+
         <form method="post" enctype="multipart/form-data" action="/upload">
             <input type="file" name="file"/>
             <p:separator/>
-            <label for="sensorStationId">Name of the Plant:</label>
-            <input type="text" id="sensorStationId" name="sensorStationId" value="8ccfdfaa-9731-4786-8efa-e2141e5c4095"/>
-            <input type="submit" value="Upload"/>
+            <label for="sensorStationId"></label>
+            <input type="hidden" id="sensorStationId" name="sensorStationId" value="#{sessionSensorStationBean.sensorStation.id}"/>
+            <input type="submit" />
         </form>
+
+
+
         </body>
         <h:form>
-            <p:separator/>
+            <p:outputPanel>
+                <p:carousel value="#{pictureController.getAllPictureBySensorStation(sessionSensorStationBean.sensorStation)}" var="picture"
+                            numVisible="3" numScroll="3">
+                    <div class="sensorStation-item">
+                        <div class="sensorStation-item-content">
+                            <div class="mb-3">
+                                <h:graphicImage library="images" name="#{picture.path}" height="100" width="200"/>
+                            </div>
+                        </div>
+                    </div>
+                </p:carousel>
+            </p:outputPanel>
         </h:form>
     </ui:define>
 </ui:composition>
