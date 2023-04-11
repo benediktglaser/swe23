@@ -28,7 +28,7 @@ class SensorStationConnectControllerTest {
     @Autowired
     AccessPointService accessPointService;
     @Test
-    @WithMockUser(username = "7269ddec-30c6-44d9-bc1f-8af18da09ed3", authorities = {"ACCESS_POINT"})
+    @WithMockUser(username = "43d5aba9-29c5-49b4-b4ec-2d430e34104f", authorities = {"ACCESS_POINT"})
     void createSensorStation() throws Exception {
         SensorStationDTO sensorStationDTO = new SensorStationDTO();
         sensorStationDTO.setDipId(23L);
