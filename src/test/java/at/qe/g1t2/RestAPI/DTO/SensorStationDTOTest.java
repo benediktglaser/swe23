@@ -1,7 +1,8 @@
-package at.qe.g1t2.model;
+package at.qe.g1t2.RestAPI.DTO;
 
 
 import at.qe.g1t2.RestAPI.model.SensorStationDTO;
+import at.qe.g1t2.model.PojoClassExcludedFields;
 import com.openpojo.reflection.impl.PojoClassFactory;
 import com.openpojo.validation.Validator;
 import com.openpojo.validation.ValidatorBuilder;

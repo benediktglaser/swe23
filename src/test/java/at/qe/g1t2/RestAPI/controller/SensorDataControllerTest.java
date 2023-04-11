@@ -1,4 +1,4 @@
-package at.qe.g1t2.RestAPI;
+package at.qe.g1t2.RestAPI.controller;
 
 
 

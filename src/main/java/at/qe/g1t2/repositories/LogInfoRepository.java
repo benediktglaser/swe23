@@ -18,7 +18,9 @@ public interface LogInfoRepository extends JpaRepository<LogInfo, Integer> {
             UNION ALL
             SELECT log_info.id, log_info.timestamp, changed_at, ssa.revtype, modified_by from log_info join sensor_station_aud ssa on log_info.id = ssa.rev
             UNION ALL
-            SELECT log_info.id, log_info.timestamp, changed_at, sda.revtype, modified_by from log_info join sensor_data_type_info_aud sda on log_info.id = sda.rev;""", nativeQuery = true)
+            SELECT log_info.id, log_info.timestamp, changed_at, sda.revtype, modified_by from log_info join sensor_data_type_info_aud sda on log_info.id = sda.rev
+            UNION ALL 
+            SELECT log_info.id, log_info.timestamp, changed_at, pda.revtype, modified_by from log_info join picture_aud pda on log_info.id = pda.rev;""", nativeQuery = true)
     List<Object[]> joinAccessAud();
 
      List<LogInfo> findLogInfoByChangeDateBetween(LocalDateTime firstDate, LocalDateTime lastDate);

@@ -23,7 +23,6 @@ public class Picture implements Persistable<String>, Serializable, Comparable<Pi
     private String path;
 
     private LocalDateTime createDate;
-    
 
 
     @ManyToOne
@@ -31,7 +30,7 @@ public class Picture implements Persistable<String>, Serializable, Comparable<Pi
 
     @Override
     public int compareTo(Picture o) {
-        return String.valueOf(o.id).compareTo(id) ;
+        return String.valueOf(o.id).compareTo(id);
     }
 
     @Override
@@ -39,13 +38,13 @@ public class Picture implements Persistable<String>, Serializable, Comparable<Pi
         return id;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     @Override
     public boolean isNew() {
         return null == createDate;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getPictureName() {

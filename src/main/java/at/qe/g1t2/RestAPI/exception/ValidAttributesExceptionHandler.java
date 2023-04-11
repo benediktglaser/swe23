@@ -28,4 +28,10 @@ public class ValidAttributesExceptionHandler {
     public ResponseEntity<String> handleAccessPointNotFound(EntityNotFoundException ex) {
         return new ResponseEntity<>(ex.getMessage(),HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(FileUploadException.class)
+    public ResponseEntity<String> handleFileUploadException(FileUploadException ex){
+        return new ResponseEntity<>(ex.getMessage(),HttpStatus.BAD_REQUEST);
+    }
+
 }

@@ -1,9 +1,7 @@
 package at.qe.g1t2.services;
 
 
-import at.qe.g1t2.model.AccessPoint;
-import at.qe.g1t2.model.SensorStation;
-import at.qe.g1t2.model.Userx;
+import at.qe.g1t2.model.*;
 import at.qe.g1t2.repositories.AccessPointRepository;
 import at.qe.g1t2.repositories.SensorStationRepository;
 import at.qe.g1t2.repositories.UserxRepository;
@@ -36,6 +34,8 @@ public class SensorStationService {
     UserxRepository userRepository;
 
     @Autowired
+    SensorDataTypeInfoService sensorDataTypeInfoService;
+    @Autowired
     AccessPointRepository accessPointRepository;
 
     @Transactional
@@ -51,6 +51,7 @@ public class SensorStationService {
             return sensorStationRepository.save(sensorStation);
 
         }
+
         sensorStation.setCreateDate(LocalDateTime.now());
         accessPoint.getSensorStation().add(sensorStation);
         sensorStation.setAccessPoint(accessPoint);

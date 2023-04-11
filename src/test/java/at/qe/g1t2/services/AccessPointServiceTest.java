@@ -78,7 +78,7 @@ class AccessPointServiceTest {
         sensorStationService.saveSensorStation(accessPoint, sensorStation);
         sensorStationService.saveSensorStation(accessPoint, sensorStation2);
 
-        assertEquals(7, accessPointService.getAllSensorStationsByAccessPoint(accessPoint).size());
+        assertEquals(8, accessPointService.getAllSensorStationsByAccessPoint(accessPoint).size());
 
     }
 }

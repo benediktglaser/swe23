@@ -32,32 +32,32 @@ public class SensorDataTypeInfoTest {
         SensorDataTypeInfo sensorDataTypeTemp2=new SensorDataTypeInfo();
         sensorDataTypeTemp2.setType(SensorDataType.TEMPERATURE);
         SensorDataTypeInfo sensorDataTypeGas1=new SensorDataTypeInfo();
-        sensorDataTypeGas1.setType(SensorDataType.GAS);
+        sensorDataTypeGas1.setType(SensorDataType.AIRQUALITY);
         SensorDataTypeInfo sensorDataTypeGas2=new SensorDataTypeInfo();
-        sensorDataTypeGas2.setType(SensorDataType.GAS);
+        sensorDataTypeGas2.setType(SensorDataType.AIRQUALITY);
         sensorDataTypeInfoService.save(sensorStation,sensorDataTypeTemp1);
-        sensorDataTypeInfoService.getAllSensorDataTypeInfosBySensorStation(sensorStation);
-        sensorStation= sensorStationService.loadSensorStation("8ccfdfaa-9731-4786-8efa-e2141e5c4095");
-        System.out.println(sensorStation.getSensorDataTypeInfos().size());
-        Assertions.assertEquals(2,sensorStation.getSensorDataTypeInfos().size());
-
-        sensorDataTypeInfoService.save(sensorStation,sensorDataTypeTemp2);
         sensorDataTypeInfoService.getAllSensorDataTypeInfosBySensorStation(sensorStation);
         sensorStation= sensorStationService.loadSensorStation("8ccfdfaa-9731-4786-8efa-e2141e5c4095");
         System.out.println(sensorStation.getSensorDataTypeInfos().size());
         Assertions.assertEquals(3,sensorStation.getSensorDataTypeInfos().size());
 
+        sensorDataTypeInfoService.save(sensorStation,sensorDataTypeTemp2);
+        sensorDataTypeInfoService.getAllSensorDataTypeInfosBySensorStation(sensorStation);
+        sensorStation= sensorStationService.loadSensorStation("8ccfdfaa-9731-4786-8efa-e2141e5c4095");
+        System.out.println(sensorStation.getSensorDataTypeInfos().size());
+        Assertions.assertEquals(4,sensorStation.getSensorDataTypeInfos().size());
+
         sensorDataTypeInfoService.save(sensorStation,sensorDataTypeGas1);
         sensorDataTypeInfoService.getAllSensorDataTypeInfosBySensorStation(sensorStation);
         sensorStation= sensorStationService.loadSensorStation("8ccfdfaa-9731-4786-8efa-e2141e5c4095");
         System.out.println(sensorStation.getSensorDataTypeInfos().size());
-        Assertions.assertEquals(4, sensorStation.getSensorDataTypeInfos().size());
+        Assertions.assertEquals(5, sensorStation.getSensorDataTypeInfos().size());
 
         sensorDataTypeInfoService.save(sensorStation,sensorDataTypeGas2);
         sensorDataTypeInfoService.getAllSensorDataTypeInfosBySensorStation(sensorStation);
         sensorStation= sensorStationService.loadSensorStation("8ccfdfaa-9731-4786-8efa-e2141e5c4095");
         System.out.println(sensorStation.getSensorDataTypeInfos().size());
-        Assertions.assertEquals(5, sensorStation.getSensorDataTypeInfos().size());
+        Assertions.assertEquals(6, sensorStation.getSensorDataTypeInfos().size());
 
 
 
