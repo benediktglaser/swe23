@@ -9,6 +9,7 @@
                 template="/WEB-INF/templates/main.xhtml">
 
     <ui:define name="content">
+
         <h:form id="sensorStationForm">
             <div class="card">
                 <p:outputPanel>
@@ -17,7 +18,7 @@
                         <div class="sensorStation-item">
                             <div class="sensorStation-item-content">
                                 <div class="mb-3">
-                                    <h:graphicImage library="images" name="plant-test1.png" height="100" width="200"/>
+                                    <h:graphicImage library="images" name="#{sensorStationListController.getFrontPicture(sensorStation)}" height="100" width="200"/>
                                 </div>
                                 <div>
                                     <h4 class="mb-1">#{sensorStation.name}</h4>
@@ -30,6 +31,8 @@
                                                      action="#{sensorDataTypeListController.setSensorStation(sensorStation)}"/>
                                     <p:commandButton id="sensordata" value="Sensordata"
                                                      action="#{sensorStationListController.redirectToSensorDataPage(sensorStation)}"/>
+                                    <p:commandButton id="galery" value="Galery"
+                                                     action="#{sensorStationListController.redirectToGalery(sensorStation)}"/>
                                 </div>
                             </div>
                         </div>
@@ -58,6 +61,9 @@
                         </p:column>
                     </p:dataTable>
                 </p:outputPanel>
+
+
+
 
                 <p:outputPanel id="sensorInfo">
                     <p:selectOneMenu id="types" value="#{sensorDataTypeInfoController.sensorDataType}">
@@ -93,7 +99,10 @@
 
 
             </p:dialog>
+
         </h:form>
+
+
 
     </ui:define>
 </ui:composition>
