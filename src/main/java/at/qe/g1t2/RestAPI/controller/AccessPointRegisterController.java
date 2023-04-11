@@ -53,33 +53,5 @@ public class AccessPointRegisterController {
         return new ResponseEntity<>(loginDTO, HttpStatus.OK);
     }
 
-    @GetMapping("/{dipId}")
-    public ResponseEntity<List<LimitsDTO>> checkIfAccessPointIsConnectedAndUpdateLimits(@PathVariable String dipId) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String accessPointId = auth.getName();
-        AccessPoint accessPoint = accessPointService.loadAccessPoint(accessPointId);
-        accessPoint.setLastConnectedDate(LocalDateTime.now());
-        accessPointService.saveAccessPoint(accessPoint);
-        SensorStation sensorStation = accessPointService.getSensorStationByAccessPointIdAndDipId(accessPointId, Long.parseLong(dipId));
-        if (sensorStation == null) {
-            throw new EntityNotFoundException("SensorStation does not exist in database. You have to first connect the Sensor Station");
 
-        }
-        sensorStation.setLastConnectedDate(LocalDateTime.now());
-        sensorStationService.saveSensorStation(accessPoint,sensorStation);
-        List<LimitsDTO> limitsDTOS = new ArrayList<>();
-        sensorDataTypeInfoService.getAllSensorDataTypeInfosBySensorStation(sensorStation).forEach(x -> {
-            if (x != null) {
-                LimitsDTO limitsDTO = new LimitsDTO();
-                limitsDTO.setMaxLimit(x.getMaxLimit());
-                limitsDTO.setMinLimit(x.getMinLimit());
-                limitsDTO.setDataType(x.getType().name());
-                limitsDTOS.add(limitsDTO);
-            }
-        });
-
-        return new ResponseEntity<>(limitsDTOS, HttpStatus.OK);
-
-
-    }
 }

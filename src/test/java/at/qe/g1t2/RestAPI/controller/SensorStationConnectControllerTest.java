@@ -1,7 +1,6 @@
-package at.qe.g1t2.tests;
+package at.qe.g1t2.RestAPI.controller;
 
-import at.qe.g1t2.RestAPI.exception.EntityNotFoundException;
-import at.qe.g1t2.RestAPI.model.AccessPointDTO;
+import at.qe.g1t2.RestAPI.model.SensorStationDTO;
 import at.qe.g1t2.model.AccessPoint;
 import at.qe.g1t2.services.AccessPointService;
 import at.qe.g1t2.services.SensorStationService;
@@ -17,50 +16,48 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class AccessPointRegisterControllerTest {
+class SensorStationConnectControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
-    AccessPointService accessPointService;
-
-    @Autowired
     SensorStationService sensorStationService;
-
+    @Autowired
+    AccessPointService accessPointService;
     @Test
-    void registerAccessPoint() throws Exception {
-        AccessPointDTO accessPointDTO = new AccessPointDTO();
-        accessPointDTO.setSendingInterval(23.0);
-        accessPointDTO.setAccessPointName("TV ROOM");
+    @WithMockUser(username = "7269ddec-30c6-44d9-bc1f-8af18da09ed3", authorities = {"ACCESS_POINT"})
+    void createSensorStation() throws Exception {
+        SensorStationDTO sensorStationDTO = new SensorStationDTO();
+        sensorStationDTO.setDipId(23L);
 
-        int size = accessPointService.getAllAccessPoints().size();
+        int size = sensorStationService.getAllSensorStations().size();
         ObjectMapper objectMapper = new ObjectMapper();
-        String requestBody = objectMapper.writeValueAsString(accessPointDTO);
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/accessPoint/register")
+        String requestBody = objectMapper.writeValueAsString(sensorStationDTO);
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/sensorStation/connect")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(MockMvcResultMatchers.status().isOk());
-        assertEquals(size + 1, accessPointService.getAllAccessPoints().size());
+        assertEquals(size + 1, sensorStationService.getAllSensorStations().size());
     }
     @Test
     @WithMockUser(username = "4294ba1b-f794-4e3d-b606-896b28237bcb", authorities = {"ACCESS_POINT"})
-    void testGetLimits() throws Exception {
+    void testGetLimitsAndConnection() throws Exception {
         AccessPoint accessPoint = accessPointService.loadAccessPoint("4294ba1b-f794-4e3d-b606-896b28237bcb");
         Long dipId = 3L;
 
         long x = Long.parseLong("100");
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/accessPoint/register/"+x))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/sensorStation/limits/"+x))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
-        Assertions.assertTrue(accessPointService.loadAccessPoint(accessPoint.getAccessPointID()).getConnected(),"First");
+        Assertions.assertTrue(accessPointService.loadAccessPoint(accessPoint.getAccessPointID()).getConnected());
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/accessPoint/register/8"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/sensorStation/limits/8"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
         Assertions.assertTrue(accessPointService.loadAccessPoint(accessPoint.getAccessPointID()).getConnected());
         Assertions.assertTrue(sensorStationService.loadSensorStation("fac9c9b9-62cc-4d3d-af5b-06d9965f0f7c").getConnected());
 
     }
+
 }

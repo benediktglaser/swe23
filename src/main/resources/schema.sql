@@ -24,10 +24,12 @@ DROP TABLE IF EXISTS userx;
 CREATE TABLE access_point
 (
     id                VARCHAR(255) NOT NULL,
+    couple_mode       BOOLEAN      NULL,
     create_date       timestamp    NULL,
     connected         BOOLEAN      NULL,
     enabled           BOOLEAN      NULL,
     sending_interval  DOUBLE       NULL,
+    threshold_interval DOUBLE       NULL,
     update_date       timestamp    NULL,
     access_point_name VARCHAR(255) NULL,
     password          VARCHAR(255),
@@ -80,7 +82,6 @@ CREATE TABLE sensor_station
     dip_id                BIGINT       NULL,
     name                  VARCHAR(255) NULL,
     category              VARCHAR(255) NULL,
-    transmission_interval DOUBLE       NULL,
     create_date           timestamp    NOT NULL,
     access_point_id       VARCHAR(255) NULL,
     gardener_id           VARCHAR(255) NULL,

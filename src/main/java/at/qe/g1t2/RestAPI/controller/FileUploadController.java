@@ -2,6 +2,7 @@ package at.qe.g1t2.RestAPI.controller;
 
 
 import at.qe.g1t2.RestAPI.exception.EntityNotFoundException;
+import at.qe.g1t2.RestAPI.exception.FileUploadException;
 import at.qe.g1t2.RestAPI.model.ResponsePicture;
 import at.qe.g1t2.model.Picture;
 import at.qe.g1t2.model.SensorStation;
@@ -33,35 +34,34 @@ public class FileUploadController {
                                    HttpServletRequest request) {
         if (!file.isEmpty()) {
             try {
-                // Get the file name and extension
                 String fileName = file.getOriginalFilename();
                 String extension = fileName.substring(fileName.lastIndexOf("."));
 
-                // Create a unique file name to avoid conflicts
+
                 String uniqueFileName = System.currentTimeMillis() + extension;
 
-                // Get the path to the directory where the file should be saved
+
                 String uploadDir = request.getServletContext().getRealPath("/resources/images");
 
-                // Create the upload directory if it doesn't already exist
+
                 File uploadDirFile = new File(uploadDir);
                 if (!uploadDirFile.exists()) {
                     uploadDirFile.mkdir();
                 }
 
-                // Save the file to the upload directory
+
                 File serverFile = new File(uploadDir + File.separator + uniqueFileName);
                 file.transferTo(serverFile);
                 SensorStation sensorStation = sensorStationService.loadSensorStation(sensorStationId);
                 Picture picture = new Picture();
                 picture.setPath(uniqueFileName);
                 pictureService.save(sensorStation,picture);
-                return "redirect:/success";
+                return "Upload Success";
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new FileUploadException("File could not saved"+e.getMessage());
             }
         }
-        return "redirect:/error";
+        return "Upload fail";
     }
 
 }
