@@ -3,9 +3,6 @@ import requests
 from requests.auth import HTTPBasicAuth
 
 
-host = "http://localhost:8080"
-
-
 global my_id
 global my_password
 
@@ -15,10 +12,10 @@ def prepare_auth_headers():
     return HTTPBasicAuth(my_id, my_password)
 
 
-def register_access_point_at_server(interval: float, name: str):
+def register_access_point_at_server(address: str, interval: float, name: str):
     registration = {"accessPointName": name, "sendingInterval": interval}
 
-    resp = requests.post(f"{host}/api/accessPoint/register", json=registration)
+    resp = requests.post(f"{address}/api/accessPoint/register", json=registration)
     # return the deserialized measurement object here
     return resp.json()
 

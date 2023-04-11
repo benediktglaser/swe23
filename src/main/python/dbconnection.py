@@ -5,7 +5,7 @@ import os
 
 
 def create_database(path):
-    """Create database and initialise both tables"""
+    """Connects or Creates database and initialises both tables"""
     conn = sqlite3.connect(path)
     create_tables(conn)
     return conn
