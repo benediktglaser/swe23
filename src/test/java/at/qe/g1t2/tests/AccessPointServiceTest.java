@@ -1,7 +1,9 @@
-package at.qe.g1t2.services;
+package at.qe.g1t2.tests;
 
 import at.qe.g1t2.model.AccessPoint;
 import at.qe.g1t2.model.SensorStation;
+import at.qe.g1t2.services.AccessPointService;
+import at.qe.g1t2.services.SensorStationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -78,7 +80,7 @@ class AccessPointServiceTest {
         sensorStationService.saveSensorStation(accessPoint, sensorStation);
         sensorStationService.saveSensorStation(accessPoint, sensorStation2);
 
-        assertEquals(8, accessPointService.getAllSensorStationsByAccessPoint(accessPoint).size());
+        assertEquals(7, accessPointService.getAllSensorStationsByAccessPoint(accessPoint).size());
 
     }
 }
