@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS user_sensor_station;
 DROP TABLE IF EXISTS sensor_data_aud;
+DROP TABLE IF EXISTS picture_aud;
 DROP TABLE IF EXISTS user_sensor_station_aud;
 DROP TABLE IF EXISTS sensor_station_aud;
 DROP TABLE IF EXISTS access_point_aud;
@@ -11,6 +12,7 @@ DROP TABLE IF EXISTS log_info_seq;
 DROP TABLE IF EXISTS users_favourites_aud;
 DROP TABLE IF EXISTS log_info;
 DROP TABLE IF EXISTS sensor_data;
+DROP TABLE IF EXISTS picture;
 DROP TABLE IF EXISTS sensor_data_type_info;
 DROP TABLE IF EXISTS sensor_station_gardener;
 DROP TABLE IF EXISTS users_favourites;
@@ -22,10 +24,12 @@ DROP TABLE IF EXISTS userx;
 CREATE TABLE access_point
 (
     id                VARCHAR(255) NOT NULL,
+    couple_mode       BOOLEAN      NULL,
     create_date       timestamp    NULL,
     connected         BOOLEAN      NULL,
     enabled           BOOLEAN      NULL,
     sending_interval  DOUBLE       NULL,
+    threshold_interval DOUBLE       NULL,
     update_date       timestamp    NULL,
     access_point_name VARCHAR(255) NULL,
     password          VARCHAR(255),
@@ -59,6 +63,16 @@ CREATE TABLE sensor_data_type_info
 
 );
 
+CREATE TABLE picture
+(
+    id                VARCHAR(255) NOT NULL,
+    sensor_station_id VARCHAR(255) NULL,
+    description              VARCHAR(255) NULL,
+    picture_name              VARCHAR(255) NULL,
+    path              VARCHAR(255) NULL,
+    create_date       timestamp    NOT NULL,
+    CONSTRAINT pk_picture PRIMARY KEY (id)
+);
 
 CREATE TABLE sensor_station
 (
@@ -68,7 +82,6 @@ CREATE TABLE sensor_station
     dip_id                BIGINT       NULL,
     name                  VARCHAR(255) NULL,
     category              VARCHAR(255) NULL,
-    transmission_interval DOUBLE       NULL,
     create_date           timestamp    NOT NULL,
     access_point_id       VARCHAR(255) NULL,
     gardener_id           VARCHAR(255) NULL,
@@ -219,6 +232,9 @@ CREATE TABLE access_point_aud
 
 );
 */
+ALTER TABLE picture
+    ADD CONSTRAINT FK_PICTURE_ON_SENSORSTATION FOREIGN KEY (sensor_station_id) REFERENCES sensor_station (id) ON DELETE CASCADE;
+
 ALTER TABLE sensor_data
     ADD CONSTRAINT FK_SENSORDATA_ON_SENSORSTATION FOREIGN KEY (sensor_station_id) REFERENCES sensor_station (id) ON DELETE CASCADE;
 

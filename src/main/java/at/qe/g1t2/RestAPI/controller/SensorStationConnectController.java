@@ -1,6 +1,9 @@
 package at.qe.g1t2.RestAPI.controller;
 
+import at.qe.g1t2.RestAPI.exception.EntityNotFoundException;
+import at.qe.g1t2.RestAPI.model.LimitsDTO;
 import at.qe.g1t2.RestAPI.model.SensorStationDTO;
+import at.qe.g1t2.model.AccessPoint;
 import at.qe.g1t2.model.SensorDataType;
 import at.qe.g1t2.model.SensorDataTypeInfo;
 import at.qe.g1t2.model.SensorStation;
@@ -14,10 +17,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/sensorStation")
@@ -51,5 +55,37 @@ public class SensorStationConnectController {
 
         }
         return new ResponseEntity<>(sensorStationDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/limits/{dipId}")
+    public ResponseEntity<List<LimitsDTO>> checkIfAccessPointIsConnectedAndUpdateLimits(@PathVariable String dipId) {
+        String accessPointId = SecurityContextHolder.getContext().getAuthentication().getName();
+        AccessPoint accessPoint = accessPointService.loadAccessPoint(accessPointId);
+        if(accessPoint == null){
+            throw new EntityNotFoundException("AccessPoint is not registered");
+        }
+        accessPoint.setLastConnectedDate(LocalDateTime.now());
+        accessPointService.saveAccessPoint(accessPoint);
+        SensorStation sensorStation = accessPointService.getSensorStationByAccessPointIdAndDipId(accessPointId, Long.parseLong(dipId));
+        if (sensorStation == null) {
+            throw new EntityNotFoundException("SensorStation does not exist in database. You have to first connect the Sensor Station");
+
+        }
+        sensorStation.setLastConnectedDate(LocalDateTime.now());
+        sensorStationService.saveSensorStation(accessPoint,sensorStation);
+        List<LimitsDTO> limitsDTOS = new ArrayList<>();
+        sensorDataTypeInfoService.getAllSensorDataTypeInfosBySensorStation(sensorStation).forEach(x -> {
+            if (x != null) {
+                LimitsDTO limitsDTO = new LimitsDTO();
+                limitsDTO.setMaxLimit(x.getMaxLimit());
+                limitsDTO.setMinLimit(x.getMinLimit());
+                limitsDTO.setDataType(x.getType().name());
+                limitsDTOS.add(limitsDTO);
+            }
+        });
+
+        return new ResponseEntity<>(limitsDTOS, HttpStatus.OK);
+
+
     }
 }

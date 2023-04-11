@@ -14,6 +14,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 
@@ -66,5 +67,11 @@ public class SensorDataServiceTest {
         Assertions.assertEquals(sensorStation.getId(), sensorDataService.loadSensorData(sensorDataId).getSensorStation().getId());
     }
 
+    @Test
+    @WithMockUser(username = "7269ddec-30c6-44d9-bc1f-8af18da09ed3", authorities = {"ACCESS_POINT"})
+    void getAllNewSensorDataByStationAndTypeForChart() {
+        SensorStation sensorStation =   sensorStationService.loadSensorStation("fac9c9b9-62cc-4d3d-af5b-06d9965f0f7c");
+        System.out.println(sensorDataService.getAllNewSensorDataByStationAndTypeForChart(sensorStation, SensorDataType.TEMPERATURE, LocalDateTime.of(2020,1,1,0,0,0)));
+    }
 
 }

@@ -35,19 +35,36 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
     private LocalDateTime createDate;
 
     private LocalDateTime lastConnectedDate;
+    private Boolean connected;
+    private Boolean enabled;
+    private Double sendingInterval;
+
+    private Double thresholdInterval;
+
+    private Boolean coupleMode;
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime updateDate;
+    @OneToMany(mappedBy = "accessPoint", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @AuditJoinTable
+    private List<SensorStation> sensorStation = new ArrayList<>();
+    private String accessPointName;
+
+    public Boolean getCoupleMode() {
+        return coupleMode;
+    }
+
+    public void setCoupleMode(Boolean coupleMode) {
+        this.coupleMode = coupleMode;
+    }
 
     public LocalDateTime getLastConnectedDate() {
         return lastConnectedDate;
     }
 
-    private Boolean connected;
-
-    private Boolean enabled;
-
-    private Double sendingInterval;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime updateDate;
+    public void setLastConnectedDate(LocalDateTime lastConnectedDate) {
+        this.lastConnectedDate = lastConnectedDate;
+    }
 
     public LocalDateTime getUpdateDate() {
         return updateDate;
@@ -56,11 +73,6 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
     public void setUpdateDate(LocalDateTime updateDate) {
         this.updateDate = updateDate;
     }
-
-    @OneToMany(mappedBy = "accessPoint", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @AuditJoinTable
-    private List<SensorStation> sensorStation = new ArrayList<>();
 
     public Double getSendingInterval() {
         return sendingInterval;
@@ -79,7 +91,8 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
     }
 
     public Boolean getConnected() {
-        return lastConnectedDate != null && LocalDateTime.now().minusSeconds(sendingInterval.longValue()).isBefore(lastConnectedDate);
+        connected =lastConnectedDate != null && LocalDateTime.now().minusSeconds(sendingInterval.longValue() + (thresholdInterval ==null?0:thresholdInterval.longValue())).isBefore(lastConnectedDate);
+        return connected;
     }
 
     public void setConnected(Boolean connected) {
@@ -93,8 +106,6 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
     public void setSensorStation(List<SensorStation> sensorStation) {
         this.sensorStation = sensorStation;
     }
-
-    private String accessPointName;
 
     public String getAccessPointID() {
         return id;
@@ -119,7 +130,6 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
     public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -169,7 +179,11 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
         this.accessPointRole = accessPointRole;
     }
 
-    public void setLastConnectedDate(LocalDateTime lastConnectedDate) {
-        this.lastConnectedDate = lastConnectedDate;
+    public Double getThresholdInterval() {
+        return thresholdInterval;
+    }
+
+    public void setThresholdInterval(Double thresholdInterval) {
+        this.thresholdInterval = thresholdInterval;
     }
 }

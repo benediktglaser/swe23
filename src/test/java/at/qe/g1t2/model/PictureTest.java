@@ -1,6 +1,5 @@
 package at.qe.g1t2.model;
 
-import at.qe.g1t2.RestAPI.model.AccessPointDTO;
 import com.openpojo.reflection.impl.PojoClassFactory;
 import com.openpojo.validation.Validator;
 import com.openpojo.validation.ValidatorBuilder;
@@ -13,11 +12,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Set;
 
+import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
-class AccessPointDTOTest {
+class PictureTest {
     @Test
-    public void testGetterSetter() {
-
+    public void testGetterSetterAccessPoint() {
         Validator validator = ValidatorBuilder.create()
                 .with(new GetterMustExistRule())
                 .with(new SetterMustExistRule())
@@ -25,11 +24,8 @@ class AccessPointDTOTest {
                 .with(new GetterTester())
                 .build();
 
-
-        validator.validate(new PojoClassExcludedFields(PojoClassFactory.getPojoClass(AccessPointDTO.class),
-                Set.of("createDate", "timestamp")));
-
-
+        validator.validate(new PojoClassExcludedFields(PojoClassFactory.getPojoClass(Picture.class),
+                Set.of("createDate")));
     }
 
 }

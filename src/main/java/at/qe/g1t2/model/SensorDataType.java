@@ -4,10 +4,9 @@ public enum SensorDataType {
     TEMPERATURE("°C"),
     PRESSURE("Pa"),
     HUMIDITY("%"),
-    GAS("%"),
-    ALTITUDE("meter"),
     SOIL("%"),
-    LIGHT("");
+    LIGHT(""),
+    AIRQUALITY("");
 
     private final String unit;
 
