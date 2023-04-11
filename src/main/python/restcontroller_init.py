@@ -3,11 +3,7 @@ import requests
 from requests.auth import HTTPBasicAuth
 
 
-global my_id
-global my_password
-
-
-def prepare_auth_headers():
+def prepare_auth_headers(my_id:str, my_password:str):
     """Just for testing. Prepare the authentication via HTTPBasic"""
     return HTTPBasicAuth(my_id, my_password)
 
@@ -17,32 +13,38 @@ def register_access_point_at_server(address: str, interval: float, name: str):
 
     resp = requests.post(f"{address}/api/accessPoint/register", json=registration)
     # return the deserialized measurement object here
-    return resp.json()
+    data = resp.json()
+    my_id = data["id"]
+    my_password = data["password"]
+    return (my_id, my_password)
 
 
-def register_new_sensorstation_at_server(dipId: int):
-    auth_header = prepare_auth_headers()
+def register_new_sensorstation_at_server(address: str, dipId: int, auth_header):
     new_sensorstation = {"dipId": dipId}
 
     resp = requests.post(
-        f"{host}/api/sensorStation/connect", json=new_sensorstation, auth=auth_header
+        f"{address}/api/sensorStation/connect", json=new_sensorstation, auth=auth_header
     )
     # return the deserialized measurement object here
     return resp.json()
 
 
-def request_new_limits(dipId: int):
-    auth_header = prepare_auth_headers()
+def request_limits(address: str, dipId: int, auth_header):
     data = {"dipId": str(dipId)}
     resp = requests.get(
-        f"{host}/api/accessPoint/register/{dipId}", json=data, auth=auth_header
+        f"{address}/api/accessPoint/register/{dipId}", json=data, auth=auth_header
     )
+    return resp.json()
 
 
 if __name__ == "__main__":
     # normally these two values come from the config-file
-    data = register_access_point_at_server(40.9, "Öztal")
-    my_id = data["id"]
-    my_password = data["password"]
-    print(register_new_sensorstation_at_server(93))
-    print(request_new_limits(93))
+    address = "http://localhost:8080"
+    data = register_access_point_at_server(address, 40.9, "Kappl")
+    my_id = data[0]
+    my_password = data[1]
+    auth = prepare_auth_headers(my_id, my_password)
+
+    print(type(auth))
+    print(register_new_sensorstation_at_server(address, 93, auth))
+    print(request_limits(address, 93, auth))
