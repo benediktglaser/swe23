@@ -15,7 +15,7 @@ def prepare_auth_headers():
     return HTTPBasicAuth(my_id, my_password)
 
 
-def register_at_server(interval: float, name: str):
+def register_access_point_at_server(interval: float, name: str):
     registration = {"accessPointName": name, "sendingInterval": interval}
 
     resp = requests.post(f"{host}/api/accessPoint/register", json=registration)
@@ -34,9 +34,18 @@ def register_new_sensorstation_at_server(dipId: int):
     return resp.json()
 
 
+def request_new_limits(dipId: int):
+    auth_header = prepare_auth_headers()
+    data = {"dipId": str(dipId)}
+    resp = requests.get(
+        f"{host}/api/accessPoint/register/{dipId}", json=data, auth=auth_header
+    )
+
+
 if __name__ == "__main__":
     # normally these two values come from the config-file
-    data = register_at_server(40.9, "Öztal")
+    data = register_access_point_at_server(40.9, "Öztal")
     my_id = data["id"]
     my_password = data["password"]
     print(register_new_sensorstation_at_server(93))
+    print(request_new_limits(93))
