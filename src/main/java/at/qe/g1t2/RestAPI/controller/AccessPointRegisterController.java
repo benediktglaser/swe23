@@ -43,7 +43,7 @@ public class AccessPointRegisterController {
         String encodedPassword = WebSecurityConfig.passwordEncoder().encode(password);
         AccessPoint newAccessPoint = modelMapper.map(accessPointDTO, AccessPoint.class);
         newAccessPoint.setPassword(encodedPassword);
-        newAccessPoint.setEnabled(true);
+        newAccessPoint.setEnabled(false);
         newAccessPoint = accessPointService.saveAccessPoint(newAccessPoint);
 
 
