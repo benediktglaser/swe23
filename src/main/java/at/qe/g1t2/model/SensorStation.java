@@ -14,9 +14,6 @@ import java.util.*;
 
 @Entity
 @Audited
-@Table(uniqueConstraints =
-        { //other constraints
-                @UniqueConstraint(name = "UniqueDipIdAndAccessPoint", columnNames = { "access_point_id", "dipId" })})
 public class SensorStation implements Persistable<String>, Serializable, Comparable<SensorStation> {
 
     @ManyToMany(mappedBy = "sensorStations",fetch = FetchType.EAGER)
@@ -52,6 +49,8 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
     @OneToMany(mappedBy = "sensorStation", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Picture> pictures = new ArrayList<>();
+
+
     @ManyToOne()
     private AccessPoint accessPoint;
 
@@ -159,7 +158,7 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
 
     @Override
     public int compareTo(SensorStation o) {
-        return o.getName().compareTo(this.name);
+        return this.id.compareTo(o.id);
     }
 
     @Override

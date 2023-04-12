@@ -34,4 +34,8 @@ public class AccessPointDetailController {
     public void doReloadAccessPoint(){
         accessPoint = this.accessPointService.loadAccessPoint(accessPoint.getId());
     }
+
+    public void doSaveAccessPoint(AccessPoint accessPoint){
+        accessPointService.saveAccessPoint(accessPoint);
+    }
 }

@@ -31,6 +31,8 @@ CREATE TABLE access_point
     sending_interval   DOUBLE       NULL,
     threshold_interval DOUBLE       NULL,
     update_date        timestamp    NULL,
+    last_Coupling_Date        timestamp    NULL,
+    last_Connected_Date        timestamp    NULL,
     access_point_name  VARCHAR(255) NULL,
     password           VARCHAR(255),
     access_Point_Role  VARCHAR(100),
@@ -84,8 +86,7 @@ CREATE TABLE sensor_station
     create_date     timestamp    NOT NULL,
     access_point_id VARCHAR(255) NULL NOT NULL,
     gardener_id     VARCHAR(255) NULL,
-    MAC             VARCHAR(255) NOT NULL UNIQUE,
-    UNIQUE (dip_id, access_point_id),
+    MAC             VARCHAR(255) NOT NULL,
     CONSTRAINT pk_sensorstation PRIMARY KEY (id)
 );
 

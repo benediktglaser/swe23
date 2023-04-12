@@ -55,7 +55,7 @@ class SensorStationServiceTest {
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     void deleteSensorStation() {
         SensorStation sensorStation = sensorStationService
-                .loadSensorStation("71243b9c-1eaf-4d3f-a3c3-2b32a8e96c7e");
+                .loadSensorStation("b94d9ff0-1366-49b1-b19b-85f73c14d744");
         sensorStationService.deleteSensorStation(sensorStation);
         SensorStation deletedSensorStation = sensorStationRepository
                 .findSensorStationById(sensorStation.getId());

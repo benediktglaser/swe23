@@ -95,6 +95,10 @@ public class SensorStationListController extends AbstractListController<String, 
         return sensorStation.getPictures().get(0).getPath();
     }
 
+    public List<SensorStation> getAllNewSensorStation(){
+        return sensorStationService.getAllNewSensorStations(accessPoint);
+    }
+
 
 
 
