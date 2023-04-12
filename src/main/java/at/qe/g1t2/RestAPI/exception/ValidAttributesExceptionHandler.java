@@ -1,5 +1,6 @@
 package at.qe.g1t2.RestAPI.exception;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -14,7 +15,7 @@ import java.util.Map;
 public class ValidAttributesExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Object> handleValidationException(MethodArgumentNotValidException ex) {
+    public ResponseEntity<Object> handleValidationException(@NotNull MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach(error -> {
             String fieldName = ((FieldError) error).getField();
@@ -25,12 +26,12 @@ public class ValidAttributesExceptionHandler {
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<String> handleAccessPointNotFound(EntityNotFoundException ex) {
+    public ResponseEntity<String> handleAccessPointNotFound(@NotNull EntityNotFoundException ex) {
         return new ResponseEntity<>(ex.getMessage(),HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(FileUploadException.class)
-    public ResponseEntity<String> handleFileUploadException(FileUploadException ex){
+    public ResponseEntity<String> handleFileUploadException(@NotNull FileUploadException ex){
         return new ResponseEntity<>(ex.getMessage(),HttpStatus.BAD_REQUEST);
     }
 

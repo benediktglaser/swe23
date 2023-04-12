@@ -41,7 +41,8 @@ class SensorStationServiceTest {
         AccessPoint accessPoint = accessPointService
                 .loadAccessPoint("4294ba1b-f794-4e3d-b606-896b28237bcb");
         SensorStation sensorStation = new SensorStation();
-
+        sensorStation.setDipId(23L);
+        sensorStation.setMAC("45667");
 
         sensorStation = sensorStationService.saveSensorStation(accessPoint, sensorStation);
 

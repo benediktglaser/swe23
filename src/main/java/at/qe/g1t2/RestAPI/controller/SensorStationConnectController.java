@@ -35,33 +35,70 @@ public class SensorStationConnectController {
     @Autowired
     SensorDataTypeInfoService sensorDataTypeInfoService;
 
-    @PostMapping("/connect")
-    public ResponseEntity<SensorStationDTO> createSensorStation(@Valid @RequestBody SensorStationDTO sensorStationDTO){
+    @PostMapping("/register")
+    public ResponseEntity<Boolean> createSensorStation(@Valid @RequestBody SensorStationDTO sensorStationDTO) {
 
         ModelMapper modelMapper = new ModelMapper();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String accessPointId = auth.getName();
 
-        SensorStation newSensorStation = modelMapper.map(sensorStationDTO,SensorStation.class);
-        System.out.println(newSensorStation);
-        newSensorStation = sensorStationService.saveSensorStation(accessPointService.loadAccessPoint(accessPointId),newSensorStation);
-        //Set Min and Max Value a default value
-        for(SensorDataType type: SensorDataType.values()){
+        SensorStation newSensorStation = modelMapper.map(sensorStationDTO, SensorStation.class);
+        SensorStation existingSensorStation = sensorStationService.getSensorStation(sensorStationDTO.getMAC());
+        if (existingSensorStation != null) {
+            if (!existingSensorStation.getCreateDate().isBefore(LocalDateTime.now().minusMinutes(5))) {
+
+                return new ResponseEntity<>(Boolean.FALSE, HttpStatus.OK);
+
+
+            }
+            sensorStationService.deleteSensorStation(existingSensorStation);
+            existingSensorStation.getAccessPoint().getSensorStation().remove(existingSensorStation);
+            accessPointService.saveAccessPoint(existingSensorStation.getAccessPoint());
+        }
+        newSensorStation = sensorStationService.saveSensorStation(accessPointService.loadAccessPoint(accessPointId), newSensorStation);
+        for (SensorDataType type : SensorDataType.values()) {
             SensorDataTypeInfo info = new SensorDataTypeInfo();
             info.setMaxLimit(0.0);
             info.setMinLimit(0.0);
             info.setType(type);
-            sensorDataTypeInfoService.save(newSensorStation,info);
+            sensorDataTypeInfoService.save(newSensorStation, info);
 
         }
-        return new ResponseEntity<>(sensorStationDTO, HttpStatus.OK);
+        sensorStationService.saveSensorStation(accessPointService.loadAccessPoint(accessPointId), newSensorStation);
+        return new ResponseEntity<>(Boolean.TRUE, HttpStatus.OK);
+
+
     }
+    @GetMapping("/enabled/{dipId}")
+    public ResponseEntity<Boolean> checkEnabled(@PathVariable String dipId) {
+
+        SensorStation sensorStation = sensorStationService.getSensorStationByAccessPointIdAndDipId(getAuthAccessPoint().getId(),Long.parseLong(dipId));
+        if(sensorStation == null){
+            throw new EntityNotFoundException("SensorStation was not registered before");
+        }
+        sensorStation.setLastConnectedDate(LocalDateTime.now());
+        sensorStationService.saveSensorStation(getAuthAccessPoint(), sensorStation);
+        return new ResponseEntity<>(sensorStation.getEnabled(), HttpStatus.OK);
+    }
+
+    @GetMapping("/connected/{dipId}")
+    public ResponseEntity<Boolean> checkConnection(@PathVariable String dipId) {
+
+        SensorStation sensorStation = sensorStationService.getSensorStationByAccessPointIdAndDipId(getAuthAccessPoint().getId(),Long.parseLong(dipId));
+        if(sensorStation == null){
+            throw new EntityNotFoundException("SensorStation was not registered before");
+        }
+        sensorStation.setLastConnectedDate(LocalDateTime.now());
+        sensorStationService.saveSensorStation(getAuthAccessPoint(), sensorStation);
+        return new ResponseEntity<>(sensorStation.getConnected(), HttpStatus.OK);
+    }
+
 
     @GetMapping("/limits/{dipId}")
     public ResponseEntity<List<LimitsDTO>> checkIfAccessPointIsConnectedAndUpdateLimits(@PathVariable String dipId) {
         String accessPointId = SecurityContextHolder.getContext().getAuthentication().getName();
         AccessPoint accessPoint = accessPointService.loadAccessPoint(accessPointId);
-        if(accessPoint == null){
+        if (accessPoint == null) {
             throw new EntityNotFoundException("AccessPoint is not registered");
         }
         accessPoint.setLastConnectedDate(LocalDateTime.now());
@@ -72,7 +109,7 @@ public class SensorStationConnectController {
 
         }
         sensorStation.setLastConnectedDate(LocalDateTime.now());
-        sensorStationService.saveSensorStation(accessPoint,sensorStation);
+        sensorStationService.saveSensorStation(accessPoint, sensorStation);
         List<LimitsDTO> limitsDTOS = new ArrayList<>();
         sensorDataTypeInfoService.getAllSensorDataTypeInfosBySensorStation(sensorStation).forEach(x -> {
             if (x != null) {
@@ -87,5 +124,14 @@ public class SensorStationConnectController {
         return new ResponseEntity<>(limitsDTOS, HttpStatus.OK);
 
 
+    }
+
+    public AccessPoint getAuthAccessPoint(){
+        String accessPointId = SecurityContextHolder.getContext().getAuthentication().getName();
+        AccessPoint accessPoint = accessPointService.loadAccessPoint(accessPointId);
+        if(accessPoint == null){
+            throw new EntityNotFoundException("AccessPoint is not registered");
+        }
+        return accessPoint;
     }
 }

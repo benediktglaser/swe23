@@ -103,4 +103,8 @@ public class SensorStationService {
         return sensorStationRepository.getSensorStationsByUserx(getAuthenticatedUser());
     }
 
+    public SensorStation getSensorStation(String mac){
+        return sensorStationRepository.getSensorStationsByMAC(mac);
+
+    }
 }

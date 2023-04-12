@@ -30,8 +30,10 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
 
     private String password;
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private AccessPointRole accessPointRole;
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false)
     private LocalDateTime createDate;
 
     private LocalDateTime lastConnectedDate;

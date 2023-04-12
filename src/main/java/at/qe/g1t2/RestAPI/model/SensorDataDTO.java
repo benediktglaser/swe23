@@ -18,9 +18,10 @@ public class SensorDataDTO implements Serializable {
     private Long dipId;
 
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private SensorDataType type;
-
+    @NotNull
     private LocalDateTime timestamp;
 
 

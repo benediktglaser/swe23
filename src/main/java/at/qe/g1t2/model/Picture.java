@@ -19,13 +19,13 @@ public class Picture implements Persistable<String>, Serializable, Comparable<Pi
     private String pictureName;
 
     private String description;
-
+    @Column(nullable = false)
     private String path;
-
+    @Column(nullable = false)
     private LocalDateTime createDate;
 
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private SensorStation sensorStation;
 
     @Override

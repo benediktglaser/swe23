@@ -32,11 +32,12 @@ class SensorStationConnectControllerTest {
     void createSensorStation() throws Exception {
         SensorStationDTO sensorStationDTO = new SensorStationDTO();
         sensorStationDTO.setDipId(23L);
+        sensorStationDTO.setMAC("1234");
 
         int size = sensorStationService.getAllSensorStations().size();
         ObjectMapper objectMapper = new ObjectMapper();
         String requestBody = objectMapper.writeValueAsString(sensorStationDTO);
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/sensorStation/connect")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/sensorStation/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(MockMvcResultMatchers.status().isOk());
