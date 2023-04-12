@@ -51,18 +51,18 @@ class AccessPointServiceTest {
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     void deleteAccessPoint() {
         AccessPoint accessPoint = accessPointService
-                .loadAccessPoint("7269ddec-30c6-44d9-bc1f-8af18da09ed3");
+                .loadAccessPoint("43d5aba9-29c5-49b4-b4ec-2d430e34104f");
         SensorStation sensorStation = sensorStationService
-                .loadSensorStation("8ccfdfaa-9731-4786-8efa-e2141e5c4095");
+                .loadSensorStation("b94d9ff0-1366-49b1-b19b-85f73c14d744");
         sensorStation.setAccessPoint(accessPoint);
         sensorStationService.saveSensorStation(accessPoint, sensorStation);
         accessPointService.deleteAccessPoint(accessPoint);
 
         assertNull(accessPointService
-                .loadAccessPoint("7269ddec-30c6-44d9-bc1f-8af18da09ed3"));
+                .loadAccessPoint("43d5aba9-29c5-49b4-b4ec-2d430e34104f"));
 
         sensorStation = sensorStationService
-                .loadSensorStation("8ccfdfaa-9731-4786-8efa-e2141e5c4095");
+                .loadSensorStation("b94d9ff0-1366-49b1-b19b-85f73c14d744");
         assertNull(sensorStation);
     }
 

@@ -39,7 +39,7 @@ class SensorStationServiceTest {
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     void saveNewSensorStation() {
         AccessPoint accessPoint = accessPointService
-                .loadAccessPoint("7269ddec-30c6-44d9-bc1f-8af18da09ed3");
+                .loadAccessPoint("4294ba1b-f794-4e3d-b606-896b28237bcb");
         SensorStation sensorStation = new SensorStation();
 
 
@@ -54,7 +54,7 @@ class SensorStationServiceTest {
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     void deleteSensorStation() {
         SensorStation sensorStation = sensorStationService
-                .loadSensorStation("8ccfdfaa-9731-4786-8efa-e2141e5c4095");
+                .loadSensorStation("71243b9c-1eaf-4d3f-a3c3-2b32a8e96c7e");
         sensorStationService.deleteSensorStation(sensorStation);
         SensorStation deletedSensorStation = sensorStationRepository
                 .findSensorStationById(sensorStation.getId());
@@ -67,13 +67,13 @@ class SensorStationServiceTest {
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     void removeSensorStation() {
         AccessPoint accessPoint = accessPointService
-                .loadAccessPoint("7269ddec-30c6-44d9-bc1f-8af18da09ed3");
+                .loadAccessPoint("4294ba1b-f794-4e3d-b606-896b28237bcb");
         SensorStation sensorStation = sensorStationService
-                .loadSensorStation("8ccfdfaa-9731-4786-8efa-e2141e5c4095");
+                .loadSensorStation("9f98b70c-4de7-46c0-a611-21160743be7e");
 
         sensorStationService.removeSensorStationFromAccessPoint(accessPoint, sensorStation);
         sensorStation = sensorStationService
-                .loadSensorStation("8ccfdfaa-9731-4786-8efa-e2141e5c4095");
+                .loadSensorStation("9f98b70c-4de7-46c0-a611-21160743be7e");
 
         assertNull(sensorStation);
     }

@@ -5,7 +5,7 @@ from typing import List
 
 from requests.auth import HTTPBasicAuth
 
-host = "http://localhost:8080"
+# host = "http://localhost:8080"
 
 
 def prepare_auth_headers():
@@ -13,33 +13,38 @@ def prepare_auth_headers():
     return HTTPBasicAuth("7269ddec-30c6-44d9-bc1f-8af18da09ed3", "passwd")
 
 
-def post_measurement_original_single(measurement: dict) -> dict:
+def post_measurement_original_single(
+    address: str, measurement: dict, auth_header
+) -> dict:
     """
     Only for testing not production!
     Post the given measurement.
     :param measurement: The measurement to post as a dictionary
     :return: the inserted dictionary
     """
-    auth_header = prepare_auth_headers()
-    resp = requests.post(f"{host}/api/sensorData", json=measurement, auth=auth_header)
+    # auth_header = prepare_auth_headers()
+    resp = requests.post(
+        f"{address}/api/sensorData", json=measurement, auth=auth_header
+    )
     # return the deserialized measurement object here
     return resp.json()
 
 
-def post_measurement(measurements: List[dict]) -> None:
+def post_measurement(address: str, list_of_measurements: List, auth_header) -> None:
     """
     Post the given measurement.
     :param measurement: The measurement to post as a dictionary
     :return: the inserted dictionary
     """
-    auth_header = prepare_auth_headers()
+    # auth_header = prepare_auth_headers()
     list_of_responses = []
+    measurements = prepare_for_jsf(list_of_measurements)
 
     # possible to delete data entries after sending
     for measurement in measurements:
         try:
             resp = requests.post(
-                f"{host}/api/sensorData", json=measurement, auth=auth_header
+                f"{address}/api/sensorData", json=measurement, auth=auth_header
             )
             if resp.__bool__:
                 list_of_responses.append(
@@ -105,7 +110,7 @@ def prepare_for_jsf(data: List) -> List[dict]:
                 "dipId": list_data[0],
                 "timestamp": list_data[1],
                 "measurement": list_data[6],
-                "type": "QUALITY",
+                "type": "AIRQUALITY",
             }
         )
         list_of_dicts.append(
@@ -143,8 +148,9 @@ def delete_send_sensor_data(conn, list_of_tuples) -> None:
 
 """Just for testing"""
 if __name__ == "__main__":
+    host = "http://localhost:8080"
     conn = dbconnection.create_database("database.db")
-
+    auth = prepare_auth_headers()
     dbconnection.init_limits(conn, 1)
     dbconnection.insert_sensor_data(conn, sensordata.SensorData(1, 1, 2, 3, 4, 5, 6))
 
@@ -152,11 +158,12 @@ if __name__ == "__main__":
     dbconnection.drop_sensor_data(conn)
     dbconnection.drop_limits(conn)
 
-    data = adjust_timestamp_for_transfer(data)
+    #print(data)
+    # data = adjust_timestamp_for_transfer(data)
 
-    data = prepare_for_jsf(data)
+    # data = prepare_for_jsf(data)
 
-    print(data)
-    #response = post_measurement(data)
-    # print(response)
+    # print(data)
+    response = post_measurement(host, data, auth)
+    print(response)
     # delete_send_sensor_data(conn, response)
