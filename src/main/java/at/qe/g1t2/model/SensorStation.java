@@ -14,6 +14,9 @@ import java.util.*;
 
 @Entity
 @Audited
+@Table(uniqueConstraints =
+        { //other constraints
+                @UniqueConstraint(name = "UniqueDipIdAndAccessPoint", columnNames = { "access_point_id", "dipId" })})
 public class SensorStation implements Persistable<String>, Serializable, Comparable<SensorStation> {
 
     @ManyToMany(mappedBy = "sensorStations",fetch = FetchType.EAGER)
@@ -25,10 +28,13 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
     private String id;
     private Boolean connected;
     private Boolean enabled;
+    @Column(nullable = false)
     private Long dipId;
     private String name;
     private String category;
     private LocalDateTime lastConnectedDate;
+    @Column(unique = true)
+    private String MAC;
 
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -94,9 +100,7 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
         return dipId;
     }
 
-    public void setDipId(long dipId) {
-        this.dipId = dipId;
-    }
+
 
     public void setDipId(Long dipId) {
         this.dipId = dipId;
@@ -193,4 +197,11 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
         this.sensorDataTypeInfos = sensorDataTypeInfos;
     }
 
+    public String getMAC() {
+        return MAC;
+    }
+
+    public void setMAC(String MAC) {
+        this.MAC = MAC;
+    }
 }

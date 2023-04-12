@@ -6,6 +6,8 @@ public class SensorStationDTO {
 
     @NotNull
     private Long dipId;
+    @NotNull
+    private String MAC;
 
     public Long getDipId() {
         return dipId;
@@ -13,5 +15,13 @@ public class SensorStationDTO {
 
     public void setDipId(Long dipId) {
         this.dipId = dipId;
+    }
+
+    public String getMAC() {
+        return MAC;
+    }
+
+    public void setMAC(String MAC) {
+        this.MAC = MAC;
     }
 }

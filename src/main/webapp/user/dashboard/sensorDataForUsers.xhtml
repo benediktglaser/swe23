@@ -37,7 +37,7 @@
                 </p:column>
                 <p:column headerText="Date" class="ui-datatable-header" sortBy="#{sensorData.createDate}"
                           filterBy="#{sensorData.createDate}">
-                    <h:outputText value="#{(sensorData.createDate).toLocalDate()}"/>
+                    <h:outputText value="#{(sensorData.timestamp).toLocalDate()}"/>
                 </p:column>
             </p:dataTable>
             <p:poll interval="10" update=":sensorDataForm:sensorDataTable"></p:poll>

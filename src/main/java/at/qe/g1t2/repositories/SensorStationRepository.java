@@ -23,5 +23,7 @@ public interface SensorStationRepository extends JpaRepository<SensorStation, St
     Set<SensorStation> getSensorStationsByUserx(Userx user);
     @Query("SELECT u from SensorStation u")
     List<SensorStation> getAll();
+
+    SensorStation getSensorStationsByMAC(String mac);
 }
 

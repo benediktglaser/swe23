@@ -27,6 +27,7 @@ class PictureServiceTest {
 
         Picture picture = new Picture();
         picture.setPictureName("test");
+        picture.setPath("testPath");
         SensorStation sensorStation = sensorStationService.loadSensorStation("8ccfdfaa-9731-4786-8efa-e2141e5c4095");
         int size = sensorStation.getPictures().size();
         Assertions.assertThrows(EntityNotFoundException.class,() -> pictureService.loadPicture(""));
@@ -44,10 +45,12 @@ class PictureServiceTest {
     void delete() {
         Picture picture = new Picture();
         picture.setPictureName("test");
+        picture.setPath("testPath");
         SensorStation sensorStation = sensorStationService.loadSensorStation("8ccfdfaa-9731-4786-8efa-e2141e5c4095");
         int size = sensorStation.getPictures().size();
         Assertions.assertThrows(EntityNotFoundException.class,() -> pictureService.loadPicture(""));
         picture = pictureService.save(sensorStation,picture);
+        System.out.println(picture.getId());
         picture = pictureService.loadPicture(picture.getId());
         sensorStation = sensorStationService.loadSensorStation("8ccfdfaa-9731-4786-8efa-e2141e5c4095");
         Assertions.assertNotNull(picture);

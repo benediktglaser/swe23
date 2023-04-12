@@ -15,6 +15,7 @@ public class LogInfo extends DefaultRevisionEntity {
     private String username;
 
     @Column(name = "CHANGED_AT")
+
     private LocalDateTime changeDate = LocalDateTime.now();
 
     @Column(name ="REVTYPE")

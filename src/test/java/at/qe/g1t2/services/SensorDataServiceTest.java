@@ -60,6 +60,7 @@ public class SensorDataServiceTest {
         SensorData newSensorData = new SensorData();
         newSensorData.setMeasurement(34.21);
         newSensorData.setType(SensorDataType.SOIL);
+        newSensorData.setTimestamp(LocalDateTime.now());
         SensorStation sensorStation = sensorStationService.loadSensorStation("9f98b70c-4de7-46c0-a611-21160743be7e");
         int sizeOfListBefore = sensorStation.getSensorData().size();
         String sensorDataId = sensorDataService.saveSensorData(sensorStation, newSensorData).getId();

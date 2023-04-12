@@ -43,7 +43,9 @@ public class SensorDataService {
     @Transactional
     public SensorData saveSensorData(SensorStation sensorStation, SensorData sensorData) {
         if (sensorData.isNew()) {
-            System.out.println("In new");
+            if(sensorData.getTimestamp()==null){
+                sensorData.setTimestamp(LocalDateTime.now());
+            }
             LocalDateTime createDate = LocalDateTime.now();
             sensorData.setCreateDate(createDate);
             sensorData.setSensorStation(sensorStation);

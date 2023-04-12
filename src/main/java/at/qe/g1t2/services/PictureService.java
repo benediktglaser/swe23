@@ -16,25 +16,22 @@ import java.util.Optional;
 @Service
 public class PictureService {
 
-@Autowired
+    @Autowired
     PictureRepository pictureRepository;
-@Autowired
+    @Autowired
     SensorStationRepository sensorStationRepository;
 
 
-
-    public Picture loadPicture(String id){
+    public Picture loadPicture(String id) {
         Optional<Picture> picture = pictureRepository.findById(id);
-        if(picture.isPresent()){
+        if (picture.isPresent()) {
             return picture.get();
-        }
-        else throw new EntityNotFoundException("Entity Not Found");
+        } else throw new EntityNotFoundException("Entity Not Found");
     }
 
     @Transactional
-    public Picture save(SensorStation sensorStation, Picture picture){
+    public Picture save(SensorStation sensorStation, Picture picture) {
         if (picture.isNew()) {
-
             LocalDateTime createDate = LocalDateTime.now();
             picture.setCreateDate(createDate);
             picture.setSensorStation(sensorStation);
@@ -42,18 +39,18 @@ public class PictureService {
             sensorStation = sensorStationRepository.save(sensorStation);
             return sensorStation.getPictures().get(sensorStation.getPictures().size() - 1);
         }
-       return pictureRepository.save(picture);
+        return pictureRepository.save(picture);
     }
 
     @Transactional
-    public void delete(Picture picture){
+    public void delete(Picture picture) {
+        pictureRepository.delete(picture);
         picture.getSensorStation().getPictures().remove(picture);
         sensorStationRepository.save(picture.getSensorStation());
 
-        pictureRepository.delete(picture);
     }
 
-    public List<Picture> getAllPictureBySensorStation(SensorStation sensorStation){
+    public List<Picture> getAllPictureBySensorStation(SensorStation sensorStation) {
 
         return pictureRepository.findBySensorStation(sensorStation);
     }

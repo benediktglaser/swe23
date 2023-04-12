@@ -22,8 +22,7 @@ public interface SensorDataRepository extends JpaRepository<SensorData, String>,
     List<SensorData> findByType(SensorDataType type);
 
     List<SensorData> findBySensorStationId(String id);
-    @Query("SELECT u.createDate, u.measurement from SensorData u order by u.createDate")
-    List<Object[]> gett();
+
     List<SensorData> findSensorDataBySensorStation(SensorStation sensorStation);
     List<SensorData> findSensorDataBySensorStationAndTypeOrderByCreateDate(SensorStation sensorStation,SensorDataType type);
     List<SensorData> findSensorDataBySensorStationOrderByCreateDate(SensorStation sensorStation);
@@ -32,10 +31,10 @@ public interface SensorDataRepository extends JpaRepository<SensorData, String>,
 
     List<SensorData> findSensorDataBySensorStationAndType(SensorStation sensorStation,SensorDataType sensorDataType);
     List<SensorData> findSensorDataBySensorStationAndCreateDateBetweenOrderByCreateDate(SensorStation sensorStation,LocalDateTime start,LocalDateTime end);
-    @Query("SELECT u.createDate, u.measurement from SensorData u where u.sensorStation = :sensorStation order by u.createDate")
+    @Query("SELECT u.timestamp, u.measurement from SensorData u where u.sensorStation = :sensorStation order by u.createDate")
     List<Object[]> getSensorDataBySensorStation(SensorStation sensorStation);
-    @Query("SELECT u.createDate, u.measurement from SensorData u where u.sensorStation = :sensorStation and u.type = :sensorDataType order by u.createDate")
+    @Query("SELECT u.timestamp, u.measurement from SensorData u where u.sensorStation = :sensorStation and u.type = :sensorDataType order by u.createDate")
     List<Object[]> getSensorDataBySensorStationAndType(@Param("sensorStation")SensorStation sensorStation,@Param("sensorDataType") SensorDataType sensorDataType);
-    @Query("SELECT u.createDate, u.measurement from SensorData u where u.sensorStation = :sensorStation and u.type = :sensorDataType and u.createDate >= :lastDate order by u.createDate")
+    @Query("SELECT u.timestamp, u.measurement from SensorData u where u.sensorStation = :sensorStation and u.type = :sensorDataType and u.createDate >= :lastDate order by u.createDate")
     List<Object[]> getNewSensorDataBySensorStationAndType(@Param("sensorStation")SensorStation sensorStation,@Param("sensorDataType") SensorDataType sensorDataType, @Param("lastDate") LocalDateTime lastDate);
 }

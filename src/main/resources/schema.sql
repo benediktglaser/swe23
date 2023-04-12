@@ -23,20 +23,19 @@ DROP TABLE IF EXISTS userx;
 
 CREATE TABLE access_point
 (
-    id                VARCHAR(255) NOT NULL,
-    couple_mode       BOOLEAN      NULL,
-    create_date       timestamp    NULL,
-    connected         BOOLEAN      NULL,
-    enabled           BOOLEAN      NULL,
-    sending_interval  DOUBLE       NULL,
+    id                 VARCHAR(255) NOT NULL,
+    couple_mode        BOOLEAN      NULL,
+    create_date        timestamp    NULL,
+    connected          BOOLEAN      NULL,
+    enabled            BOOLEAN      NULL,
+    sending_interval   DOUBLE       NULL,
     threshold_interval DOUBLE       NULL,
-    update_date       timestamp    NULL,
-    access_point_name VARCHAR(255) NULL,
-    password          VARCHAR(255),
-    access_Point_Role VARCHAR(100),
+    update_date        timestamp    NULL,
+    access_point_name  VARCHAR(255) NULL,
+    password           VARCHAR(255),
+    access_Point_Role  VARCHAR(100),
     CONSTRAINT pk_accesspoint PRIMARY KEY (id)
 );
-
 
 
 
@@ -44,9 +43,9 @@ CREATE TABLE sensor_data
 (
     id                VARCHAR(255) NOT NULL,
     measurement       DOUBLE       NOT NULL,
-    sensor_station_id VARCHAR(255) NULL,
-    type              VARCHAR(255) NULL,
-    timestamp         timestamp    NULL,
+    sensor_station_id VARCHAR(255) NOT NULL ,
+    type              VARCHAR(255) NOT NULL ,
+    timestamp         timestamp    NOT NULL ,
     create_date       timestamp    NOT NULL,
     CONSTRAINT pk_sensordata PRIMARY KEY (id)
 );
@@ -55,8 +54,8 @@ CREATE TABLE sensor_data_type_info
 (
     id                VARCHAR(255) NOT NULL,
     type              VARCHAR(100),
-    min_Limit          DOUBLE,
-    max_Limit          DOUBLE,
+    min_Limit         DOUBLE,
+    max_Limit         DOUBLE,
     create_date       timestamp    NOT NULL,
     sensor_station_id VARCHAR(255) NULL,
     CONSTRAINT pf_sensor_data_type_info PRIMARY KEY (id)
@@ -66,25 +65,27 @@ CREATE TABLE sensor_data_type_info
 CREATE TABLE picture
 (
     id                VARCHAR(255) NOT NULL,
-    sensor_station_id VARCHAR(255) NULL,
-    description              VARCHAR(255) NULL,
-    picture_name              VARCHAR(255) NULL,
-    path              VARCHAR(255) NULL,
+    sensor_station_id VARCHAR(255) NOT NULL,
+    description       VARCHAR(255) NULL,
+    picture_name      VARCHAR(255) NULL,
+    path              VARCHAR(255) NOT NULL,
     create_date       timestamp    NOT NULL,
     CONSTRAINT pk_picture PRIMARY KEY (id)
 );
 
 CREATE TABLE sensor_station
 (
-    id                    VARCHAR(255) NOT NULL,
-    connected             BOOLEAN      NULL,
-    enabled               BOOLEAN      NULL,
-    dip_id                BIGINT       NULL,
-    name                  VARCHAR(255) NULL,
-    category              VARCHAR(255) NULL,
-    create_date           timestamp    NOT NULL,
-    access_point_id       VARCHAR(255) NULL,
-    gardener_id           VARCHAR(255) NULL,
+    id              VARCHAR(255) NOT NULL,
+    connected       BOOLEAN      NULL,
+    enabled         BOOLEAN      NULL,
+    dip_id          BIGINT       NULL NOT NULL,
+    name            VARCHAR(255) NULL,
+    category        VARCHAR(255) NULL,
+    create_date     timestamp    NOT NULL,
+    access_point_id VARCHAR(255) NULL NOT NULL,
+    gardener_id     VARCHAR(255) NULL,
+    MAC             VARCHAR(255) NOT NULL UNIQUE,
+    UNIQUE (dip_id, access_point_id),
     CONSTRAINT pk_sensorstation PRIMARY KEY (id)
 );
 
