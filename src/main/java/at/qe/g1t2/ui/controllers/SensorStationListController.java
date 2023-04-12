@@ -74,9 +74,9 @@ public class SensorStationListController extends AbstractListController<String, 
         return "sensorData.xhtml?faces-redirect=true";
     }
 
-    public String redirectToGalery(SensorStation sensorStation) {
+    public String redirectToGallery(SensorStation sensorStation) {
         sessionSensorStationBean.setSensorStation(sensorStation);
-        return "galery.xhtml?faces-redirect=true";
+        return "gallery.xhtml?faces-redirect=true";
     }
 
 

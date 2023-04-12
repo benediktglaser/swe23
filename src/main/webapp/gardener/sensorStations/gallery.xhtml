@@ -29,6 +29,7 @@
             input[type="text"],
             input[type="file"],
             input[type="submit"]{
+                background : #4d87b6;
                 font-size: 16px;
                 padding: 10px;
                 border-radius: 5px;
@@ -41,29 +42,47 @@
         <body>
         <h1>Upload your picture of a plant here:</h1>
 
-        <form method="post" enctype="multipart/form-data" action="/upload">
+        <form id="myForm" enctype="multipart/form-data" action="/upload">
             <input type="file" name="file"/>
             <p:separator/>
-            <label for="sensorStationId"></label>
             <input type="hidden" id="sensorStationId" name="sensorStationId" value="#{sessionSensorStationBean.sensorStation.id}"/>
-            <input type="submit" />
+            <input type="submit" value="Upload" onclick="submitForm(); return false;"/>
         </form>
+        <script>
+            function submitForm() {
+                var form = document.getElementById("myForm");
+                var formData = new FormData(form);
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/upload");
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                            window.location.href = window.location.href;
+                        } else {
 
-
-
+                        }
+                    }
+                };
+                xhr.send(formData);
+            }
+        </script>
         </body>
         <h:form>
             <p:outputPanel>
-                <p:carousel value="#{pictureController.getAllPictureBySensorStation(sessionSensorStationBean.sensorStation)}" var="picture"
-                            numVisible="3" numScroll="3">
-                    <div class="sensorStation-item">
-                        <div class="sensorStation-item-content">
-                            <div class="mb-3">
-                                <h:graphicImage library="images" name="#{picture.path}" height="100" width="200"/>
-                            </div>
+                <!--<div class="sensorStation-item">
+                    <div class="sensorStation-item-content">
+                        <div class="mb-3">
+                            <h:graphicImage library="images" name="#{picture.path}" height="100" width="200"/>
                         </div>
                     </div>
-                </p:carousel>
+                </div>-->
+                <div class="card centering">
+                    <h5>Pictures of selected plant:</h5>
+                    <p:galleria value="#{pictureController.getAllPictureBySensorStation(sessionSensorStationBean.sensorStation)}" var="photo" numVisible="5"
+                                showItemNavigators="true" circular="true" showItemNavigatorsOnHover="true" showThumbnails="false" showIndicators="true" style="max-width: 640px">
+                        <p:graphicImage library="images" name="#{photo.path}" style="width: 100%; display: block;" />
+                    </p:galleria>
+                </div>
             </p:outputPanel>
         </h:form>
     </ui:define>

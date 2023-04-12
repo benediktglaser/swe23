@@ -21,7 +21,7 @@
                         <h:outputText value="#{plant.name}"/>
                     </p:column>
                     <p:column>
-                        <p:graphicImage library="images" name="plant-test1.png" height="100" width="200"/>
+                        <h:graphicImage library="images" name="#{dashboardController.getFrontPicture(plant)}" height="100" width="200"/>
                     </p:column>
 
                     <p:column headerText="Category" sortBy="#{plant.category}" filterBy="#{plant.category}">
