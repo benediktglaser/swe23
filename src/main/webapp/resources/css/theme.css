@@ -7010,9 +7010,9 @@ body .ui-wizard .ui-icon-arrowthick-1-e:before {
   content: "\e91b";
 }
 .centering{
-    margin-left: auto;
-    margin-right: auto;
-    width: 8em;
+  margin-left: auto;
+  margin-right: auto;
+  width: 33%;
 }
 .icon-text {
   display: inline-block;
