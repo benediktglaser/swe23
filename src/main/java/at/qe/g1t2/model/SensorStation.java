@@ -14,6 +14,7 @@ import java.util.*;
 
 @Entity
 @Audited
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"access_point_id", "dipId"})})
 public class SensorStation implements Persistable<String>, Serializable, Comparable<SensorStation> {
 
     @ManyToMany(mappedBy = "sensorStations",fetch = FetchType.EAGER)
@@ -32,7 +33,11 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
     private LocalDateTime lastConnectedDate;
     @Column(unique = true)
     private String MAC;
+    @PreRemove
+    protected void beforeRemove(){
 
+        accessPoint.getSensorStation().remove(this);
+    }
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createDate;

@@ -49,10 +49,10 @@ public class SensorStationConnectController {
             if (!existingSensorStation.getCreateDate().isBefore(LocalDateTime.now().minusMinutes(5))) {
                 return new ResponseEntity<>(Boolean.FALSE, HttpStatus.OK);
             }
+
             sensorStationService.deleteSensorStation(existingSensorStation);
 
         }
-
         newSensorStation = sensorStationService.saveSensorStation(accessPoint, newSensorStation);
         for (SensorDataType type : SensorDataType.values()) {
             SensorDataTypeInfo info = new SensorDataTypeInfo();

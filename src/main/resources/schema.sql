@@ -86,7 +86,8 @@ CREATE TABLE sensor_station
     create_date     timestamp    NOT NULL,
     access_point_id VARCHAR(255) NULL NOT NULL,
     gardener_id     VARCHAR(255) NULL,
-    MAC             VARCHAR(255) NOT NULL,
+    MAC             VARCHAR(255) NOT NULL UNIQUE,
+    UNIQUE(access_point_id,dip_id),
     CONSTRAINT pk_sensorstation PRIMARY KEY (id)
 );
 

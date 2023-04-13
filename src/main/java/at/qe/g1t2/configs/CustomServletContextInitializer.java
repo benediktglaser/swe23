@@ -26,4 +26,5 @@ public class CustomServletContextInitializer implements ServletContextInitialize
         sc.setInitParameter("jakarta.faces.ENABLE_WEBSOCKET_ENDPOINT", "true");
         sc.setInitParameter("org.omnifaces.SOCKET_ENDPOINT_ENABLED", "true");
     }
+
 }

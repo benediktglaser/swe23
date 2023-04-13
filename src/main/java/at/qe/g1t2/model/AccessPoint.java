@@ -50,7 +50,7 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
     @OneToMany(mappedBy = "accessPoint", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @AuditJoinTable
-    private Set<SensorStation> sensorStation = new HashSet<>();
+    private List<SensorStation> sensorStation = new ArrayList<>();
     private String accessPointName;
 
     public LocalDateTime getLastCouplingDate() {
@@ -114,11 +114,11 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
         this.connected = connected;
     }
 
-    public Set<SensorStation> getSensorStation() {
+    public List<SensorStation> getSensorStation() {
         return sensorStation;
     }
 
-    public void setSensorStation(Set<SensorStation> sensorStation) {
+    public void setSensorStation(List<SensorStation> sensorStation) {
         this.sensorStation = sensorStation;
     }
 

@@ -51,8 +51,8 @@ public class SensorStationService {
     public SensorStation saveSensorStation(AccessPoint accessPoint, SensorStation sensorStation) {
         SensorStation checkSensorStation = getSensorStationByAccessPointIdAndDipId(accessPoint.getAccessPointID(), sensorStation.getDipId());
         if (checkSensorStation != null) {
-            sensorStation.setId(checkSensorStation.getId());
-            return sensorStationRepository.save(sensorStation);
+            checkSensorStation.setMAC(sensorStation.getMAC());
+            return sensorStationRepository.save(checkSensorStation);
 
         }
 
@@ -61,7 +61,7 @@ public class SensorStationService {
         sensorStation.setAccessPoint(accessPoint);
         accessPoint = accessPointRepository.save(accessPoint);
 
-        return  loadSensorStation(sensorStationRepository.getAll().get(sensorStationRepository.getAll().size()-1).getId());
+        return  loadSensorStation(accessPoint.getSensorStation().remove(accessPoint.getSensorStation().size()-1).getId());
 
     }
 
@@ -69,9 +69,10 @@ public class SensorStationService {
     @Transactional
     public void deleteSensorStation(SensorStation sensorStation) {
 
+
+
         sensorStationRepository.delete(sensorStation);
-        sensorStation.getAccessPoint().getSensorStation().remove(sensorStation);
-        accessPointRepository.save(sensorStation.getAccessPoint());
+
     }
 
     @Transactional

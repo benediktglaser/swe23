@@ -59,7 +59,6 @@ class SensorStationServiceTest {
         sensorStationService.deleteSensorStation(sensorStation);
         SensorStation deletedSensorStation = sensorStationRepository
                 .findSensorStationById(sensorStation.getId());
-
         assertNull(deletedSensorStation);
     }
 
