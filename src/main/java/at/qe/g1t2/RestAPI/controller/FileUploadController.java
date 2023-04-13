@@ -1,9 +1,7 @@
 package at.qe.g1t2.RestAPI.controller;
 
 
-import at.qe.g1t2.RestAPI.exception.EntityNotFoundException;
 import at.qe.g1t2.RestAPI.exception.FileUploadException;
-import at.qe.g1t2.RestAPI.model.ResponsePicture;
 import at.qe.g1t2.model.Picture;
 import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.services.PictureService;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.File;
 import java.io.IOException;

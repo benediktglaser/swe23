@@ -3,7 +3,6 @@ package at.qe.g1t2.services;
 
 import at.qe.g1t2.model.SensorData;
 import at.qe.g1t2.model.SensorDataType;
-import at.qe.g1t2.model.SensorDataTypeInfo;
 import at.qe.g1t2.model.SensorStation;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

@@ -50,12 +50,12 @@ def request_limits(address: str, dipId: int, auth_header):
 def request_approval(address: str, auth_header):
     try:
         resp = requests.get(f"{address}/api/accessPoint/enabled", auth=auth_header)
-        if resp.status_code == 401:
-            return False
+        if resp.status_code != 200:
+            return None
         else:
             return resp.json()
 
-    except requests.exceptions.HTTPError as e:
+    except Exception as e:
         print(e)
         return None
 
@@ -63,24 +63,23 @@ def request_approval(address: str, auth_header):
 def request_couple_mode(address: str, auth_header):
     try:
         resp = requests.get(f"{address}/api/accessPoint/couple", auth=auth_header)
-        if resp.status_code == 401:
-            return False
+        if resp.status_code != 200:
+            return None
         else:
             return resp.json()
 
-    except requests.exceptions.HTTPError as e:
+    except Exception as e:
         print(e)
         return None
 
 
 if __name__ == "__main__":
+    pass
     # normally these two values come from the config-file
-    address = "http://localhost:8080"
-    data = register_access_point_at_server(address, 40.9, "Kappl")
-    my_id = data[0]
-    my_password = data[1]
-    auth = prepare_auth_headers(my_id, my_password)
-    print(request_approval(address, auth))
-
+    # address = "http://localhost:8080"
+    # data = register_access_point_at_server(address, 40.9, "Kappl")
+    # my_id = data[0]
+    # my_password = data[1]
+    # auth = prepare_auth_headers(my_id, my_password)
+    # print(request_approval(address, auth))
     # print(register_new_sensorstation_at_server(address, 93, auth))
-    print(request_limits(address, 93, auth))

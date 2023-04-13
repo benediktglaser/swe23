@@ -1,8 +1,8 @@
 package at.qe.g1t2.tests;
 
 import at.qe.g1t2.model.SensorStation;
-import at.qe.g1t2.model.Userx;
 import at.qe.g1t2.model.UserRole;
+import at.qe.g1t2.model.Userx;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.jupiter.api.Test;

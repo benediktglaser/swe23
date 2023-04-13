@@ -10,8 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Tests to ensure correct behavior of the methods. Especially for correct interacting with
@@ -55,11 +55,10 @@ class SensorStationServiceTest {
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     void deleteSensorStation() {
         SensorStation sensorStation = sensorStationService
-                .loadSensorStation("71243b9c-1eaf-4d3f-a3c3-2b32a8e96c7e");
+                .loadSensorStation("b94d9ff0-1366-49b1-b19b-85f73c14d744");
         sensorStationService.deleteSensorStation(sensorStation);
         SensorStation deletedSensorStation = sensorStationRepository
                 .findSensorStationById(sensorStation.getId());
-
         assertNull(deletedSensorStation);
     }
 
