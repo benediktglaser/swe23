@@ -37,6 +37,7 @@ public class PictureService {
             picture.setSensorStation(sensorStation);
             sensorStation.getPictures().add(picture);
             sensorStation = sensorStationRepository.save(sensorStation);
+            System.out.println(sensorStation.getId());
             return sensorStation.getPictures().get(sensorStation.getPictures().size() - 1);
         }
         return pictureRepository.save(picture);

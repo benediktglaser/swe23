@@ -6,6 +6,7 @@ import at.qe.g1t2.model.Userx;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Set;
@@ -25,5 +26,7 @@ public interface SensorStationRepository extends JpaRepository<SensorStation, St
     List<SensorStation> getAll();
 
     SensorStation getSensorStationsByMAC(String mac);
+    @Query("SELECT u from SensorStation u where u.accessPoint = :accessPoint and u.createDate >= u.accessPoint.lastCouplingDate")
+    List<SensorStation> getAllNewSensorStationsByAccessPoint(@Param("accessPoint") AccessPoint accessPoint);
 }
 
