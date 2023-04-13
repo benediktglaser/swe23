@@ -1,15 +1,14 @@
 package at.qe.g1t2.tests;
 
+import at.qe.g1t2.model.UserRole;
+import at.qe.g1t2.services.UserService;
+import at.qe.g1t2.ui.beans.SessionInfoBean;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.web.WebAppConfiguration;
-
-import at.qe.g1t2.model.UserRole;
-import at.qe.g1t2.services.UserService;
-import at.qe.g1t2.ui.beans.SessionInfoBean;
 
 /**
  * Some very basic tests for {@link UserService}.

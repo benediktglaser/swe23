@@ -1,7 +1,10 @@
 package at.qe.g1t2.tests;
 
 import at.qe.g1t2.model.SensorStation;
+import at.qe.g1t2.model.UserRole;
+import at.qe.g1t2.model.Userx;
 import at.qe.g1t2.services.SensorStationService;
+import at.qe.g1t2.services.UserService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.internal.util.collections.Sets;
@@ -11,10 +14,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.web.WebAppConfiguration;
-
-import at.qe.g1t2.model.Userx;
-import at.qe.g1t2.model.UserRole;
-import at.qe.g1t2.services.UserService;
 
 /**
  * Some very basic tests for {@link UserService}.

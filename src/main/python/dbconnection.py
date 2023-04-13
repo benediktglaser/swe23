@@ -5,7 +5,7 @@ import os
 
 
 def create_database(path):
-    """Connects or Creates database and initialises both tables"""
+    """Connects or Creates database and initializes both tables"""
     conn = sqlite3.connect(path)
     create_tables(conn)
     return conn
@@ -36,6 +36,10 @@ def create_tables(conn):
             "light REAL, light_limit REAL,"
             "PRIMARY KEY(station_id, time_stamp));"
         )
+
+        cursor.execute(
+            "CREATE TABLE IF NOT EXISTS sensor_station(dipId INTEGER, connected INTEGER, create_date TEXT), PRIMARY KEY(dipId));"
+        )
         conn.commit()
         cursor.close()
     except sqlite3.Error as e:
@@ -56,7 +60,7 @@ def init_limits(conn, station_id):
                 0,
                 1,  # pressure
                 0,
-                1,  # quality
+                1,  # air-quality
                 0,
                 1,  # humid
                 0,
@@ -119,6 +123,31 @@ def insert_sensor_data(conn, data):
         )
         conn.commit()
         cursor.close()
+    except sqlite3.Error as e:
+        print(e)
+
+def insert_into_sensor_station(conn, station_id:int, connected:bool):
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            "INSERT INTO sensor_station values(?, ?, ?)",
+            (station_id, connected, datetime.now()))
+        conn.commit()
+        cursor.close()
+    except sqlite3.Error as e:
+        print(e)
+
+
+def get_all_sensor_station(conn, station_id: int):
+    cursor = conn.cursor()
+    try:
+        cursor.execute("SELECT station_id FROM sensor_station")
+        conn.commit()
+        cursor.close()
+        record = cursor.fetchall()
+        # convert record [(a, b), (c, d)] into a 2D-array [[a, b], [c, d]]
+        result = [list(x) for x in record]
+        return result
     except sqlite3.Error as e:
         print(e)
 
@@ -200,7 +229,7 @@ def set_limits(conn, station_id, type, lower_limit, upper_limit):
 
 def get_limits(conn, station_id, type_limit):
     """Return a list of the limits if type_limit == ALL,
-    otherwise a tupel (min, max) for the given type"""
+    otherwise a tuple (min, max) for the given type"""
     cursor = conn.cursor()
     try:
         cursor.execute("SELECT * " "FROM limits " "WHERE station_id = ?", (station_id,))
@@ -248,9 +277,6 @@ def get_sensor_data(conn, station_id):
         # convert record [(a, b), (c, d)] into a 2D-array [[a, b], [c, d]]
         result = [list(x) for x in record]
         return result
-    except sqlite3.Error as e:
-        print(e)
-
     except sqlite3.Error as e:
         print(e)
 

@@ -1,7 +1,6 @@
 package at.qe.g1t2.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import org.hibernate.envers.Audited;
 import org.springframework.data.domain.Persistable;
 

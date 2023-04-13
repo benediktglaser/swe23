@@ -146,6 +146,19 @@ def delete_send_sensor_data(conn, list_of_tuples) -> None:
         dbconnection.remove_sensor_data(conn, sensor_data[0], sensor_data[1])
 
 
+def request_interval(address: str, auth_header):
+    try:
+        resp = requests.get(f"{address}/api/accessPoint/interval", auth=auth_header)
+        if resp.status_code != 200:
+            return None
+        else:
+            return resp.json()
+
+    except Exception as e:
+        print(e)
+        return None
+    
+
 """Just for testing"""
 if __name__ == "__main__":
     host = "http://localhost:8080"

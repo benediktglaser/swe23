@@ -47,15 +47,15 @@ public class AccessPointConnectionController {
 
     @GetMapping("/couple")
     public ResponseEntity<Boolean> switchToCoupleMode() {
-        AccessPoint accessPoint = refreshConnection();
 
+        AccessPoint accessPoint = refreshConnection();
+        System.out.println(accessPoint.getAccessPointID());
         return new ResponseEntity<>(accessPoint.getCoupleMode(), HttpStatus.OK);
     }
 
     @GetMapping("/enabled")
     public ResponseEntity<Boolean> checkEnabled() {
         AccessPoint accessPoint = refreshConnection();
-
         return new ResponseEntity<>(accessPoint.getEnabled(), HttpStatus.OK);
     }
 
