@@ -52,6 +52,8 @@ public class WebSecurityConfig {
 
 
             http.authorizeHttpRequests(authorize -> authorize
+                            .requestMatchers("/upload").permitAll()
+                            .requestMatchers("/visitor/**").permitAll()
                             .requestMatchers("/api/accessPoint/register").permitAll()
                             .requestMatchers("/api/accessPoint/register/**").hasAnyAuthority(ACCESS_POINT)
                             .requestMatchers("/api/sensorStation/connect").hasAnyAuthority(ACCESS_POINT)
@@ -69,7 +71,7 @@ public class WebSecurityConfig {
                     .formLogin()
                     .loginPage("/login.xhtml")
                     .permitAll()
-                    .failureUrl("/error/access_denied.xhtml")
+                    .failureUrl("/login.xhtml?error=true")
                     .defaultSuccessUrl("/secured/welcome.xhtml")
                     .loginProcessingUrl("/login")
                     .successHandler(successHandler())
@@ -88,8 +90,6 @@ public class WebSecurityConfig {
             throw new BeanCreationException("Wrong spring security configuration", ex);
         }
 
-        // :TODO: user failureUrl(/login.xhtml?error) and make sure that a corresponding message is displayed
-
     }
 
     @Bean
@@ -102,7 +102,6 @@ public class WebSecurityConfig {
         return (request, response, authentication) -> {
             Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
             for (GrantedAuthority grantedAuthority : authorities) {
-                // Todo replace equals with contains
                 if ((grantedAuthority.getAuthority().contains("GARDENER"))) {
                     response.sendRedirect("/gardener/sensorStations/sensorStations.xhtml");
                     return;
