@@ -9,6 +9,20 @@
                 template="/WEB-INF/templates/main.xhtml">
     <ui:define name="content">
         <style>
+            :root {
+                color-scheme: dark;
+                --surface-a:#1f2d40;
+                --surface-b:#17212f;
+                --surface-c:rgba(255, 255, 255, 0.03);
+                --surface-d:#304562;
+                --surface-e:#1f2d40;
+                --surface-f:#1f2d40;
+                --text-color:rgba(255, 255, 255, 0.87);
+                --text-color-secondary:rgba(255, 255, 255, 0.6);
+                --primary-color:#90CAF9;
+                --primary-color-text:#212529;
+                --font-family:-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+            }
             body {
                 font-family: Arial, sans-serif;
                 background-color: #17212f;
@@ -45,7 +59,7 @@
         <form id="myForm" enctype="multipart/form-data" action="/upload">
             <input type="file" name="file"/>
             <p:separator/>
-            <input type="hidden" id="sensorStationId" name="sensorStationId" value="#{sessionSensorStationBean.sensorStation.id}"/>
+            <input type="hidden" id="sensorStationId" name="sensorStationId" value="#{QRCodeController.sensorStation.id}"/>
             <input type="submit" value="Upload" onclick="submitForm(); return false;"/>
         </form>
         <script>
@@ -71,7 +85,7 @@
             <p:outputPanel>
                 <div class="card centering">
                     <h5>Pictures of selected plant:</h5>
-                    <p:galleria value="#{pictureController.getAllPictureBySensorStation(sessionSensorStationBean.sensorStation)}" var="photo" numVisible="5"
+                    <p:galleria value="#{pictureController.getAllPictureBySensorStation(QRCodeController.sensorStation)}" var="photo" numVisible="5"
                                 showItemNavigators="true" circular="true" showItemNavigatorsOnHover="true" showThumbnails="false" showIndicators="true" style="max-width: 640px">
                         <p:graphicImage library="images" name="#{photo.path}" style="width: 100%; display: block;" />
                     </p:galleria>
