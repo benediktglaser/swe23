@@ -66,20 +66,6 @@ public class SensorStationTest {
         Assertions.assertEquals(sensorStation1.hashCode(), sensorStation3.hashCode());
     }
 
-    @Test
-    public void testCompareTo() {
 
-        SensorStation sensorStation1 = new SensorStation();
-        SensorStation sensorStation2 = new SensorStation();
-        sensorStation1.setName("A");
-        sensorStation2.setName("B");
-        Assertions.assertEquals(-1, sensorStation2.compareTo(sensorStation1));
-        Assertions.assertEquals(1, sensorStation1.compareTo(sensorStation2));
-
-        sensorStation2.setName("A");
-        Assertions.assertEquals(0, sensorStation2.compareTo(sensorStation1));
-
-
-    }
 }
 

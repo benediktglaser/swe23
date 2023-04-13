@@ -7,6 +7,7 @@ import at.qe.g1t2.model.Userx;
 import at.qe.g1t2.repositories.AccessPointRepository;
 import at.qe.g1t2.repositories.SensorStationRepository;
 import at.qe.g1t2.repositories.UserxRepository;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
@@ -20,7 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @Component
 @Scope("application")
@@ -50,7 +53,8 @@ public class SensorStationService {
     public SensorStation saveSensorStation(AccessPoint accessPoint, SensorStation sensorStation) {
         SensorStation checkSensorStation = getSensorStationByAccessPointIdAndDipId(accessPoint.getAccessPointID(), sensorStation.getDipId());
         if (checkSensorStation != null) {
-            return sensorStationRepository.save(sensorStation);
+            checkSensorStation.setMAC(sensorStation.getMAC());
+            return sensorStationRepository.save(checkSensorStation);
 
         }
 
@@ -59,16 +63,18 @@ public class SensorStationService {
         sensorStation.setAccessPoint(accessPoint);
         accessPoint = accessPointRepository.save(accessPoint);
 
-        return loadSensorStation(accessPoint
-                .getSensorStation()
-                .get(accessPoint.getSensorStation().size() - 1).getId());
+        return  loadSensorStation(accessPoint.getSensorStation().remove(accessPoint.getSensorStation().size()-1).getId());
 
     }
 
     @PreAuthorize("hasAnyAuthority('ACCESS_POINT','ADMIN')")
     @Transactional
     public void deleteSensorStation(SensorStation sensorStation) {
+
+
+
         sensorStationRepository.delete(sensorStation);
+
     }
 
     @Transactional
@@ -108,5 +114,9 @@ public class SensorStationService {
     public SensorStation getSensorStation(String mac){
         return sensorStationRepository.getSensorStationsByMAC(mac);
 
+    }
+
+    public List<SensorStation> getAllNewSensorStations(AccessPoint accessPoint){
+        return sensorStationRepository.getAllNewSensorStationsByAccessPoint(accessPoint);
     }
 }

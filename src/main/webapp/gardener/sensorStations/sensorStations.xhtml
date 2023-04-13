@@ -31,8 +31,8 @@
                                                      action="#{sensorDataTypeListController.setSensorStation(sensorStation)}"/>
                                     <p:commandButton id="sensordata" value="Sensordata"
                                                      action="#{sensorStationListController.redirectToSensorDataPage(sensorStation)}"/>
-                                    <p:commandButton id="galery" value="Galery"
-                                                     action="#{sensorStationListController.redirectToGalery(sensorStation)}"/>
+                                    <p:commandButton id="gallery" value="Gallery"
+                                                     action="#{sensorStationListController.redirectToGallery(sensorStation)}"/>
                                 </div>
                             </div>
                         </div>
@@ -93,16 +93,10 @@
                 </p:outputPanel>
                 <script>
                     function handleSave() {
--                        PF('sensorStationFormEditDialog').show();
+                        PF('sensorStationFormEditDialog').show();
                     }
                 </script>
-
-
             </p:dialog>
-
         </h:form>
-
-
-
     </ui:define>
 </ui:composition>

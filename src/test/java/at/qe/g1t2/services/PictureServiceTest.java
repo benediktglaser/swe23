@@ -30,8 +30,8 @@ class PictureServiceTest {
         int size = sensorStation.getPictures().size();
         Assertions.assertThrows(EntityNotFoundException.class,() -> pictureService.loadPicture(""));
         picture = pictureService.save(sensorStation,picture);
-        picture = pictureService.loadPicture(picture.getId());
         sensorStation = sensorStationService.loadSensorStation("8ccfdfaa-9731-4786-8efa-e2141e5c4095");
+        picture = pictureService.loadPicture(picture.getId());
         Assertions.assertNotNull(picture);
         Assertions.assertNotNull(sensorStation);
         Assertions.assertEquals(size+1,sensorStation.getPictures().size());

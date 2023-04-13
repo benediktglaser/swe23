@@ -9,9 +9,7 @@ import org.springframework.data.domain.Persistable;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Entity presenting a AccessPoint.
@@ -43,6 +41,9 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
 
     private Double thresholdInterval;
 
+    private LocalDateTime lastCouplingDate;
+
+
     private Boolean coupleMode;
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime updateDate;
@@ -52,7 +53,19 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
     private List<SensorStation> sensorStation = new ArrayList<>();
     private String accessPointName;
 
+    public LocalDateTime getLastCouplingDate() {
+        return (lastCouplingDate==null?LocalDateTime.now():lastCouplingDate);
+    }
+
+    public void setLastCouplingDate(LocalDateTime lastCouplingDate) {
+        this.lastCouplingDate = lastCouplingDate;
+    }
+
     public Boolean getCoupleMode() {
+        if(lastCouplingDate == null){
+            lastCouplingDate = LocalDateTime.now();
+        }
+        coupleMode = (coupleMode!=null && lastCouplingDate.plusMinutes(5).isAfter(LocalDateTime.now()));
         return coupleMode;
     }
 
@@ -162,7 +175,7 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
 
     @Override
     public int compareTo(AccessPoint o) {
-        return this.id.compareTo(Objects.requireNonNull(o.getId()));
+        return this.id.compareTo(o.id);
     }
 
     public String getPassword() {
