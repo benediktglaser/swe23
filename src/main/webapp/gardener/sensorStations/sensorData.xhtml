@@ -39,12 +39,12 @@
                           filterBy="#{sensorData.type}">
                     <h:outputText value="#{sensorData.type}"/>
                 </p:column>
-                <p:column headerText="Date" class="ui-datatable-header" sortBy="#{sensorData.createDate}"
-                          filterBy="#{sensorData.createDate}">
+                <p:column headerText="Date" class="ui-datatable-header" sortBy="#{sensorData.timestamp}"
+                          filterBy="#{sensorData.timestamp}">
                     <h:outputText value="#{(sensorData.timestamp).toLocalDate()}"/>
                 </p:column>
             </p:dataTable>
-            <p:poll interval="10" update=":sensorDataForm:sensorDataTable"></p:poll>
+            <p:poll interval="40" update=":sensorDataForm:sensorDataTable"></p:poll>
             <p:separator/>
         </h:form>
     <h:form id="chartForm">
@@ -104,7 +104,7 @@
                                             text: 'Measure Date'
                                         },
                                         type: 'datetime',
-                                        maxZoom: 24 * 3600000,
+                                        maxZoom: 24 * 36000000,
                                     },
                                     tooltip: {
                                         stickOnContact: true
@@ -166,7 +166,14 @@
                                         }
                                     }
                                 });
-                                let lastTimestamp = transformedData[transformedData.length - 1][0];
+                                let lastTimestamp;
+                                if (transformedData.length===0){
+                                       alert("Hello Medin");
+                                       lastTimestamp = Date.now();
+                                }
+                                else {
+                                    lastTimestamp = transformedData[transformedData.length - 1][0];
+                                }
 
                                 function updateChart() {
                                     let addNewPoints = "/add";
@@ -191,7 +198,7 @@
 
                                 }
 
-                                setInterval(updateChart, 100);
+                                setInterval(updateChart, 30000);
                             });
 
                     }
