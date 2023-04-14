@@ -1,6 +1,8 @@
 package at.qe.g1t2.model;
 
-public enum SensorDataType {
+import java.io.Serializable;
+
+public enum SensorDataType implements Serializable {
     TEMPERATURE("°C"),
     PRESSURE("Pa"),
     HUMIDITY("%"),
