@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("")
@@ -26,7 +27,7 @@ public class QRCodeRestController {
     private SensorStationService sensorStationService;
 
     @GetMapping(value = "/visitor/sensorStations/gallery.xhtml{sensorStationId}", produces = MediaType.IMAGE_PNG_VALUE)
-    public ResponseEntity<byte[]> sensorStationsQRCode(@PathVariable String sensorStationId) throws Exception {
+    public ResponseEntity<byte[]> sensorStationsQRCode(@PathVariable String sensorStationId) throws IOException {
         BufferedImage qrCodeImage = QRCodeService.generateQRCodeImage(sensorStationService.loadSensorStation(sensorStationId));
 
         ByteArrayOutputStream qr = new ByteArrayOutputStream();

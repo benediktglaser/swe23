@@ -4,10 +4,11 @@ import at.qe.g1t2.model.LogInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface LogInfoRepository extends JpaRepository<LogInfo, Integer> {
+public interface LogInfoRepository extends JpaRepository<LogInfo, Integer>, Serializable {
 
     @Query(value = """
             SELECT log_info.id, log_info.timestamp, changed_at, ua.revtype, modified_by from log_info join userx_aud ua on log_info.id = ua.rev

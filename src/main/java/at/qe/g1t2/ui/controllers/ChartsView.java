@@ -27,7 +27,6 @@ public class ChartsView {
     @Autowired
     SensorDataTypeInfoService sensorDataTypeInfoService;
 
-    private Map<String,String> typeInfoMap = new HashMap<>();
     @PostConstruct
     public void init() {
         typeInfos = new ArrayList<>();
