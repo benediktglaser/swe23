@@ -1,18 +1,17 @@
-from typing import List
-
 import requests
-from requests.auth import HTTPBasicAuth
-
 import dbconnection
 import sensordata
+import time
+from typing import List
 
+from requests.auth import HTTPBasicAuth
 
 # host = "http://localhost:8080"
 
 
-def prepare_auth_headers():
+def prepare_auth_headers(id: str, password: str):
     """Just for testing. Prepare the authentication via HTTPBasic"""
-    return HTTPBasicAuth("7269ddec-30c6-44d9-bc1f-8af18da09ed3", "passwd")
+    return HTTPBasicAuth(id, password)
 
 
 def post_measurement_original_single(
@@ -48,6 +47,7 @@ def post_measurement(address: str, list_of_measurements: List, auth_header) -> N
             resp = requests.post(
                 f"{address}/api/sensorData", json=measurement, auth=auth_header
             )
+            print(resp.json())
             if resp.__bool__:
                 list_of_responses.append(
                     (
@@ -58,7 +58,7 @@ def post_measurement(address: str, list_of_measurements: List, auth_header) -> N
                     ),
                 )
 
-        except requests.exceptions.RequestException as e:
+        except Exception as e:
             print(e)
 
     # return the deserialized measurement object here
@@ -159,26 +159,38 @@ def request_interval(address: str, auth_header):
     except Exception as e:
         print(e)
         return None
-    
+
 
 """Just for testing"""
 if __name__ == "__main__":
     host = "http://localhost:8080"
     conn = dbconnection.create_database("database.db")
-    auth = prepare_auth_headers()
-    dbconnection.init_limits(conn, 1)
-    dbconnection.insert_sensor_data(conn, sensordata.SensorData(1, 1, 2, 3, 4, 5, 6))
+    auth = prepare_auth_headers("43d5aba9-29c5-49b4-b4ec-2d430e34104f", "passwd")
 
-    data = dbconnection.get_sensor_data(conn, 1)
-    dbconnection.drop_sensor_data(conn)
-    dbconnection.drop_limits(conn)
+ 
+    #dbconnection.insert_sensor_data(conn, sensordata.SensorData(3, 10, 2, 3, 4, 5, 17))
 
-    #print(data)
+    
+    #dbconnection.drop_sensor_data(conn)
+    #dbconnection.drop_limits(conn)
+    dbconnection.init_limits(conn, 3)
+    #print("data", data)
     # data = adjust_timestamp_for_transfer(data)
 
     # data = prepare_for_jsf(data)
 
     # print(data)
-    response = post_measurement(host, data, auth)
-    print(response)
+    for i in range(3):
+        dbconnection.insert_sensor_data(
+            conn, sensordata.SensorData(3,(i + 1) * 20, 10, 2, 3, 4, 5)
+        )
+        data = dbconnection.get_sensor_data(conn, 3)
+        response = post_measurement(host, data, auth)
+        print(response)
+        delete_send_sensor_data(conn, response)
+        time.sleep(60)
+        
+
     # delete_send_sensor_data(conn, response)
+    dbconnection.drop_limits(conn)
+    #dbconnection.drop_sensor_data(conn)
