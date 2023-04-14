@@ -21,11 +21,17 @@ import java.util.List;
 @Component
 @Scope("application")
 public class SensorDataTypeInfoService implements Serializable {
+
+    private final SensorDataTypeInfoRepository sensorDataTypeInfoRepository;
+
+    private final SensorStationRepository sensorStationRepository;
+
     @Autowired
-    
-    private SensorDataTypeInfoRepository sensorDataTypeInfoRepository;
-    @Autowired
-    private SensorStationRepository sensorStationRepository;
+    public SensorDataTypeInfoService(SensorDataTypeInfoRepository sensorDataTypeInfoRepository, SensorStationRepository sensorStationRepository) {
+        this.sensorDataTypeInfoRepository = sensorDataTypeInfoRepository;
+        this.sensorStationRepository = sensorStationRepository;
+    }
+
     @Transactional
     public SensorDataTypeInfo loadSensorDataTypeInfo(String id){
         return sensorDataTypeInfoRepository.findSensorDataTypeInfoById(id);

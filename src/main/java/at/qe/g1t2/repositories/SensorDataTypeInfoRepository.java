@@ -8,10 +8,11 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface SensorDataTypeInfoRepository extends JpaRepository<SensorDataTypeInfo,String>, JpaSpecificationExecutor<SensorDataTypeInfo> {
+public interface SensorDataTypeInfoRepository extends JpaRepository<SensorDataTypeInfo,String>, JpaSpecificationExecutor<SensorDataTypeInfo>, Serializable {
 
     SensorDataTypeInfo findSensorDataTypeInfoById(String id);
 

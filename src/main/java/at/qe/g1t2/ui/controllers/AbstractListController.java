@@ -34,52 +34,9 @@ public abstract class AbstractListController<K,T extends Persistable<K> & Serial
 
     @Override
     public List<T> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
-        Pageable page;
-
-        if (!sortBy.isEmpty()) {
-            SortMeta sortMeta = sortBy.values().stream().toList().get(0);
-            Sort.Direction direction = (sortMeta.getOrder().isAscending() ? Sort.Direction.ASC : Sort.Direction.DESC);
-            String field = sortMeta.getField();
-            page = PageRequest.of(first / pageSize, pageSize, Sort.by(direction, field));
-        }
-        else {
-            page = PageRequest.of(first / pageSize, pageSize);
-        }
-        Specification<T> spec = null;
-        if (!filterBy.isEmpty()) {
-            FilterMeta filterMeta = filterBy.values().stream().toList().get(0);
-            String filterField = filterMeta.getField();
-            String filterValue = filterMeta.getFilterValue().toString();
-
-            spec = Specification.where((root, query, criteriaBuilder) -> {
-                if (filterValue.isEmpty()) {
-                    return null;
-                }
-                Path<String> field = root.get(filterField);
-                return criteriaBuilder.like(criteriaBuilder.lower(field), "%" + filterValue.toLowerCase() + "%");
-            });
-
-        }
-        Specification<T> finalSpec = null;
-        for(Specification<T> specification: extraSpecs){
-            if(spec == null || specification == null){
-                if(spec == null && specification != null){
-                    finalSpec = specification;
-                }
-                if(spec != null){
-                    spec = specification;
-                }
-
-            }
-            else {
-                if(finalSpec == null){
-                    finalSpec = spec.and(specification);
-                }
-                finalSpec = finalSpec.and(specification);
-            }
-
-        }
-
+        Pageable page = createPage(first, pageSize, sortBy);
+        Specification<T> spec = createSpecification(filterBy);
+        Specification<T> finalSpec = combineSpecifications(spec);
         Page<T> entity = collectionToPageConverterFunction.retrieveData(finalSpec,page);
         setRowCount((int) entity.getTotalElements());
         return entity.getContent();
@@ -89,7 +46,45 @@ public abstract class AbstractListController<K,T extends Persistable<K> & Serial
         return extraSpecs;
     }
 
-    public void setExtraSpecs(List<Specification<T>> extraSpecs) {
-        this.extraSpecs = extraSpecs;
+
+    private Pageable createPage(int first, int pageSize, Map<String, SortMeta> sortBy) {
+        if (!sortBy.isEmpty()) {
+            SortMeta sortMeta = sortBy.values().stream().toList().get(0);
+            Sort.Direction direction = (sortMeta.getOrder().isAscending() ? Sort.Direction.ASC : Sort.Direction.DESC);
+            String field = sortMeta.getField();
+            return PageRequest.of(first / pageSize, pageSize, Sort.by(direction, field));
+        }
+        return PageRequest.of(first / pageSize, pageSize);
     }
+
+    private Specification<T> createSpecification(Map<String, FilterMeta> filterBy) {
+        if (!filterBy.isEmpty()) {
+            FilterMeta filterMeta = filterBy.values().stream().toList().get(0);
+            String filterField = filterMeta.getField();
+            String filterValue = filterMeta.getFilterValue().toString();
+            return Specification.where((root, query, criteriaBuilder) -> {
+                if (filterValue.isEmpty()) {
+                    return null;
+                }
+                Path<String> field = root.get(filterField);
+                return criteriaBuilder.like(criteriaBuilder.lower(field), "%" + filterValue.toLowerCase() + "%");
+            });
+        }
+        return null;
+    }
+
+    private Specification<T> combineSpecifications(Specification<T> spec) {
+        Specification<T> finalSpec = spec;
+        for(Specification<T> specification: extraSpecs){
+            if(spec == null || specification == null){
+                finalSpec = (spec == null ? specification : spec);
+            }
+            else {
+                finalSpec = finalSpec.and(specification);
+            }
+        }
+        return finalSpec;
+    }
+
+
 }
