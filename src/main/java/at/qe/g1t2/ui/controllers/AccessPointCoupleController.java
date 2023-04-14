@@ -19,12 +19,9 @@ public class AccessPointCoupleController {
     @Autowired
     AccessPointService accessPointService;
 
-    private Boolean isCoupling = false;
-
     private AccessPoint accessPoint;
 
     public void startCouplingMode(AccessPoint accessPoint) {
-        System.out.println(accessPoint);
         accessPoint.setLastCouplingDate(LocalDateTime.now());
         accessPoint.setCoupleMode(true);
         this.accessPoint = accessPointService.saveAccessPoint(accessPoint);

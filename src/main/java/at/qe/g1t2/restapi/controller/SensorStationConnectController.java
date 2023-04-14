@@ -43,7 +43,7 @@ public class SensorStationConnectController {
         AccessPoint accessPoint = accessPointService.loadAccessPoint(auth.getName());
 
         SensorStation newSensorStation = modelMapper.map(sensorStationDTO, SensorStation.class);
-        SensorStation existingSensorStation = sensorStationService.getSensorStation(sensorStationDTO.getMAC());
+        SensorStation existingSensorStation = sensorStationService.getSensorStation(sensorStationDTO.getMac());
 
         if (existingSensorStation != null) {
             if (!existingSensorStation.getCreateDate().isBefore(LocalDateTime.now().minusMinutes(5))) {

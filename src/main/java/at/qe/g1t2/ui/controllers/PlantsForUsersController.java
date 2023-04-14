@@ -19,8 +19,6 @@ public class PlantsForUsersController {
     @Autowired
     UserService userService;
 
-    private SensorStation sensorStation;
-
     public Collection<SensorStation> getAllSensorStations(){
 
         return sensorStationService.getAllSensorStations();

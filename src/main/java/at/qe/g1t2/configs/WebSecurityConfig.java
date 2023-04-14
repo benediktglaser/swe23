@@ -79,9 +79,7 @@ public class WebSecurityConfig {
                     .logout()
                     .logoutSuccessUrl("/login.xhtml")
                     .deleteCookies("JSESSIONID").and()
-                    .httpBasic().authenticationEntryPoint(authenticationEntryPoint)
-                    .and()
-                    .csrf().disable();
+                    .httpBasic().authenticationEntryPoint(authenticationEntryPoint);
 
             http.exceptionHandling().accessDeniedPage("/error/access_denied.xhtml");
             http.sessionManagement().invalidSessionUrl("/error/invalid_session.xhtml");
