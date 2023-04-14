@@ -17,14 +17,6 @@ import org.springframework.stereotype.Controller;
 @Scope("view")
 public class DashboardController extends SensorStationListController {
 
-    @Autowired
-    private SensorStationService sensorStationService;
-
-    @Autowired
-    SessionSensorStationBean sessionSensorStationBean;
-
-    @Autowired
-    UserService userService;
 
     public DashboardController() {
         super();
