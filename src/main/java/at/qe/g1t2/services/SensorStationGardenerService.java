@@ -10,12 +10,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 
 @Component
 @Scope("application")
-public class SensorStationGardenerService {
+public class SensorStationGardenerService implements Serializable {
 
 
     @Autowired

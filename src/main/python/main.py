@@ -1,10 +1,11 @@
-import dbconnection as db
 import configparser
-import restcontroller_init as rci
-import credentials
 import time
-import restcontroller as rest
 from threading import Thread
+
+import credentials
+import dbconnection as db
+import restcontroller as rest
+import restcontroller_init as rci
 
 
 def init():

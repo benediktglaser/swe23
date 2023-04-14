@@ -1,10 +1,9 @@
-package at.qe.g1t2.RestAPI.controller;
+package at.qe.g1t2.restapi.controller;
 
 
-
-import at.qe.g1t2.RestAPI.model.SensorDataDTO;
 import at.qe.g1t2.model.SensorDataType;
 import at.qe.g1t2.repositories.SensorStationRepository;
+import at.qe.g1t2.restapi.model.SensorDataDTO;
 import at.qe.g1t2.services.SensorDataService;
 import at.qe.g1t2.services.SensorStationService;
 import com.fasterxml.jackson.databind.ObjectMapper;

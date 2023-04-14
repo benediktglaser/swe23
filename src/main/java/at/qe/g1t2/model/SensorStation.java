@@ -20,7 +20,7 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
     @ManyToMany(mappedBy = "sensorStations",fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Fetch(FetchMode.SELECT)
-    Set<Userx> userx = new HashSet<>();
+    private Set<Userx> userx = new HashSet<>();
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
@@ -32,7 +32,7 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
     private String category;
     private LocalDateTime lastConnectedDate;
     @Column(unique = true)
-    private String MAC;
+    private String mac;
     @PreRemove
     protected void beforeRemove(){
 
@@ -201,11 +201,11 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
         this.sensorDataTypeInfos = sensorDataTypeInfos;
     }
 
-    public String getMAC() {
-        return MAC;
+    public String getMac() {
+        return mac;
     }
 
-    public void setMAC(String MAC) {
-        this.MAC = MAC;
+    public void setMac(String mac) {
+        this.mac = mac;
     }
 }

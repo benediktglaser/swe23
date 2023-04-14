@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
@@ -27,7 +29,6 @@ public class ChartsView {
     @Autowired
     SensorDataTypeInfoService sensorDataTypeInfoService;
 
-    private Map<String,String> typeInfoMap = new HashMap<>();
     @PostConstruct
     public void init() {
         typeInfos = new ArrayList<>();
@@ -43,9 +44,7 @@ public class ChartsView {
             List<SensorDataTypeInfo> sensorDataTypeInfo = sensorDataTypeInfoService.getTypeInfoByStationAndType(sessionSensorStationBean.getSensorStation(),type);
             List<SelectItem> items = new ArrayList<>();
             if(!sensorDataTypeInfo.isEmpty()){
-                sensorDataTypeInfo.forEach(x -> {
-                    items.add(new SelectItem(x.getId(),x.toString()));
-                });
+                sensorDataTypeInfo.forEach(x -> items.add(new SelectItem(x.getId(),x.toString())));
             }
             else{
                 items.add(new SelectItem(type.name(),"Show Chart"));
@@ -78,7 +77,7 @@ public class ChartsView {
     }
 
    public void doUpdate(){
-        List<String> types = Arrays.stream(SensorDataType.values()).map(x -> x.name()).collect(Collectors.toList());
+        List<String> types = Arrays.stream(SensorDataType.values()).map(Enum::name).collect(Collectors.toList());
         if(types.contains(selection)){
             PrimeFaces.current().executeScript("myF('" + sessionSensorStationBean.getSensorStation().getId() + "', '" + "Empty" + "', '" + SensorDataType.valueOf(selection) + "')");
             return;

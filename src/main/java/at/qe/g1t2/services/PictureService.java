@@ -1,10 +1,10 @@
 package at.qe.g1t2.services;
 
-import at.qe.g1t2.RestAPI.exception.EntityNotFoundException;
 import at.qe.g1t2.model.Picture;
 import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.repositories.PictureRepository;
 import at.qe.g1t2.repositories.SensorStationRepository;
+import at.qe.g1t2.restapi.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,7 +37,6 @@ public class PictureService {
             picture.setSensorStation(sensorStation);
             sensorStation.getPictures().add(picture);
             sensorStation = sensorStationRepository.save(sensorStation);
-            System.out.println(sensorStation.getId());
             return sensorStation.getPictures().get(sensorStation.getPictures().size() - 1);
         }
         return pictureRepository.save(picture);

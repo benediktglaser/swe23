@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ import java.util.List;
  * This class is part of the skeleton project provided for students of the
  * course "Software Engineering" offered by the University of Innsbruck.
  */
-public interface UserxRepository extends JpaRepository<Userx, String>, JpaSpecificationExecutor<Userx> {
+public interface UserxRepository extends JpaRepository<Userx, String>, JpaSpecificationExecutor<Userx>, Serializable {
 
 
     Userx findFirstByUsername(String username);

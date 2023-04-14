@@ -1,4 +1,4 @@
-package at.qe.g1t2.RestAPI.exception;
+package at.qe.g1t2.restapi.exception;
 
 public class FileUploadException extends RuntimeException{
 

@@ -1,7 +1,8 @@
-package at.qe.g1t2.RestAPI.DTO;
+package at.qe.g1t2.restapi.DTO;
 
-import at.qe.g1t2.RestAPI.model.AccessPointDTO;
+
 import at.qe.g1t2.model.PojoClassExcludedFields;
+import at.qe.g1t2.restapi.model.SensorStationDTO;
 import com.openpojo.reflection.impl.PojoClassFactory;
 import com.openpojo.validation.Validator;
 import com.openpojo.validation.ValidatorBuilder;
@@ -14,8 +15,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Set;
 
+
 @SpringBootTest
-class AccessPointDTOTest {
+class SensorStationDTOTest {
+
     @Test
     public void testGetterSetter() {
 
@@ -27,9 +30,8 @@ class AccessPointDTOTest {
                 .build();
 
 
-        validator.validate(new PojoClassExcludedFields(PojoClassFactory.getPojoClass(AccessPointDTO.class),
+        validator.validate(new PojoClassExcludedFields(PojoClassFactory.getPojoClass(SensorStationDTO.class),
                 Set.of("createDate", "timestamp")));
-
 
     }
 

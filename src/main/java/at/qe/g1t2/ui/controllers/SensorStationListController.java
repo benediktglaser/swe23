@@ -9,8 +9,6 @@ import at.qe.g1t2.ui.beans.SessionSensorStationBean;
 import jakarta.persistence.criteria.Path;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
@@ -40,12 +38,7 @@ public class SensorStationListController extends AbstractListController<String, 
     AccessPointService accessPointService;
 
     public SensorStationListController() {
-        this.setListToPageFunction(new CollectionToPageConverter<String, SensorStation>() {
-            @Override
-            public Page<SensorStation> retrieveData(Specification<SensorStation> spec, Pageable page) {
-                return sensorStationService.getAllSensorStations(spec, page);
-            }
-        });
+        this.setListToPageFunction((spec, page) -> sensorStationService.getAllSensorStations(spec, page));
     }
 
     public void filterSensorStationsByAccessPoint(AccessPoint accessPoint) {

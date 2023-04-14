@@ -13,17 +13,25 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
 @Scope("application")
-public class SensorDataTypeInfoService {
+public class SensorDataTypeInfoService implements Serializable {
+
+    private final SensorDataTypeInfoRepository sensorDataTypeInfoRepository;
+
+    private final SensorStationRepository sensorStationRepository;
+
     @Autowired
-    private SensorDataTypeInfoRepository sensorDataTypeInfoRepository;
-    @Autowired
-    private SensorStationRepository sensorStationRepository;
+    public SensorDataTypeInfoService(SensorDataTypeInfoRepository sensorDataTypeInfoRepository, SensorStationRepository sensorStationRepository) {
+        this.sensorDataTypeInfoRepository = sensorDataTypeInfoRepository;
+        this.sensorStationRepository = sensorStationRepository;
+    }
+
     @Transactional
     public SensorDataTypeInfo loadSensorDataTypeInfo(String id){
         return sensorDataTypeInfoRepository.findSensorDataTypeInfoById(id);

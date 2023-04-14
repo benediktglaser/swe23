@@ -15,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -24,7 +25,7 @@ import java.util.List;
  */
 @Component
 @Scope("application")
-public class SensorDataService {
+public class SensorDataService implements Serializable {
 
     @Autowired
     private SensorDataRepository sensorDataRepository;

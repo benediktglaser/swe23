@@ -1,7 +1,7 @@
-package at.qe.g1t2.RestAPI.controller;
+package at.qe.g1t2.restapi.controller;
 
-import at.qe.g1t2.RestAPI.model.SensorStationDTO;
 import at.qe.g1t2.model.AccessPoint;
+import at.qe.g1t2.restapi.model.SensorStationDTO;
 import at.qe.g1t2.services.AccessPointService;
 import at.qe.g1t2.services.SensorStationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,7 +32,7 @@ class SensorStationConnectControllerTest {
     void createSensorStation() throws Exception {
         SensorStationDTO sensorStationDTO = new SensorStationDTO();
         sensorStationDTO.setDipId(23L);
-        sensorStationDTO.setMAC("1234");
+        sensorStationDTO.setMac("1234");
 
         int size = sensorStationService.getAllSensorStations().size();
         ObjectMapper objectMapper = new ObjectMapper();
