@@ -32,7 +32,7 @@ class SensorStationConnectControllerTest {
     void createSensorStation() throws Exception {
         SensorStationDTO sensorStationDTO = new SensorStationDTO();
         sensorStationDTO.setDipId(23L);
-        sensorStationDTO.setMAC("1234");
+        sensorStationDTO.setMac("1234");
 
         int size = sensorStationService.getAllSensorStations().size();
         ObjectMapper objectMapper = new ObjectMapper();

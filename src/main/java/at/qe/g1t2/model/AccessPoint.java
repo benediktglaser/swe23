@@ -6,7 +6,6 @@ import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.envers.AuditJoinTable;
 import org.hibernate.envers.Audited;
 import org.springframework.data.domain.Persistable;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;

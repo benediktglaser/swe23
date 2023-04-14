@@ -25,7 +25,7 @@ public class LogInfoService {
 
 
     private List<LogInfo> convertObjToLog(List<Object[]> objList) {
-        if (objList.isEmpty() || objList == null) {
+        if (objList.isEmpty()) {
             return new ArrayList<>();
         }
         List<LogInfo> list = new ArrayList<>();

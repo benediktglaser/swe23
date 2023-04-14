@@ -17,14 +17,9 @@ public class CustomServletContextInitializer implements ServletContextInitialize
 
     @Override
     public void onStartup(ServletContext sc) throws ServletException {
-        //sc.setInitParameter("com.sun.faces.forceLoadConfiguration", "true");
         sc.setInitParameter("jakarta.faces.PROJECT_STAGE", "Development");
         sc.setInitParameter("jakarta.faces.STATE_SAVING_METHOD", "server");
         sc.setInitParameter("jakarta.faces.FACELETS_SKIP_COMMENTS", "true");
-        // websockets configuration
-        //sc.setInitParameter("jakarta.faces.ENABLE_CDI_RESOLVER_CHAIN", "true");
-        sc.setInitParameter("jakarta.faces.ENABLE_WEBSOCKET_ENDPOINT", "true");
-        sc.setInitParameter("org.omnifaces.SOCKET_ENDPOINT_ENABLED", "true");
     }
 
 }
