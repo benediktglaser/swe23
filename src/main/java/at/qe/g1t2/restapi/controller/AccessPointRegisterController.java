@@ -1,9 +1,9 @@
-package at.qe.g1t2.RestAPI.controller;
+package at.qe.g1t2.restapi.controller;
 
-import at.qe.g1t2.RestAPI.model.AccessPointDTO;
-import at.qe.g1t2.RestAPI.model.LoginDTO;
 import at.qe.g1t2.configs.WebSecurityConfig;
 import at.qe.g1t2.model.AccessPoint;
+import at.qe.g1t2.restapi.model.AccessPointDTO;
+import at.qe.g1t2.restapi.model.LoginDTO;
 import at.qe.g1t2.services.AccessPointService;
 import at.qe.g1t2.services.SensorDataTypeInfoService;
 import at.qe.g1t2.services.SensorStationService;

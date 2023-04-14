@@ -1,4 +1,4 @@
-package at.qe.g1t2.RestAPI.controller;
+package at.qe.g1t2.restapi.controller;
 
 import at.qe.g1t2.model.SensorDataType;
 import at.qe.g1t2.model.SensorDataTypeInfo;
@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -43,13 +42,13 @@ public class ChartController {
     SensorDataTypeInfoService sensorDataTypeInfoService;
 
     @GetMapping()
-    public String getSensorData(@RequestParam String sensorStationId,@RequestParam String sensorDataTypeId,@RequestParam String typeId) throws JsonProcessingException {
+    public String getSensorData(@RequestParam String sensorStationId, @RequestParam String sensorDataTypeId, @RequestParam String typeId) throws JsonProcessingException {
 
         SensorStation sensorStation = sensorStationService.loadSensorStation(sensorStationId);
 
 
         SensorDataTypeInfo sensorDataTypeInfo = sensorDataTypeInfoService.loadSensorDataTypeInfo(sensorDataTypeId);
-        List<Object[]> dataset = new ArrayList<>();
+        List<Object[]> dataset;
         dataset = sensorDataService.getAllSensorDataByStationAndTypeForChart(sensorStation, SensorDataType.valueOf(typeId));
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -59,7 +58,7 @@ public class ChartController {
         ArrayNode seriesArray = objectMapper.createArrayNode();
         ObjectNode seriesObject = objectMapper.createObjectNode();
         seriesObject.put("data", objectMapper.writeValueAsString(dataset));
-        if(sensorDataTypeInfo != null){
+        if (sensorDataTypeInfo != null) {
             seriesObject.put("min", sensorDataTypeInfo.getMinLimit());
             seriesObject.put("max", sensorDataTypeInfo.getMaxLimit());
         }
@@ -67,20 +66,18 @@ public class ChartController {
         ObjectNode chartObject = objectMapper.createObjectNode();
         chartObject.set("series", seriesArray);
         String json = writer.writeValueAsString(seriesArray);
-        System.out.println(json);
         return json;
     }
 
     @GetMapping("/add")
-    public String getNewSensorData(@RequestParam String sensorStationId,@RequestParam String sensorDataTypeId,@RequestParam String typeId, @RequestParam String lastDate) throws JsonProcessingException {
+    public String getNewSensorData(@RequestParam String sensorStationId, @RequestParam String sensorDataTypeId, @RequestParam String typeId, @RequestParam String lastDate) throws JsonProcessingException {
         long timestamp = Long.parseLong(lastDate);
         LocalDateTime lastTimeStamp = Instant.ofEpochMilli(timestamp).atZone(ZoneId.systemDefault()).toLocalDateTime();
         lastTimeStamp = lastTimeStamp.minusHours(2);
         SensorStation sensorStation = sensorStationService.loadSensorStation(sensorStationId);
 
-        List<Object[]> dataset = new ArrayList<>();
-        dataset = sensorDataService.getAllNewSensorDataByStationAndTypeForChart(sensorStation, SensorDataType.valueOf(typeId),lastTimeStamp);
-        System.out.println(dataset.isEmpty());
+        List<Object[]> dataset;
+        dataset = sensorDataService.getAllNewSensorDataByStationAndTypeForChart(sensorStation, SensorDataType.valueOf(typeId), lastTimeStamp);
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         ObjectWriter writer = objectMapper.writer().with(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
@@ -90,7 +87,6 @@ public class ChartController {
 
         seriesArray.add(seriesObject);
         String json = writer.writeValueAsString(seriesArray);
-        System.out.println(json);
         return json;
     }
 

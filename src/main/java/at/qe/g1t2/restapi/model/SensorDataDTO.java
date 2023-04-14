@@ -1,4 +1,4 @@
-package at.qe.g1t2.RestAPI.model;
+package at.qe.g1t2.restapi.model;
 
 import at.qe.g1t2.model.SensorDataType;
 import jakarta.persistence.EnumType;

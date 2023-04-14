@@ -6,10 +6,11 @@ import org.springframework.data.domain.Persistable;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Audited
-public class SensorDataTypeInfo implements Persistable<String>, Serializable, Comparable<SensorDataTypeInfo>  {
+public class SensorDataTypeInfo implements Persistable<String>, Serializable, Comparable<SensorDataTypeInfo> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -64,6 +65,19 @@ public class SensorDataTypeInfo implements Persistable<String>, Serializable, Co
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SensorDataTypeInfo)) return false;
+        SensorDataTypeInfo that = (SensorDataTypeInfo) o;
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
     public int compareTo(SensorDataTypeInfo o) {
         return String.valueOf(o.getId()).compareTo(this.id);
     }
@@ -75,7 +89,7 @@ public class SensorDataTypeInfo implements Persistable<String>, Serializable, Co
 
     @Override
     public boolean isNew() {
-        return null ==  createDate;
+        return null == createDate;
     }
 
     public SensorStation getSensorStation() {
@@ -88,6 +102,6 @@ public class SensorDataTypeInfo implements Persistable<String>, Serializable, Co
 
     @Override
     public String toString() {
-        return "Min Limit: "+ minLimit + " Max Limit" + maxLimit + " Date: " + createDate;
+        return "Min Limit: " + minLimit + " Max Limit" + maxLimit + " Date: " + createDate;
     }
 }

@@ -1,9 +1,9 @@
-package at.qe.g1t2.RestAPI.controller;
+package at.qe.g1t2.restapi.controller;
 
 
-import at.qe.g1t2.RestAPI.exception.FileUploadException;
 import at.qe.g1t2.model.Picture;
 import at.qe.g1t2.model.SensorStation;
+import at.qe.g1t2.restapi.exception.FileUploadException;
 import at.qe.g1t2.services.PictureService;
 import at.qe.g1t2.services.SensorStationService;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,12 +1,12 @@
-package at.qe.g1t2.RestAPI.controller;
+package at.qe.g1t2.restapi.controller;
 
-import at.qe.g1t2.RestAPI.exception.EntityNotFoundException;
-import at.qe.g1t2.RestAPI.model.LimitsDTO;
-import at.qe.g1t2.RestAPI.model.SensorStationDTO;
 import at.qe.g1t2.model.AccessPoint;
 import at.qe.g1t2.model.SensorDataType;
 import at.qe.g1t2.model.SensorDataTypeInfo;
 import at.qe.g1t2.model.SensorStation;
+import at.qe.g1t2.restapi.exception.EntityNotFoundException;
+import at.qe.g1t2.restapi.model.LimitsDTO;
+import at.qe.g1t2.restapi.model.SensorStationDTO;
 import at.qe.g1t2.services.AccessPointService;
 import at.qe.g1t2.services.SensorDataTypeInfoService;
 import at.qe.g1t2.services.SensorStationService;
@@ -66,16 +66,6 @@ public class SensorStationConnectController {
 
     }
 
-    /*
-     for (SensorDataType type : SensorDataType.values()) {
-            SensorDataTypeInfo info = new SensorDataTypeInfo();
-            info.setMaxLimit(0.0);
-            info.setMinLimit(0.0);
-            info.setType(type);
-            sensorDataTypeInfoService.save(newSensorStation, info);
-
-        }
-     */
     @GetMapping("/enabled/{dipId}")
     public ResponseEntity<Boolean> checkEnabled(@PathVariable String dipId) {
 

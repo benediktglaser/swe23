@@ -7,7 +7,6 @@ import at.qe.g1t2.model.Userx;
 import at.qe.g1t2.repositories.AccessPointRepository;
 import at.qe.g1t2.repositories.SensorStationRepository;
 import at.qe.g1t2.repositories.UserxRepository;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
@@ -19,18 +18,19 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
-@Component
-@Scope("application")
+
 /**
  * This Class saves/delete Sensorstations and allows tho remove/swap the gardener of the stations
  */
-public class SensorStationService {
+@Component
+@Scope("application")
+public class SensorStationService implements Serializable {
 
     @Autowired
     SensorStationRepository sensorStationRepository;
@@ -53,7 +53,7 @@ public class SensorStationService {
     public SensorStation saveSensorStation(AccessPoint accessPoint, SensorStation sensorStation) {
         SensorStation checkSensorStation = getSensorStationByAccessPointIdAndDipId(accessPoint.getAccessPointID(), sensorStation.getDipId());
         if (checkSensorStation != null) {
-            checkSensorStation.setMAC(sensorStation.getMAC());
+            checkSensorStation.setMac(sensorStation.getMac());
             return sensorStationRepository.save(checkSensorStation);
 
         }
@@ -107,12 +107,12 @@ public class SensorStationService {
         return userRepository.findFirstByUsername(auth.getName());
     }
 
-    public Set<SensorStation> getAllSensorStationsByUser(SensorStation sensorStation){
+    public Set<SensorStation> getAllSensorStationsByUser(){
         return sensorStationRepository.getSensorStationsByUserx(getAuthenticatedUser());
     }
 
     public SensorStation getSensorStation(String mac){
-        return sensorStationRepository.getSensorStationsByMAC(mac);
+        return sensorStationRepository.getSensorStationsByMac(mac);
 
     }
 

@@ -1,8 +1,8 @@
 package at.qe.g1t2.services;
 
-import at.qe.g1t2.RestAPI.exception.EntityNotFoundException;
 import at.qe.g1t2.model.Picture;
 import at.qe.g1t2.model.SensorStation;
+import at.qe.g1t2.restapi.exception.EntityNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

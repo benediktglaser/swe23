@@ -22,7 +22,7 @@ import java.util.List;
  */
 @Component
 @Scope("application")
-public class AccessPointService {
+public class AccessPointService  {
 
     @Autowired
     AccessPointRepository accessPointRepository;

@@ -6,6 +6,7 @@ import org.springframework.data.domain.Persistable;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Audited
@@ -26,6 +27,19 @@ public class Picture implements Persistable<String>, Serializable, Comparable<Pi
 
     @ManyToOne(optional = false)
     private SensorStation sensorStation;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Picture)) return false;
+        Picture picture = (Picture) o;
+        return id.equals(picture.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 
     @Override
     public int compareTo(Picture o) {

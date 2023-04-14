@@ -1,6 +1,6 @@
-package at.qe.g1t2.RestAPI.controller;
+package at.qe.g1t2.restapi.controller;
 
-import at.qe.g1t2.RestAPI.model.AccessPointDTO;
+import at.qe.g1t2.restapi.model.AccessPointDTO;
 import at.qe.g1t2.services.AccessPointService;
 import at.qe.g1t2.services.SensorStationService;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -45,11 +45,13 @@ public class DashboardController extends SensorStationListController {
 
     }
 
+    @Override
     public String redirectToSensorDataPage(SensorStation sensorStation) {
         sessionSensorStationBean.setSensorStation(sensorStation);
         return "sensorDataForUsers.xhtml?faces-redirect=true";
     }
 
+    @Override
     public String getFrontPicture(SensorStation sensorStation){
         if(sensorStation.getPictures().isEmpty()){
             return "plant-test1.png";

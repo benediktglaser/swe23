@@ -1,9 +1,9 @@
-package at.qe.g1t2.RestAPI.controller;
+package at.qe.g1t2.restapi.controller;
 
-import at.qe.g1t2.RestAPI.model.SensorDataDTO;
 import at.qe.g1t2.model.SensorData;
 import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.repositories.SensorStationRepository;
+import at.qe.g1t2.restapi.model.SensorDataDTO;
 import at.qe.g1t2.services.SensorDataService;
 import at.qe.g1t2.services.SensorStationService;
 import jakarta.validation.Valid;
@@ -34,12 +34,11 @@ public class SensorDataController {
     SensorStationRepository sensorStationRepository;
 
     @PostMapping
-    private ResponseEntity<Boolean> createMeasurement(@Valid @RequestBody SensorDataDTO data) {
+    public ResponseEntity<Boolean> createMeasurement(@Valid @RequestBody SensorDataDTO data) {
         ModelMapper modelMapper = new ModelMapper();
         SensorData sensorData = modelMapper.map(data, SensorData.class);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String accessPointId = auth.getName();
-        System.out.println(sensorData);
         Long dipId = data.getDipId();
         SensorStation sensorStation = sensorStationService.getSensorStationByAccessPointIdAndDipId(accessPointId, dipId);
         if (sensorStation == null) {

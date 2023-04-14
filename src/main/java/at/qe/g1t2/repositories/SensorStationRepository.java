@@ -25,7 +25,8 @@ public interface SensorStationRepository extends JpaRepository<SensorStation, St
     @Query("SELECT u from SensorStation u")
     List<SensorStation> getAll();
 
-    SensorStation getSensorStationsByMAC(String mac);
+    SensorStation getSensorStationsByMac(String mac);
+
     @Query("SELECT u from SensorStation u where u.accessPoint = :accessPoint and u.createDate >= u.accessPoint.lastCouplingDate")
     List<SensorStation> getAllNewSensorStationsByAccessPoint(@Param("accessPoint") AccessPoint accessPoint);
 }
