@@ -31,12 +31,12 @@ import java.time.LocalDateTime;
 public class AccessPointConnectionController {
     @Autowired
     AccessPointService accessPointService;
+
     @Autowired
     SensorDataTypeInfoService sensorDataTypeInfoService;
 
     @Autowired
     SensorStationService sensorStationService;
-
 
     @GetMapping("/interval")
     public ResponseEntity<Double> checkIfAccessPointIsConnectedAndSendInterval() {
@@ -59,7 +59,6 @@ public class AccessPointConnectionController {
         AccessPoint accessPoint = refreshConnection();
         return new ResponseEntity<>(accessPoint.getEnabled(), HttpStatus.OK);
     }
-
 
     public AccessPoint getAuthAccessPoint() {
         String accessPointId = SecurityContextHolder.getContext().getAuthentication().getName();

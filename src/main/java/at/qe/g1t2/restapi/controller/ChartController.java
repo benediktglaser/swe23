@@ -65,8 +65,7 @@ public class ChartController {
         seriesArray.add(seriesObject);
         ObjectNode chartObject = objectMapper.createObjectNode();
         chartObject.set("series", seriesArray);
-        String json = writer.writeValueAsString(seriesArray);
-        return json;
+        return writer.writeValueAsString(seriesArray);
     }
 
     @GetMapping("/add")
@@ -86,8 +85,7 @@ public class ChartController {
         seriesObject.put("data", objectMapper.writeValueAsString(dataset));
 
         seriesArray.add(seriesObject);
-        String json = writer.writeValueAsString(seriesArray);
-        return json;
+        return writer.writeValueAsString(seriesArray);
     }
 
 }
