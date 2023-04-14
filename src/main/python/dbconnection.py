@@ -25,6 +25,10 @@ def create_tables(conn):
             "light_lower REAL, light_upper REAL,"
             "PRIMARY KEY(station_id))"
         )
+    except sqlite3.Error as e:
+        print(e)
+
+    try:
         # *_limit: relative excess regarding value and limit
         cursor.execute(
             "CREATE TABLE IF NOT EXISTS sensor_data(station_id INTEGER, time_stamp TEXT,"
@@ -36,9 +40,12 @@ def create_tables(conn):
             "light REAL, light_limit REAL,"
             "PRIMARY KEY(station_id, time_stamp));"
         )
+    except sqlite3.Error as e:
+        print(e)
 
+    try:
         cursor.execute(
-            "CREATE TABLE IF NOT EXISTS sensor_station(dipId INTEGER, connected INTEGER, create_date TEXT), PRIMARY KEY(dipId));"
+            "CREATE TABLE IF NOT EXISTS sensor_station(dipId INTEGER, connected INTEGER, create_date TEXT, PRIMARY KEY(dipId));"
         )
         conn.commit()
         cursor.close()
@@ -100,13 +107,15 @@ def insert_sensor_data(conn, data):
     soil_limits = limits[8:12]
     light_limits = limits[10:12]
 
+    date = datetime.now()
+
     cursor = conn.cursor()
     try:
         cursor.execute(
             "INSERT INTO sensor_data values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             (
                 data.station_id,
-                datetime.now(),
+                date,
                 data.temperature,
                 calculate_limit(data.temperature, temp_limits[0], temp_limits[1]),
                 data.pressure,
@@ -126,12 +135,14 @@ def insert_sensor_data(conn, data):
     except sqlite3.Error as e:
         print(e)
 
-def insert_into_sensor_station(conn, station_id:int, connected:bool):
+
+def insert_into_sensor_station(conn, station_id: int, connected: bool):
     cursor = conn.cursor()
     try:
         cursor.execute(
             "INSERT INTO sensor_station values(?, ?, ?)",
-            (station_id, connected, datetime.now()))
+            (station_id, connected, datetime.now()),
+        )
         conn.commit()
         cursor.close()
     except sqlite3.Error as e:
