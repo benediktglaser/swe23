@@ -5,7 +5,6 @@ import at.qe.g1t2.model.SensorDataTypeInfo;
 import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.repositories.SensorDataTypeInfoRepository;
 import at.qe.g1t2.repositories.SensorStationRepository;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
