@@ -1,9 +1,11 @@
-import requests
-import dbconnection
-import sensordata
 from typing import List
 
+import requests
 from requests.auth import HTTPBasicAuth
+
+import dbconnection
+import sensordata
+
 
 # host = "http://localhost:8080"
 

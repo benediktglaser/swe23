@@ -1,7 +1,6 @@
-import sqlite3
-import sensordata
-from datetime import datetime
 import os
+import sqlite3
+from datetime import datetime
 
 
 def create_database(path):
