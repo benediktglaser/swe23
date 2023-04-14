@@ -2,7 +2,6 @@ package at.qe.g1t2.services;
 
 import at.qe.g1t2.model.SensorStation;
 import net.glxn.qrgen.javase.QRCode;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
