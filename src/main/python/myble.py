@@ -2,7 +2,7 @@ import asyncio
 import time
 import threading
 from threading import Thread
-from bleak import BleakScanner, BLEDevice, BleakClient
+from bleak import BleakScanner, BLEDevice, BleakClient, BleakError
 from bleak.backends.scanner import AdvertisementData
 
 device_name_prefix = "SensorStation G1T2"
@@ -12,6 +12,34 @@ DEVICES = []
 CONN = None
 # mutex on DEVICES
 lock = threading.Lock()
+
+
+def ble_function(conn):
+    """
+    Function which set the DB-Connection and starts scanning
+
+    :param conn: Connection to the Database
+    :type conn: sqlite3.Connection
+    """
+
+    global CONN
+    CONN = conn
+    asyncio.run(scan_for_devices())
+
+
+async def scan_for_devices():
+    scanner = BleakScanner(detection_callback=my_callback)
+    await scanner.start()
+    timeout = time.time() + 60 * 5
+    while time.time() <= timeout:
+        # TODO: Poll Pairing-Mode from Webserver
+        await asyncio.sleep(1)
+    await scanner.stop()
+
+
+async def my_callback(device: BLEDevice, advertisement: AdvertisementData):
+    if is_sensor_station(advertisement):
+        await establish_connection(device)
 
 
 # Filtering for connection
@@ -33,56 +61,12 @@ def is_sensor_station(advertisement: AdvertisementData) -> bool:
     return True
 
 
-async def my_callback(device: BLEDevice, advertisement: AdvertisementData):
-    if is_sensor_station(advertisement):
-        await establish_connection(device)
-
-
-async def scan_for_devices():
-    scanner = BleakScanner(detection_callback=my_callback)
-    await scanner.start()
-    timeout = time.time() + 60 * 5
-    while time.time() <= timeout:
-        # Poll Pairing-Mode from Webserver
-        await asyncio.sleep(1)
-    await scanner.stop()
-
-
 async def establish_connection(device):
-    print("Establish Connection")
+    print("Establish Connection to " + device.name)
     DEVICES.append(device)
     lock.release()
     thread = Thread(target=ble_thread, args=[device])
     thread.start()
-
-
-async def call_services(device: BLEDevice):
-    """
-
-    :param device: SensorStation
-    :type device: BLEDevice
-    """
-    # client == sensor_station
-    async with BleakClient(device) as client:
-        print("Connected to device {0}".format(device.name))
-        for i in range(3):
-            print(f"Service {i}")
-            await asyncio.sleep(3)
-        print("INFO: Disconnecting from device {0} ...".format(device.name))
-    print("INFO: Disconnected from device {0}".format(device.name))
-
-
-def ble_function(conn):
-    """
-    Function which set the DB-Connection and starts scanning
-
-    :param conn: Connection to the Database
-    :type conn: sqlite3.Connection
-    """
-
-    global CONN
-    CONN = conn
-    asyncio.run(scan_for_devices())
 
 
 def ble_thread(device: BLEDevice):
@@ -92,19 +76,47 @@ def ble_thread(device: BLEDevice):
     :type device: BLEDevice
     """
 
+    if poll_for_verification(device):
+        asyncio.run(call_services(device))
+    print("Thread finished")
+
+
+def poll_for_verification(device: BLEDevice) -> bool:
     verified = False
     # TODO: send device to Webserver and poll for verification
     # rest-request with MAC and dipId
     # check returnBody if SensorStation is available (not already advertised by other AP)
-    timeout = time.time() + 60*5
-    while (not verified) and time.time() <= timeout:
+    timeout = time.time() + 60 * 5
+    while not verified:
         # poll if device is verified for this AccessPoint
         print("Poll for Verification")
         verified = True
+        if time.time() > timeout:
+            print("Error: Polling for Verification timed out")
+            return False
         pass
-    # timed out
-    if time.time() > timeout:
-        print("ERROR: BLE-Connection timed out")
-        return
-    asyncio.run(call_services(device))
-    print("Thread finished")
+    return verified
+
+
+async def call_services(device: BLEDevice):
+    """
+
+    :param device: SensorStation
+    :type device: BLEDevice
+    """
+
+    # client == sensor_station
+    try:
+        async with BleakClient(device, timeout=10) as client:
+            print("Connected to device {0}".format(device.name))
+            for i in range(3):
+                print(f"Service {i}")
+                await asyncio.sleep(3)
+            print("INFO: Disconnecting from device {0} ...".format(device.name))
+        print("INFO: Disconnected from device {0}".format(device.name))
+    except (asyncio.exceptions.CancelledError, asyncio.exceptions.TimeoutError) as e:
+        print("Error: Establishing BLE connection timed out")
+    finally:
+        lock.acquire()
+        DEVICES.remove(device)
+        lock.release()
