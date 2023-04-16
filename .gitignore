@@ -17,3 +17,10 @@ buildNumber.properties
 
 ### JPA-Buddy ###
 .jpb
+
+### Raspberry Database ###
+src/main/python/database.db
+
+### py_cache ###
+src/main/python/__pycache__/
+src/main/python/*.pyc

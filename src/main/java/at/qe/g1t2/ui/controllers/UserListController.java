@@ -2,11 +2,11 @@ package at.qe.g1t2.ui.controllers;
 
 import at.qe.g1t2.model.Userx;
 import at.qe.g1t2.services.UserService;
-import java.io.Serializable;
-import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
+import java.io.Serializable;
 
 /**
  * Controller for the user list view.
@@ -16,18 +16,20 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("view")
-public class UserListController implements Serializable {
+public class UserListController extends AbstractListController<String, Userx> implements Serializable {
 
     @Autowired
     private UserService userService;
+
+    public UserListController() {
+        this.setListToPageFunction((spec, page) -> userService.getAllUsers(spec, page));
+    }
 
     /**
      * Returns a list of all users.
      *
      * @return
      */
-    public Collection<Userx> getUsers() {
-        return userService.getAllUsers();
-    }
+
 
 }

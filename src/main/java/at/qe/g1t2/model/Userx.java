@@ -1,29 +1,28 @@
 package at.qe.g1t2.model;
 
+
+import jakarta.persistence.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.envers.Audited;
+import org.springframework.data.domain.Persistable;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import jakarta.persistence.CollectionTable;
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-import org.springframework.data.domain.Persistable;
 
 /**
  * Entity representing users.
- *
+ * <p>
  * This class is part of the skeleton project provided for students of the
  * course "Software Engineering" offered by the University of Innsbruck.
  */
 @Entity
+@Audited
 public class Userx implements Persistable<String>, Serializable, Comparable<Userx> {
 
     private static final long serialVersionUID = 1L;
@@ -32,7 +31,7 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     @Column(length = 100)
     private String username;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     private Userx createUser;
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -41,6 +40,7 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     private Userx updateUser;
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime updateDate;
+
 
     private String password;
 
@@ -55,6 +55,22 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     @CollectionTable(name = "Userx_UserRole")
     @Enumerated(EnumType.STRING)
     private Set<UserRole> roles;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @Fetch(FetchMode.SELECT)
+    @JoinTable(name = "user_sensor_station",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "sensor_station_id"))
+    private Set<SensorStation> sensorStations = new HashSet<>();
+
+    public Set<SensorStation> getSensorStations() {
+        return sensorStations;
+    }
+
+    public void setSensorStations(Set<SensorStation> sensorStations) {
+        this.sensorStations = sensorStations;
+    }
 
     public String getUsername() {
         return username;
@@ -168,10 +184,7 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
             return false;
         }
         final Userx other = (Userx) obj;
-        if (!Objects.equals(this.username, other.username)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.username, other.username);
     }
 
     @Override
@@ -193,9 +206,9 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
         return (null == createDate);
     }
 
-	@Override
-	public int compareTo(Userx o) {
-		return this.username.compareTo(o.getUsername());
-	}
+    @Override
+    public int compareTo(Userx o) {
+        return this.username.compareTo(o.getUsername());
+    }
 
 }

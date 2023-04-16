@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml">
+    <ui:define name="content">
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #17212f;
+            }
+
+            h1 {
+                font-size: 32px;
+                margin-top: 20px;
+            }
+
+            label {
+                display: block;
+                font-size: 18px;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+
+            input[type="text"],
+            input[type="file"],
+            input[type="submit"]{
+                background : #4d87b6;
+                font-size: 16px;
+                padding: 10px;
+                border-radius: 5px;
+                border: none;
+                box-shadow:  #1f2d40;
+                margin-bottom: 20px;
+            }
+
+        </style>
+        <body>
+        <h1>Upload your picture of a plant here:</h1>
+
+        <form id="myForm" enctype="multipart/form-data" action="/upload">
+            <input type="file" name="file"/>
+            <p:separator/>
+            <input type="hidden" id="sensorStationId" name="sensorStationId" value="#{sessionSensorStationBean.sensorStation.id}"/>
+            <input type="submit" value="Upload" onclick="submitForm(); return false;"/>
+        </form>
+        <script>
+            function submitForm() {
+                var form = document.getElementById("myForm");
+                var formData = new FormData(form);
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/upload");
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                            window.location.href = window.location.href;
+                        } else {
+
+                        }
+                    }
+                };
+                xhr.send(formData);
+            }
+        </script>
+        </body>
+        <h:form>
+            <p:outputPanel>
+                <div class="card centering">
+                    <h5>Pictures of selected plant:</h5>
+                    <p:galleria value="#{pictureController.getAllPictureBySensorStation(sessionSensorStationBean.sensorStation)}" var="photo" numVisible="5"
+                                showItemNavigators="true" circular="true" showItemNavigatorsOnHover="true" showThumbnails="false" showIndicators="true" style="max-width: 640px">
+                        <p:graphicImage library="images" name="#{photo.path}" style="width: 100%; display: block;" />
+                    </p:galleria>
+                </div>
+            </p:outputPanel>
+        </h:form>
+    </ui:define>
+</ui:composition>

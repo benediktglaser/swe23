@@ -1,5 +1,8 @@
 package at.qe.g1t2.tests;
 
+import at.qe.g1t2.model.UserRole;
+import at.qe.g1t2.services.UserService;
+import at.qe.g1t2.ui.beans.SessionInfoBean;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,13 +10,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import at.qe.g1t2.model.UserRole;
-import at.qe.g1t2.services.UserService;
-import at.qe.g1t2.ui.beans.SessionInfoBean;
-
 /**
  * Some very basic tests for {@link UserService}.
- *
+ * <p>
  * This class is part of the skeleton project provided for students of the
  * course "Software Engineering" offered by the University of Innsbruck.
  */
@@ -25,13 +24,13 @@ public class SessionInfoBeanTest {
     SessionInfoBean sessionInfoBean;
 
     @Test
-    @WithMockUser(username = "user1", authorities = {"EMPLOYEE"})
+    @WithMockUser(username = "user1", authorities = {"GARDENER"})
     public void testLoggedIn() {
         Assertions.assertTrue(sessionInfoBean.isLoggedIn(), "sessionInfoBean.isLoggedIn does not return true for authenticated user");
         Assertions.assertEquals("user1", sessionInfoBean.getCurrentUserName(), "sessionInfoBean.getCurrentUserName does not return authenticated user's name");
         Assertions.assertEquals("user1", sessionInfoBean.getCurrentUser().getUsername(), "sessionInfoBean.getCurrentUser does not return authenticated user");
-        Assertions.assertEquals("EMPLOYEE", sessionInfoBean.getCurrentUserRoles(), "sessionInfoBean.getCurrentUserRoles does not return authenticated user's roles");
-        Assertions.assertTrue(sessionInfoBean.hasRole("EMPLOYEE"), "sessionInfoBean.hasRole does not return true for a role the authenticated user has");
+        Assertions.assertEquals("GARDENER", sessionInfoBean.getCurrentUserRoles(), "sessionInfoBean.getCurrentUserRoles does not return authenticated user's roles");
+        Assertions.assertTrue(sessionInfoBean.hasRole("GARDENER"), "sessionInfoBean.hasRole does not return true for a role the authenticated user has");
         Assertions.assertFalse(sessionInfoBean.hasRole("ADMIN"), "sessionInfoBean.hasRole does not return false for a role the authenticated user does not have");
     }
 

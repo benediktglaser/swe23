@@ -33,15 +33,15 @@ public class SecurityTestBean {
         showOkDialog = true;
     }
 
-    @PreAuthorize("hasAuthority('MANAGER')")
-    public void doManagerAction() {
-        performedAction = "MANAGER";
+    @PreAuthorize("hasAuthority('GARDENER')")
+    public void doGardenerAction() {
+        performedAction = "GARDENER";
         showOkDialog = true;
     }
 
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
-    public void doEmployeeAction() {
-        performedAction = "EMPLOYEE";
+    @PreAuthorize("hasAuthority('USER')")
+    public void doUserAction() {
+        performedAction = "USER";
         showOkDialog = true;
     }
 

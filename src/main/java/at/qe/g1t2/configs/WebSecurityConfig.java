@@ -1,26 +1,30 @@
 package at.qe.g1t2.configs;
 
-import javax.sql.DataSource;
-
+import at.qe.g1t2.model.AccessPointRole;
 import at.qe.g1t2.model.UserRole;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
-import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
-
-import at.qe.g1t2.spring.CustomizedLogoutSuccessHandler;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+
+import javax.sql.DataSource;
+import java.util.Collection;
+
+import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
 /**
  * Spring configuration for web security.
- *
+ * <p>
  * This class is part of the skeleton project provided for students of the
  * course "Software Engineering" offered by the University of Innsbruck.
  */
@@ -29,18 +33,20 @@ import org.springframework.security.web.SecurityFilterChain;
 public class WebSecurityConfig {
 
     private static final String ADMIN = UserRole.ADMIN.name();
-    private static final String MANAGER = UserRole.MANAGER.name();
-    private static final String EMPLOYEE = UserRole.EMPLOYEE.name();
+    private static final String USER = UserRole.USER.name();
+    private static final String GARDENER = UserRole.GARDENER.name();
+    private static final String ACCESS_POINT = AccessPointRole.ACCESS_POINT.name();
 
-    @Autowired
+
     DataSource dataSource;
 
-    @Bean
-    protected LogoutSuccessHandler logoutSuccessHandler() {
-    	return new CustomizedLogoutSuccessHandler();
-    }
 
-    
+    private final MyBasicAuthenticationEntryPoint authenticationEntryPoint;
+    @Autowired
+    public WebSecurityConfig(DataSource dataSource, MyBasicAuthenticationEntryPoint authenticationEntryPoint) {
+        this.dataSource = dataSource;
+        this.authenticationEntryPoint = authenticationEntryPoint;
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -48,39 +54,71 @@ public class WebSecurityConfig {
             http.csrf().disable();
             http.headers().frameOptions().disable(); // needed for H2 console
 
-            http
-                .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/").permitAll()
-                .requestMatchers("/**.jsf").permitAll()
-                .requestMatchers(antMatcher("/h2-console/**")).permitAll()
-                .requestMatchers("/jakarta.faces.resource/**").permitAll()
-                .requestMatchers("/error/**").permitAll()
-                .requestMatchers("/admin/**").hasAnyAuthority(ADMIN)
-                .requestMatchers("/secured/**").hasAnyAuthority(ADMIN, MANAGER, EMPLOYEE)
-                .requestMatchers("/omnifaces.push/**").hasAnyAuthority(ADMIN, MANAGER, EMPLOYEE)
-                    .anyRequest().authenticated())
+
+            http.authorizeHttpRequests(authorize -> authorize
+                            .requestMatchers("/upload").permitAll()
+                            .requestMatchers("/visitor/**").permitAll()
+                            .requestMatchers("/api/accessPoint/register").permitAll()
+                            .requestMatchers("/api/accessPoint/register/**").hasAnyAuthority(ACCESS_POINT)
+                            .requestMatchers("/api/sensorStation/connect").hasAnyAuthority(ACCESS_POINT)
+                            .requestMatchers("/").permitAll()
+                            .requestMatchers("/**.jsf").permitAll()
+                            .requestMatchers(antMatcher("/h2-console/**")).permitAll()
+                            .requestMatchers("/jakarta.faces.resource/**").permitAll()
+                            .requestMatchers("/error/**").permitAll()
+                            .requestMatchers("/admin/**").hasAnyAuthority(ADMIN)
+                            .requestMatchers("/secured/**").hasAnyAuthority(ADMIN, GARDENER, USER)
+                            .requestMatchers("/gardener/**").hasAnyAuthority(ADMIN, GARDENER)
+                            .requestMatchers("/user/**").hasAnyAuthority(USER)
+                            .requestMatchers("/omnifaces.push/**").hasAnyAuthority(ADMIN, GARDENER, USER)
+                            .anyRequest().authenticated())
                     .formLogin()
                     .loginPage("/login.xhtml")
                     .permitAll()
-                    .failureUrl("/error/access_denied.xhtml")
+                    .failureUrl("/login.xhtml?error=true")
                     .defaultSuccessUrl("/secured/welcome.xhtml")
-                .loginProcessingUrl("/login")
-                .successForwardUrl("/secured/welcome.xhtml")
+                    .loginProcessingUrl("/login")
+                    .successHandler(successHandler())
                     .and()
                     .logout()
                     .logoutSuccessUrl("/login.xhtml")
-                    .deleteCookies("JSESSIONID");
-            
-//            http.exceptionHandling().accessDeniedPage("/error/access_denied.xhtml");
-            http.sessionManagement().invalidSessionUrl("/error/invalid_session.xhtml");
-			return http.build();
-            }
-            catch (Exception ex) {
-                    throw new BeanCreationException("Wrong spring security configuration", ex);
-            }
-                
-        // :TODO: user failureUrl(/login.xhtml?error) and make sure that a corresponding message is displayed
+                    .deleteCookies("JSESSIONID").and()
+                    .httpBasic().authenticationEntryPoint(authenticationEntryPoint);
 
+            http.exceptionHandling().accessDeniedPage("/error/access_denied.xhtml");
+            http.sessionManagement().invalidSessionUrl("/error/invalid_session.xhtml");
+            return http.build();
+        } catch (Exception ex) {
+            throw new BeanCreationException("Wrong spring security configuration", ex);
+        }
+
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+    }
+
+    private AuthenticationSuccessHandler successHandler() {
+        return (request, response, authentication) -> {
+            Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+            for (GrantedAuthority grantedAuthority : authorities) {
+                if ((grantedAuthority.getAuthority().contains("GARDENER"))) {
+                    response.sendRedirect("/gardener/sensorStations/sensorStations.xhtml");
+                    return;
+                }
+                if ((grantedAuthority.getAuthority().contains("USER"))) {
+                    response.sendRedirect("/user/dashboard/dashboard.xhtml");
+                    return;
+                }
+                if ((grantedAuthority.getAuthority().contains("ADMIN"))) {
+                    response.sendRedirect("/admin/accessPoint.xhtml");
+                    return;
+                }
+            }
+
+        };
     }
 
     @Autowired
@@ -89,6 +127,10 @@ public class WebSecurityConfig {
         auth.jdbcAuthentication().dataSource(dataSource)
                 .usersByUsernameQuery("select username, password, enabled from userx where username=?")
                 .authoritiesByUsernameQuery("select userx_username, roles from userx_user_role where userx_username=?")
+                .passwordEncoder(passwordEncoder())
+                .and().jdbcAuthentication().dataSource(dataSource)
+                .usersByUsernameQuery("select id, password,enabled from access_point where id=?")
+                .authoritiesByUsernameQuery("select id, access_Point_Role from access_point where id=?")
                 .passwordEncoder(passwordEncoder());
     }
 
@@ -96,6 +138,5 @@ public class WebSecurityConfig {
     public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
 }

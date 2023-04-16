@@ -1,29 +1,38 @@
 package at.qe.g1t2.services;
 
+import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.model.Userx;
 import at.qe.g1t2.repositories.UserxRepository;
-import java.util.Collection;
-import java.time.LocalDateTime;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.Collection;
 
 /**
  * Service for accessing and manipulating user data.
- *
+ * <p>
  * This class is part of the skeleton project provided for students of the
  * course "Software Engineering" offered by the University of Innsbruck.
  */
 @Component
 @Scope("application")
-public class UserService {
+public class UserService implements Serializable {
 
     @Autowired
     private UserxRepository userRepository;
+
+
+
 
     /**
      * Returns a collection of all users.
@@ -31,8 +40,15 @@ public class UserService {
      * @return
      */
     @PreAuthorize("hasAuthority('ADMIN')")
+    @Transactional
     public Collection<Userx> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @Transactional
+    public Page<Userx> getAllUsers(Specification<Userx> spec, Pageable page) {
+        return userRepository.findAll(spec,page);
     }
 
     /**
@@ -42,6 +58,7 @@ public class UserService {
      * @return the user with the given username
      */
     @PreAuthorize("hasAuthority('ADMIN') or principal.username eq #username")
+    @Transactional
     public Userx loadUser(String username) {
         return userRepository.findFirstByUsername(username);
     }
@@ -56,6 +73,7 @@ public class UserService {
      * @return the updated user
      */
     @PreAuthorize("hasAuthority('ADMIN')")
+    @Transactional
     public Userx saveUser(Userx user) {
         if (user.isNew()) {
             user.setCreateDate(LocalDateTime.now());
@@ -74,13 +92,28 @@ public class UserService {
      */
     @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteUser(Userx user) {
+
         userRepository.delete(user);
-        // :TODO: write some audit log stating who and when this user was permanently deleated.
     }
 
     private Userx getAuthenticatedUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return userRepository.findFirstByUsername(auth.getName());
     }
+
+    public void addSensorStationToUser(SensorStation sensorStation){
+        Userx userx = getAuthenticatedUser();
+        userx.getSensorStations().add(sensorStation);
+        sensorStation.getUserx().add(userx);
+        userRepository.save(userx);
+    }
+    public void removeSensorStationToUser(SensorStation sensorStation){
+        Userx userx = getAuthenticatedUser();
+        userx.getSensorStations().remove(sensorStation);
+        sensorStation.getUserx().remove(userx);
+        userRepository.save(userx);
+    }
+
+
 
 }
