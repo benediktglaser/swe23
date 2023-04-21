@@ -211,4 +211,30 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
         return this.username.compareTo(o.getUsername());
     }
 
+    public void addGardener() {
+        Set<UserRole> a = new HashSet<>();
+        a.add(UserRole.GARDENER);
+        this.setRoles(a);
+    }
+
+    public void addAdmin() {
+        Set<UserRole> a = new HashSet<>();
+        a.add(UserRole.ADMIN);
+        this.setRoles(a);
+    }
+
+    public void addUser() {
+        Set<UserRole> a = new HashSet<>();
+        a.add(UserRole.USER);
+        this.setRoles(a);
+    }
+
+    public void addAdminGardener() {
+        Set<UserRole> a = new HashSet<>();
+        a.add(UserRole.ADMIN);
+        a.add(UserRole.GARDENER);
+        this.setRoles(a);
+    }
+
+
 }
