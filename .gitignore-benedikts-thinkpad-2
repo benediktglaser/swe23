@@ -1,0 +1,26 @@
+### Maven project specific ###
+# https://github.com/github/gitignore/blob/main/Maven.gitignore
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+# https://github.com/takari/maven-wrapper#usage-without-binary-jar
+.mvn/wrapper/maven-wrapper.jar
+
+### IntelliJ specific ###
+.idea
+
+### JPA-Buddy ###
+.jpb
+
+### Raspberry Database ###
+src/main/python/database.db
+
+### py_cache ###
+src/main/python/__py_cache__/
+src/main/python/*.pyc
