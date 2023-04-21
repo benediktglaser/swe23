@@ -13,6 +13,7 @@ import at.qe.g1t2.services.SensorStationService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -21,50 +22,61 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/sensorStation")
+@Scope("application")
 public class SensorStationConnectController {
 
+
+    private Map<AccessPoint,Map<Long,SensorStationDTO>> visibleMap = new HashMap<>();
     @Autowired
-    AccessPointService accessPointService;
+    private AccessPointService accessPointService;
     @Autowired
-    SensorStationService sensorStationService;
+    private SensorStationService sensorStationService;
 
     @Autowired
-    SensorDataTypeInfoService sensorDataTypeInfoService;
+    private SensorDataTypeInfoService sensorDataTypeInfoService;
 
     @PostMapping("/register")
-    public ResponseEntity<Boolean> createSensorStation(@Valid @RequestBody SensorStationDTO sensorStationDTO) {
+    public ResponseEntity<Boolean> addVisibleSensorStations(@Valid @RequestBody SensorStationDTO sensorStationDTO) {
 
-        ModelMapper modelMapper = new ModelMapper();
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        AccessPoint accessPoint = accessPointService.loadAccessPoint(auth.getName());
+        AccessPoint accessPoint = getAuthAccessPoint();
 
-        SensorStation newSensorStation = modelMapper.map(sensorStationDTO, SensorStation.class);
         SensorStation existingSensorStation = sensorStationService.getSensorStation(sensorStationDTO.getMac());
 
-        if (existingSensorStation != null) {
-            if (!existingSensorStation.getCreateDate().isBefore(LocalDateTime.now().minusMinutes(5))) {
-                return new ResponseEntity<>(Boolean.FALSE, HttpStatus.OK);
-            }
-
-            sensorStationService.deleteSensorStation(existingSensorStation);
-
+        if (existingSensorStation != null && existingSensorStation.getAccessPoint().equals(accessPoint)) {
+            return new ResponseEntity<>(Boolean.FALSE, HttpStatus.OK);
         }
-        newSensorStation = sensorStationService.saveSensorStation(accessPoint, newSensorStation);
-        for (SensorDataType type : SensorDataType.values()) {
-            SensorDataTypeInfo info = new SensorDataTypeInfo();
-            info.setMaxLimit(0.0);
-            info.setMinLimit(0.0);
-            info.setType(type);
-            sensorDataTypeInfoService.save(newSensorStation, info);
-
+        if  (existingSensorStation != null){
+            sensorStationService.deleteSensorStation(existingSensorStation);
+        }
+        sensorStationDTO.setConnected(false);
+        sensorStationDTO.setVerified(false);
+        if(!visibleMap.containsKey(accessPoint)){
+            Map<Long,SensorStationDTO> dipDTOMap = new HashMap<>();
+            dipDTOMap.put(sensorStationDTO.getDipId(),sensorStationDTO);
+            visibleMap.put(accessPoint,dipDTOMap);
+        }
+        else {
+            visibleMap.get(accessPoint).put(sensorStationDTO.getDipId(),sensorStationDTO);
         }
         return new ResponseEntity<>(Boolean.TRUE, HttpStatus.OK);
 
     }
+
+    @GetMapping("/verified/{dipId}")
+    public ResponseEntity<Boolean> checkVerifiedSensorStationsForCouple(@PathVariable String dipId) {
+        AccessPoint accessPoint = getAuthAccessPoint();
+        SensorStationDTO sensorStationDTO = visibleMap.get(accessPoint).get(Long.parseLong(dipId));
+
+
+        return new ResponseEntity<>(sensorStationDTO.getVerified(),HttpStatus.OK);
+    }
+
 
     @GetMapping("/enabled/{dipId}")
     public ResponseEntity<Boolean> checkEnabled(@PathVariable String dipId) {
@@ -80,13 +92,24 @@ public class SensorStationConnectController {
 
     @GetMapping("/connected/{dipId}")
     public ResponseEntity<Boolean> checkConnection(@PathVariable String dipId) {
-
+        AccessPoint accessPoint = getAuthAccessPoint();
         SensorStation sensorStation = sensorStationService.getSensorStationByAccessPointIdAndDipId(getAuthAccessPoint().getId(), Long.parseLong(dipId));
         if (sensorStation == null) {
-            throw new EntityNotFoundException("SensorStation was not registered before");
+            SensorStationDTO sensorStationDTO = visibleMap.get(accessPoint).get(Long.parseLong(dipId));
+            if(sensorStationDTO == null){
+                throw new EntityNotFoundException("SensorStation not verified or registered");
+            }
+            SensorStation newSensorStation = new SensorStation();
+            newSensorStation.setDipId(sensorStationDTO.getDipId());
+            newSensorStation.setMac(sensorStationDTO.getMac());
+            newSensorStation.setLastConnectedDate(LocalDateTime.now());
+            newSensorStation = sensorStationService.saveSensorStation(accessPoint, newSensorStation);
+            sensorStationDTO.setConnected(true);
+            visibleMap.get(accessPoint).put(Long.parseLong(dipId),sensorStationDTO);
+            return new ResponseEntity<>(newSensorStation.getConnected(), HttpStatus.OK);
         }
         sensorStation.setLastConnectedDate(LocalDateTime.now());
-        sensorStationService.saveSensorStation(getAuthAccessPoint(), sensorStation);
+        sensorStationService.saveSensorStation(accessPoint, sensorStation);
         return new ResponseEntity<>(sensorStation.getConnected(), HttpStatus.OK);
     }
 
@@ -130,5 +153,26 @@ public class SensorStationConnectController {
             throw new EntityNotFoundException("AccessPoint is not registered");
         }
         return accessPoint;
+    }
+
+    public Map<AccessPoint, Map<Long, SensorStationDTO>> getVisibleMap() {
+        return visibleMap;
+    }
+
+    public List<Long> getSensorStationsByAccessPoint(AccessPoint accessPoint){
+        Map<Long,SensorStationDTO> sensorStationDTOs = visibleMap.get(accessPoint);
+        if(sensorStationDTOs == null){
+            return new ArrayList<>();
+        }
+        return sensorStationDTOs.keySet().stream().toList();
+    }
+
+    public void selectSensorStation(AccessPoint accessPoint, Long dipId){
+        Map<Long,SensorStationDTO> sensorStationDTOs = visibleMap.get(accessPoint);
+        sensorStationDTOs.get(dipId).setVerified(true);
+    }
+    public SensorStationDTO getSensorStationsByAccessPointAndDipId(AccessPoint accessPoint, Long dipId){
+        Map<Long,SensorStationDTO> sensorStationDTOs = visibleMap.get(accessPoint);
+        return sensorStationDTOs.get(dipId);
     }
 }

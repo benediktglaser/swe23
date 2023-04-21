@@ -92,13 +92,20 @@
                 <i class="pi pi-spin pi-spinner" style="font-size: 1rem"></i>
                 <p:outputPanel id="aviableData">
                     <p:poll interval="5" update="aviableData"></p:poll>
-                    <p:dataTable id="avaiableTable" value="#{sensorStationListController.allNewSensorStation}" var="sensorStation"
+                    <p:dataTable id="avaiableTable" value="#{sensorStationConnectController.getSensorStationsByAccessPoint(sensorStationListController.accessPoint)}" var="dipIds"
                                  lazy="true" rows="3" paginator="true" scrollable="true" scrollHeight="400">
-                        <p:column headerText="UUID" sortBy="#{sensorStation.id}" filterBy="#{sensorStation.id}">
-                            <h:outputText value="#{sensorStation.id}"/>
+                        <p:column headerText="DIP Id" filterBy="#{sensorStationConnectController.getSensorStationsByAccessPointAndDipId(sensorStationListController.accessPoint,dipIds).dipId}">
+                            <h:outputText value="#{sensorStationConnectController.getSensorStationsByAccessPointAndDipId(sensorStationListController.accessPoint,dipIds).dipId}"/>
                         </p:column>
-                        <p:column headerText="DIP Id" sortBy="#{sensorStation.dipId}" filterBy="#{sensorStation.dipId}">
-                            <h:outputText value="#{sensorStation.dipId}"/>
+                        <p:column headerText="MAC" filterBy="#{sensorStationConnectController.getSensorStationsByAccessPointAndDipId(sensorStationListController.accessPoint,dipIds).mac}">
+                            <h:outputText value="#{sensorStationConnectController.getSensorStationsByAccessPointAndDipId(sensorStationListController.accessPoint,dipIds).mac}"/>
+                        </p:column>
+                        <p:column headerText="Connected" filterBy="#{sensorStationConnectController.getSensorStationsByAccessPointAndDipId(sensorStationListController.accessPoint,dipIds).getConnected()}">
+                            <h:outputText value="#{sensorStationConnectController.getSensorStationsByAccessPointAndDipId(sensorStationListController.accessPoint,dipIds).getConnected()}"/>
+                        </p:column>
+                        <p:column headerText= "Connect">
+                            <p:commandButton icon="pi pi-link"
+                                             action="#{sensorStationConnectController.selectSensorStation(sensorStationListController.accessPoint,dipIds)}"/>
                         </p:column>
                     </p:dataTable>
                 </p:outputPanel>
