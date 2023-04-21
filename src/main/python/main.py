@@ -4,6 +4,7 @@ import restcontroller_init as rci
 import credentials
 import time
 import restcontroller as rest
+import sensordata
 from threading import Thread
 
 
@@ -16,8 +17,8 @@ def init():
     name = config.get("config", "name")
 
     # establish the database-connection
-    path = "database.db"  # TODO: change on raspberry
-    conn = db.create_database(path)
+    # path = "database.db"  # TODO: change on raspberry
+    # conn = db.create_database(path)
 
     # establish a (first time) connection the the webserver
     login = credentials.read_from_yaml()
@@ -45,7 +46,6 @@ def init():
     print(login)
     auth_header = rci.prepare_auth_headers(login[0], login[1])
     argument_list = {
-        "connection": conn,
         "authentication_header": auth_header,
         "address": address,
         "interval": interval,
@@ -91,8 +91,30 @@ def poll_interval(address: str, interval: float, auth_header):
             break
 
 
+def send_data(address: str, interval: float, auth_header):
+    i = 1
+    path = "database.db"  # TODO: change on raspberry
+    conn = db.create_database(path)
+
+    db.init_limits(conn, 1)
+    while True:
+        data_1 = sensordata.SensorData(1, 8 * i, 9 * i, 10 * i, 11 * i, 12 * i, 13 * i)
+        data_2 = sensordata.SensorData(
+            1, 18 * i, 19 * i, 110 * i, 111 * i, 112 * i, 113 * i
+        )
+        db.insert_sensor_data(conn, data_1)
+        db.insert_sensor_data(conn, data_2)
+        list = db.get_sensor_data(conn, 1)
+
+        sensor_data_delete = rest.post_measurement(address, list, auth_header)
+        rest.delete_send_sensor_data(conn, sensor_data_delete)
+        i = i + 1
+        time.sleep(15)
+
+
 if __name__ == "__main__":
     arguments = init()
+
     polling_for_couple_mode_thread = Thread(
         target=poll_couple_mode,
         args=(arguments["address"], arguments["authentication_header"]),
@@ -105,7 +127,18 @@ if __name__ == "__main__":
             arguments["authentication_header"],
         ),
     )
+    sending_sensor_data_thread = Thread(
+        target=send_data,
+        args=(
+            arguments["address"],
+            arguments["interval"],
+            arguments["authentication_header"],
+        ),
+    )
     polling_for_couple_mode_thread.start()
     polling_for_interval_thread.start()
+    sending_sensor_data_thread.start()
+
     polling_for_couple_mode_thread.join()
     polling_for_interval_thread.join()
+    sending_sensor_data_thread.join()
