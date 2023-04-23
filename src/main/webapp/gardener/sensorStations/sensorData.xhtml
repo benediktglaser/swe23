@@ -24,7 +24,16 @@
             <script src="https://code.highcharts.com/modules/exporting.js"></script>
 
         </h:head>
+
         <h:form id="sensorDataForm">
+            <div class="card">
+                <p:cascadeSelect placeholder="Select a dataType for chart" value="#{chartsView.selection}"
+                                 effect="slide" header="Select Type and Limits" showHeaders="true" required="true">
+                    <f:selectItems value="#{chartsView.categories}"/>
+                    <p:ajax listener="#{chartsView.doUpdate()}"/>
+                </p:cascadeSelect>
+            </div>
+            <p:separator/>
             <p:dataTable id="sensorDataTable" var="sensorData" value="#{sensorDataListController}"
                          class="sensorDataTable" lazy="true" rows="3" paginator="true">
                 <p:column headerText="Measurement" class="ui-datatable-header" sortBy="#{sensorData.measurement}"
@@ -48,14 +57,7 @@
             <p:separator/>
         </h:form>
     <h:form id="chartForm">
-            <div class="card">
-                <p:cascadeSelect placeholder="Select a dataType for chart" value="#{chartsView.selection}"
-                                 effect="slide" header="Select Type and Limits" showHeaders="true" required="true">
-                    <f:selectItems value="#{chartsView.categories}"/>
-                    <p:ajax listener="#{chartsView.doUpdate()}"/>
-                </p:cascadeSelect>
-            </div>
-            <p:separator/>
+
             <div style="flex:1">
                 <!-- Hier steht der Code für das Highcharts-Diagramm -->
                 <div id="chart-container"></div>

@@ -15,19 +15,18 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 @Scope("view")
-public class DashboardController extends SensorStationListController {
-
-    @Autowired
-    private SensorStationService sensorStationService;
-
-    @Autowired
-    SessionSensorStationBean sessionSensorStationBean;
+public class DashboardController extends AbstractListController<String, SensorStation>{
 
     @Autowired
     UserService userService;
 
+    @Autowired
+    SessionSensorStationBean sessionSensorStationBean;
+    @Autowired
+    SensorStationService sensorStationService;
+
     public DashboardController() {
-        super();
+        this.setListToPageFunction((spec, page) -> sensorStationService.getAllSensorStations(spec, page));
     }
 
 
@@ -45,13 +44,13 @@ public class DashboardController extends SensorStationListController {
 
     }
 
-    @Override
+
     public String redirectToSensorDataPage(SensorStation sensorStation) {
         sessionSensorStationBean.setSensorStation(sensorStation);
         return "sensorDataForUsers.xhtml?faces-redirect=true";
     }
 
-    @Override
+
     public String getFrontPicture(SensorStation sensorStation){
         if(sensorStation.getPictures().isEmpty()){
             return "plant-test1.png";

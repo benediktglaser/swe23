@@ -1,8 +1,8 @@
+import os
 import sqlite3
 import sensordata
 import logger
 from datetime import datetime
-import os
 
 
 def create_database(path):

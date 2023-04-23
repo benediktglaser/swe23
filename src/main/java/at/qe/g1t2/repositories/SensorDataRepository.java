@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
  * Repository for managing {@link SensorData} entities.
  */
 
-public interface SensorDataRepository extends JpaRepository<SensorData, String>, JpaSpecificationExecutor<SensorData> {
+public interface SensorDataRepository extends JpaRepository<SensorData, String>,JpaSpecificationExecutor<SensorData>,Serializable {
 
     SensorData findSensorDataById(String uuid);
 

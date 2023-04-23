@@ -65,17 +65,15 @@ public class ChartController {
         seriesArray.add(seriesObject);
         ObjectNode chartObject = objectMapper.createObjectNode();
         chartObject.set("series", seriesArray);
-        String json = writer.writeValueAsString(seriesArray);
-        return json;
+        return writer.writeValueAsString(seriesArray);
     }
 
     @GetMapping("/add")
     public String getNewSensorData(@RequestParam String sensorStationId, @RequestParam String sensorDataTypeId, @RequestParam String typeId, @RequestParam String lastDate) throws JsonProcessingException {
         long timestamp = Long.parseLong(lastDate);
         LocalDateTime lastTimeStamp = Instant.ofEpochMilli(timestamp).atZone(ZoneId.systemDefault()).toLocalDateTime();
-        lastTimeStamp = lastTimeStamp.minusHours(2);
+        lastTimeStamp = lastTimeStamp.minusHours(1);
         SensorStation sensorStation = sensorStationService.loadSensorStation(sensorStationId);
-
         List<Object[]> dataset;
         dataset = sensorDataService.getAllNewSensorDataByStationAndTypeForChart(sensorStation, SensorDataType.valueOf(typeId), lastTimeStamp);
         ObjectMapper objectMapper = new ObjectMapper();
@@ -86,8 +84,7 @@ public class ChartController {
         seriesObject.put("data", objectMapper.writeValueAsString(dataset));
 
         seriesArray.add(seriesObject);
-        String json = writer.writeValueAsString(seriesArray);
-        return json;
+        return writer.writeValueAsString(seriesArray);
     }
 
 }

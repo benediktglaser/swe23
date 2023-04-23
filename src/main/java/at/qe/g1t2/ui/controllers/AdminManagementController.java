@@ -1,32 +1,25 @@
 package at.qe.g1t2.ui.controllers;
 
+
 import at.qe.g1t2.model.Userx;
-import at.qe.g1t2.repositories.LogInfoRepository;
 import at.qe.g1t2.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.io.Serializable;
-
 /**
- * Controller for the user detail view.
- *
- * This class is part of the skeleton project provided for students of the
- * course "Software Engineering" offered by the University of Innsbruck.
+ * Controller for the admin view to manage users.
  */
 @Component
-@Scope("view")
-public class UserDetailController implements Serializable {
+@Scope("session")
+public class AdminManagementController{
 
     @Autowired
     private UserService userService;
-    @Autowired
-    private LogInfoRepository logInfoRepository;
+
     /**
      * Attribute to cache the currently displayed user
      */
-
     private Userx user;
 
     /**
@@ -39,7 +32,6 @@ public class UserDetailController implements Serializable {
      */
     public void setUser(Userx user) {
         this.user = user;
-        doReloadUser();
     }
 
     /**
@@ -48,6 +40,9 @@ public class UserDetailController implements Serializable {
      * @return
      */
     public Userx getUser() {
+        if (user == null) {
+            user = new Userx();
+        }
         return user;
     }
 
@@ -68,10 +63,14 @@ public class UserDetailController implements Serializable {
     /**
      * Action to delete the currently displayed user.
      */
-
     public void doDeleteUser() {
         this.userService.deleteUser(user);
         user = null;
     }
 
+
+
+
 }
+
+

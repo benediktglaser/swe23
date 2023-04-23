@@ -37,12 +37,16 @@ public class WebSecurityConfig {
     private static final String GARDENER = UserRole.GARDENER.name();
     private static final String ACCESS_POINT = AccessPointRole.ACCESS_POINT.name();
 
-    @Autowired
+
     DataSource dataSource;
 
-    @Autowired
-    private MyBasicAuthenticationEntryPoint authenticationEntryPoint;
 
+    private final MyBasicAuthenticationEntryPoint authenticationEntryPoint;
+    @Autowired
+    public WebSecurityConfig(DataSource dataSource, MyBasicAuthenticationEntryPoint authenticationEntryPoint) {
+        this.dataSource = dataSource;
+        this.authenticationEntryPoint = authenticationEntryPoint;
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -79,9 +83,7 @@ public class WebSecurityConfig {
                     .logout()
                     .logoutSuccessUrl("/login.xhtml")
                     .deleteCookies("JSESSIONID").and()
-                    .httpBasic().authenticationEntryPoint(authenticationEntryPoint)
-                    .and()
-                    .csrf().disable();
+                    .httpBasic().authenticationEntryPoint(authenticationEntryPoint);
 
             http.exceptionHandling().accessDeniedPage("/error/access_denied.xhtml");
             http.sessionManagement().invalidSessionUrl("/error/invalid_session.xhtml");

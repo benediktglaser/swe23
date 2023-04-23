@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
@@ -27,7 +29,6 @@ public class ChartsView {
     @Autowired
     SensorDataTypeInfoService sensorDataTypeInfoService;
 
-    private Map<String,String> typeInfoMap = new HashMap<>();
     @PostConstruct
     public void init() {
         typeInfos = new ArrayList<>();
