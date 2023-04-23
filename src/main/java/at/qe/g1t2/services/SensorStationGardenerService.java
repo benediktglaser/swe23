@@ -25,7 +25,7 @@ public class SensorStationGardenerService implements Serializable {
     SensorStationRepository sensorStationRepository;
 
 
-    public void assignGarderner(Userx userx, SensorStation sensorStation){
+    public void assignGardener(Userx userx, SensorStation sensorStation){
         sensorStation.setGardener(userx);
         sensorStationRepository.save(sensorStation);
     }
