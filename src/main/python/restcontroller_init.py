@@ -1,4 +1,5 @@
 import requests
+import logger
 
 from requests.auth import HTTPBasicAuth
 
@@ -24,6 +25,7 @@ def register_access_point_at_server(address: str, interval: float, name: str):
 
     except Exception as e:
         print(e)
+        logger.log_error(e)
 
 
 def register_new_sensorstation_at_server(address: str, dipId: int, auth_header):
@@ -45,6 +47,7 @@ def request_limits(address: str, dipId: int, auth_header):
         return resp.json()
     except Exception as e:
         print(e)
+        logger.log_error(e)
 
 
 def request_approval(address: str, auth_header):
@@ -57,6 +60,7 @@ def request_approval(address: str, auth_header):
 
     except Exception as e:
         print(e)
+        logger.log_error(e)
         return None
 
 
@@ -70,6 +74,7 @@ def request_couple_mode(address: str, auth_header):
 
     except Exception as e:
         print(e)
+        logger.log_error(e)
         return None
 
 
