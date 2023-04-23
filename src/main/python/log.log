@@ -1,0 +1,13 @@
+2023-04-23 15:03:06,781  log_debug  DEBUG <MagicMock name='post()' id='139804033910624'>
+2023-04-23 15:03:06,786  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-23 15:03:06,788  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/sensorData (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f26a9c74e50>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2023-04-23 15:03:06,792  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-23 15:03:06,794  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/sensorData (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f26a9c3bb50>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2023-04-23 15:03:06,797  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-23 15:03:06,801  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/sensorData (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f26a9c81630>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2023-04-23 15:03:06,806  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-23 15:03:06,812  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/sensorData (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f26a9c3b460>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2023-04-23 15:03:06,815  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-23 15:03:06,821  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/sensorData (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f26a9c3ba30>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2023-04-23 15:03:06,824  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-23 15:03:06,826  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/sensorData (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f26a9c77730>: Failed to establish a new connection: [Errno 111] Connection refused'))
