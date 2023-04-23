@@ -59,7 +59,7 @@
                 <p:outputPanel id="accessPointLinkData">
                     <p:commandButton value="Activate Couplemode"
                                      actionListener="#{accessPointCoupleController.startCouplingMode(sensorStationListController.accessPoint)}"
-                                     onstart="PF('spinner').show()">
+                                     onstart="startTimer()">
                     </p:commandButton>
                         <p:dataTable id="ConnectTable" value="#{sensorStationListController}" var="sensorStation"
                                  lazy="true" rows="3" paginator="true" scrollable="true" scrollHeight="400">
@@ -92,26 +92,51 @@
                 <i class="pi pi-spin pi-spinner" style="font-size: 1rem"></i>
                 <p:outputPanel id="aviableData">
                     <p:poll interval="5" update="aviableData"></p:poll>
-                    <p:dataTable id="avaiableTable" value="#{sensorStationListController.allNewSensorStation}" var="sensorStation"
+                    <p:dataTable id="avaiableTable" value="#{visibleSensorStationController.getSensorStationsByAccessPoint(sensorStationListController.accessPoint)}" var="dipIds"
                                  lazy="true" rows="3" paginator="true" scrollable="true" scrollHeight="400">
-                        <p:column headerText="UUID" sortBy="#{sensorStation.id}" filterBy="#{sensorStation.id}">
-                            <h:outputText value="#{sensorStation.id}"/>
+                        <p:column headerText="DIP Id" filterBy="#{visibleSensorStationController.getSensorStationsByAccessPointAndDipId(sensorStationListController.accessPoint,dipIds).dipId}">
+                            <h:outputText value="#{visibleSensorStationController.getSensorStationsByAccessPointAndDipId(sensorStationListController.accessPoint,dipIds).dipId}"/>
                         </p:column>
-                        <p:column headerText="DIP Id" sortBy="#{sensorStation.dipId}" filterBy="#{sensorStation.dipId}">
-                            <h:outputText value="#{sensorStation.dipId}"/>
+                        <p:column headerText="MAC" filterBy="#{visibleSensorStationController.getSensorStationsByAccessPointAndDipId(sensorStationListController.accessPoint,dipIds).mac}">
+                            <h:outputText value="#{visibleSensorStationController.getSensorStationsByAccessPointAndDipId(sensorStationListController.accessPoint,dipIds).mac}"/>
+                        </p:column>
+                        <p:column headerText="Connected" filterBy="#{visibleSensorStationController.getSensorStationsByAccessPointAndDipId(sensorStationListController.accessPoint,dipIds).getConnected()}">
+                            <h:outputText value="#{visibleSensorStationController.getSensorStationsByAccessPointAndDipId(sensorStationListController.accessPoint,dipIds).getConnected()}"/>
+                        </p:column>
+                        <p:column headerText= "Connect">
+                            <p:commandButton icon="pi pi-link"
+                                             action="#{visibleSensorStationController.selectSensorStation(sensorStationListController.accessPoint,dipIds)}"/>
                         </p:column>
                     </p:dataTable>
+                    <p:commandButton value="Deactivate Couplemode"
+                                     actionListener="#{accessPointCoupleController.endCouplingMode(sensorStationListController.accessPoint)}"
+                                     action="#{visibleSensorStationController.resetVisibleList(sensorStationListController.accessPoint)}"
+                                     oncomplete="endCoupleMode()">
+                    </p:commandButton>
+
                 </p:outputPanel>
             </p:dialog>
             <script>
                 var timer;
 
                 function startTimer() {
+                    PF('spinner').show()
                     timer = setTimeout(function() {
-                        PF('spinnerWidgetVar').stop();
+                        alert("Coupling reached timeout")
+                        PF('spinner').hide();
                     }, 300000); // 5 minutes in milliseconds
                 }
             </script>
+            <script>
+
+            function endCoupleMode() {
+
+                alert("Ending Couple Mode...");
+                PF('spinner').hide();
+
+            }
+        </script>
+
             <script>
                 function updateTable() {
                     PF('ConnectTable').loadLazyData();
