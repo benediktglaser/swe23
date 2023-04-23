@@ -50,7 +50,7 @@ def post_measurement(address: str, list_of_measurements: List, auth_header) -> N
             resp = requests.post(
                 f"{address}/api/sensorData", json=measurement, auth=auth_header
             )
-            print(resp.json())
+            # print(resp.json())
             if resp.__bool__:
                 list_of_responses.append(
                     (
@@ -156,13 +156,30 @@ def request_interval(address: str, auth_header):
     try:
         resp = requests.get(f"{address}/api/accessPoint/interval", auth=auth_header)
         if resp.status_code != 200:
-            logger.log_error("Error when requesting interval: "+str(resp.status_code))
+            logger.log_error("Error when requesting interval: " + str(resp.status_code))
             return None
         else:
             return resp.json()
 
     except Exception as e:
 
+        print(e)
+        logger.log_error(e)
+        return None
+
+
+def request_limits(address: str, auth_header: str, dipId: int):
+    try:
+        resp = requests.get(
+            f"{address}/api/sensorStation/limits/{dipId}", auth=auth_header
+        )
+        if resp.status_code != 200:
+            logger.log_error("Error when requesting interval: " + str(resp.status_code))
+            return None
+        else:
+            return resp.json()
+
+    except Exception as e:
         print(e)
         logger.log_error(e)
         return None
@@ -182,25 +199,26 @@ if __name__ == "__main__":
     dbconnection.init_limits(conn, 0)
     dbconnection.init_limits(conn, 1)
     dbconnection.init_limits(conn, 2)
-
-
-
+    # answer = request_limits(host, auth, 1)
+    print(dbconnection.get_limits(conn, 1, "temp"))
+    dbconnection.update_limits(conn, 1, "TEMPERATURE", 12, 23)
+    print(dbconnection.get_limits(conn, 1, "temp"))
     # print("data", data)
     # data = adjust_timestamp_for_transfer(data)
 
     # data = prepare_for_jsf(data)
 
     # print(data)
-    for i in range(3):
-        dbconnection.insert_sensor_data(
-            conn, sensordata.SensorData(i, (i + 1) * 20, 10, 2, 3, 4, 5)
-        )
-        data = dbconnection.get_sensor_data(conn, 3)
-        #response = post_measurement(host, data, auth)
-        #print("resp", response)
-        #delete_send_sensor_data(conn, response)
-
-    print(dbconnection.get_all_sensorstations(conn))
+    # for i in range(3):
+    # dbconnection.insert_sensor_data(
+    # conn, sensordata.SensorData(i, (i + 1) * 20, 10, 2, 3, 4, 5)
+    # )
+    # data = dbconnection.get_sensor_data(conn, 3)
+    # response = post_measurement(host, data, auth)
+    # print("resp", response)
     # delete_send_sensor_data(conn, response)
-    dbconnection.drop_limits(conn)
+
+    # print(dbconnection.get_all_sensorstations(conn))
+    # delete_send_sensor_data(conn, response)
+    # dbconnection.drop_limits(conn)
     # dbconnection.drop_sensor_data(conn)

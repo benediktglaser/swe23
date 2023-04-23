@@ -57,7 +57,6 @@ def create_tables(conn):
         logger.log_error(e)
 
 
-
 def init_limits(conn, station_id):
     """Initialise the limits table with default values"""
     cursor = conn.cursor()
@@ -86,7 +85,6 @@ def init_limits(conn, station_id):
     except sqlite3.Error as e:
         print(e)
         logger.log_error(e)
-
 
 
 def calculate_limit(value, lower_limit, upper_limit):
@@ -144,7 +142,6 @@ def insert_sensor_data(conn, data):
         logger.log_error(e)
 
 
-
 def insert_into_sensor_station(conn, station_id: int, connected: bool):
     cursor = conn.cursor()
     try:
@@ -157,7 +154,6 @@ def insert_into_sensor_station(conn, station_id: int, connected: bool):
     except sqlite3.Error as e:
         print(e)
         logger.log_error(e)
-
 
 
 def get_all_sensor_station(conn):
@@ -174,7 +170,6 @@ def get_all_sensor_station(conn):
     except sqlite3.Error as e:
         print(e)
         logger.log_error(e)
-
 
 
 def set_limits(conn, station_id, type, lower_limit, upper_limit):
@@ -253,8 +248,7 @@ def set_limits(conn, station_id, type, lower_limit, upper_limit):
         logger.log_error(e)
 
 
-
-def get_limits(conn, station_id, type_limit):
+def get_limits(conn, station_id, type_limit: str):
     """Return a list of the limits if type_limit == ALL,
     otherwise a tuple (min, max) for the given type"""
     cursor = conn.cursor()
@@ -292,6 +286,71 @@ def get_limits(conn, station_id, type_limit):
         logger.log_error(e)
 
 
+def update_limits(
+    conn, station_id: int, type_limit: str, lower_bound: float, upper_bound: float
+):
+    cursor = conn.cursor()
+    try:
+        if type_limit == "TEMPERATURE":
+
+            cursor.execute(
+                "UPDATE limits SET temp_lower=?, temp_upper=? WHERE station_id = ?",
+                (
+                    lower_bound,
+                    upper_bound,
+                    station_id,
+                ),
+            )
+        if type_limit == "PRESSURE":
+            cursor.execute(
+                "UPDATE limits SET pressure_lower=?, pressure_upper=? WHERE station_id = ?",
+                (
+                    lower_bound,
+                    upper_bound,
+                    station_id,
+                ),
+            )
+        if type_limit == "HUMIDITY":
+            cursor.execute(
+                "UPDATE limits SET humid_lower=?, humid_upper=? WHERE station_id = ?",
+                (
+                    lower_bound,
+                    upper_bound,
+                    station_id,
+                ),
+            )
+        if type_limit == "SOIL":
+            cursor.execute(
+                "UPDATE limits SET soil_lower=?, soil_upper=? WHERE station_id = ?",
+                (
+                    lower_bound,
+                    upper_bound,
+                    station_id,
+                ),
+            )
+        if type_limit == "LIGHT":
+            cursor.execute(
+                "UPDATE limits SET light_lower=?, light_upper=? WHERE station_id = ?",
+                (
+                    lower_bound,
+                    upper_bound,
+                    station_id,
+                ),
+            )
+        if type_limit == "AIRQUALITY":
+            cursor.execute(
+                "UPDATE limits SET quality_lower=?, quality_upper=? WHERE station_id = ?",
+                (
+                    lower_bound,
+                    upper_bound,
+                    station_id,
+                ),
+            )
+
+    except sqlite3.Error as e:
+        print(e)
+        logger.log_error(e)
+
 
 def get_sensor_data(conn, station_id):
     """Retrieve sensor_data from database"""
@@ -309,7 +368,6 @@ def get_sensor_data(conn, station_id):
         logger.log_error(e)
 
 
-
 def remove_sensor_data(conn, station_id, time):
     """Remove sensor_data according to station_id and time"""
     cursor = conn.cursor()
@@ -325,11 +383,10 @@ def remove_sensor_data(conn, station_id, time):
         logger.log_error(e)
 
 
-
 def get_all_sensorstations(conn):
     cursor = conn.cursor()
     try:
-        cursor.execute("SELECT DISTINCT station_id FROM sensor_data;")
+        cursor.execute("SELECT DISTINCT station_id FROM limits;")
         record = cursor.fetchall()
         # convert record [(a, b), (c, d)] into a 2D-array [[a, b], [c, d]]
         result = [item for row in record for item in row]
@@ -339,7 +396,6 @@ def get_all_sensorstations(conn):
     except sqlite3.Error as e:
         print(e)
         logger.log_error(e)
-
 
 
 def drop_sensor_data(conn):
@@ -355,7 +411,6 @@ def drop_sensor_data(conn):
         logger.log_error(e)
 
 
-
 def drop_limits(conn):
     """DEBUG ONLY"""
     cursor = conn.cursor()
@@ -367,7 +422,6 @@ def drop_limits(conn):
     except sqlite3.Error as e:
         print(e)
         logger.log_error(e)
-
 
 
 def delete_database(path):
