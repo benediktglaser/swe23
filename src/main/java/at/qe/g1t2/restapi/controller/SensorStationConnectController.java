@@ -8,12 +8,11 @@ import at.qe.g1t2.restapi.exception.EntityNotFoundException;
 import at.qe.g1t2.restapi.model.LimitsDTO;
 import at.qe.g1t2.restapi.model.SensorStationDTO;
 import at.qe.g1t2.restapi.model.SensorStationRegisterDTO;
-import at.qe.g1t2.services.AccessPointService;
-import at.qe.g1t2.services.SensorDataTypeInfoService;
-import at.qe.g1t2.services.SensorStationService;
-import at.qe.g1t2.services.VisibleSensorStationsService;
+import at.qe.g1t2.services.*;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
@@ -33,7 +32,7 @@ import java.util.Map;
 public class SensorStationConnectController {
 
 
-    private Map<AccessPoint,Map<Long,SensorStationDTO>> visibleMap = new HashMap<>();
+    private static final Logger LOGGER = LoggerFactory.getLogger(SensorStationConnectController.class);
 
     @Autowired
     private VisibleSensorStationsService visibleSensorStationsService;
@@ -49,17 +48,21 @@ public class SensorStationConnectController {
     public ResponseEntity<SensorStationRegisterDTO> addVisibleSensorStations(@Valid @RequestBody SensorStationDTO sensorStationDTO) {
 
         AccessPoint accessPoint = getAuthAccessPoint();
-
+        LogMsg<String,SensorStation> msg;
         SensorStation existingSensorStation = sensorStationService.getSensorStation(sensorStationDTO.getMac());
         SensorStationRegisterDTO sensorStationRegisterDTO = new SensorStationRegisterDTO();
         if (existingSensorStation != null && existingSensorStation.getAccessPoint().equals(accessPoint)) {
             sensorStationRegisterDTO.setAvailable(false);
             sensorStationRegisterDTO.setAlreadyConnected(true);
+            msg = new LogMsg<>(LogMsg.LogType.OTHER,SensorStation.class,"SensorStation: DipId"+existingSensorStation.getId(),"Already Connected SensorStation asked for coupling","Access point: "+accessPoint.getAccessPointID());
+            LOGGER.warn(msg.getMessage());
             return new ResponseEntity<>(sensorStationRegisterDTO, HttpStatus.OK);
         }
         if  (existingSensorStation != null){
             sensorStationRegisterDTO.setAvailable(false);
             sensorStationRegisterDTO.setAlreadyConnected(false);
+            msg = new LogMsg<>(LogMsg.LogType.OTHER,SensorStation.class,"SensorStation: DipId"+existingSensorStation.getId(),"Already Connected SensorStation with different AccessPoint asked for coupling","Access point: "+accessPoint.getAccessPointID());
+            LOGGER.warn(msg.getMessage());
             return new ResponseEntity<>(sensorStationRegisterDTO, HttpStatus.OK);
         }
         sensorStationDTO.setConnected(false);
@@ -67,6 +70,8 @@ public class SensorStationConnectController {
         sensorStationRegisterDTO.setAvailable(true);
         sensorStationRegisterDTO.setAlreadyConnected(false);
         visibleSensorStationsService.addVisibleStation(accessPoint,sensorStationDTO);
+        msg = new LogMsg<>(LogMsg.LogType.NEW_CONNECTION,SensorStation.class,"Dip Id: " + "SensorStation: DipId"+sensorStationDTO.getDipId(),"AccessPoint sends visible SensorStation for coupling","Access point: "+accessPoint.getAccessPointID());
+        LOGGER.info(msg.getMessage());
         return new ResponseEntity<>(sensorStationRegisterDTO, HttpStatus.OK);
 
     }
@@ -87,6 +92,8 @@ public class SensorStationConnectController {
         if (sensorStation == null) {
             throw new EntityNotFoundException("SensorStation was not registered before");
         }
+        LogMsg<String,SensorStation> msg = new LogMsg<>(LogMsg.LogType.OTHER,SensorStation.class,"SensorStation: DipId"+sensorStation.getDipId(),"AccessPoint asks if SensorStation with DipId " + sensorStation.getId() +" is enabled","Access point: "+getAuthAccessPoint().getAccessPointID());
+        LOGGER.info(msg.getMessage());
         sensorStation.setLastConnectedDate(LocalDateTime.now());
         sensorStationService.saveSensorStation(getAuthAccessPoint(), sensorStation);
         return new ResponseEntity<>(sensorStation.getEnabled(), HttpStatus.OK);
@@ -108,10 +115,14 @@ public class SensorStationConnectController {
             newSensorStation = sensorStationService.saveSensorStation(accessPoint, newSensorStation);
             sensorStationDTO.setConnected(true);
             visibleSensorStationsService.replaceSensorStationDTO(accessPoint,dipId,sensorStationDTO);
+            LogMsg<String,SensorStation> msg = new LogMsg<>(LogMsg.LogType.CONNECTED,SensorStation.class,"SensorStation: DipId"+ newSensorStation.getDipId(),"connected successfully","Access point: "+getAuthAccessPoint().getAccessPointID());
+            LOGGER.info(msg.getMessage());
             return new ResponseEntity<>(newSensorStation.getConnected(), HttpStatus.OK);
         }
         sensorStation.setLastConnectedDate(LocalDateTime.now());
         sensorStationService.saveSensorStation(accessPoint, sensorStation);
+        LogMsg<String,SensorStation> msg = new LogMsg<>(LogMsg.LogType.CONNECTED,SensorStation.class,"SensorStation: DipId"+ sensorStation.getDipId(),"connection refreshed","Access point: "+getAuthAccessPoint().getAccessPointID());
+        LOGGER.info(msg.getMessage());
         return new ResponseEntity<>(sensorStation.getConnected(), HttpStatus.OK);
     }
 
@@ -142,7 +153,8 @@ public class SensorStationConnectController {
                 limitsDTOS.add(limitsDTO);
             }
         });
-
+        LogMsg<String,SensorStation> msg = new LogMsg<>(LogMsg.LogType.OTHER,SensorStation.class,"SensorStation: DipId"+ sensorStation.getDipId(),"Accesspoint asked for Limits for SensorStation: ","Access point: "+getAuthAccessPoint().getAccessPointID());
+        LOGGER.info(msg.getMessage());
         return new ResponseEntity<>(limitsDTOS, HttpStatus.OK);
 
 
@@ -154,6 +166,8 @@ public class SensorStationConnectController {
         if (accessPoint == null) {
             throw new EntityNotFoundException("AccessPoint is not registered");
         }
+        LogMsg<String,AccessPoint> msg = new LogMsg<>(LogMsg.LogType.OTHER, AccessPoint.class,"Access point: "+accessPoint.getAccessPointID(),"Call get getAuthAccessPoint()","Access point: "+accessPoint.getAccessPointID());
+        LOGGER.warn(msg.getMessage());
         return accessPoint;
     }
 

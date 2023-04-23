@@ -1,0 +1,29 @@
+<configuration>
+    <!-- Appender für Info-Logging -->
+    <appender name="INFO_FILE" class="ch.qos.logback.core.FileAppender">
+        <file>C:/Users/marco/IdeaProjects/g1t2/src/main/resources/info.log</file>
+        <encoder>
+            <pattern>%date [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Appender für Warnung und Fehler-Logging -->
+    <appender name="WARN_ERROR_FILE" class="ch.qos.logback.core.FileAppender">
+        <file>C:/Users/marco/IdeaProjects/g1t2/src/main/resources/warn_error.log</file>
+        <encoder>
+            <pattern>%date [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="INFO_FILE"/>
+        <appender-ref ref="WARN_ERROR_FILE"/>
+    </root>
+
+    <!-- Log-Level für die Konsolen-Ausgabe -->
+    <logger name="org.springframework" level="warn"/>
+
+    <!-- Log-Level für Ihre Services -->
+    <logger name="at.qe.g1t2.restapi.controller" level="info"/>
+
+</configuration>
