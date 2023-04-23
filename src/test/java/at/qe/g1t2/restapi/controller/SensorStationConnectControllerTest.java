@@ -5,6 +5,7 @@ import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.restapi.model.SensorStationDTO;
 import at.qe.g1t2.services.AccessPointService;
 import at.qe.g1t2.services.SensorStationService;
+import at.qe.g1t2.services.VisibleSensorStationsService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -30,6 +31,8 @@ class SensorStationConnectControllerTest {
     AccessPointService accessPointService;
 
     @Autowired
+    VisibleSensorStationsService visibleSensorStationsService;
+    @Autowired
     SensorStationConnectController sensorStationConnectController;
     @Test
     @WithMockUser(username = "43d5aba9-29c5-49b4-b4ec-2d430e34104f", authorities = {"ACCESS_POINT"})
@@ -39,14 +42,14 @@ class SensorStationConnectControllerTest {
         sensorStationDTO.setDipId(23L);
         sensorStationDTO.setMac("1234");
 
-        int size = sensorStationConnectController.getVisibleMap().size();
+        int size = visibleSensorStationsService.getVisibleMap().size();
         ObjectMapper objectMapper = new ObjectMapper();
         String requestBody = objectMapper.writeValueAsString(sensorStationDTO);
         mockMvc.perform(MockMvcRequestBuilders.post("/api/sensorStation/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(MockMvcResultMatchers.status().isOk());
-        Assertions.assertNotNull(sensorStationConnectController.getVisibleMap().get(accessPoint).get(sensorStationDTO.getDipId()));
+        Assertions.assertNotNull(visibleSensorStationsService.getVisibleMap().get(accessPoint).get(sensorStationDTO.getDipId()));
     }
     @Test
     @WithMockUser(username = "4294ba1b-f794-4e3d-b606-896b28237bcb", authorities = {"ACCESS_POINT"})
