@@ -32,7 +32,6 @@ public class SensorDataTypeListController{
         return sensorStationService.loadSensorStation(this.sensorStation.getId());
     }
 
-
     @Transactional
     public void setSensorStation(SensorStation sensorStation) {
         this.sensorStation = sensorStationService.loadSensorStation(sensorStation.getId());

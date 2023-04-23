@@ -27,7 +27,7 @@
                     <p:commandButton action="#{accessPointDetailController.doSaveAccessPoint(accessPoint)}"
                                      update=":accessPointForm:" title="Submit" value="SUBMIT"/>
                 </p:column>
-                <p:column style="width:100px;text-align: center">
+                <p:column style="text-align: center">
                     <p:commandButton update=":accessPointForm:accessPointEditDialog"
                                      oncomplete="PF('accessPointEditDialog').show()" icon="pi pi-pencil" title="Edit">
                         <f:setPropertyActionListener value="#{accessPoint}"
@@ -42,8 +42,8 @@
                                    icon="ui-icon-alert"/>
                     </p:commandButton>
                 </p:column>
-                <p:column style="width:100px;text-align: center">
-                    <p:commandButton icon="pi pi-link" update=":accessPointForm:accessPointLinkDialog"
+                <p:column style="text-align: center">
+                    <p:commandButton title="SensorStations" value="SensorStations" update=":accessPointForm:accessPointLinkDialog"
                                      action="#{sensorStationListController.filterSensorStationsByAccessPoint(accessPoint)}"
                                      oncomplete="PF('accessPointLinkDialog').show()"/>
                 </p:column>
@@ -61,8 +61,8 @@
                                      actionListener="#{accessPointCoupleController.startCouplingMode(sensorStationListController.accessPoint)}"
                                      onstart="startTimer()">
                     </p:commandButton>
-                        <p:dataTable id="ConnectTable" value="#{sensorStationListController}" var="sensorStation"
-                                 lazy="true" rows="3" paginator="true" scrollable="true" scrollHeight="400">
+                    <p:dataTable id="connectTable" value="#{sensorStationListController}" var="sensorStation"
+                                 lazy="true" rows="2" paginator="true" scrollable="true" scrollHeight="400">
                         <p:column headerText="UUID" sortBy="#{sensorStation.id}" filterBy="#{sensorStation.id}">
                             <h:outputText value="#{sensorStation.id}"/>
                         </p:column>
@@ -84,6 +84,12 @@
                         <p:column headerText="Gardener" sortBy="#{sensorStation.gardener}"
                                   filterBy="#{sensorStation.gardener}">
                             <h:outputText value="#{sensorStation.gardener}"/>
+                            <p:inputText id="gardener" value="#{gardenerSensorStationController.username}">
+                            </p:inputText>
+                            <p:commandButton value="Save"
+                                             action="#{gardenerSensorStationController.assignSensorStationToGardener(sensorStation)}"
+                                             update=":accessPointForm:accessPointLinkDialog">
+                            </p:commandButton>
                         </p:column>
                     </p:dataTable>
                 </p:outputPanel>

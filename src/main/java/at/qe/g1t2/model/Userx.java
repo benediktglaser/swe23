@@ -188,11 +188,6 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     }
 
     @Override
-    public String toString() {
-        return "at.qe.skeleton.model.User[ id=" + username + " ]";
-    }
-
-    @Override
     public String getId() {
         return getUsername();
     }
@@ -236,5 +231,8 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
         this.setRoles(a);
     }
 
-
+    @Override
+    public String toString() {
+        return username;
+    }
 }
