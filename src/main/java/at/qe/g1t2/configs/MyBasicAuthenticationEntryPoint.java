@@ -18,10 +18,6 @@ public class MyBasicAuthenticationEntryPoint extends BasicAuthenticationEntryPoi
         writer.println("HTTP Status 401 - ");
     }
 
-    /**
-     * Used to make customizable error messages and codes when login fails
-     */
-
 
     @Override
     public void afterPropertiesSet() {

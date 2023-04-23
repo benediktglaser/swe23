@@ -25,6 +25,7 @@ public class SensorDataDTO implements Serializable {
     private LocalDateTime timestamp;
 
 
+
     public Double getMeasurement() {
         return measurement;
     }

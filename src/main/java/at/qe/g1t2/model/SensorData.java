@@ -1,5 +1,6 @@
 package at.qe.g1t2.model;
 
+
 import jakarta.persistence.*;
 import org.hibernate.envers.Audited;
 import org.springframework.data.domain.Persistable;

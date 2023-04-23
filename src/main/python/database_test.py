@@ -1,8 +1,7 @@
 import unittest
+
 import dbconnection as db
 import sensordata
-import sqlite3
-
 
 unittest.TestLoader.sortTestMethodsUsing = None
 
