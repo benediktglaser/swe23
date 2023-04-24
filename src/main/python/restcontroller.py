@@ -184,6 +184,28 @@ def request_limits(address: str, auth_header: str, dipId: int):
         logger.log_error(e)
         return None
 
+def request_if_is_sensorstation_enabled(address:str, auth_header:str, dipId:int):
+    """request if sensorstation is still enabled
+    return bool"""
+    try:
+        resp = requests.get(
+            f"{address}/api/sensorStation/enabled/{dipId}", auth=auth_header
+        )
+        if resp.status_code != 200:
+            logger.log_error("Error when requesting if sensorstation is enabled: " + str(resp.status_code))
+            return None
+        else:
+            return resp.json()
+
+    except Exception as e:
+        print(e)
+        logger.log_error(e)
+        return None
+    
+def gardener_is_at_station(address:str, auth_header:str):
+    #TODO
+    pass
+
 
 """Just for testing"""
 if __name__ == "__main__":

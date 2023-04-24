@@ -28,26 +28,30 @@ def register_access_point_at_server(address: str, interval: float, name: str):
         logger.log_error(e)
 
 
-def register_new_sensorstation_at_server(address: str, dipId: int, auth_header):
-    new_sensorstation = {"dipId": dipId}
+def propose_new_sensorstation_at_server(
+    address: str, dipId: int, mac: str, auth_header: str
+):
+    new_sensorstation = {"dipId": dipId, "mac": mac}
 
-    resp = requests.post(
-        f"{address}/api/sensorStation/connect", json=new_sensorstation, auth=auth_header
-    )
-    # return the deserialized measurement object here
-    return resp.json()
-
-
-def request_limits(address: str, dipId: int, auth_header):
     try:
-        data = {"dipId": str(dipId)}
-        resp = requests.get(
-            f"{address}/api/accessPoint/register/{dipId}", json=data, auth=auth_header
+        resp = requests.post(
+            f"{address}/api/sensorStation/register",
+            json=new_sensorstation,
+            auth=auth_header,
         )
-        return resp.json()
+        if resp.status_code != 200:
+            logger.log_error(
+                "Error when requesting if sensorstation is enabled: "
+                + str(resp.status_code)
+            )
+            return None
+        else:
+            return resp.json()
+
     except Exception as e:
         print(e)
         logger.log_error(e)
+        return None
 
 
 def request_approval(address: str, auth_header):
@@ -76,6 +80,41 @@ def request_couple_mode(address: str, auth_header):
         print(e)
         logger.log_error(e)
         return None
+    
+
+def request_sensorstation_if_verified(address:str, dipId:int, auth_header:str):
+    try:
+        resp = requests.get(
+            f"{address}/api/sensorStation/verified/{dipId}", auth=auth_header
+        )
+        if resp.status_code != 200:
+            logger.log_error("Error when requesting if sensorstation is enabled: " + str(resp.status_code))
+            return None
+        else:
+            return resp.json()
+
+    except Exception as e:
+        print(e)
+        logger.log_error(e)
+        return None
+
+
+def register_new_sensorstation_at_server(address:str, dipId: int, auth_header:str):
+    try:
+        resp = requests.get(
+            f"{address}/api/sensorStation/connected/{dipId}", auth=auth_header
+        )
+        if resp.status_code != 200:
+            logger.log_error("Error when requesting if sensorstation is enabled: " + str(resp.status_code))
+            return None
+        else:
+            return resp.json()
+
+    except Exception as e:
+        print(e)
+        logger.log_error(e)
+        return None
+
 
 
 if __name__ == "__main__":
