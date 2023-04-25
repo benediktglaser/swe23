@@ -11,3 +11,139 @@
 2023-04-23 15:03:06,821  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/sensorData (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f26a9c3ba30>: Failed to establish a new connection: [Errno 111] Connection refused'))
 2023-04-23 15:03:06,824  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
 2023-04-23 15:03:06,826  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/sensorData (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f26a9c77730>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2023-04-23 16:07:22,790  log_error  ERROR UNIQUE constraint failed: limits.station_id
+2023-04-23 16:07:22,791  log_error  ERROR UNIQUE constraint failed: limits.station_id
+2023-04-23 16:07:22,794  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-23 16:07:23,365  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation//limits/1 HTTP/1.1" 400 None
+2023-04-23 16:07:23,369  log_error  ERROR Error when requesting interval: 400
+2023-04-23 16:07:54,158  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-23 16:07:56,139  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/limits/1 HTTP/1.1" 200 None
+2023-04-23 16:32:52,625  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-23 16:32:52,629  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/sensorStation/limits/1 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f666d46b580>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2023-04-23 16:39:51,552  log_error  ERROR UNIQUE constraint failed: limits.station_id
+2023-04-23 16:39:51,552  log_error  ERROR UNIQUE constraint failed: limits.station_id
+2023-04-23 16:39:51,554  log_error  ERROR UNIQUE constraint failed: limits.station_id
+2023-04-23 16:39:51,554  log_error  ERROR UNIQUE constraint failed: limits.station_id
+2023-04-23 17:09:24,203  log_debug  DEBUG start interval: 20
+2023-04-23 17:09:24,206  log_info  INFO Login as: 43d5aba9-29c5-49b4-b4ec-2d430e34104f passwd
+2023-04-23 17:12:49,606  log_debug  DEBUG start interval: 20
+2023-04-23 17:12:49,615  log_info  INFO Login as: 43d5aba9-29c5-49b4-b4ec-2d430e34104f passwd
+2023-04-23 17:12:49,637  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-23 17:12:51,825  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/limits/1 HTTP/1.1" 200 None
+2023-04-23 17:13:06,864  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-23 17:13:07,552  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/limits/1 HTTP/1.1" 200 None
+2023-04-23 17:13:22,583  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-23 17:13:23,175  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/limits/1 HTTP/1.1" 200 None
+2023-04-23 17:13:38,214  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-23 17:13:38,796  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/limits/1 HTTP/1.1" 200 None
+2023-04-23 17:15:39,388  log_debug  DEBUG start interval: 20
+2023-04-23 17:15:39,391  log_info  INFO Login as: 43d5aba9-29c5-49b4-b4ec-2d430e34104f passwd
+2023-04-23 17:15:39,411  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-23 17:15:40,192  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/limits/1 HTTP/1.1" 200 None
+2023-04-23 17:15:40,202  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-23 17:15:40,726  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/limits/2 HTTP/1.1" 200 None
+2023-04-23 17:15:55,754  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-23 17:15:56,265  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/limits/1 HTTP/1.1" 200 None
+2023-04-23 17:15:56,271  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-23 17:15:56,812  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/limits/2 HTTP/1.1" 200 None
+2023-04-23 17:16:11,849  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-23 17:16:12,369  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/limits/1 HTTP/1.1" 200 None
+2023-04-23 17:16:12,381  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-23 17:16:12,941  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/limits/2 HTTP/1.1" 200 None
+2023-04-23 17:16:27,965  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-23 17:16:28,477  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/limits/1 HTTP/1.1" 200 None
+2023-04-23 17:16:28,482  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-23 17:16:28,954  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/limits/2 HTTP/1.1" 200 None
+2023-04-24 21:27:28,911  log_debug  DEBUG start interval: 20
+2023-04-24 21:27:28,914  log_info  INFO Login as: 43d5aba9-29c5-49b4-b4ec-2d430e34104f passwd
+2023-04-24 21:27:28,916  log_error  ERROR UNIQUE constraint failed: limits.station_id
+2023-04-24 21:27:28,917  log_error  ERROR UNIQUE constraint failed: limits.station_id
+2023-04-24 21:27:28,919  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-24 21:27:30,385  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/enabled/0 HTTP/1.1" 404 39
+2023-04-24 21:27:30,387  log_error  ERROR Error when requesting if sensorstation is enabled: 404
+2023-04-24 21:27:30,392  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-24 21:27:31,147  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/enabled/1 HTTP/1.1" 200 None
+2023-04-24 21:27:31,154  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-24 21:27:31,981  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/enabled/2 HTTP/1.1" 200 None
+2023-04-24 21:27:31,991  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-24 21:27:32,750  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/enabled/3 HTTP/1.1" 200 None
+2023-04-24 21:27:47,782  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-24 21:27:48,183  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/enabled/0 HTTP/1.1" 404 39
+2023-04-24 21:27:48,184  log_error  ERROR Error when requesting if sensorstation is enabled: 404
+2023-04-24 21:27:48,187  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-24 21:27:48,702  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/enabled/1 HTTP/1.1" 200 None
+2023-04-24 21:27:48,707  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-24 21:27:49,214  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/enabled/2 HTTP/1.1" 200 None
+2023-04-24 21:27:49,219  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-24 21:27:49,695  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/enabled/3 HTTP/1.1" 200 None
+2023-04-24 21:38:02,131  log_debug  DEBUG start interval: 20
+2023-04-24 21:38:02,135  log_info  INFO Login as: 43d5aba9-29c5-49b4-b4ec-2d430e34104f passwd
+2023-04-24 21:38:02,138  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-24 21:38:02,724  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/couple HTTP/1.1" 200 None
+2023-04-24 21:38:02,738  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-24 21:38:03,321  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/couple HTTP/1.1" 200 None
+2023-04-24 21:38:03,341  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-24 21:38:03,978  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/couple HTTP/1.1" 200 None
+2023-04-24 21:38:03,983  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-24 21:38:04,568  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/couple HTTP/1.1" 200 None
+2023-04-24 21:38:04,575  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-24 21:38:05,096  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/couple HTTP/1.1" 200 None
+2023-04-24 21:38:05,104  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-24 21:38:05,624  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/couple HTTP/1.1" 200 None
+2023-04-24 21:39:39,965  log_debug  DEBUG start interval: 20
+2023-04-24 21:39:39,979  log_info  INFO Login as: 43d5aba9-29c5-49b4-b4ec-2d430e34104f passwd
+2023-04-24 21:39:39,985  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-24 21:39:40,592  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/couple HTTP/1.1" 200 None
+2023-04-24 21:40:00,612  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-24 21:40:01,021  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/couple HTTP/1.1" 200 None
+2023-04-24 21:40:21,051  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-24 21:40:21,498  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/couple HTTP/1.1" 200 None
+2023-04-24 21:40:41,519  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-24 21:40:42,076  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/couple HTTP/1.1" 200 None
+2023-04-24 21:41:02,103  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-24 21:41:02,739  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/couple HTTP/1.1" 200 None
+2023-04-24 21:44:03,135  log_debug  DEBUG start interval: 20
+2023-04-24 21:44:03,140  log_info  INFO Login as: 43d5aba9-29c5-49b4-b4ec-2d430e34104f passwd
+2023-04-24 21:44:03,151  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-24 21:44:03,755  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/couple HTTP/1.1" 200 None
+2023-04-24 21:44:03,757  log_info  INFO Starting coupling mode
+2023-04-24 21:44:03,765  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-24 21:44:04,416  _make_request  DEBUG http://localhost:8080 "POST /api/sensorStation/register HTTP/1.1" 200 None
+2023-04-24 21:58:46,316  log_debug  DEBUG start interval: 20
+2023-04-24 21:58:46,319  log_info  INFO Login as: 43d5aba9-29c5-49b4-b4ec-2d430e34104f passwd
+2023-04-24 21:58:46,322  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-24 21:58:46,838  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/couple HTTP/1.1" 200 None
+2023-04-24 21:59:06,873  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-24 21:59:07,280  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/couple HTTP/1.1" 200 None
+2023-04-24 21:59:07,284  log_info  INFO Starting coupling mode
+2023-04-24 21:59:07,294  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-24 21:59:07,776  _make_request  DEBUG http://localhost:8080 "POST /api/sensorStation/register HTTP/1.1" 200 None
+2023-04-24 22:01:33,179  log_debug  DEBUG start interval: 20
+2023-04-24 22:01:33,182  log_info  INFO Login as: 43d5aba9-29c5-49b4-b4ec-2d430e34104f passwd
+2023-04-24 22:01:33,186  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-24 22:01:33,730  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/couple HTTP/1.1" 200 None
+2023-04-24 22:01:33,738  log_info  INFO Starting coupling mode
+2023-04-24 22:01:33,741  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-24 22:01:34,296  _make_request  DEBUG http://localhost:8080 "POST /api/sensorStation/register HTTP/1.1" 200 None
+2023-04-24 22:01:34,309  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-24 22:01:34,827  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/verified/93 HTTP/1.1" 200 None
+2023-04-24 22:01:34,832  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-24 22:01:35,400  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/connected/93 HTTP/1.1" 200 None
+2023-04-24 22:01:55,422  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-24 22:01:56,033  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/couple HTTP/1.1" 200 None
+2023-04-24 22:01:56,035  log_info  INFO Starting coupling mode
+2023-04-24 22:01:56,038  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-24 22:01:56,625  _make_request  DEBUG http://localhost:8080 "POST /api/sensorStation/register HTTP/1.1" 200 None
+2023-04-24 22:01:56,634  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-24 22:01:57,029  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/verified/93 HTTP/1.1" 200 None
+2023-04-24 22:01:57,032  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-24 22:01:57,531  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/connected/93 HTTP/1.1" 200 None
+2023-04-24 22:02:17,561  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-24 22:02:18,044  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/couple HTTP/1.1" 200 None
+2023-04-24 22:02:18,046  log_info  INFO Starting coupling mode
+2023-04-24 22:02:18,057  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-24 22:02:18,517  _make_request  DEBUG http://localhost:8080 "POST /api/sensorStation/register HTTP/1.1" 200 None
+2023-04-24 22:02:18,522  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-24 22:02:19,090  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/verified/93 HTTP/1.1" 200 None
+2023-04-24 22:02:19,100  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-24 22:02:19,571  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/connected/93 HTTP/1.1" 200 None
