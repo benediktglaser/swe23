@@ -115,10 +115,9 @@ public class UserService implements Serializable {
     }
 
     private Userx getAuthenticatedUser() {
-        LogMsg<String,Userx> msg = new LogMsg<>(LogMsg.LogType.WARN, Userx.class,null,"Call getAuthenticatedUser()", getAuthenticatedUser().getId());
-
-        LOGGER.warn(msg.getMessage());
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        LogMsg<String,Userx> msg = new LogMsg<>(LogMsg.LogType.WARN, Userx.class,null,"Call getAuthenticatedUser()", loadUser(auth.getName()).getId());
+        LOGGER.warn(msg.getMessage());
         return userRepository.findFirstByUsername(auth.getName());
     }
 
