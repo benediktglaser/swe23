@@ -8,9 +8,12 @@ import threading
 import credentials
 import dbconnection as db
 import restcontroller_init as rci
+import myble
 
 lock = threading.Lock()
 interval = 10
+ADDRESS = None
+AUTH_HEADER = None
 
 
 def init():
@@ -23,11 +26,14 @@ def init():
     logger.log_debug("start interval: " + str(interval))
     name = config.get("config", "name")
 
+    global ADDRESS
+    ADDRESS = address
+
     # establish the database-connection
     path = "database.db"  # TODO: change on raspberry
     conn = db.create_database(path)
 
-    # establish a (first time) connection the the webserver
+    # establish a (first time) connection to the webserver
     login = credentials.read_from_yaml()
 
     while login is None or login[0] is None or login[1] is None:
@@ -41,6 +47,8 @@ def init():
             )
             time.sleep(15)
         auth_header = rci.prepare_auth_headers(login[0], login[1])
+        global AUTH_HEADER
+        AUTH_HEADER = auth_header
 
         # This is the loop
         while True:
@@ -69,31 +77,30 @@ def poll_couple_mode(address: str, auth_header: str):
         if start_coupling is True:
             # TODO call real coupling method
             logger.log_info("Starting coupling mode")
-            # TODO call Andis methods
+            myble.ble_function(ADDRESS, AUTH_HEADER)
             # register the found just for debug to show how it would work
-            response = rci.propose_new_sensorstation_at_server(
-                address, 93, "churchey", auth_header
-            )
-            if response != None:
-                print("Got that response ", response)
-                while True:
-                    verified_response = rci.request_sensorstation_if_verified(
-                        address, 93, auth_header
-                    )
-                    if verified_response.__bool__:
-                        print("verified")
-                        # send register call
-                        final_resp = rci.register_new_sensorstation_at_server(
-                            address, 93, auth_header
-                        )
-                        if final_resp.__bool__:
-                            print("all worked")
-                            break
+            # response = rci.propose_new_sensorstation_at_server(
+            #     address, 93, "churchey", auth_header
+            # )
+            # if response != None:
+            #     print("Got that response ", response)
+            #     while True:
+            #         verified_response = rci.request_sensorstation_if_verified(
+            #             address, 93, auth_header
+            #         )
+            #         if verified_response.__bool__:
+            #             print("verified")
+            #             # send register call
+            #             final_resp = rci.register_new_sensorstation_at_server(
+            #                 address, 93, auth_header
+            #             )
+            #             if final_resp.__bool__:
+            #                 print("all worked")
+            #                 break
 
         # DEBUG ONLY
         # i = i + 1
         # if i == 6:
-        break
         time.sleep(20)
 
 

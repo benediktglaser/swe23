@@ -1,30 +1,40 @@
 import asyncio
 import time
+import re
 import threading
 from threading import Thread
 from bleak import BleakScanner, BLEDevice, BleakClient, BleakError
 from bleak.backends.scanner import AdvertisementData
+import dbconnection as db
+import restcontroller_init as rci
 
 device_name_prefix = "SensorStation G1T2"
 # all already connected SensorStations
 DEVICES = []
 # Database connection
 CONN = None
+# Webserver address
+ADDRESS = ""
+# Auth_header for rest
+AUTH_HEADER = ""
 # mutex on DEVICES
 lock = threading.Lock()
 
 
-def ble_function(conn):
+def ble_function(address, auth_header):
     """
     Function which set the DB-Connection and starts scanning
 
-    :param conn: Connection to the Database
-    :type conn: sqlite3.Connection
     """
 
     global CONN
-    CONN = conn
+    CONN = db.create_database("database.db")
+    global ADDRESS
+    ADDRESS = address
+    global AUTH_HEADER
+    AUTH_HEADER = auth_header
     asyncio.run(scan_for_devices())
+    print("After asyncio.run(scan)")
 
 
 async def scan_for_devices():
@@ -32,8 +42,9 @@ async def scan_for_devices():
     await scanner.start()
     timeout = time.time() + 60 * 5
     while time.time() <= timeout:
-        # TODO: Poll Pairing-Mode from Webserver
-        await asyncio.sleep(1)
+        if not rci.request_couple_mode(ADDRESS, AUTH_HEADER):
+            break
+        await asyncio.sleep(10)
     await scanner.stop()
 
 
@@ -77,24 +88,31 @@ def ble_thread(device: BLEDevice):
     """
 
     if poll_for_verification(device):
+        # TODO: move DEVICES.append here
         asyncio.run(call_services(device))
     print("Thread finished")
 
 
+def get_dip_from_device(device: BLEDevice) -> int:
+    return int(filter(lambda s: s != '', re.split(device_name_prefix, device.name))[0])
+
+
 def poll_for_verification(device: BLEDevice) -> bool:
     verified = False
-    # TODO: send device to Webserver and poll for verification
+    dip = get_dip_from_device(device)
+    if not rci.propose_new_sensorstation_at_server(ADDRESS, dip, device.address, AUTH_HEADER):
+        return False
     # rest-request with MAC and dipId
     # check returnBody if SensorStation is available (not already advertised by other AP)
     timeout = time.time() + 60 * 5
     while not verified:
         # poll if device is verified for this AccessPoint
         print("Poll for Verification")
-        verified = True
+        verified = rci.request_sensorstation_if_verified(ADDRESS, dip, AUTH_HEADER)
+        time.sleep(5)
         if time.time() > timeout:
             print("Error: Polling for Verification timed out")
             return False
-        pass
     return verified
 
 
@@ -105,10 +123,12 @@ async def call_services(device: BLEDevice):
     :type device: BLEDevice
     """
 
+    dip = get_dip_from_device(device)
     # client == sensor_station
     try:
         async with BleakClient(device, timeout=10) as client:
             print("Connected to device {0}".format(device.name))
+            rci.register_new_sensorstation_at_server(ADDRESS, dip, AUTH_HEADER)
             for i in range(3):
                 print(f"Service {i}")
                 await asyncio.sleep(3)
