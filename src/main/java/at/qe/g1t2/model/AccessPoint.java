@@ -1,10 +1,13 @@
 package at.qe.g1t2.model;
 
+import at.qe.g1t2.services.LogMsg;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.envers.AuditJoinTable;
 import org.hibernate.envers.Audited;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Persistable;
 
 import java.io.Serializable;
@@ -27,7 +30,7 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(AccessPoint.class);
     private String password;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -100,19 +103,25 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
     }
 
     public Boolean getEnabled() {
+        logStatusChange("enabled",enabled,(!enabled ?LogMsg.LogType.CONNECTION_FAILURE:LogMsg.LogType.CONNECTED));
+
         return enabled;
     }
 
     public void setEnabled(Boolean enabled) {
+        logStatusChange("enabled",enabled,(!enabled ?LogMsg.LogType.CONNECTION_FAILURE:LogMsg.LogType.CONNECTED));
+
         this.enabled = enabled;
     }
 
     public Boolean getConnected() {
         connected =lastConnectedDate != null && LocalDateTime.now().minusSeconds(sendingInterval.longValue() + (thresholdInterval ==null?0:thresholdInterval.longValue())).isBefore(lastConnectedDate);
+        logStatusChange("connected",connected,(!connected ?LogMsg.LogType.CONNECTION_FAILURE:LogMsg.LogType.CONNECTED));
         return connected;
     }
 
     public void setConnected(Boolean connected) {
+        logStatusChange("connected",connected,(!connected ?LogMsg.LogType.CONNECTION_FAILURE:LogMsg.LogType.CONNECTED));
         this.connected = connected;
     }
 
@@ -202,5 +211,15 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
 
     public void setThresholdInterval(Double thresholdInterval) {
         this.thresholdInterval = thresholdInterval;
+    }
+
+    private void logStatusChange(String fieldName, Boolean fieldValue, LogMsg.LogType type) {
+        LogMsg<String,AccessPoint> msg = new LogMsg<>(type, AccessPoint.class,"Access point: UUID" + id,fieldName+": " + fieldValue.toString(),null);
+        if(fieldValue){
+            LOGGER.info(msg.getMessage());
+        }
+        else{
+            LOGGER.warn(msg.getMessage());
+        }
     }
 }

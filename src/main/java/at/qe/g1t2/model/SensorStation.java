@@ -1,11 +1,15 @@
 package at.qe.g1t2.model;
 
+import at.qe.g1t2.restapi.controller.AccessPointConnectionController;
+import at.qe.g1t2.services.LogMsg;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.envers.Audited;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Persistable;
 
 import java.io.Serializable;
@@ -17,10 +21,14 @@ import java.util.*;
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"access_point_id", "dipId"})})
 public class SensorStation implements Persistable<String>, Serializable, Comparable<SensorStation> {
 
+
     @ManyToMany(mappedBy = "sensorStations",fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Fetch(FetchMode.SELECT)
     private Set<Userx> userx = new HashSet<>();
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SensorStation.class);
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
@@ -93,10 +101,14 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
     }
 
     public Boolean getEnabled() {
+
+        logStatusChange("enabled",enabled,(!enabled ?LogMsg.LogType.CONNECTION_FAILURE:LogMsg.LogType.CONNECTED));
         return enabled;
     }
 
     public void setEnabled(Boolean enabled) {
+        logStatusChange("enabled",enabled,(!enabled ?LogMsg.LogType.CONNECTION_FAILURE:LogMsg.LogType.CONNECTED));
+
         this.enabled = enabled;
     }
 
@@ -112,11 +124,14 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
 
     public Boolean getConnected() {
         connected = lastConnectedDate != null && lastConnectedDate.plusSeconds((accessPoint.getThresholdInterval() ==null?0:accessPoint.getThresholdInterval().longValue()) + accessPoint.getSendingInterval().longValue()).isAfter(LocalDateTime.now());
+        logStatusChange("connected",connected,(!connected ?LogMsg.LogType.CONNECTION_FAILURE:LogMsg.LogType.CONNECTED));
         return connected;
     }
 
     public void setConnected(Boolean connected) {
+
         this.connected = connected;
+        logStatusChange("connected",connected,(!connected ?LogMsg.LogType.CONNECTION_FAILURE:LogMsg.LogType.CONNECTED));
     }
 
     public AccessPoint getAccessPoint() {
@@ -207,5 +222,14 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
 
     public void setMac(String mac) {
         this.mac = mac;
+    }
+    private void logStatusChange(String fieldName, Boolean fieldValue, LogMsg.LogType type) {
+        LogMsg<String,SensorStation> msg = new LogMsg<>(type, SensorStation.class,"SensorStation: UUID" + id,fieldName+": " + fieldValue.toString(),null);
+        if(fieldValue){
+            LOGGER.info(msg.getMessage());
+        }
+        else{
+            LOGGER.warn(msg.getMessage());
+        }
     }
 }

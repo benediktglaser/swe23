@@ -1,8 +1,11 @@
 package at.qe.g1t2.services;
 
+import at.qe.g1t2.model.AccessPoint;
 import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.model.Userx;
 import at.qe.g1t2.repositories.UserxRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
@@ -32,6 +35,7 @@ public class UserService implements Serializable {
     private UserxRepository userRepository;
 
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
 
     /**
@@ -42,12 +46,17 @@ public class UserService implements Serializable {
     @PreAuthorize("hasAuthority('ADMIN')")
     @Transactional
     public Collection<Userx> getAllUsers() {
+        LogMsg<String,Userx> msg = new LogMsg<>(LogMsg.LogType.CRUD_READ,Userx.class,null,"load All Users", getAuthenticatedUser().getId());
+        LOGGER.info(msg.getMessage());
+
         return userRepository.findAll();
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @Transactional
     public Page<Userx> getAllUsers(Specification<Userx> spec, Pageable page) {
+        LogMsg<String,Userx> msg = new LogMsg<>(LogMsg.LogType.CRUD_READ,Userx.class,null,"load All Users", getAuthenticatedUser().getId());
+        LOGGER.info(msg.getMessage());
         return userRepository.findAll(spec,page);
     }
 
@@ -75,14 +84,21 @@ public class UserService implements Serializable {
     @PreAuthorize("hasAuthority('ADMIN')")
     @Transactional
     public Userx saveUser(Userx user) {
+        LogMsg.LogType type;
         if (user.isNew()) {
             user.setCreateDate(LocalDateTime.now());
             user.setCreateUser(getAuthenticatedUser());
+            type = LogMsg.LogType.CRUD_CREATE;
         } else {
             user.setUpdateDate(LocalDateTime.now());
             user.setUpdateUser(getAuthenticatedUser());
+            type = LogMsg.LogType.CRUD_UPDATE;
         }
-        return userRepository.save(user);
+        Userx newUser = userRepository.save(user);
+        LogMsg<String,Userx> msg = new LogMsg<>(type, Userx.class, newUser.getId(),null, getAuthenticatedUser().getId());
+
+        LOGGER.info(msg.getMessage());
+        return newUser;
     }
 
     /**
@@ -92,12 +108,16 @@ public class UserService implements Serializable {
      */
     @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteUser(Userx user) {
+        LogMsg<String,Userx> msg = new LogMsg<>(LogMsg.LogType.CRUD_DELETE, Userx.class, user.getId(),null, getAuthenticatedUser().getId());
 
+        LOGGER.info(msg.getMessage());
         userRepository.delete(user);
     }
 
     private Userx getAuthenticatedUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        LogMsg<String,Userx> msg = new LogMsg<>(LogMsg.LogType.WARN, Userx.class,null,"Call getAuthenticatedUser()", loadUser(auth.getName()).getId());
+        LOGGER.warn(msg.getMessage());
         return userRepository.findFirstByUsername(auth.getName());
     }
 

@@ -1,0 +1,46 @@
+<configuration>
+
+    <property name = "LOGS" value ="./logs"/>
+    <appender name="INFO_FILE" class="ch.qos.logback.core.FileAppender">
+        <file>src/main/resources/info.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>application-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <maxFileSize>3MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>10GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+
+    <appender name="WARN_ERROR_FILE" class="ch.qos.logback.core.FileAppender">
+        <file>src/main/resources/warn_error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>application-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <maxFileSize>3MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>10GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+    <root level="info">
+        <appender-ref ref="INFO_FILE"/>
+        <appender-ref ref="WARN_ERROR_FILE"/>
+    </root>
+
+
+</configuration>
