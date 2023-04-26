@@ -11,10 +11,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class PojoClassExcludedFields implements PojoClass {
-    private final PojoClass clazz;
-    private final Set<String> excluded;
+    public final PojoClass clazz;
+    public final Set<String> excluded;
 
-    PojoClassExcludedFields(PojoClass clazz, Set<String> excluded) {
+    public PojoClassExcludedFields(PojoClass clazz, Set<String> excluded) {
         this.clazz = clazz;
         this.excluded = excluded;
     }

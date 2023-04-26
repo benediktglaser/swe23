@@ -1,39 +1,214 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/main.xhtml">
-    <h:head>
-        <f:metadata>
-            <f:viewAction action="#{sensorDataListController.filterSensorDataBySensorStation(sessionSensorStationBean.sensorStation)}" />
-        </f:metadata>
-    </h:head>
+
     <ui:define name="content">
-        <h:form>
-            <div class="container">
-                <p:dataTable id = "sensorDataTable" var="sensorData" value="#{sensorDataListController}"
-                             class="sensorDataTable" lazy="true" rows="3" paginator="true" >
-                    <p:column headerText="Measurement" class="ui-datatable-header" sortBy="#{sensorData.measurement}" filterBy="#{sensorData.measurement}">
-                        <h:outputText value="#{sensorData.measurement}"/>
-                    </p:column>
-                    <p:column headerText="Unit" class="ui-datatable-header" sortBy="#{sensorData.type}" filterBy="#{sensorData.type}">
-                        <h:outputText value="#{sensorData.getType().getUnit()}"/>
-                    </p:column>
-                    <p:column headerText="Type" class="ui-datatable-header" sortBy="#{sensorData.type}" filterBy="#{sensorData.type}">
-                        <h:outputText value="#{sensorData.type}"/>
-                    </p:column>
-                    <p:column headerText="Date" class="ui-datatable-header" sortBy="#{sensorData.createDate}" filterBy="#{sensorData.createDate}">
-                        <h:outputText value="#{(sensorData.createDate).toLocalDate()}"/>
-                    </p:column>
-                </p:dataTable>
+        <h:head>
+            <h:body>
+                <f:metadata>
+                    <f:viewAction
+                            action="#{sensorDataListController.filterSensorDataBySensorStation(sessionSensorStationBean.sensorStation)}"/>
+                </f:metadata>
+            </h:body>
+            <link href="/resources/css/theme.css" rel="stylesheet" type="text/css"/>
+            <script src="https://code.highcharts.com/highcharts.js"></script>
+            <script src="https://code.highcharts.com/modules/stock.js"></script>
+            <script src="https://code.highcharts.com/modules/scrollbar.js"></script>
+            <script src="https://code.highcharts.com/stock/highstock.js"></script>
+            <script src="https://code.highcharts.com/modules/exporting.js"></script>
 
+        </h:head>
 
-                <p:lineChart model="#{chartsView.getLineModel(sessionSensorStationBean.sensorStation)}" class="ui-chart"/>
-           </div>
+        <h:form id="sensorDataForm">
+            <div class="card">
+                <p:cascadeSelect placeholder="Select a dataType for chart" value="#{chartsView.selection}"
+                                 effect="slide" header="Select Type and Limits" showHeaders="true" required="true">
+                    <f:selectItems value="#{chartsView.categories}"/>
+                    <p:ajax listener="#{chartsView.doUpdate()}"/>
+                </p:cascadeSelect>
+            </div>
+            <p:separator/>
+            <p:dataTable id="sensorDataTable" var="sensorData" value="#{sensorDataListController}"
+                         class="sensorDataTable" lazy="true" rows="3" paginator="true">
+                <p:column headerText="Measurement" class="ui-datatable-header" sortBy="#{sensorData.measurement}"
+                          filterBy="#{sensorData.measurement}">
+                    <h:outputText value="#{sensorData.measurement}"/>
+                </p:column>
+                <p:column headerText="Unit" class="ui-datatable-header" sortBy="#{sensorData.type}"
+                          filterBy="#{sensorData.type}">
+                    <h:outputText value="#{sensorData.getType().getUnit()}"/>
+                </p:column>
+                <p:column headerText="Type" class="ui-datatable-header" sortBy="#{sensorData.type}"
+                          filterBy="#{sensorData.type}">
+                    <h:outputText value="#{sensorData.type}"/>
+                </p:column>
+                <p:column headerText="Date" class="ui-datatable-header" sortBy="#{sensorData.timestamp}"
+                          filterBy="#{sensorData.timestamp}">
+                    <h:outputText value="#{(sensorData.timestamp).toLocalDate()}"/>
+                </p:column>
+            </p:dataTable>
+            <p:poll interval="40" update=":sensorDataForm:sensorDataTable"></p:poll>
+            <p:separator/>
         </h:form>
+    <h:form id="chartForm">
+
+            <div style="flex:1">
+                <!-- Hier steht der Code für das Highcharts-Diagramm -->
+                <div id="chart-container"></div>
+
+                <script type="text/javascript">
+                    let chartsi;
+                    let transformedDataNew;
+
+                    function myF(sensorStationId, sensorDataTypeInfoId, sensorDataType) {
+                        const url = '/chart';
+                        const param = '?sensorStationId=' + sensorStationId + '&amp;sensorDataTypeId=' + sensorDataTypeInfoId + '&amp;typeId=' + sensorDataType;
+                        fetch(url + param)
+                            .then(response => response.json())
+                            .then(jsonData => {
+
+                                let colors = Highcharts.getOptions().colors;
+                                const data = jsonData[0].data;
+                                const parsedData = JSON.parse(data);
+
+                                const transformedData = parsedData.map(point => {
+                                    const [year, month, day, hour, minute] = point[0];
+                                    const timestamp = Date.UTC(year, month - 1, day, hour, minute);
+                                    return [timestamp, point[1]];
+                                });
+                                let min = jsonData[0].min;
+                                let max = jsonData[0].max;
+
+
+                                chartsi = Highcharts.stockChart('chart-container', {
+                                    chart: {
+                                        type: 'line',
+                                        zoomType: 'x',
+                                        backgroundColor: '#1f2d40',
+                                        style: {
+                                            color: 'white'
+                                        },
+                                    },
+                                    title: {
+                                        text: sensorDataType,
+                                        style: {
+                                            color: 'white'
+                                        }
+                                    },
+                                    xAxis: {
+                                        title: {
+                                            text: 'Measure Date'
+                                        },
+                                        type: 'datetime',
+                                        maxZoom: 24 * 36000000,
+                                    },
+                                    tooltip: {
+                                        stickOnContact: true
+                                    },
+                                    yAxis: {
+                                        plotBands: [{
+                                            color: 'rgba(120,243,120,0.2)', // green with 20% opacity
+                                            from: min,
+                                            to: max
+                                        }],
+                                        plotLines: [{
+                                            value: min, // Set the value where the line will appear
+                                            color: 'red', // Set the color of the line
+                                            dashStyle: 'dash', // Set the style of the line (solid, shortdash, shortdot, dot, longdash, dashdot, longdashdot)
+                                            width: 2, // Set the width of the line
+                                            label: {
+                                                text: 'Minimum', // Set the label for the line
+                                                align: 'center', // Set the alignment of the label relative to the line
+                                                style: {
+                                                    color: 'red' // Set the style of the label
+                                                }
+                                            }
+                                        }, {
+                                            value: max, // Set the value where the line will appear
+                                            color: 'red', // Set the color of the line
+                                            dashStyle: 'dash', // Set the style of the line (solid, shortdash, shortdot, dot, longdash, dashdot, longdashdot)
+                                            width: 2, // Set the width of the line
+                                            label: {
+                                                text: 'Maximum', // Set the label for the line
+                                                align: 'center', // Set the alignment of the label relative to the line
+                                                style: {
+                                                    color: 'red' // Set the style of the label
+                                                }
+                                            }
+                                        }],
+                                        title: {
+                                            text: 'Measurement'
+                                        },
+                                        gridLineColor: '#090101',
+                                        gridLineWidth: 1,
+                                        gridLineDashStyle: 'solid'
+                                    },
+                                    rangeSelector: {
+                                        floating: true,
+                                        y: 250,
+                                    },
+
+                                    series: [{
+                                        name: sensorDataType,
+                                        data: transformedData,
+                                        color: colors[0],
+                                        tooltip: {
+                                            valueDecimals: 2
+                                        }
+                                    }],
+                                    navigation: {
+                                        menuStyle: {
+                                            background: '#01243f'
+                                        }
+                                    }
+                                });
+                                let lastTimestamp;
+                                if (transformedData.length===0){
+                                       alert("Hello Medin");
+                                       lastTimestamp = Date.now();
+                                }
+                                else {
+                                    lastTimestamp = transformedData[transformedData.length - 1][0];
+                                }
+
+                                function updateChart() {
+                                    let addNewPoints = "/add";
+                                    let parame = '&amp;lastDate=' + lastTimestamp;
+                                    fetch(url + addNewPoints + param + parame)
+                                        .then(response => response.json())
+                                        .then(jsonDataNew => {
+                                            let dataNew = jsonDataNew[0].data;
+                                            let parsedDataNew = JSON.parse(dataNew);
+                                            transformedDataNew = parsedDataNew.map(point => {
+                                                const [year, month, day, hour, minute] = point[0];
+                                                const timestamp = Date.UTC(year, month - 1, day, hour, minute);
+                                                chartsi.series[0].addPoint([timestamp, point[1]]);
+                                                return [timestamp,point[1]];
+                                            });
+
+                                            lastTimestamp = transformedDataNew[transformedDataNew.length - 1][0];
+                                            chartsi.redraw(true);
+
+
+                                        });
+
+                                }
+
+                                setInterval(updateChart, 30000);
+                            });
+
+                    }
+                </script>
+
+
+            </div>
+
+    </h:form>
     </ui:define>
 </ui:composition>

@@ -17,6 +17,7 @@
   box-sizing: border-box;
 }
 
+
 body .ui-widget {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: 1rem;
@@ -6400,7 +6401,7 @@ body .ui-accordion .ui-accordion-content:last-of-type {
 .sensorDataTable{
   float: left;
   position: relative;
-  width: 50%;
+
   text-align: center !important;
 }
 
@@ -7009,9 +7010,9 @@ body .ui-wizard .ui-icon-arrowthick-1-e:before {
   content: "\e91b";
 }
 .centering{
-    margin-left: auto;
-    margin-right: auto;
-    width: 8em;
+  margin-left: auto;
+  margin-right: auto;
+  width: 33%;
 }
 .icon-text {
   display: inline-block;
@@ -7022,4 +7023,14 @@ body .ui-wizard .ui-icon-arrowthick-1-e:before {
   color: #fff;
   background-color: #2196f3;
   border-radius: 3px;
+}
+
+.container-block{
+  display: block;
+}
+.ui-panel-modified {
+  margin-top: 20px;
+}
+.chart-container{
+  float:right;
 }

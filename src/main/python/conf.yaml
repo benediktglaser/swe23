@@ -1,0 +1,4 @@
+[config]
+address: http://localhost:8080
+interval: 20
+name: test A

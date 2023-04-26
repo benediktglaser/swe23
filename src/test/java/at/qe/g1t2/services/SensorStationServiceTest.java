@@ -10,8 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Tests to ensure correct behavior of the methods. Especially for correct interacting with
@@ -39,9 +39,10 @@ class SensorStationServiceTest {
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     void saveNewSensorStation() {
         AccessPoint accessPoint = accessPointService
-                .loadAccessPoint("7269ddec-30c6-44d9-bc1f-8af18da09ed3");
+                .loadAccessPoint("4294ba1b-f794-4e3d-b606-896b28237bcb");
         SensorStation sensorStation = new SensorStation();
-
+        sensorStation.setDipId(23L);
+        sensorStation.setMac("45667");
 
         sensorStation = sensorStationService.saveSensorStation(accessPoint, sensorStation);
 
@@ -54,11 +55,10 @@ class SensorStationServiceTest {
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     void deleteSensorStation() {
         SensorStation sensorStation = sensorStationService
-                .loadSensorStation("8ccfdfaa-9731-4786-8efa-e2141e5c4095");
+                .loadSensorStation("b94d9ff0-1366-49b1-b19b-85f73c14d744");
         sensorStationService.deleteSensorStation(sensorStation);
         SensorStation deletedSensorStation = sensorStationRepository
                 .findSensorStationById(sensorStation.getId());
-
         assertNull(deletedSensorStation);
     }
 
@@ -67,13 +67,13 @@ class SensorStationServiceTest {
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     void removeSensorStation() {
         AccessPoint accessPoint = accessPointService
-                .loadAccessPoint("7269ddec-30c6-44d9-bc1f-8af18da09ed3");
+                .loadAccessPoint("4294ba1b-f794-4e3d-b606-896b28237bcb");
         SensorStation sensorStation = sensorStationService
-                .loadSensorStation("8ccfdfaa-9731-4786-8efa-e2141e5c4095");
+                .loadSensorStation("9f98b70c-4de7-46c0-a611-21160743be7e");
 
         sensorStationService.removeSensorStationFromAccessPoint(accessPoint, sensorStation);
         sensorStation = sensorStationService
-                .loadSensorStation("8ccfdfaa-9731-4786-8efa-e2141e5c4095");
+                .loadSensorStation("9f98b70c-4de7-46c0-a611-21160743be7e");
 
         assertNull(sensorStation);
     }

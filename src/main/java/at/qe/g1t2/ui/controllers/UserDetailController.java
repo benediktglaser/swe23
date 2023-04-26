@@ -1,23 +1,13 @@
 package at.qe.g1t2.ui.controllers;
 
-import at.qe.g1t2.model.LogInfo;
 import at.qe.g1t2.model.Userx;
 import at.qe.g1t2.repositories.LogInfoRepository;
 import at.qe.g1t2.services.UserService;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.envers.AuditReader;
-import org.hibernate.envers.AuditReaderFactory;
-import org.hibernate.envers.query.AuditEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * Controller for the user detail view.
@@ -81,14 +71,6 @@ public class UserDetailController implements Serializable {
 
     public void doDeleteUser() {
         this.userService.deleteUser(user);
-      /*  System.out.println(logInfoRepository.findAll());
-      logInfoRepository.joinAccessAud().forEach(x ->{
-
-          System.out.println((Byte)x[0]);
-          System.out.println((Integer) x[1]);
-          System.out.println((String) x[4] );
-              // Fügen Sie hier den Code ein, um mit den Daten zu arbeiten
-      });*/
         user = null;
     }
 

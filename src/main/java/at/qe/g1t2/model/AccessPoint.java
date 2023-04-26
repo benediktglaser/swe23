@@ -1,7 +1,6 @@
 package at.qe.g1t2.model;
 
 import jakarta.persistence.*;
-
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.envers.AuditJoinTable;
@@ -31,18 +30,58 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
 
     private String password;
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private AccessPointRole accessPointRole;
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false)
     private LocalDateTime createDate;
 
+    private LocalDateTime lastConnectedDate;
     private Boolean connected;
-
     private Boolean enabled;
-
     private Double sendingInterval;
 
+    private Double thresholdInterval;
+
+    private LocalDateTime lastCouplingDate;
+
+
+    private Boolean coupleMode;
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime updateDate;
+    @OneToMany(mappedBy = "accessPoint", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @AuditJoinTable
+    private List<SensorStation> sensorStation = new ArrayList<>();
+    private String accessPointName;
+
+    public LocalDateTime getLastCouplingDate() {
+        return (lastCouplingDate==null?LocalDateTime.now():lastCouplingDate);
+    }
+
+    public void setLastCouplingDate(LocalDateTime lastCouplingDate) {
+        this.lastCouplingDate = lastCouplingDate;
+    }
+
+    public Boolean getCoupleMode() {
+        if(lastCouplingDate == null){
+            lastCouplingDate = LocalDateTime.now();
+        }
+        coupleMode = (coupleMode!=null && lastCouplingDate.plusMinutes(5).isAfter(LocalDateTime.now()));
+        return coupleMode;
+    }
+
+    public void setCoupleMode(Boolean coupleMode) {
+        this.coupleMode = coupleMode;
+    }
+
+    public LocalDateTime getLastConnectedDate() {
+        return lastConnectedDate;
+    }
+
+    public void setLastConnectedDate(LocalDateTime lastConnectedDate) {
+        this.lastConnectedDate = lastConnectedDate;
+    }
 
     public LocalDateTime getUpdateDate() {
         return updateDate;
@@ -51,11 +90,6 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
     public void setUpdateDate(LocalDateTime updateDate) {
         this.updateDate = updateDate;
     }
-
-    @OneToMany(mappedBy = "accessPoint", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @AuditJoinTable
-    private List<SensorStation> sensorStation = new ArrayList<>();
 
     public Double getSendingInterval() {
         return sendingInterval;
@@ -74,6 +108,7 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
     }
 
     public Boolean getConnected() {
+        connected =lastConnectedDate != null && LocalDateTime.now().minusSeconds(sendingInterval.longValue() + (thresholdInterval ==null?0:thresholdInterval.longValue())).isBefore(lastConnectedDate);
         return connected;
     }
 
@@ -88,8 +123,6 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
     public void setSensorStation(List<SensorStation> sensorStation) {
         this.sensorStation = sensorStation;
     }
-
-    private String accessPointName;
 
     public String getAccessPointID() {
         return id;
@@ -114,7 +147,6 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
     public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -145,7 +177,7 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
 
     @Override
     public int compareTo(AccessPoint o) {
-        return this.id.compareTo(Objects.requireNonNull(o.getId()));
+        return this.id.compareTo(o.id);
     }
 
     public String getPassword() {
@@ -164,4 +196,11 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
         this.accessPointRole = accessPointRole;
     }
 
+    public Double getThresholdInterval() {
+        return thresholdInterval;
+    }
+
+    public void setThresholdInterval(Double thresholdInterval) {
+        this.thresholdInterval = thresholdInterval;
+    }
 }

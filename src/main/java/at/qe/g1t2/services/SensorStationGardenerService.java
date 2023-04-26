@@ -9,15 +9,14 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
-
+import java.io.Serializable;
 import java.util.Collection;
 
 
 @Component
 @Scope("application")
-public class SensorStationGardenerService {
+public class SensorStationGardenerService implements Serializable {
 
 
     @Autowired
@@ -26,7 +25,7 @@ public class SensorStationGardenerService {
     SensorStationRepository sensorStationRepository;
 
 
-    public void assignGarderner(Userx userx, SensorStation sensorStation){
+    public void assignGardener(Userx userx, SensorStation sensorStation){
         sensorStation.setGardener(userx);
         sensorStationRepository.save(sensorStation);
     }

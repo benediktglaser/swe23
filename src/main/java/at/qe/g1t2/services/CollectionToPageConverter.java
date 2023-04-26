@@ -5,7 +5,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.io.Serializable;
+
 @FunctionalInterface
-public interface CollectionToPageConverter<K,T extends Persistable<K>> {
+public interface CollectionToPageConverter<K,T extends Persistable<K>> extends Serializable {
     Page<T> retrieveData(Specification<T> spec, Pageable page);
 }

@@ -1,13 +1,11 @@
 package at.qe.g1t2.ui.controllers;
 
 import at.qe.g1t2.model.SensorStation;
-import at.qe.g1t2.model.UsersFavourites;
 import at.qe.g1t2.services.SensorStationService;
-import at.qe.g1t2.services.UsersFavouritesService;
+import at.qe.g1t2.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 
 import java.util.Collection;
 
@@ -19,9 +17,7 @@ public class PlantsForUsersController {
     SensorStationService sensorStationService;
 
     @Autowired
-    UsersFavouritesService usersFavouritesService;
-
-    private SensorStation sensorStation;
+    UserService userService;
 
     public Collection<SensorStation> getAllSensorStations(){
 
@@ -29,7 +25,7 @@ public class PlantsForUsersController {
     }
 
     public void setUsersFavourite(SensorStation sensorStation){
-        usersFavouritesService.saveUsersFavourites(sensorStation);
+        userService.addSensorStationToUser(sensorStation);
     }
 
 

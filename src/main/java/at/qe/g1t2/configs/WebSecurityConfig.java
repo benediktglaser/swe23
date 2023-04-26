@@ -1,7 +1,5 @@
 package at.qe.g1t2.configs;
 
-import javax.sql.DataSource;
-
 import at.qe.g1t2.model.AccessPointRole;
 import at.qe.g1t2.model.UserRole;
 import org.springframework.beans.factory.BeanCreationException;
@@ -14,20 +12,15 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
-import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
-
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-
+import javax.sql.DataSource;
 import java.util.Collection;
+
+import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
 /**
  * Spring configuration for web security.
@@ -44,12 +37,16 @@ public class WebSecurityConfig {
     private static final String GARDENER = UserRole.GARDENER.name();
     private static final String ACCESS_POINT = AccessPointRole.ACCESS_POINT.name();
 
-    @Autowired
+
     DataSource dataSource;
 
-    @Autowired
-    private MyBasicAuthenticationEntryPoint authenticationEntryPoint;
 
+    private final MyBasicAuthenticationEntryPoint authenticationEntryPoint;
+    @Autowired
+    public WebSecurityConfig(DataSource dataSource, MyBasicAuthenticationEntryPoint authenticationEntryPoint) {
+        this.dataSource = dataSource;
+        this.authenticationEntryPoint = authenticationEntryPoint;
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -59,7 +56,10 @@ public class WebSecurityConfig {
 
 
             http.authorizeHttpRequests(authorize -> authorize
+                            .requestMatchers("/upload").permitAll()
+                            .requestMatchers("/visitor/**").permitAll()
                             .requestMatchers("/api/accessPoint/register").permitAll()
+                            .requestMatchers("/api/accessPoint/register/**").hasAnyAuthority(ACCESS_POINT)
                             .requestMatchers("/api/sensorStation/connect").hasAnyAuthority(ACCESS_POINT)
                             .requestMatchers("/").permitAll()
                             .requestMatchers("/**.jsf").permitAll()
@@ -75,7 +75,7 @@ public class WebSecurityConfig {
                     .formLogin()
                     .loginPage("/login.xhtml")
                     .permitAll()
-                    .failureUrl("/error/access_denied.xhtml")
+                    .failureUrl("/login.xhtml?error=true")
                     .defaultSuccessUrl("/secured/welcome.xhtml")
                     .loginProcessingUrl("/login")
                     .successHandler(successHandler())
@@ -83,9 +83,7 @@ public class WebSecurityConfig {
                     .logout()
                     .logoutSuccessUrl("/login.xhtml")
                     .deleteCookies("JSESSIONID").and()
-                    .httpBasic().authenticationEntryPoint(authenticationEntryPoint)
-                    .and()
-                    .csrf().disable();
+                    .httpBasic().authenticationEntryPoint(authenticationEntryPoint);
 
             http.exceptionHandling().accessDeniedPage("/error/access_denied.xhtml");
             http.sessionManagement().invalidSessionUrl("/error/invalid_session.xhtml");
@@ -93,8 +91,6 @@ public class WebSecurityConfig {
         } catch (Exception ex) {
             throw new BeanCreationException("Wrong spring security configuration", ex);
         }
-
-        // :TODO: user failureUrl(/login.xhtml?error) and make sure that a corresponding message is displayed
 
     }
 
@@ -108,7 +104,6 @@ public class WebSecurityConfig {
         return (request, response, authentication) -> {
             Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
             for (GrantedAuthority grantedAuthority : authorities) {
-                // Todo replace equals with contains
                 if ((grantedAuthority.getAuthority().contains("GARDENER"))) {
                     response.sendRedirect("/gardener/sensorStations/sensorStations.xhtml");
                     return;

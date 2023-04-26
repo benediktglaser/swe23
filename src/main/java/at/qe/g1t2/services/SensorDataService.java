@@ -15,16 +15,17 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Service for accessing and sensor data from the access point
  */
 @Component
 @Scope("application")
-public class SensorDataService {
+public class SensorDataService implements Serializable {
 
     @Autowired
     private SensorDataRepository sensorDataRepository;
@@ -43,6 +44,9 @@ public class SensorDataService {
     @Transactional
     public SensorData saveSensorData(SensorStation sensorStation, SensorData sensorData) {
         if (sensorData.isNew()) {
+            if(sensorData.getTimestamp()==null){
+                sensorData.setTimestamp(LocalDateTime.now());
+            }
             LocalDateTime createDate = LocalDateTime.now();
             sensorData.setCreateDate(createDate);
             sensorData.setSensorStation(sensorStation);
@@ -50,8 +54,8 @@ public class SensorDataService {
             sensorStation = sensorStationRepository.save(sensorStation);
             return sensorStation.getSensorData().get(sensorStation.getSensorData().size() - 1);
         }
-        sensorDataRepository.save(sensorData);
-        return sensorData;
+
+        return sensorDataRepository.save(sensorData);
     }
 
     public Page<SensorData> getAllSensorData(Specification<SensorData> spec, Pageable page){
@@ -66,6 +70,18 @@ public class SensorDataService {
     public Collection<SensorData> getAllSensorDataByType(SensorDataType type) {
         return sensorDataRepository.findByType(type);
     }
+    public Collection<SensorData> getAllSensorDataBySensorStationType(SensorStation sensorStation,SensorDataType type) {
+        return sensorDataRepository.findSensorDataBySensorStationAndType(sensorStation,type);
+    }
 
+    public List<Object[]> getAllSensorDataByStationForChart(SensorStation sensorStation){
+        return sensorDataRepository.getSensorDataBySensorStation(sensorStation);
+    }
 
+    public List<Object[]> getAllSensorDataByStationAndTypeForChart(SensorStation sensorStation, SensorDataType sensorDataType){
+        return sensorDataRepository.getSensorDataBySensorStationAndType(sensorStation,sensorDataType);
+    }
+    public List<Object[]> getAllNewSensorDataByStationAndTypeForChart(SensorStation sensorStation, SensorDataType sensorDataType,LocalDateTime lastDate){
+        return sensorDataRepository.getNewSensorDataBySensorStationAndType(sensorStation,sensorDataType,lastDate);
+    }
 }

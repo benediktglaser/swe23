@@ -6,6 +6,7 @@ import org.hibernate.envers.DefaultRevisionEntity;
 import org.hibernate.envers.RevisionEntity;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @RevisionEntity(LogListener.class)
@@ -15,6 +16,7 @@ public class LogInfo extends DefaultRevisionEntity {
     private String username;
 
     @Column(name = "CHANGED_AT")
+
     private LocalDateTime changeDate = LocalDateTime.now();
 
     @Column(name ="REVTYPE")
@@ -42,5 +44,19 @@ public class LogInfo extends DefaultRevisionEntity {
 
     public String getType() {
         return revtype;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof LogInfo)) return false;
+        if (!super.equals(o)) return false;
+        LogInfo logInfo = (LogInfo) o;
+        return Objects.equals(username, logInfo.username) && Objects.equals(changeDate, logInfo.changeDate) && Objects.equals(revtype, logInfo.revtype);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), username, changeDate, revtype);
     }
 }

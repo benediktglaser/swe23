@@ -2,6 +2,8 @@ package at.qe.g1t2.model;
 
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.envers.Audited;
@@ -9,6 +11,7 @@ import org.springframework.data.domain.Persistable;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -38,9 +41,6 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime updateDate;
 
-    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    Set<UsersFavourites> usersFavourites;
 
     private String password;
 
@@ -56,6 +56,21 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     @Enumerated(EnumType.STRING)
     private Set<UserRole> roles;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @Fetch(FetchMode.SELECT)
+    @JoinTable(name = "user_sensor_station",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "sensor_station_id"))
+    private Set<SensorStation> sensorStations = new HashSet<>();
+
+    public Set<SensorStation> getSensorStations() {
+        return sensorStations;
+    }
+
+    public void setSensorStations(Set<SensorStation> sensorStations) {
+        this.sensorStations = sensorStations;
+    }
 
     public String getUsername() {
         return username;
@@ -173,11 +188,6 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     }
 
     @Override
-    public String toString() {
-        return "at.qe.skeleton.model.User[ id=" + username + " ]";
-    }
-
-    @Override
     public String getId() {
         return getUsername();
     }
@@ -196,11 +206,33 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
         return this.username.compareTo(o.getUsername());
     }
 
-    public Set<UsersFavourites> getUsersFavourites() {
-        return usersFavourites;
+    public void addGardener() {
+        Set<UserRole> a = new HashSet<>();
+        a.add(UserRole.GARDENER);
+        this.setRoles(a);
     }
 
-    public void setUsersFavourites(Set<UsersFavourites> usersFavourites) {
-        this.usersFavourites = usersFavourites;
+    public void addAdmin() {
+        Set<UserRole> a = new HashSet<>();
+        a.add(UserRole.ADMIN);
+        this.setRoles(a);
+    }
+
+    public void addUser() {
+        Set<UserRole> a = new HashSet<>();
+        a.add(UserRole.USER);
+        this.setRoles(a);
+    }
+
+    public void addAdminGardener() {
+        Set<UserRole> a = new HashSet<>();
+        a.add(UserRole.ADMIN);
+        a.add(UserRole.GARDENER);
+        this.setRoles(a);
+    }
+
+    @Override
+    public String toString() {
+        return username;
     }
 }

@@ -1,46 +1,56 @@
+import time
+import logger
+from typing import List
+
 import requests
+from requests.auth import HTTPBasicAuth
+
 import dbconnection
 import sensordata
 
-from requests.auth import HTTPBasicAuth
 
-host = "http://localhost:8080"
-
-
-def prepare_auth_headers():
-    return HTTPBasicAuth("7269ddec-30c6-44d9-bc1f-8af18da09ed3", "passwd")
+# host = "http://localhost:8080"
 
 
-"""Only for testing not in the production"""
+def prepare_auth_headers(id: str, password: str):
+    """Just for testing. Prepare the authentication via HTTPBasic"""
+    return HTTPBasicAuth(id, password)
 
 
-def post_measurement_original_single(measurement: dict) -> dict:
+def post_measurement_original_single(
+    address: str, measurement: dict, auth_header
+) -> dict:
     """
+    Only for testing not production!
     Post the given measurement.
     :param measurement: The measurement to post as a dictionary
     :return: the inserted dictionary
     """
-    auth_header = prepare_auth_headers()
-    resp = requests.post(f"{host}/api/sensorData", json=measurement, auth=auth_header)
+    # auth_header = prepare_auth_headers()
+    resp = requests.post(
+        f"{address}/api/sensorData", json=measurement, auth=auth_header
+    )
     # return the deserialized measurement object here
     return resp.json()
 
 
-def post_measurement(measurements):
+def post_measurement(address: str, list_of_measurements: List, auth_header) -> None:
     """
     Post the given measurement.
     :param measurement: The measurement to post as a dictionary
     :return: the inserted dictionary
     """
-    auth_header = prepare_auth_headers()
+    # auth_header = prepare_auth_headers()
     list_of_responses = []
+    measurements = prepare_for_jsf(list_of_measurements)
 
     # possible to delete data entries after sending
     for measurement in measurements:
         try:
             resp = requests.post(
-                f"{host}/api/sensorData", json=measurement, auth=auth_header
+                f"{address}/api/sensorData", json=measurement, auth=auth_header
             )
+            # print(resp.json())
             if resp.__bool__:
                 list_of_responses.append(
                     (
@@ -51,14 +61,15 @@ def post_measurement(measurements):
                     ),
                 )
 
-        except requests.exceptions.RequestException as e:
+        except Exception as e:
             print(e)
+            logger.log_error(e)
 
     # return the deserialized measurement object here
     return list_of_responses
 
 
-def adjust_timestamp_for_transfer(data):
+def adjust_timestamp_for_transfer(data: str) -> str:
     """This function takes the list from the database
     and convert the data into a String, which is readable
     for jsf-transmission.
@@ -70,12 +81,17 @@ def adjust_timestamp_for_transfer(data):
     return data
 
 
-def adjust_timestamp_for_database_access(date_string):
+def adjust_timestamp_for_database_access(date_string: str) -> str:
+    """This function converts the date from the jsf-transmission
+    back to a python-readable representation"""
     date_string = date_string.replace("T", " ")
     return date_string
 
 
-def prepare_for_jsf(data):
+def prepare_for_jsf(data: List) -> List[dict]:
+    """Prepare the data from the database to
+    be sent via jsf by breaking it down
+    into a dictionary"""
     data = adjust_timestamp_for_transfer(data)
     list_of_dicts = []
     for list_data in data:
@@ -100,7 +116,7 @@ def prepare_for_jsf(data):
                 "dipId": list_data[0],
                 "timestamp": list_data[1],
                 "measurement": list_data[6],
-                "type": "HUMIDITY",
+                "type": "AIRQUALITY",
             }
         )
         list_of_dicts.append(
@@ -108,7 +124,7 @@ def prepare_for_jsf(data):
                 "dipId": list_data[0],
                 "timestamp": list_data[1],
                 "measurement": list_data[8],
-                "type": "GAS",
+                "type": "HUMIDITY",
             }
         )
         list_of_dicts.append(
@@ -116,14 +132,6 @@ def prepare_for_jsf(data):
                 "dipId": list_data[0],
                 "timestamp": list_data[1],
                 "measurement": list_data[10],
-                "type": "ALTITUDE",
-            }
-        )
-        list_of_dicts.append(
-            {
-                "dipId": list_data[0],
-                "timestamp": list_data[1],
-                "measurement": list_data[12],
                 "type": "SOIL",
             }
         )
@@ -131,44 +139,108 @@ def prepare_for_jsf(data):
             {
                 "dipId": list_data[0],
                 "timestamp": list_data[1],
-                "measurement": list_data[14],
+                "measurement": list_data[12],
                 "type": "LIGHT",
             }
         )
     return list_of_dicts
 
 
-def delete_send_sensor_data(conn, list_of_tuples):
+def delete_send_sensor_data(conn, list_of_tuples) -> None:
+    """Remove a specific sensorData entry from the database"""
     for sensor_data in list_of_tuples:
         dbconnection.remove_sensor_data(conn, sensor_data[0], sensor_data[1])
 
 
+def request_interval(address: str, auth_header):
+    try:
+        resp = requests.get(f"{address}/api/accessPoint/interval", auth=auth_header)
+        if resp.status_code != 200:
+            logger.log_error("Error when requesting interval: " + str(resp.status_code))
+            return None
+        else:
+            return resp.json()
+
+    except Exception as e:
+
+        print(e)
+        logger.log_error(e)
+        return None
+
+
+def request_limits(address: str, auth_header: str, dipId: int):
+    try:
+        resp = requests.get(
+            f"{address}/api/sensorStation/limits/{dipId}", auth=auth_header
+        )
+        if resp.status_code != 200:
+            logger.log_error("Error when requesting interval: " + str(resp.status_code))
+            return None
+        else:
+            return resp.json()
+
+    except Exception as e:
+        print(e)
+        logger.log_error(e)
+        return None
+
+def request_if_is_sensorstation_enabled(address:str, auth_header:str, dipId:int):
+    """request if sensorstation is still enabled
+    return bool"""
+    try:
+        resp = requests.get(
+            f"{address}/api/sensorStation/enabled/{dipId}", auth=auth_header
+        )
+        if resp.status_code != 200:
+            logger.log_error("Error when requesting if sensorstation is enabled: " + str(resp.status_code))
+            return None
+        else:
+            return resp.json()
+
+    except Exception as e:
+        print(e)
+        logger.log_error(e)
+        return None
+    
+def gardener_is_at_station(address:str, auth_header:str):
+    #TODO
+    pass
+
+
+"""Just for testing"""
 if __name__ == "__main__":
+    host = "http://localhost:8080"
     conn = dbconnection.create_database("database.db")
-    dbconnection.insert_sensor_data(conn, sensordata.SensorData(1, 1, 2, 3, 4, 5, 6, 7))
-    # dbconnection.insert_sensor_data(
-    # conn, sensordata.SensorData(1, 8, 9, 10, 11, 12, 13, 14)
-    # )
+    auth = prepare_auth_headers("43d5aba9-29c5-49b4-b4ec-2d430e34104f", "passwd")
 
-    data = dbconnection.get_sensor_data(conn, 1)
+    # dbconnection.insert_sensor_data(conn, sensordata.SensorData(3, 10, 2, 3, 4, 5, 17))
+
     # dbconnection.drop_sensor_data(conn)
+    # dbconnection.drop_limits(conn)
+    dbconnection.init_limits(conn, 3)
+    dbconnection.init_limits(conn, 0)
+    dbconnection.init_limits(conn, 1)
+    dbconnection.init_limits(conn, 2)
+    # answer = request_limits(host, auth, 1)
+    print(dbconnection.get_limits(conn, 1, "temp"))
+    dbconnection.update_limits(conn, 1, "TEMPERATURE", 12, 23)
+    print(dbconnection.get_limits(conn, 1, "temp"))
+    # print("data", data)
+    # data = adjust_timestamp_for_transfer(data)
 
-    data = adjust_timestamp_for_transfer(data)
+    # data = prepare_for_jsf(data)
 
-    data = prepare_for_jsf(data)
+    # print(data)
+    # for i in range(3):
+    # dbconnection.insert_sensor_data(
+    # conn, sensordata.SensorData(i, (i + 1) * 20, 10, 2, 3, 4, 5)
+    # )
+    # data = dbconnection.get_sensor_data(conn, 3)
+    # response = post_measurement(host, data, auth)
+    # print("resp", response)
+    # delete_send_sensor_data(conn, response)
 
-    response = post_measurement(data)
-    print(response)
-    delete_send_sensor_data(conn, response)
-    # new_measurement = post_measurement_2(data[0])
-    """
-    new_measurement = post_measurement_original_single(
-        {
-            "measurement": 6250,
-            "dipId": 1,
-            "type": "ALTITUDE",
-            "timestamp": "1997-06-22T11:11:20",
-        }
-    )
-    """
-    # print(new_measurement)
+    # print(dbconnection.get_all_sensorstations(conn))
+    # delete_send_sensor_data(conn, response)
+    # dbconnection.drop_limits(conn)
+    # dbconnection.drop_sensor_data(conn)

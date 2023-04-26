@@ -1,6 +1,8 @@
 package at.qe.g1t2.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.envers.Audited;
@@ -8,52 +10,70 @@ import org.springframework.data.domain.Persistable;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Audited
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"access_point_id", "dipId"})})
 public class SensorStation implements Persistable<String>, Serializable, Comparable<SensorStation> {
 
+    @ManyToMany(mappedBy = "sensorStations",fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @Fetch(FetchMode.SELECT)
+    private Set<Userx> userx = new HashSet<>();
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-
     private Boolean connected;
-
     private Boolean enabled;
-
+    @Column(nullable = false)
     private Long dipId;
-
-
     private String name;
-
     private String category;
+    private LocalDateTime lastConnectedDate;
+    @Column(unique = true)
+    private String mac;
+    @PreRemove
+    protected void beforeRemove(){
 
-    private Double transmissionInterval;
-
+        accessPoint.getSensorStation().remove(this);
+    }
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createDate;
-
     @ManyToOne(optional = true)
     @JoinColumn(name = "gardener_id", referencedColumnName = "username")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Userx gardener;
-
-    @OneToMany(mappedBy = "sensorStation",fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    Set<UsersFavourites> usersFavourites;
-
     @OneToMany(mappedBy = "sensorStation", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<SensorData> sensorData = new ArrayList<>();
-
     @OneToMany(mappedBy = "sensorStation", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<SensorDataTypeInfo> sensorDataTypeInfos = new ArrayList<>();
+    @OneToMany(mappedBy = "sensorStation", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<Picture> pictures = new ArrayList<>();
+
+
+    @ManyToOne()
+    private AccessPoint accessPoint;
+
+    public Set<Userx> getUserx() {
+        return userx;
+    }
+
+    public void setUserx(Set<Userx> userx) {
+        this.userx = userx;
+    }
+
+    public LocalDateTime getLastConnectedDate() {
+        return lastConnectedDate;
+    }
+
+    public void setLastConnectedDate(LocalDateTime lastConnectedDate) {
+        this.lastConnectedDate = lastConnectedDate;
+    }
 
     public List<SensorData> getSensorData() {
         return sensorData;
@@ -63,17 +83,13 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
         this.sensorData = sensorData;
     }
 
-    public Double getTransmissionInterval() {
-        return transmissionInterval;
+
+    public List<Picture> getPictures() {
+        return pictures;
     }
 
-    public void setTransmissionInterval(Double transmissionInterval) {
-        this.transmissionInterval = transmissionInterval;
-    }
-
-
-    public void setDipId(long dipId) {
-        this.dipId = dipId;
+    public void setPictures(List<Picture> pictures) {
+        this.pictures = pictures;
     }
 
     public Boolean getEnabled() {
@@ -84,23 +100,24 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
         this.enabled = enabled;
     }
 
-    public void setDipId(Long dipId) {
-        this.dipId = dipId;
-    }
-
     public Long getDipId() {
         return dipId;
     }
 
 
+
+    public void setDipId(Long dipId) {
+        this.dipId = dipId;
+    }
+
     public Boolean getConnected() {
+        connected = lastConnectedDate != null && lastConnectedDate.plusSeconds((accessPoint.getThresholdInterval() ==null?0:accessPoint.getThresholdInterval().longValue()) + accessPoint.getSendingInterval().longValue()).isAfter(LocalDateTime.now());
         return connected;
     }
 
     public void setConnected(Boolean connected) {
         this.connected = connected;
     }
-
 
     public AccessPoint getAccessPoint() {
         return accessPoint;
@@ -110,7 +127,6 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
         this.accessPoint = accessPoint;
     }
 
-
     public LocalDateTime getCreateDate() {
         return createDate;
     }
@@ -118,10 +134,6 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
     public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
     }
-
-
-    @ManyToOne()
-    private AccessPoint accessPoint;
 
     @Override
     public String getId() {
@@ -151,7 +163,7 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
 
     @Override
     public int compareTo(SensorStation o) {
-        return o.getName().compareTo(this.name);
+        return this.id.compareTo(o.id);
     }
 
     @Override
@@ -189,11 +201,11 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
         this.sensorDataTypeInfos = sensorDataTypeInfos;
     }
 
-    public Set<UsersFavourites> getUsersFavourites() {
-        return usersFavourites;
+    public String getMac() {
+        return mac;
     }
 
-    public void setUsersFavourites(Set<UsersFavourites> usersFavourites) {
-        this.usersFavourites = usersFavourites;
+    public void setMac(String mac) {
+        this.mac = mac;
     }
 }

@@ -18,16 +18,19 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
-@Component
-@Scope("application")
+
 /**
  * This Class saves/delete Sensorstations and allows tho remove/swap the gardener of the stations
  */
-public class SensorStationService {
+@Component
+@Scope("application")
+public class SensorStationService implements Serializable {
 
     @Autowired
     SensorStationRepository sensorStationRepository;
@@ -35,6 +38,8 @@ public class SensorStationService {
     @Autowired
     UserxRepository userRepository;
 
+    @Autowired
+    SensorDataTypeInfoService sensorDataTypeInfoService;
     @Autowired
     AccessPointRepository accessPointRepository;
 
@@ -48,27 +53,31 @@ public class SensorStationService {
     public SensorStation saveSensorStation(AccessPoint accessPoint, SensorStation sensorStation) {
         SensorStation checkSensorStation = getSensorStationByAccessPointIdAndDipId(accessPoint.getAccessPointID(), sensorStation.getDipId());
         if (checkSensorStation != null) {
-            return sensorStationRepository.save(sensorStation);
+            checkSensorStation.setMac(sensorStation.getMac());
+            return sensorStationRepository.save(checkSensorStation);
 
         }
+
         sensorStation.setCreateDate(LocalDateTime.now());
         accessPoint.getSensorStation().add(sensorStation);
         sensorStation.setAccessPoint(accessPoint);
         accessPoint = accessPointRepository.save(accessPoint);
 
-        return loadSensorStation(accessPoint
-                .getSensorStation()
-                .get(accessPoint.getSensorStation().size() - 1).getId());
+        return  loadSensorStation(accessPoint.getSensorStation().remove(accessPoint.getSensorStation().size()-1).getId());
 
     }
 
     @PreAuthorize("hasAnyAuthority('ACCESS_POINT','ADMIN')")
     @Transactional
     public void deleteSensorStation(SensorStation sensorStation) {
+
+
+
         sensorStationRepository.delete(sensorStation);
+
     }
 
-
+    @Transactional
     public Collection<SensorStation> getAllSensorStations() {
         return sensorStationRepository.findAll();
 
@@ -98,4 +107,16 @@ public class SensorStationService {
         return userRepository.findFirstByUsername(auth.getName());
     }
 
+    public Set<SensorStation> getAllSensorStationsByUser(){
+        return sensorStationRepository.getSensorStationsByUserx(getAuthenticatedUser());
+    }
+
+    public SensorStation getSensorStation(String mac){
+        return sensorStationRepository.getSensorStationsByMac(mac);
+
+    }
+
+    public List<SensorStation> getAllNewSensorStations(AccessPoint accessPoint){
+        return sensorStationRepository.getAllNewSensorStationsByAccessPoint(accessPoint);
+    }
 }
