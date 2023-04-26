@@ -8,7 +8,7 @@ from bleak.backends.scanner import AdvertisementData
 import dbconnection as db
 import restcontroller_init as rci
 
-device_name_prefix = "SensorStation G1T2"
+device_name_prefix = "SensorStation G1T2 "
 # all already connected SensorStations
 DEVICES = []
 # Database connection
@@ -21,7 +21,7 @@ AUTH_HEADER = ""
 lock = threading.Lock()
 
 
-def ble_function(address, auth_header):
+async def ble_function(address, auth_header):
     """
     Function which set the DB-Connection and starts scanning
 
@@ -33,8 +33,7 @@ def ble_function(address, auth_header):
     ADDRESS = address
     global AUTH_HEADER
     AUTH_HEADER = auth_header
-    asyncio.run(scan_for_devices())
-    print("After asyncio.run(scan)")
+    await scan_for_devices()
 
 
 async def scan_for_devices():
@@ -94,7 +93,7 @@ def ble_thread(device: BLEDevice):
 
 
 def get_dip_from_device(device: BLEDevice) -> int:
-    return int(filter(lambda s: s != '', re.split(device_name_prefix, device.name))[0])
+    return int(re.split(device_name_prefix, device.name)[1])
 
 
 def poll_for_verification(device: BLEDevice) -> bool:

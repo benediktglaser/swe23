@@ -9,11 +9,10 @@ import credentials
 import dbconnection as db
 import restcontroller_init as rci
 import myble
+import asyncio
 
 lock = threading.Lock()
 interval = 10
-ADDRESS = None
-AUTH_HEADER = None
 
 
 def init():
@@ -25,9 +24,6 @@ def init():
     interval = int(config.get("config", "interval"))
     logger.log_debug("start interval: " + str(interval))
     name = config.get("config", "name")
-
-    global ADDRESS
-    ADDRESS = address
 
     # establish the database-connection
     path = "database.db"  # TODO: change on raspberry
@@ -47,8 +43,6 @@ def init():
             )
             time.sleep(15)
         auth_header = rci.prepare_auth_headers(login[0], login[1])
-        global AUTH_HEADER
-        AUTH_HEADER = auth_header
 
         # This is the loop
         while True:
@@ -77,7 +71,10 @@ def poll_couple_mode(address: str, auth_header: str):
         if start_coupling is True:
             # TODO call real coupling method
             logger.log_info("Starting coupling mode")
-            myble.ble_function(ADDRESS, AUTH_HEADER)
+            asyncio.run(myble.ble_function(address, auth_header))
+            while True:
+                if not rci.request_couple_mode(address, auth_header):
+                    break
             # register the found just for debug to show how it would work
             # response = rci.propose_new_sensorstation_at_server(
             #     address, 93, "churchey", auth_header
