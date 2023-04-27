@@ -119,6 +119,13 @@ void loop() {
   // otherwise it still advertises
   BLE.stopAdvertise();
   BLE.poll();
+  // TODO: set up a loop here that
+  // 1. meassures the data
+  // 2. sends the data and
+  // 3. checks the limit of the recieved data and if necessary, calls the errorLight()-function.
+  // The only way to clear this light is to press the button on D2. If the value is still to
+  // low/high, the light should light up again. If the button on D3 is pressed, the loop should
+  // be left and the pairing-mode should start.
 }
 
 /*
@@ -324,4 +331,55 @@ void blePeripheralConnectHandler(BLEDevice central) {
 void blePeripheralDisconnectHandler(BLEDevice central) {
   Serial.println("Disconnected event, central: ");
   Serial.println(central.address());
+}
+
+/*
+This function provides error-codes via the RBG-LED. Different parameters
+(type) have different colors. The larger the error (limit) the faster the
+LED blinks. The number of blinks can be set using count.
+*/
+void errorLight(char* type, float limit, int count){
+  if(type == "temp"){
+    for(int i = 0; i < count; i++){
+      setColor(255, 0, 0);
+      delay(1/limit);
+      setColor(0, 0, 0);
+      delay(1/limit);
+    }
+  } else if(type == "pressure"){
+    for(int i = 0; i < count; i++){
+      setColor(0, 255, 0);
+      delay(1/limit);
+      setColor(0, 0, 0);
+      delay(1/limit);
+    }
+  } else if(type == "quality"){
+    for(int i = 0; i < count; i++){
+      setColor(0, 0, 255);
+      delay(1/limit);
+      setColor(0, 0, 0);
+      delay(1/limit);
+    }
+  } else if(type == "humid"){
+    for(int i = 0; i < count; i++){
+      setColor(255, 255, 0);
+      delay(1/limit);
+      setColor(0, 0, 0);
+      delay(1/limit);
+    }
+  } else if(type == "soil"){
+    for(int i = 0; i < count; i++){
+      setColor(0, 255, 255);
+      delay(1/limit);
+      setColor(0, 0, 0);
+      delay(1/limit);
+    }
+  } else if(type == "light"){
+    for(int i = 0; i < count; i++){
+      setColor(255, 0, 255);
+      delay(1/limit);
+      setColor(0, 0, 0);
+      delay(1/limit);
+    }
+  }
 }
