@@ -38,4 +38,5 @@ public class AccessPointDetailController {
     public void doSaveAccessPoint(AccessPoint accessPoint){
         accessPointService.saveAccessPoint(accessPoint);
     }
+
 }
