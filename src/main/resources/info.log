@@ -3794,3 +3794,1544 @@ Detail: enabled: true
 2023-04-27 12:50:22,163 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
 2023-04-27 12:50:22,165 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
 2023-04-27 12:50:22,167 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2023-04-27 12:52:50,943 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.0.Final
+2023-04-27 12:52:50,969 [main] INFO  at.qe.g1t2.Main - Starting Main using Java 17.0.1 with PID 27193 (/home/benedikt/OneDrive/SS2023/Softwareengineering/PS/g1t2/g1t2/target/classes started by benedikt in /home/benedikt/OneDrive/SS2023/Softwareengineering/PS/g1t2/g1t2)
+2023-04-27 12:52:50,969 [main] INFO  at.qe.g1t2.Main - No active profile set, falling back to 1 default profile: "default"
+2023-04-27 12:52:51,534 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-04-27 12:52:51,580 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 41 ms. Found 7 JPA repository interfaces.
+2023-04-27 12:52:51,985 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2023-04-27 12:52:51,990 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2023-04-27 12:52:51,991 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2023-04-27 12:52:51,991 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.5]
+2023-04-27 12:52:52,054 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2023-04-27 12:52:52,055 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1055 ms
+2023-04-27 12:52:52,238 [main] INFO  o.omnifaces.ApplicationInitializer - Using OmniFaces version 4.1
+2023-04-27 12:52:53,383 [main] INFO  o.j.s.ServletContainerInitializerRegistrationBean - Resolving classes for com.sun.faces.config.FacesInitializer took 1.08170633s
+2023-04-27 12:52:53,390 [main] INFO  o.j.w.e.servletWeldServlet - WELD-ENV-001008: Initialize Weld using ServletContainerInitializer
+2023-04-27 12:52:53,398 [main] INFO  org.jboss.weld.Version - WELD-000900: 5.1.0 (Final)
+2023-04-27 12:52:53,447 [main] INFO  o.s.d.j.r.c.JpaRepositoryExtension - Activating CDI extension for Spring Data JPA repositories
+2023-04-27 12:52:53,454 [main] INFO  org.jboss.weld.Bootstrap - WELD-ENV-000041: Using org.joinfaces.weld.ClassGraphDiscoveryStrategy@4cd90c36 for bean discovery
+2023-04-27 12:52:53,569 [main] INFO  o.j.w.ClassGraphDiscoveryStrategy - Weld bean discovery took 90ms
+2023-04-27 12:52:53,614 [main] INFO  org.jboss.weld.Bootstrap - WELD-000101: Transactional services not available. Injection of @Inject UserTransaction not available. Transactional observers will be invoked synchronously.
+2023-04-27 12:52:53,671 [main] INFO  org.jboss.weld.Event - WELD-000411: Observer method [BackedAnnotatedMethod] protected org.springframework.data.repository.cdi.CdiRepositoryExtensionSupport.processAnnotatedType(@Observes ProcessAnnotatedType<X>) receives events for all annotated types. Consider restricting events using @WithAnnotations or a generic type with bounds.
+2023-04-27 12:52:53,731 [main] INFO  o.j.w.e.servletWeldServlet - WELD-ENV-001002: Container detection skipped - custom container class loaded: org.joinfaces.weld.NoopContainer.
+2023-04-27 12:52:53,903 [main] INFO  j.e.r.webcontainer.faces.config - Initializing Mojarra 4.0.1 for context ''
+2023-04-27 12:52:53,982 [main] INFO  j.e.r.w.faces.application - JSF1048: PostConstruct/PreDestroy annotations present.  ManagedBeans methods marked with these annotations will have said annotations processed.
+2023-04-27 12:52:54,230 [main] INFO  o.p.w.PostConstructApplicationEventListener - Running on PrimeFaces 12.0.0
+2023-04-27 12:52:54,231 [main] INFO  o.p.e.a.PostConstructApplicationEventListener - Running on PrimeFaces Extensions 12.0.4
+2023-04-27 12:52:54,286 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2023-04-27 12:52:54,445 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4f239a76
+2023-04-27 12:52:54,446 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2023-04-27 12:52:56,825 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-04-27 12:52:56,883 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.1.7.Final
+2023-04-27 12:52:57,057 [main] INFO  SQL dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+2023-04-27 12:52:57,071 [main] INFO  o.h.e.b.internal.EnversServiceImpl - Envers integration enabled? : true
+2023-04-27 12:52:57,201 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: at.qe.g1t2.model.SensorData
+2023-04-27 12:52:57,203 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: at.qe.g1t2.model.Userx
+2023-04-27 12:52:57,204 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: at.qe.g1t2.model.SensorDataTypeInfo
+2023-04-27 12:52:57,204 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: at.qe.g1t2.model.SensorStation
+2023-04-27 12:52:57,204 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: at.qe.g1t2.model.Picture
+2023-04-27 12:52:57,205 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: at.qe.g1t2.model.AccessPoint
+2023-04-27 12:52:57,208 [main] INFO  o.h.e.b.i.AdditionalJaxbMappingProducerImpl - Adding JAXB document mapping
+2023-04-27 12:52:57,341 [main] INFO  org.hibernate.envers.boot - HHH90005601: Envers-generated HBM mapping...
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<hibernate-mapping auto-import="false" xmlns="http://www.hibernate.org/xsd/orm/hbm">
+    <class discriminator-value="SensorData" table="sensor_data_AUD" entity-name="at.qe.g1t2.model.SensorData_AUD" abstract="false">
+        <composite-id name="originalId">
+            <key-property name="id">
+                <column name="id"/>
+                <type name="string">
+                    <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                    <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                    <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                    <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                    <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorData</param>
+                    <param name="org.hibernate.type.ParameterType.propertyName">id</param>
+                </type>
+            </key-property>
+            <key-many-to-one class="at.qe.g1t2.model.LogInfo" name="REV">
+                <column name="REV"/>
+            </key-many-to-one>
+        </composite-id>
+        <property insert="true" name="REVTYPE" type="org.hibernate.envers.internal.entities.RevisionTypeType" update="false"/>
+        <property insert="true" name="createDate" update="false">
+            <column length="255" name="create_date"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorData</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">createDate</param>
+            </type>
+        </property>
+        <property insert="true" name="measurement" type="double" update="false">
+            <column length="255" name="measurement"/>
+        </property>
+        <property insert="true" name="timestamp" update="false">
+            <column length="255" name="timestamp"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorData</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">timestamp</param>
+            </type>
+        </property>
+        <property insert="true" name="type" update="false">
+            <column length="255" name="type"/>
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">at.qe.g1t2.model.SensorDataType</param>
+                <param name="useNamed">true</param>
+            </type>
+        </property>
+        <property insert="true" name="sensorStation_id" update="false">
+            <column name="sensor_station_id"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorStation</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">id</param>
+            </type>
+        </property>
+    </class>
+</hibernate-mapping>
+
+2023-04-27 12:52:57,347 [main] INFO  o.h.e.b.i.AdditionalJaxbMappingProducerImpl - Adding JAXB document mapping
+2023-04-27 12:52:57,372 [main] INFO  org.hibernate.envers.boot - HHH90005601: Envers-generated HBM mapping...
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<hibernate-mapping auto-import="false" xmlns="http://www.hibernate.org/xsd/orm/hbm">
+    <class discriminator-value="Userx" table="userx_AUD" entity-name="at.qe.g1t2.model.Userx_AUD" abstract="false">
+        <composite-id name="originalId">
+            <key-property name="username">
+                <column length="100" name="username"/>
+                <type name="string">
+                    <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                    <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                    <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                    <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                    <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.Userx</param>
+                    <param name="org.hibernate.type.ParameterType.propertyName">username</param>
+                </type>
+            </key-property>
+            <key-many-to-one class="at.qe.g1t2.model.LogInfo" name="REV">
+                <column name="REV"/>
+            </key-many-to-one>
+        </composite-id>
+        <property insert="true" name="REVTYPE" type="org.hibernate.envers.internal.entities.RevisionTypeType" update="false"/>
+        <property insert="true" name="createDate" update="false">
+            <column length="255" name="create_date"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.Userx</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">createDate</param>
+            </type>
+        </property>
+        <property insert="true" name="email" update="false">
+            <column name="email"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.Userx</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">email</param>
+            </type>
+        </property>
+        <property insert="true" name="enabled" type="boolean" update="false">
+            <column name="enabled"/>
+        </property>
+        <property insert="true" name="firstName" update="false">
+            <column name="first_name"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.Userx</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">firstName</param>
+            </type>
+        </property>
+        <property insert="true" name="lastName" update="false">
+            <column name="last_name"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.Userx</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">lastName</param>
+            </type>
+        </property>
+        <property insert="true" name="password" update="false">
+            <column name="password"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.Userx</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">password</param>
+            </type>
+        </property>
+        <property insert="true" name="phone" update="false">
+            <column name="phone"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.Userx</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">phone</param>
+            </type>
+        </property>
+        <property insert="true" name="updateDate" update="false">
+            <column name="update_date"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.Userx</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">updateDate</param>
+            </type>
+        </property>
+        <property insert="true" name="createUser_username" update="false">
+            <column length="100" name="create_user_username"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.Userx</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">username</param>
+            </type>
+        </property>
+        <property insert="true" name="updateUser_username" update="false">
+            <column length="100" name="update_user_username"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.Userx</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">username</param>
+            </type>
+        </property>
+    </class>
+</hibernate-mapping>
+
+2023-04-27 12:52:57,372 [main] INFO  o.h.e.b.i.AdditionalJaxbMappingProducerImpl - Adding JAXB document mapping
+2023-04-27 12:52:57,396 [main] INFO  org.hibernate.envers.boot - HHH90005601: Envers-generated HBM mapping...
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<hibernate-mapping xmlns="http://www.hibernate.org/xsd/orm/hbm">
+    <class table="userx_user_role_AUD" entity-name="userx_user_role_AUD">
+        <composite-id name="originalId">
+            <key-many-to-one class="at.qe.g1t2.model.LogInfo" name="REV">
+                <column name="REV"/>
+            </key-many-to-one>
+            <key-property name="Userx_username">
+                <column length="100" name="userx_username"/>
+                <type name="string">
+                    <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                    <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                    <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                    <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                    <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.Userx</param>
+                    <param name="org.hibernate.type.ParameterType.propertyName">username</param>
+                </type>
+            </key-property>
+            <key-property name="element">
+                <column name="roles"/>
+                <type name="org.hibernate.type.EnumType">
+                    <param name="enumClass">at.qe.g1t2.model.UserRole</param>
+                    <param name="useNamed">true</param>
+                </type>
+            </key-property>
+        </composite-id>
+        <property insert="true" name="REVTYPE" type="org.hibernate.envers.internal.entities.RevisionTypeType" update="false"/>
+    </class>
+</hibernate-mapping>
+
+2023-04-27 12:52:57,396 [main] INFO  o.h.e.b.i.AdditionalJaxbMappingProducerImpl - Adding JAXB document mapping
+2023-04-27 12:52:57,414 [main] INFO  org.hibernate.envers.boot - HHH90005601: Envers-generated HBM mapping...
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<hibernate-mapping xmlns="http://www.hibernate.org/xsd/orm/hbm">
+    <class table="user_sensor_station_AUD" entity-name="user_sensor_station_AUD">
+        <composite-id name="originalId">
+            <key-many-to-one class="at.qe.g1t2.model.LogInfo" name="REV">
+                <column name="REV"/>
+            </key-many-to-one>
+            <key-property name="Userx_username">
+                <column length="100" name="user_id"/>
+                <type name="string">
+                    <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                    <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                    <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                    <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                    <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.Userx</param>
+                    <param name="org.hibernate.type.ParameterType.propertyName">username</param>
+                </type>
+            </key-property>
+            <key-property name="sensorStations_id">
+                <column name="sensor_station_id"/>
+                <type name="string">
+                    <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                    <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                    <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                    <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                    <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorStation</param>
+                    <param name="org.hibernate.type.ParameterType.propertyName">id</param>
+                </type>
+            </key-property>
+        </composite-id>
+        <property insert="true" name="REVTYPE" type="org.hibernate.envers.internal.entities.RevisionTypeType" update="false"/>
+    </class>
+</hibernate-mapping>
+
+2023-04-27 12:52:57,414 [main] INFO  o.h.e.b.i.AdditionalJaxbMappingProducerImpl - Adding JAXB document mapping
+2023-04-27 12:52:57,431 [main] INFO  org.hibernate.envers.boot - HHH90005601: Envers-generated HBM mapping...
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<hibernate-mapping auto-import="false" xmlns="http://www.hibernate.org/xsd/orm/hbm">
+    <class discriminator-value="SensorDataTypeInfo" table="sensor_data_type_info_AUD" entity-name="at.qe.g1t2.model.SensorDataTypeInfo_AUD" abstract="false">
+        <composite-id name="originalId">
+            <key-property name="id">
+                <column name="id"/>
+                <type name="string">
+                    <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                    <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                    <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                    <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                    <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorDataTypeInfo</param>
+                    <param name="org.hibernate.type.ParameterType.propertyName">id</param>
+                </type>
+            </key-property>
+            <key-many-to-one class="at.qe.g1t2.model.LogInfo" name="REV">
+                <column name="REV"/>
+            </key-many-to-one>
+        </composite-id>
+        <property insert="true" name="REVTYPE" type="org.hibernate.envers.internal.entities.RevisionTypeType" update="false"/>
+        <property insert="true" name="createDate" update="false">
+            <column length="255" name="create_date"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorDataTypeInfo</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">createDate</param>
+            </type>
+        </property>
+        <property insert="true" name="maxLimit" update="false">
+            <column name="max_limit"/>
+            <type name="double">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Double</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorDataTypeInfo</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">maxLimit</param>
+            </type>
+        </property>
+        <property insert="true" name="minLimit" update="false">
+            <column name="min_limit"/>
+            <type name="double">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Double</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorDataTypeInfo</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">minLimit</param>
+            </type>
+        </property>
+        <property insert="true" name="type" update="false">
+            <column name="type"/>
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">at.qe.g1t2.model.SensorDataType</param>
+                <param name="useNamed">true</param>
+            </type>
+        </property>
+        <property insert="true" name="sensorStation_id" update="false">
+            <column name="sensor_station_id"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorStation</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">id</param>
+            </type>
+        </property>
+    </class>
+</hibernate-mapping>
+
+2023-04-27 12:52:57,434 [main] INFO  o.h.e.b.i.AdditionalJaxbMappingProducerImpl - Adding JAXB document mapping
+2023-04-27 12:52:57,450 [main] INFO  org.hibernate.envers.boot - HHH90005601: Envers-generated HBM mapping...
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<hibernate-mapping auto-import="false" xmlns="http://www.hibernate.org/xsd/orm/hbm">
+    <class discriminator-value="SensorStation" table="sensor_station_AUD" entity-name="at.qe.g1t2.model.SensorStation_AUD" abstract="false">
+        <composite-id name="originalId">
+            <key-property name="id">
+                <column name="id"/>
+                <type name="string">
+                    <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                    <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                    <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                    <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                    <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorStation</param>
+                    <param name="org.hibernate.type.ParameterType.propertyName">id</param>
+                </type>
+            </key-property>
+            <key-many-to-one class="at.qe.g1t2.model.LogInfo" name="REV">
+                <column name="REV"/>
+            </key-many-to-one>
+        </composite-id>
+        <property insert="true" name="REVTYPE" type="org.hibernate.envers.internal.entities.RevisionTypeType" update="false"/>
+        <property insert="true" name="category" update="false">
+            <column name="category"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorStation</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">category</param>
+            </type>
+        </property>
+        <property insert="true" name="connected" update="false">
+            <column name="connected"/>
+            <type name="boolean">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Boolean</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorStation</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">connected</param>
+            </type>
+        </property>
+        <property insert="true" name="createDate" update="false">
+            <column length="255" name="create_date"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorStation</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">createDate</param>
+            </type>
+        </property>
+        <property insert="true" name="dipId" update="false">
+            <column length="255" name="dip_id"/>
+            <type name="long">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Long</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorStation</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">dipId</param>
+            </type>
+        </property>
+        <property insert="true" name="enabled" update="false">
+            <column name="enabled"/>
+            <type name="boolean">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Boolean</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorStation</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">enabled</param>
+            </type>
+        </property>
+        <property insert="true" name="lastConnectedDate" update="false">
+            <column name="last_connected_date"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorStation</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">lastConnectedDate</param>
+            </type>
+        </property>
+        <property insert="true" name="mac" update="false">
+            <column length="255" name="mac"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorStation</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">mac</param>
+            </type>
+        </property>
+        <property insert="true" name="name" update="false">
+            <column name="name"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorStation</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">name</param>
+            </type>
+        </property>
+        <property insert="true" name="accessPoint_id" update="false">
+            <column name="access_point_id"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.AccessPoint</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">id</param>
+            </type>
+        </property>
+        <property insert="true" name="gardener_username" update="false">
+            <column length="100" name="gardener_id"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.Userx</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">username</param>
+            </type>
+        </property>
+    </class>
+</hibernate-mapping>
+
+2023-04-27 12:52:57,450 [main] INFO  o.h.e.b.i.AdditionalJaxbMappingProducerImpl - Adding JAXB document mapping
+2023-04-27 12:52:57,466 [main] INFO  org.hibernate.envers.boot - HHH90005601: Envers-generated HBM mapping...
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<hibernate-mapping auto-import="false" xmlns="http://www.hibernate.org/xsd/orm/hbm">
+    <class discriminator-value="Picture" table="picture_AUD" entity-name="at.qe.g1t2.model.Picture_AUD" abstract="false">
+        <composite-id name="originalId">
+            <key-property name="id">
+                <column name="id"/>
+                <type name="string">
+                    <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                    <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                    <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                    <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                    <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.Picture</param>
+                    <param name="org.hibernate.type.ParameterType.propertyName">id</param>
+                </type>
+            </key-property>
+            <key-many-to-one class="at.qe.g1t2.model.LogInfo" name="REV">
+                <column name="REV"/>
+            </key-many-to-one>
+        </composite-id>
+        <property insert="true" name="REVTYPE" type="org.hibernate.envers.internal.entities.RevisionTypeType" update="false"/>
+        <property insert="true" name="createDate" update="false">
+            <column length="255" name="create_date"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.Picture</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">createDate</param>
+            </type>
+        </property>
+        <property insert="true" name="description" update="false">
+            <column name="description"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.Picture</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">description</param>
+            </type>
+        </property>
+        <property insert="true" name="path" update="false">
+            <column length="255" name="path"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.Picture</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">path</param>
+            </type>
+        </property>
+        <property insert="true" name="pictureName" update="false">
+            <column name="picture_name"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.Picture</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">pictureName</param>
+            </type>
+        </property>
+        <property insert="true" name="sensorStation_id" update="false">
+            <column name="sensor_station_id"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorStation</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">id</param>
+            </type>
+        </property>
+    </class>
+</hibernate-mapping>
+
+2023-04-27 12:52:57,466 [main] INFO  o.h.e.b.i.AdditionalJaxbMappingProducerImpl - Adding JAXB document mapping
+2023-04-27 12:52:57,482 [main] INFO  org.hibernate.envers.boot - HHH90005601: Envers-generated HBM mapping...
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<hibernate-mapping auto-import="false" xmlns="http://www.hibernate.org/xsd/orm/hbm">
+    <class discriminator-value="AccessPoint" table="access_point_AUD" entity-name="at.qe.g1t2.model.AccessPoint_AUD" abstract="false">
+        <composite-id name="originalId">
+            <key-property name="id">
+                <column name="id"/>
+                <type name="string">
+                    <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                    <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                    <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                    <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                    <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.AccessPoint</param>
+                    <param name="org.hibernate.type.ParameterType.propertyName">id</param>
+                </type>
+            </key-property>
+            <key-many-to-one class="at.qe.g1t2.model.LogInfo" name="REV">
+                <column name="REV"/>
+            </key-many-to-one>
+        </composite-id>
+        <property insert="true" name="REVTYPE" type="org.hibernate.envers.internal.entities.RevisionTypeType" update="false"/>
+        <property insert="true" name="accessPointName" update="false">
+            <column name="access_point_name"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.AccessPoint</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">accessPointName</param>
+            </type>
+        </property>
+        <property insert="true" name="accessPointRole" update="false">
+            <column length="255" name="access_point_role"/>
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">at.qe.g1t2.model.AccessPointRole</param>
+                <param name="useNamed">true</param>
+            </type>
+        </property>
+        <property insert="true" name="connected" update="false">
+            <column name="connected"/>
+            <type name="boolean">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Boolean</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.AccessPoint</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">connected</param>
+            </type>
+        </property>
+        <property insert="true" name="coupleMode" update="false">
+            <column name="couple_mode"/>
+            <type name="boolean">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Boolean</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.AccessPoint</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">coupleMode</param>
+            </type>
+        </property>
+        <property insert="true" name="createDate" update="false">
+            <column length="255" name="create_date"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.AccessPoint</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">createDate</param>
+            </type>
+        </property>
+        <property insert="true" name="enabled" update="false">
+            <column name="enabled"/>
+            <type name="boolean">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Boolean</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.AccessPoint</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">enabled</param>
+            </type>
+        </property>
+        <property insert="true" name="lastConnectedDate" update="false">
+            <column name="last_connected_date"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.AccessPoint</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">lastConnectedDate</param>
+            </type>
+        </property>
+        <property insert="true" name="lastCouplingDate" update="false">
+            <column name="last_coupling_date"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.AccessPoint</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">lastCouplingDate</param>
+            </type>
+        </property>
+        <property insert="true" name="password" update="false">
+            <column name="password"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.AccessPoint</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">password</param>
+            </type>
+        </property>
+        <property insert="true" name="sendingInterval" update="false">
+            <column name="sending_interval"/>
+            <type name="double">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Double</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.AccessPoint</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">sendingInterval</param>
+            </type>
+        </property>
+        <property insert="true" name="thresholdInterval" update="false">
+            <column name="threshold_interval"/>
+            <type name="double">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Double</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.AccessPoint</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">thresholdInterval</param>
+            </type>
+        </property>
+        <property insert="true" name="updateDate" update="false">
+            <column name="update_date"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.AccessPoint</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">updateDate</param>
+            </type>
+        </property>
+    </class>
+</hibernate-mapping>
+
+2023-04-27 12:52:59,459 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-04-27 12:52:59,469 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-04-27 12:53:00,092 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: ServletContext resource [/index.html]
+2023-04-27 12:53:00,278 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint(s) beneath base path '/actuator'
+2023-04-27 12:53:00,326 [main] INFO  o.s.s.w.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@5cd61f61, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@2f193ff4, org.springframework.security.web.context.SecurityContextHolderFilter@72ef3f9b, org.springframework.security.web.header.HeaderWriterFilter@5f113675, org.springframework.security.web.authentication.logout.LogoutFilter@6503934c, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@30c1a903, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@50357562, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@e8ebd3c, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@57913cf5, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@547cc110, org.springframework.security.web.session.SessionManagementFilter@46329e85, org.springframework.security.web.access.ExceptionTranslationFilter@6870028, org.springframework.security.web.access.intercept.AuthorizationFilter@594bedf5]
+2023-04-27 12:53:00,535 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2023-04-27 12:53:00,546 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2023-04-27 12:53:00,557 [main] INFO  at.qe.g1t2.Main - Started Main in 9.765 seconds (process running for 10.024)
+2023-04-27 12:53:03,683 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-04-27 12:53:03,683 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2023-04-27 12:53:03,685 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2023-04-27 12:53:11,578 [http-nio-8080-exec-10] INFO  at.qe.g1t2.model.AccessPoint - Operation: CONNECTED
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: UUID4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: enabled: true
+
+2023-04-27 12:53:11,581 [http-nio-8080-exec-10] INFO  at.qe.g1t2.model.AccessPoint - Operation: CONNECTED
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: UUID43d5aba9-29c5-49b4-b4ec-2d430e34104f
+Detail: enabled: true
+
+2023-04-27 12:53:11,582 [http-nio-8080-exec-10] INFO  at.qe.g1t2.model.AccessPoint - Operation: CONNECTED
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: UUID7269ddec-30c6-44d9-bc1f-8af18da09ed3
+Detail: enabled: true
+
+2023-04-27 12:53:13,907 [http-nio-8080-exec-3] INFO  at.qe.g1t2.services.UserService - Operation: CRUD_READ
+Entity: class at.qe.g1t2.model.Userx
+Detail: load All Users
+
+2023-04-27 12:53:14,803 [http-nio-8080-exec-8] INFO  at.qe.g1t2.services.UserService - Operation: CRUD_READ
+Entity: class at.qe.g1t2.model.Userx
+Detail: load All Users
+
+2023-04-27 12:57:42,581 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-04-27 12:57:42,583 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2023-04-27 12:57:42,587 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2023-04-27 13:03:51,105 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.0.Final
+2023-04-27 13:03:51,138 [main] INFO  at.qe.g1t2.Main - Starting Main using Java 17.0.1 with PID 29386 (/home/benedikt/OneDrive/SS2023/Softwareengineering/PS/g1t2/g1t2/target/classes started by benedikt in /home/benedikt/OneDrive/SS2023/Softwareengineering/PS/g1t2/g1t2)
+2023-04-27 13:03:51,139 [main] INFO  at.qe.g1t2.Main - No active profile set, falling back to 1 default profile: "default"
+2023-04-27 13:03:51,772 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-04-27 13:03:51,822 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 45 ms. Found 7 JPA repository interfaces.
+2023-04-27 13:03:52,239 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2023-04-27 13:03:52,245 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2023-04-27 13:03:52,245 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2023-04-27 13:03:52,245 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.5]
+2023-04-27 13:03:52,307 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2023-04-27 13:03:52,308 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1142 ms
+2023-04-27 13:03:52,479 [main] INFO  o.omnifaces.ApplicationInitializer - Using OmniFaces version 4.1
+2023-04-27 13:03:54,106 [main] INFO  o.j.s.ServletContainerInitializerRegistrationBean - Resolving classes for com.sun.faces.config.FacesInitializer took 1.564634058s
+2023-04-27 13:03:54,118 [main] INFO  o.j.w.e.servletWeldServlet - WELD-ENV-001008: Initialize Weld using ServletContainerInitializer
+2023-04-27 13:03:54,128 [main] INFO  org.jboss.weld.Version - WELD-000900: 5.1.0 (Final)
+2023-04-27 13:03:54,201 [main] INFO  o.s.d.j.r.c.JpaRepositoryExtension - Activating CDI extension for Spring Data JPA repositories
+2023-04-27 13:03:54,212 [main] INFO  org.jboss.weld.Bootstrap - WELD-ENV-000041: Using org.joinfaces.weld.ClassGraphDiscoveryStrategy@5ea9373e for bean discovery
+2023-04-27 13:03:54,372 [main] INFO  o.j.w.ClassGraphDiscoveryStrategy - Weld bean discovery took 123ms
+2023-04-27 13:03:54,432 [main] INFO  org.jboss.weld.Bootstrap - WELD-000101: Transactional services not available. Injection of @Inject UserTransaction not available. Transactional observers will be invoked synchronously.
+2023-04-27 13:03:54,527 [main] INFO  org.jboss.weld.Event - WELD-000411: Observer method [BackedAnnotatedMethod] protected org.springframework.data.repository.cdi.CdiRepositoryExtensionSupport.processAnnotatedType(@Observes ProcessAnnotatedType<X>) receives events for all annotated types. Consider restricting events using @WithAnnotations or a generic type with bounds.
+2023-04-27 13:03:54,621 [main] INFO  o.j.w.e.servletWeldServlet - WELD-ENV-001002: Container detection skipped - custom container class loaded: org.joinfaces.weld.NoopContainer.
+2023-04-27 13:03:54,842 [main] INFO  j.e.r.webcontainer.faces.config - Initializing Mojarra 4.0.1 for context ''
+2023-04-27 13:03:54,964 [main] INFO  j.e.r.w.faces.application - JSF1048: PostConstruct/PreDestroy annotations present.  ManagedBeans methods marked with these annotations will have said annotations processed.
+2023-04-27 13:03:55,309 [main] INFO  o.p.w.PostConstructApplicationEventListener - Running on PrimeFaces 12.0.0
+2023-04-27 13:03:55,309 [main] INFO  o.p.e.a.PostConstructApplicationEventListener - Running on PrimeFaces Extensions 12.0.4
+2023-04-27 13:03:55,374 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2023-04-27 13:03:55,559 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7db63a01
+2023-04-27 13:03:55,560 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2023-04-27 13:03:57,951 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-04-27 13:03:57,992 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.1.7.Final
+2023-04-27 13:03:58,175 [main] INFO  SQL dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+2023-04-27 13:03:58,190 [main] INFO  o.h.e.b.internal.EnversServiceImpl - Envers integration enabled? : true
+2023-04-27 13:03:58,335 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: at.qe.g1t2.model.SensorData
+2023-04-27 13:03:58,338 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: at.qe.g1t2.model.Userx
+2023-04-27 13:03:58,339 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: at.qe.g1t2.model.SensorDataTypeInfo
+2023-04-27 13:03:58,339 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: at.qe.g1t2.model.SensorStation
+2023-04-27 13:03:58,339 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: at.qe.g1t2.model.Picture
+2023-04-27 13:03:58,339 [main] INFO  o.h.e.c.i.m.AuditMetadataGenerator - Adding properties for entity: at.qe.g1t2.model.AccessPoint
+2023-04-27 13:03:58,343 [main] INFO  o.h.e.b.i.AdditionalJaxbMappingProducerImpl - Adding JAXB document mapping
+2023-04-27 13:03:58,492 [main] INFO  org.hibernate.envers.boot - HHH90005601: Envers-generated HBM mapping...
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<hibernate-mapping auto-import="false" xmlns="http://www.hibernate.org/xsd/orm/hbm">
+    <class discriminator-value="SensorData" table="sensor_data_AUD" entity-name="at.qe.g1t2.model.SensorData_AUD" abstract="false">
+        <composite-id name="originalId">
+            <key-property name="id">
+                <column name="id"/>
+                <type name="string">
+                    <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                    <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                    <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                    <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                    <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorData</param>
+                    <param name="org.hibernate.type.ParameterType.propertyName">id</param>
+                </type>
+            </key-property>
+            <key-many-to-one class="at.qe.g1t2.model.LogInfo" name="REV">
+                <column name="REV"/>
+            </key-many-to-one>
+        </composite-id>
+        <property insert="true" name="REVTYPE" type="org.hibernate.envers.internal.entities.RevisionTypeType" update="false"/>
+        <property insert="true" name="createDate" update="false">
+            <column length="255" name="create_date"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorData</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">createDate</param>
+            </type>
+        </property>
+        <property insert="true" name="measurement" type="double" update="false">
+            <column length="255" name="measurement"/>
+        </property>
+        <property insert="true" name="timestamp" update="false">
+            <column length="255" name="timestamp"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorData</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">timestamp</param>
+            </type>
+        </property>
+        <property insert="true" name="type" update="false">
+            <column length="255" name="type"/>
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">at.qe.g1t2.model.SensorDataType</param>
+                <param name="useNamed">true</param>
+            </type>
+        </property>
+        <property insert="true" name="sensorStation_id" update="false">
+            <column name="sensor_station_id"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorStation</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">id</param>
+            </type>
+        </property>
+    </class>
+</hibernate-mapping>
+
+2023-04-27 13:03:58,500 [main] INFO  o.h.e.b.i.AdditionalJaxbMappingProducerImpl - Adding JAXB document mapping
+2023-04-27 13:03:58,526 [main] INFO  org.hibernate.envers.boot - HHH90005601: Envers-generated HBM mapping...
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<hibernate-mapping auto-import="false" xmlns="http://www.hibernate.org/xsd/orm/hbm">
+    <class discriminator-value="Userx" table="userx_AUD" entity-name="at.qe.g1t2.model.Userx_AUD" abstract="false">
+        <composite-id name="originalId">
+            <key-property name="username">
+                <column length="100" name="username"/>
+                <type name="string">
+                    <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                    <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                    <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                    <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                    <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.Userx</param>
+                    <param name="org.hibernate.type.ParameterType.propertyName">username</param>
+                </type>
+            </key-property>
+            <key-many-to-one class="at.qe.g1t2.model.LogInfo" name="REV">
+                <column name="REV"/>
+            </key-many-to-one>
+        </composite-id>
+        <property insert="true" name="REVTYPE" type="org.hibernate.envers.internal.entities.RevisionTypeType" update="false"/>
+        <property insert="true" name="createDate" update="false">
+            <column length="255" name="create_date"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.Userx</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">createDate</param>
+            </type>
+        </property>
+        <property insert="true" name="email" update="false">
+            <column name="email"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.Userx</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">email</param>
+            </type>
+        </property>
+        <property insert="true" name="enabled" type="boolean" update="false">
+            <column name="enabled"/>
+        </property>
+        <property insert="true" name="firstName" update="false">
+            <column name="first_name"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.Userx</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">firstName</param>
+            </type>
+        </property>
+        <property insert="true" name="lastName" update="false">
+            <column name="last_name"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.Userx</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">lastName</param>
+            </type>
+        </property>
+        <property insert="true" name="password" update="false">
+            <column name="password"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.Userx</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">password</param>
+            </type>
+        </property>
+        <property insert="true" name="phone" update="false">
+            <column name="phone"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.Userx</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">phone</param>
+            </type>
+        </property>
+        <property insert="true" name="updateDate" update="false">
+            <column name="update_date"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.Userx</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">updateDate</param>
+            </type>
+        </property>
+        <property insert="true" name="createUser_username" update="false">
+            <column length="100" name="create_user_username"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.Userx</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">username</param>
+            </type>
+        </property>
+        <property insert="true" name="updateUser_username" update="false">
+            <column length="100" name="update_user_username"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.Userx</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">username</param>
+            </type>
+        </property>
+    </class>
+</hibernate-mapping>
+
+2023-04-27 13:03:58,527 [main] INFO  o.h.e.b.i.AdditionalJaxbMappingProducerImpl - Adding JAXB document mapping
+2023-04-27 13:03:58,548 [main] INFO  org.hibernate.envers.boot - HHH90005601: Envers-generated HBM mapping...
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<hibernate-mapping xmlns="http://www.hibernate.org/xsd/orm/hbm">
+    <class table="userx_user_role_AUD" entity-name="userx_user_role_AUD">
+        <composite-id name="originalId">
+            <key-many-to-one class="at.qe.g1t2.model.LogInfo" name="REV">
+                <column name="REV"/>
+            </key-many-to-one>
+            <key-property name="Userx_username">
+                <column length="100" name="userx_username"/>
+                <type name="string">
+                    <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                    <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                    <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                    <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                    <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.Userx</param>
+                    <param name="org.hibernate.type.ParameterType.propertyName">username</param>
+                </type>
+            </key-property>
+            <key-property name="element">
+                <column name="roles"/>
+                <type name="org.hibernate.type.EnumType">
+                    <param name="enumClass">at.qe.g1t2.model.UserRole</param>
+                    <param name="useNamed">true</param>
+                </type>
+            </key-property>
+        </composite-id>
+        <property insert="true" name="REVTYPE" type="org.hibernate.envers.internal.entities.RevisionTypeType" update="false"/>
+    </class>
+</hibernate-mapping>
+
+2023-04-27 13:03:58,548 [main] INFO  o.h.e.b.i.AdditionalJaxbMappingProducerImpl - Adding JAXB document mapping
+2023-04-27 13:03:58,567 [main] INFO  org.hibernate.envers.boot - HHH90005601: Envers-generated HBM mapping...
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<hibernate-mapping xmlns="http://www.hibernate.org/xsd/orm/hbm">
+    <class table="user_sensor_station_AUD" entity-name="user_sensor_station_AUD">
+        <composite-id name="originalId">
+            <key-many-to-one class="at.qe.g1t2.model.LogInfo" name="REV">
+                <column name="REV"/>
+            </key-many-to-one>
+            <key-property name="Userx_username">
+                <column length="100" name="user_id"/>
+                <type name="string">
+                    <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                    <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                    <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                    <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                    <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.Userx</param>
+                    <param name="org.hibernate.type.ParameterType.propertyName">username</param>
+                </type>
+            </key-property>
+            <key-property name="sensorStations_id">
+                <column name="sensor_station_id"/>
+                <type name="string">
+                    <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                    <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                    <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                    <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                    <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorStation</param>
+                    <param name="org.hibernate.type.ParameterType.propertyName">id</param>
+                </type>
+            </key-property>
+        </composite-id>
+        <property insert="true" name="REVTYPE" type="org.hibernate.envers.internal.entities.RevisionTypeType" update="false"/>
+    </class>
+</hibernate-mapping>
+
+2023-04-27 13:03:58,567 [main] INFO  o.h.e.b.i.AdditionalJaxbMappingProducerImpl - Adding JAXB document mapping
+2023-04-27 13:03:58,585 [main] INFO  org.hibernate.envers.boot - HHH90005601: Envers-generated HBM mapping...
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<hibernate-mapping auto-import="false" xmlns="http://www.hibernate.org/xsd/orm/hbm">
+    <class discriminator-value="SensorDataTypeInfo" table="sensor_data_type_info_AUD" entity-name="at.qe.g1t2.model.SensorDataTypeInfo_AUD" abstract="false">
+        <composite-id name="originalId">
+            <key-property name="id">
+                <column name="id"/>
+                <type name="string">
+                    <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                    <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                    <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                    <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                    <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorDataTypeInfo</param>
+                    <param name="org.hibernate.type.ParameterType.propertyName">id</param>
+                </type>
+            </key-property>
+            <key-many-to-one class="at.qe.g1t2.model.LogInfo" name="REV">
+                <column name="REV"/>
+            </key-many-to-one>
+        </composite-id>
+        <property insert="true" name="REVTYPE" type="org.hibernate.envers.internal.entities.RevisionTypeType" update="false"/>
+        <property insert="true" name="createDate" update="false">
+            <column length="255" name="create_date"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorDataTypeInfo</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">createDate</param>
+            </type>
+        </property>
+        <property insert="true" name="maxLimit" update="false">
+            <column name="max_limit"/>
+            <type name="double">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Double</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorDataTypeInfo</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">maxLimit</param>
+            </type>
+        </property>
+        <property insert="true" name="minLimit" update="false">
+            <column name="min_limit"/>
+            <type name="double">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Double</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorDataTypeInfo</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">minLimit</param>
+            </type>
+        </property>
+        <property insert="true" name="type" update="false">
+            <column name="type"/>
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">at.qe.g1t2.model.SensorDataType</param>
+                <param name="useNamed">true</param>
+            </type>
+        </property>
+        <property insert="true" name="sensorStation_id" update="false">
+            <column name="sensor_station_id"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorStation</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">id</param>
+            </type>
+        </property>
+    </class>
+</hibernate-mapping>
+
+2023-04-27 13:03:58,588 [main] INFO  o.h.e.b.i.AdditionalJaxbMappingProducerImpl - Adding JAXB document mapping
+2023-04-27 13:03:58,605 [main] INFO  org.hibernate.envers.boot - HHH90005601: Envers-generated HBM mapping...
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<hibernate-mapping auto-import="false" xmlns="http://www.hibernate.org/xsd/orm/hbm">
+    <class discriminator-value="SensorStation" table="sensor_station_AUD" entity-name="at.qe.g1t2.model.SensorStation_AUD" abstract="false">
+        <composite-id name="originalId">
+            <key-property name="id">
+                <column name="id"/>
+                <type name="string">
+                    <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                    <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                    <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                    <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                    <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorStation</param>
+                    <param name="org.hibernate.type.ParameterType.propertyName">id</param>
+                </type>
+            </key-property>
+            <key-many-to-one class="at.qe.g1t2.model.LogInfo" name="REV">
+                <column name="REV"/>
+            </key-many-to-one>
+        </composite-id>
+        <property insert="true" name="REVTYPE" type="org.hibernate.envers.internal.entities.RevisionTypeType" update="false"/>
+        <property insert="true" name="category" update="false">
+            <column name="category"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorStation</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">category</param>
+            </type>
+        </property>
+        <property insert="true" name="connected" update="false">
+            <column name="connected"/>
+            <type name="boolean">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Boolean</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorStation</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">connected</param>
+            </type>
+        </property>
+        <property insert="true" name="createDate" update="false">
+            <column length="255" name="create_date"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorStation</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">createDate</param>
+            </type>
+        </property>
+        <property insert="true" name="dipId" update="false">
+            <column length="255" name="dip_id"/>
+            <type name="long">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Long</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorStation</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">dipId</param>
+            </type>
+        </property>
+        <property insert="true" name="enabled" update="false">
+            <column name="enabled"/>
+            <type name="boolean">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Boolean</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorStation</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">enabled</param>
+            </type>
+        </property>
+        <property insert="true" name="lastConnectedDate" update="false">
+            <column name="last_connected_date"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorStation</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">lastConnectedDate</param>
+            </type>
+        </property>
+        <property insert="true" name="mac" update="false">
+            <column length="255" name="mac"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorStation</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">mac</param>
+            </type>
+        </property>
+        <property insert="true" name="name" update="false">
+            <column name="name"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorStation</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">name</param>
+            </type>
+        </property>
+        <property insert="true" name="accessPoint_id" update="false">
+            <column name="access_point_id"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.AccessPoint</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">id</param>
+            </type>
+        </property>
+        <property insert="true" name="gardener_username" update="false">
+            <column length="100" name="gardener_id"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.Userx</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">username</param>
+            </type>
+        </property>
+    </class>
+</hibernate-mapping>
+
+2023-04-27 13:03:58,605 [main] INFO  o.h.e.b.i.AdditionalJaxbMappingProducerImpl - Adding JAXB document mapping
+2023-04-27 13:03:58,622 [main] INFO  org.hibernate.envers.boot - HHH90005601: Envers-generated HBM mapping...
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<hibernate-mapping auto-import="false" xmlns="http://www.hibernate.org/xsd/orm/hbm">
+    <class discriminator-value="Picture" table="picture_AUD" entity-name="at.qe.g1t2.model.Picture_AUD" abstract="false">
+        <composite-id name="originalId">
+            <key-property name="id">
+                <column name="id"/>
+                <type name="string">
+                    <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                    <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                    <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                    <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                    <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.Picture</param>
+                    <param name="org.hibernate.type.ParameterType.propertyName">id</param>
+                </type>
+            </key-property>
+            <key-many-to-one class="at.qe.g1t2.model.LogInfo" name="REV">
+                <column name="REV"/>
+            </key-many-to-one>
+        </composite-id>
+        <property insert="true" name="REVTYPE" type="org.hibernate.envers.internal.entities.RevisionTypeType" update="false"/>
+        <property insert="true" name="createDate" update="false">
+            <column length="255" name="create_date"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.Picture</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">createDate</param>
+            </type>
+        </property>
+        <property insert="true" name="description" update="false">
+            <column name="description"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.Picture</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">description</param>
+            </type>
+        </property>
+        <property insert="true" name="path" update="false">
+            <column length="255" name="path"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.Picture</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">path</param>
+            </type>
+        </property>
+        <property insert="true" name="pictureName" update="false">
+            <column name="picture_name"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.Picture</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">pictureName</param>
+            </type>
+        </property>
+        <property insert="true" name="sensorStation_id" update="false">
+            <column name="sensor_station_id"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.SensorStation</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">id</param>
+            </type>
+        </property>
+    </class>
+</hibernate-mapping>
+
+2023-04-27 13:03:58,623 [main] INFO  o.h.e.b.i.AdditionalJaxbMappingProducerImpl - Adding JAXB document mapping
+2023-04-27 13:03:58,641 [main] INFO  org.hibernate.envers.boot - HHH90005601: Envers-generated HBM mapping...
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<hibernate-mapping auto-import="false" xmlns="http://www.hibernate.org/xsd/orm/hbm">
+    <class discriminator-value="AccessPoint" table="access_point_AUD" entity-name="at.qe.g1t2.model.AccessPoint_AUD" abstract="false">
+        <composite-id name="originalId">
+            <key-property name="id">
+                <column name="id"/>
+                <type name="string">
+                    <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                    <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                    <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                    <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                    <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.AccessPoint</param>
+                    <param name="org.hibernate.type.ParameterType.propertyName">id</param>
+                </type>
+            </key-property>
+            <key-many-to-one class="at.qe.g1t2.model.LogInfo" name="REV">
+                <column name="REV"/>
+            </key-many-to-one>
+        </composite-id>
+        <property insert="true" name="REVTYPE" type="org.hibernate.envers.internal.entities.RevisionTypeType" update="false"/>
+        <property insert="true" name="accessPointName" update="false">
+            <column name="access_point_name"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.AccessPoint</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">accessPointName</param>
+            </type>
+        </property>
+        <property insert="true" name="accessPointRole" update="false">
+            <column length="255" name="access_point_role"/>
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">at.qe.g1t2.model.AccessPointRole</param>
+                <param name="useNamed">true</param>
+            </type>
+        </property>
+        <property insert="true" name="connected" update="false">
+            <column name="connected"/>
+            <type name="boolean">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Boolean</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.AccessPoint</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">connected</param>
+            </type>
+        </property>
+        <property insert="true" name="coupleMode" update="false">
+            <column name="couple_mode"/>
+            <type name="boolean">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Boolean</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.AccessPoint</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">coupleMode</param>
+            </type>
+        </property>
+        <property insert="true" name="createDate" update="false">
+            <column length="255" name="create_date"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.AccessPoint</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">createDate</param>
+            </type>
+        </property>
+        <property insert="true" name="enabled" update="false">
+            <column name="enabled"/>
+            <type name="boolean">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Boolean</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.AccessPoint</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">enabled</param>
+            </type>
+        </property>
+        <property insert="true" name="lastConnectedDate" update="false">
+            <column name="last_connected_date"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.AccessPoint</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">lastConnectedDate</param>
+            </type>
+        </property>
+        <property insert="true" name="lastCouplingDate" update="false">
+            <column name="last_coupling_date"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.AccessPoint</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">lastCouplingDate</param>
+            </type>
+        </property>
+        <property insert="true" name="password" update="false">
+            <column name="password"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.AccessPoint</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">password</param>
+            </type>
+        </property>
+        <property insert="true" name="sendingInterval" update="false">
+            <column name="sending_interval"/>
+            <type name="double">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Double</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.AccessPoint</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">sendingInterval</param>
+            </type>
+        </property>
+        <property insert="true" name="thresholdInterval" update="false">
+            <column name="threshold_interval"/>
+            <type name="double">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Double</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.AccessPoint</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">thresholdInterval</param>
+            </type>
+        </property>
+        <property insert="true" name="updateDate" update="false">
+            <column name="update_date"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">at.qe.g1t2.model.AccessPoint</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">updateDate</param>
+            </type>
+        </property>
+    </class>
+</hibernate-mapping>
+
+2023-04-27 13:04:00,626 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-04-27 13:04:00,632 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-04-27 13:04:01,376 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: ServletContext resource [/index.html]
+2023-04-27 13:04:01,601 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint(s) beneath base path '/actuator'
+2023-04-27 13:04:01,668 [main] INFO  o.s.s.w.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@ae04104, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@c4231e8, org.springframework.security.web.context.SecurityContextHolderFilter@4e4d2e2d, org.springframework.security.web.header.HeaderWriterFilter@d449860, org.springframework.security.web.authentication.logout.LogoutFilter@28ad61c1, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@52760b04, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@30c1a903, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6aa45b55, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5f113675, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@31f608d2, org.springframework.security.web.session.SessionManagementFilter@27edfdf9, org.springframework.security.web.access.ExceptionTranslationFilter@5615f2ac, org.springframework.security.web.access.intercept.AuthorizationFilter@195368e2]
+2023-04-27 13:04:01,918 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2023-04-27 13:04:01,929 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2023-04-27 13:04:01,941 [main] INFO  at.qe.g1t2.Main - Started Main in 10.992 seconds (process running for 11.247)
+2023-04-27 13:04:02,289 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-04-27 13:04:02,290 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2023-04-27 13:04:02,291 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2023-04-27 13:04:40,935 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-04-27 13:04:40,937 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2023-04-27 13:04:40,944 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.

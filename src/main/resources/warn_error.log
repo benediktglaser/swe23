@@ -253,3 +253,26 @@ Entity: class at.qe.g1t2.model.AccessPoint
 Id: Access point: 43d5aba9-29c5-49b4-b4ec-2d430e34104f
 Detail: Call get getAuthAccessPoint()
 
+2023-04-27 12:53:11,576 [http-nio-8080-exec-10] WARN  at.qe.g1t2.model.AccessPoint - Operation: CONNECTION_FAILURE
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: UUID4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: connected: false
+
+2023-04-27 12:53:11,581 [http-nio-8080-exec-10] WARN  at.qe.g1t2.model.AccessPoint - Operation: CONNECTION_FAILURE
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: UUID43d5aba9-29c5-49b4-b4ec-2d430e34104f
+Detail: connected: false
+
+2023-04-27 12:53:11,582 [http-nio-8080-exec-10] WARN  at.qe.g1t2.model.AccessPoint - Operation: CONNECTION_FAILURE
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: UUID7269ddec-30c6-44d9-bc1f-8af18da09ed3
+Detail: connected: false
+
+2023-04-27 12:53:13,897 [http-nio-8080-exec-3] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-27 12:53:14,801 [http-nio-8080-exec-8] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+

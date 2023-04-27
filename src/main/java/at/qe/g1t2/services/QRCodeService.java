@@ -9,6 +9,8 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 
 @Service
 public class QRCodeService {
@@ -17,7 +19,7 @@ public class QRCodeService {
 
     public static BufferedImage generateQRCodeImage(SensorStation sensorStation) throws IOException {
         ByteArrayOutputStream stream = QRCode
-                .from("localhost:8080/visitor/gallery.xhtml?id="+sensorStation.getId())
+                .from(getIPAddress()+":8080/visitor/gallery.xhtml?id="+sensorStation.getId())
                 .withSize(250, 250)
                 .stream();
         ByteArrayInputStream bis = new ByteArrayInputStream(stream.toByteArray());
@@ -25,4 +27,11 @@ public class QRCodeService {
         return ImageIO.read(bis);
     }
 
+    private static String getIPAddress(){
+        try (Socket socket = new Socket()) {
+            socket.connect(new InetSocketAddress("google.com", 80));
+            return socket.getLocalAddress().getHostAddress();
+        } catch (IOException e){}
+        return null;
+    }
 }
