@@ -33,6 +33,7 @@ public class SensorStationGardenerService implements Serializable {
 
 
     public Collection<SensorStation> getAllSensorStationsOfUser() {
+        System.out.println(getAuthenticatedUser());
         return sensorStationRepository.getSensorStationsByGardener(getAuthenticatedUser());
     }
 

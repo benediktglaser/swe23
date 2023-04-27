@@ -24,3 +24,6 @@ src/main/python/database.db
 ### py_cache ###
 src/main/python/__pycache__/
 src/main/python/*.pyc
+
+## log_files ###
+src/main/*.log
