@@ -147,3 +147,124 @@
 2023-04-24 22:02:19,090  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/verified/93 HTTP/1.1" 200 None
 2023-04-24 22:02:19,100  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
 2023-04-24 22:02:19,571  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/connected/93 HTTP/1.1" 200 None
+2023-04-27 11:39:31,888  log_debug  DEBUG start interval: 20
+2023-04-27 11:39:31,888  log_info  INFO Login as: 43d5aba9-29c5-49b4-b4ec-2d430e34104f passwd
+2023-04-27 11:39:31,889  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 11:39:32,235  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/couple HTTP/1.1" 200 None
+2023-04-27 11:39:32,236  log_info  INFO Starting coupling mode
+2023-04-27 11:39:32,237  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 11:39:32,483  _make_request  DEBUG http://localhost:8080 "POST /api/sensorStation/register HTTP/1.1" 200 None
+2023-04-27 11:39:32,484  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 11:39:32,687  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/verified/93 HTTP/1.1" 200 None
+2023-04-27 11:39:32,688  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 11:39:32,957  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/connected/93 HTTP/1.1" 200 None
+2023-04-27 12:49:23,794  log_debug  DEBUG start interval: 20
+2023-04-27 12:49:23,794  log_info  INFO Login as: 43d5aba9-29c5-49b4-b4ec-2d430e34104f passwd
+2023-04-27 12:49:23,795  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:49:23,796  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:49:23,797  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/accessPoint/couple (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f473b0db250>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2023-04-27 12:49:23,797  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/accessPoint/interval (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f473b0e5550>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2023-04-27 12:49:23,821  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:49:23,822  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/sensorStation/enabled/1 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f473b0e7990>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2023-04-27 12:49:23,823  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:49:23,823  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/sensorStation/enabled/2 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f473b0d9150>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2023-04-27 12:49:23,831  log_error  ERROR UNIQUE constraint failed: limits.station_id
+2023-04-27 12:49:23,831  log_error  ERROR UNIQUE constraint failed: limits.station_id
+2023-04-27 12:49:23,860  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:49:23,860  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/sensorData (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f473b0ec350>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2023-04-27 12:49:23,861  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:49:23,861  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/sensorData (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f473b0ee710>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2023-04-27 12:49:23,862  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:49:23,862  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/sensorData (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f473b0f8b90>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2023-04-27 12:49:23,863  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:49:23,863  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/sensorData (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f473b0fb010>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2023-04-27 12:49:23,863  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:49:23,864  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/sensorData (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f473b0f8790>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2023-04-27 12:49:23,864  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:49:23,864  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/sensorData (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f473b0f9590>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2023-04-27 12:49:23,864  log_info  INFO delete this amount of data from database for sensorstation_id:1 :0
+2023-04-27 12:49:23,865  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:49:23,865  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/sensorData (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f473b0ef650>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2023-04-27 12:49:23,866  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:49:23,866  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/sensorData (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f473b0ed310>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2023-04-27 12:49:23,866  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:49:23,867  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/sensorData (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f473b0e4710>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2023-04-27 12:49:23,867  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:49:23,868  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/sensorData (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f473b0d9290>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2023-04-27 12:49:23,868  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:49:23,868  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/sensorData (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f473b109f90>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2023-04-27 12:49:23,869  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:49:23,869  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/sensorData (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f473b0ee190>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2023-04-27 12:49:23,869  log_info  INFO delete this amount of data from database for sensorstation_id:2 :0
+2023-04-27 12:49:23,869  log_debug  DEBUG interval in send_data: 20
+2023-04-27 12:49:38,799  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:49:38,824  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:49:39,382  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/enabled/1 HTTP/1.1" 200 None
+2023-04-27 12:49:39,385  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:49:39,426  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/limits/1 HTTP/1.1" 200 None
+2023-04-27 12:49:39,427  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:49:39,629  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/enabled/2 HTTP/1.1" 200 None
+2023-04-27 12:49:39,683  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/limits/2 HTTP/1.1" 200 None
+2023-04-27 12:49:43,798  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:49:44,014  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/interval HTTP/1.1" 200 None
+2023-04-27 12:49:44,014  log_info  INFO New Interval = 3.0
+2023-04-27 12:49:48,878  log_error  ERROR database is locked
+2023-04-27 12:49:48,879  log_error  ERROR database is locked
+2023-04-27 12:49:48,881  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:49:49,159  _make_request  DEBUG http://localhost:8080 "POST /api/sensorData HTTP/1.1" 201 None
+2023-04-27 12:49:49,160  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:49:49,373  _make_request  DEBUG http://localhost:8080 "POST /api/sensorData HTTP/1.1" 201 None
+2023-04-27 12:49:49,374  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:49:49,590  _make_request  DEBUG http://localhost:8080 "POST /api/sensorData HTTP/1.1" 201 None
+2023-04-27 12:49:49,591  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:49:49,798  _make_request  DEBUG http://localhost:8080 "POST /api/sensorData HTTP/1.1" 201 None
+2023-04-27 12:49:49,799  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:49:50,002  _make_request  DEBUG http://localhost:8080 "POST /api/sensorData HTTP/1.1" 201 None
+2023-04-27 12:49:50,003  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:49:50,216  _make_request  DEBUG http://localhost:8080 "POST /api/sensorData HTTP/1.1" 201 None
+2023-04-27 12:49:50,217  log_info  INFO delete this amount of data from database for sensorstation_id:1 :6
+2023-04-27 12:49:50,217  log_error  ERROR database is locked
+2023-04-27 12:49:50,217  log_error  ERROR database is locked
+2023-04-27 12:49:50,217  log_error  ERROR database is locked
+2023-04-27 12:49:50,217  log_error  ERROR database is locked
+2023-04-27 12:49:50,217  log_error  ERROR database is locked
+2023-04-27 12:49:50,217  log_error  ERROR database is locked
+2023-04-27 12:49:50,218  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:49:50,428  _make_request  DEBUG http://localhost:8080 "POST /api/sensorData HTTP/1.1" 201 None
+2023-04-27 12:49:50,429  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:49:50,648  _make_request  DEBUG http://localhost:8080 "POST /api/sensorData HTTP/1.1" 201 None
+2023-04-27 12:49:50,649  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:49:50,861  _make_request  DEBUG http://localhost:8080 "POST /api/sensorData HTTP/1.1" 201 None
+2023-04-27 12:49:50,862  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:49:51,076  _make_request  DEBUG http://localhost:8080 "POST /api/sensorData HTTP/1.1" 201 None
+2023-04-27 12:49:51,077  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:49:51,302  _make_request  DEBUG http://localhost:8080 "POST /api/sensorData HTTP/1.1" 201 None
+2023-04-27 12:49:51,303  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:49:51,554  _make_request  DEBUG http://localhost:8080 "POST /api/sensorData HTTP/1.1" 201 None
+2023-04-27 12:49:51,554  log_info  INFO delete this amount of data from database for sensorstation_id:2 :6
+2023-04-27 12:49:51,554  log_error  ERROR database is locked
+2023-04-27 12:49:51,554  log_error  ERROR database is locked
+2023-04-27 12:49:51,554  log_error  ERROR database is locked
+2023-04-27 12:49:51,554  log_error  ERROR database is locked
+2023-04-27 12:49:51,554  log_error  ERROR database is locked
+2023-04-27 12:49:51,554  log_error  ERROR database is locked
+2023-04-27 12:49:51,554  log_debug  DEBUG interval in send_data: 3.0
+2023-04-27 12:49:54,631  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:49:54,684  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:49:54,866  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/enabled/1 HTTP/1.1" 200 None
+2023-04-27 12:49:54,867  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:49:54,920  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/limits/1 HTTP/1.1" 200 None
+2023-04-27 12:49:54,921  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:49:55,105  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/enabled/2 HTTP/1.1" 200 None
+2023-04-27 12:49:55,167  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/limits/2 HTTP/1.1" 200 None
+2023-04-27 12:50:04,016  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:50:04,233  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/interval HTTP/1.1" 200 None
+2023-04-27 12:50:04,234  log_info  INFO New Interval = 3.0
+2023-04-27 12:50:10,107  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:50:10,168  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:50:10,335  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/enabled/1 HTTP/1.1" 200 None
+2023-04-27 12:50:10,336  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:50:10,426  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/limits/1 HTTP/1.1" 200 None
+2023-04-27 12:50:10,427  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-04-27 12:50:10,549  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/enabled/2 HTTP/1.1" 200 None
+2023-04-27 12:50:10,661  _make_request  DEBUG http://localhost:8080 "GET /api/sensorStation/limits/2 HTTP/1.1" 200 None
