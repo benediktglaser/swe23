@@ -15,6 +15,7 @@ public class SessionSensorStationBean implements Serializable {
 
 
     public void setSensorStation(SensorStation sensorStation){
+        System.out.println(sensorStation);
         this.sensorStation = sensorStation;
 
     }

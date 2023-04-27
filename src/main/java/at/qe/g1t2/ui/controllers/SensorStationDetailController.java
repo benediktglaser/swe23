@@ -13,9 +13,17 @@ public class SensorStationDetailController {
     @Autowired
     SensorStationService sensorStationService;
 
-
+    private SensorStation sensorStation;
 
     public void saveSensorStation(SensorStation sensorStation){
         sensorStationService.saveSensorStation(sensorStation.getAccessPoint(),sensorStation);
+    }
+
+    public SensorStation getSensorStation() {
+        return sensorStation;
+    }
+
+    public void setSensorStation(SensorStation sensorStation) {
+        this.sensorStation = sensorStation;
     }
 }

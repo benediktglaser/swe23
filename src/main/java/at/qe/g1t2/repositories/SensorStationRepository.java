@@ -20,9 +20,10 @@ public interface SensorStationRepository extends JpaRepository<SensorStation, St
 
     SensorStation findSensorStationByAccessPointAndDipId(AccessPoint accessPoint, Long dipId);
 
-    List<SensorStation> getSensorStationsByGardener(Userx gardener);
+    List<SensorStation> getSensorStationsByGardenerAndEnabledTrue(Userx gardener);
 
-    Set<SensorStation> getSensorStationsByUserx(Userx user);
+    List<SensorStation> getSensorStationByEnabledTrue();
+    Set<SensorStation> getSensorStationsByUserxAndEnabledTrue(Userx user);
     @Query("SELECT u from SensorStation u")
     List<SensorStation> getAll();
 

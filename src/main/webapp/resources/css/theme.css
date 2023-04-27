@@ -856,8 +856,7 @@ body .ui-datatable .ui-datatable-header {
   color: rgba(255, 255, 255, 0.6);
   padding: 1rem 1rem;
   font-weight: 600;
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
+
   text-align:center !important;
 }
 body .ui-datatable .ui-datatable-footer {

@@ -22,17 +22,16 @@ public class SensorDataTypeListController{
 
     private SensorStation sensorStation;
 
-    @Transactional
-    public List<SensorDataTypeInfo> getAllSensorDataTypeBySensorStation(){
+
+    public List<SensorDataTypeInfo> getAllSensorDataTypeBySensorStation(SensorStation sensorStation){
         return sensorDataTypeInfoService.getAllSensorDataTypeInfosBySensorStation(sensorStation);
     }
 
-    @Transactional
+
     public SensorStation getSensorStation() {
         return sensorStationService.loadSensorStation(this.sensorStation.getId());
     }
 
-    @Transactional
     public void setSensorStation(SensorStation sensorStation) {
         this.sensorStation = sensorStationService.loadSensorStation(sensorStation.getId());
     }

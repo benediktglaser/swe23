@@ -15,12 +15,15 @@
         <h:form id="sensorStationForm">
             <div class="card">
                 <p:outputPanel>
-                    <p:carousel id="sensorstation" value="#{sensorStationListController.getAllSensorStationByOwner()}" var="sensorStation"
+                    <p:carousel id="sensorstationCarousel" value="#{sensorStationListController.getAllSensorStationByOwner()}"
+                                var="sensorStation"
                                 numVisible="3" numScroll="3">
                         <div class="sensorStation-item">
                             <div class="sensorStation-item-content">
                                 <div class="mb-3">
-                                    <h:graphicImage library="images" name="#{sensorStationListController.getFrontPicture(sensorStation)}" height="100" width="200"/>
+                                    <h:graphicImage library="images"
+                                                    name="#{sensorStationListController.getFrontPicture(sensorStation)}"
+                                                    height="100" width="200"/>
                                 </div>
                                 <div>
 
@@ -31,16 +34,19 @@
                                                      update=":sensorStationForm"
                                                      oncomplete="PF('sensorStationFormEditDialog').show()"
                                                      icon="pi pi-pencil"
-                                                     action="#{sensorDataTypeListController.setSensorStation(sensorStation)}"/>
+                                                     actionListener="#{sessionSensorStationBean.setSensorStation(sensorStation)}"
+                                                     action="#{sensorStationDetailController.setSensorStation(sensorStation)}"
+                                    />
                                     <p:commandButton id="sensordata" value="Sensordata"
                                                      action="#{sensorStationListController.redirectToSensorDataPage(sensorStation)}"/>
                                     <p:commandButton id="gallery" value="Gallery"
                                                      action="#{sensorStationListController.redirectToGallery(sensorStation)}"/>
-                                    <p:commandButton id="download" value="DownloadQRCode" action="#{QRCodeController.doUpdate(sensorStation.id)}"/>
+                                    <p:commandButton id="download" value="DownloadQRCode"
+                                                     action="#{QRCodeController.doUpdate(sensorStation.id)}"/>
                                     <script>
-                                        function sent(param){
+                                        function sent(param) {
                                             const sensorLink = "http://localhost:8080/visitor/sensorStations/gallery.xhtml";
-                                            const sensorUrl = sensorLink+param;
+                                            const sensorUrl = sensorLink + param;
                                             document.getElementById("downloadForm").setAttribute("action", sensorUrl);
                                             document.getElementById("downloadForm").submit();
                                         }
@@ -51,65 +57,76 @@
                     </p:carousel>
                 </p:outputPanel>
             </div>
-            <p:dialog header="Sensor Station Info" id="sensorStationFormEditDialog"
+            <p:dialog header="Sensor Station Details" id="sensorStationFormEditDialog"
                       widgetVar="sensorStationFormEditDialog" modal="true" showEffect="fade" hideEffect="fade"
-                      resizable="false" onHide="sensorDataTypeInfoController.resetSensorDataTypeInfoController()">
-                <p:outputPanel id="sensorStationTypeData">
-                    <p:dataTable id="dataTable"
-                                 value="#{sensorDataTypeListController.getAllSensorDataTypeBySensorStation()}"
-                                 var="type" scrollable="true" scrollHeight="400">
+                      resizable="false" dynamic="true">
+                <p:outputPanel id="detailsPanel">
+                    <p:inputText id="plant_name1" value="#{sessionSensorStationBean.sensorStation.name}" />
 
-                        <p:column headerText="Sensor Type">
-                            <h:outputText value="#{type.type}"/>
-                        </p:column>
-                        <p:column headerText="Min Limit">
-                            <h:outputText value="#{type.getMinLimit()}"/>
-                        </p:column>
-                        <p:column headerText="Max Limit">
-                            <h:outputText value="#{type.maxLimit}"/>
-                        </p:column>
-                        <p:column headerText="Create Date">
-                            <h:outputText value="#{type.createDate.toLocalDate()}"/>
-                        </p:column>
-                    </p:dataTable>
-                </p:outputPanel>
+            </p:outputPanel>
+            <p:commandButton id="limits"
+                             oncomplete="PF('sensorStationTypeDialog').show()"
+                             icon="pi pi-percentage"
+                             action="#{sensorDataTypeListController.setSensorStation(sensorStationDetailController.sensorStation)}"/>
+        </p:dialog>
+        <p:dialog header="Sensor Type Limits" id="sensorStationTypeDialog"
+                  widgetVar="sensorStationTypeDialog" modal="true" showEffect="fade" hideEffect="fade"
+                  resizable="false" onHide="sensorDataTypeInfoController.resetSensorDataTypeInfoController()" >
 
+            <p:outputPanel id="sensorStationTypeData">
+                <p:dataTable id="dataTable"
+                             value="#{sensorDataTypeListController.getAllSensorDataTypeBySensorStation(sensorStationDetailController.sensorStation)}"
+                             var="type" scrollable="true" scrollHeight="400">
 
-
-
-                <p:outputPanel id="sensorInfo">
-                    <p:selectOneMenu id="types" value="#{sensorDataTypeInfoController.sensorDataType}">
-                        <f:selectItems value="#{sensorDataTypeInfoController.allTypes}" var="sensorType"
-                                       itemLabel="#{sensorType.name()}" itemValue="#{sensorType}"/>
-                    </p:selectOneMenu>
-                    <p:messages id="msgs"/>
-                    <h:panelGrid columns="2" styleClass="mb-3">
-                        <p:outputLabel for="min" value="Min Limit: "/>
-                        <p:inputText id="min" value="#{sensorDataTypeInfoController.type.minLimit}" >
-                        </p:inputText>
-                        <p:outputLabel for="max" value="Max Limit: "/>
-                        <p:inputText id="max" value="#{sensorDataTypeInfoController.type.maxLimit}">
-                        </p:inputText>
-
-                    </h:panelGrid>
-                    <p:separator/>
-                    <h:panelGrid columns="1">
-                        <p:commandButton value="Save"
-                                         id="saveButton"
-                                         action="#{sensorDataTypeInfoController.save(sensorDataTypeListController.getSensorStation())}"
-                                         update=":sensorStationForm sensorStationForm:sensorStationFormEditDialog"
-                                         process="@parent:@parent" oncomplete="handleSave()" styleClass="mr-2">
-                        </p:commandButton>
-                    </h:panelGrid>
+                    <p:column headerText="Sensor Type">
+                        <h:outputText value="#{type.type}"/>
+                    </p:column>
+                    <p:column headerText="Min Limit">
+                        <h:outputText value="#{type.getMinLimit()}"/>
+                    </p:column>
+                    <p:column headerText="Max Limit">
+                        <h:outputText value="#{type.maxLimit}"/>
+                    </p:column>
+                    <p:column headerText="Create Date">
+                        <h:outputText value="#{type.createDate.toLocalDate()}"/>
+                    </p:column>
+                </p:dataTable>
+            </p:outputPanel>
 
 
-                </p:outputPanel>
-                <script>
-                    function handleSave() {
-                        PF('sensorStationFormEditDialog').show();
-                    }
-                </script>
-            </p:dialog>
-        </h:form>
-    </ui:define>
-</ui:composition>
+            <p:outputPanel id="sensorInfo">
+                <p:selectOneMenu id="types" value="#{sensorDataTypeInfoController.sensorDataType}">
+                    <f:selectItems value="#{sensorDataTypeInfoController.allTypes}" var="sensorType"
+                                   itemLabel="#{sensorType.name()}" itemValue="#{sensorType}"/>
+                </p:selectOneMenu>
+                <p:messages id="msgs"/>
+                <h:panelGrid columns="2" styleClass="mb-3">
+                    <p:outputLabel for="min" value="Min Limit: "/>
+                    <p:inputText id="min" value="#{sensorDataTypeInfoController.type.minLimit}">
+                    </p:inputText>
+                    <p:outputLabel for="max" value="Max Limit: "/>
+                    <p:inputText id="max" value="#{sensorDataTypeInfoController.type.maxLimit}">
+                    </p:inputText>
+
+                </h:panelGrid>
+                <p:separator/>
+                <h:panelGrid columns="1">
+                    <p:commandButton value="Save"
+                                     id="saveButton"
+                                     action="#{sensorDataTypeInfoController.save(sensorDataTypeListController.getSensorStation())}"
+                                     update=":sensorStationForm sensorStationForm:sensorStationFormEditDialog"
+                                     process="@parent:@parent" oncomplete="handleSave()" styleClass="mr-2">
+                    </p:commandButton>
+                </h:panelGrid>
+
+
+            </p:outputPanel>
+            <script>
+                function handleSave() {
+                    PF('sensorStationFormEditDialog').show();
+                }
+            </script>
+        </p:dialog>
+    </h:form>
+</ui:define>
+        </ui:composition>
