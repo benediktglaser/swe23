@@ -51,10 +51,8 @@ public class SensorStationService implements Serializable {
     @PreAuthorize("hasAnyAuthority('ACCESS_POINT','ADMIN')")
     @Transactional
     public SensorStation saveSensorStation(AccessPoint accessPoint, SensorStation sensorStation) {
-        SensorStation checkSensorStation = getSensorStationByAccessPointIdAndDipId(accessPoint.getAccessPointID(), sensorStation.getDipId());
-        if (checkSensorStation != null) {
-            checkSensorStation.setMac(sensorStation.getMac());
-            return sensorStationRepository.save(checkSensorStation);
+        if (!sensorStation.isNew()) {
+            return sensorStationRepository.save(sensorStation);
 
         }
 

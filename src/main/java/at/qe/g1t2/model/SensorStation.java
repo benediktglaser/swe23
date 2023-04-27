@@ -102,12 +102,12 @@ public class SensorStation implements Persistable<String>, Serializable, Compara
 
     public Boolean getEnabled() {
 
-        logStatusChange("enabled",enabled,(!enabled ?LogMsg.LogType.CONNECTION_FAILURE:LogMsg.LogType.CONNECTED));
+        logStatusChange("enabled",enabled,(LogMsg.LogType.OTHER));
         return enabled;
     }
 
     public void setEnabled(Boolean enabled) {
-        logStatusChange("enabled",enabled,(!enabled ?LogMsg.LogType.CONNECTION_FAILURE:LogMsg.LogType.CONNECTED));
+        logStatusChange("enabled",enabled,(LogMsg.LogType.OTHER));
 
         this.enabled = enabled;
     }

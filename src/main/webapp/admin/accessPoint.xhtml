@@ -23,10 +23,11 @@
                     <h:selectBooleanCheckbox value="#{accessPoint.connected}" disabled="true"/>
                 </p:column>
                 <p:column headerText="Enabled" sortBy="#{accessPoint.enabled}" filterBy="#{accessPoint.enabled}">
-                    <h:selectBooleanCheckbox value="#{accessPoint.enabled}" disabled="false"/>
-                    <p:commandButton action="#{accessPointDetailController.doSaveAccessPoint(accessPoint)}"
-                                     update=":accessPointForm:" title="Submit" value="SUBMIT"/>
+                    <h:selectBooleanCheckbox value="#{accessPoint.enabled}" disabled="#{accessPoint.enabled}">
+                        <p:ajax update="accessPointTable" listener="#{accessPointDetailController.doSaveAccessPoint(accessPoint)}"/>
+                    </h:selectBooleanCheckbox>
                 </p:column>
+
                 <p:column style="text-align: center">
                     <p:commandButton update=":accessPointForm:accessPointEditDialog"
                                      oncomplete="PF('accessPointEditDialog').show()" icon="pi pi-pencil" title="Edit">
@@ -91,10 +92,15 @@
                                              update=":accessPointForm:accessPointLinkDialog">
                             </p:commandButton>
                         </p:column>
+                        <p:column headerText="Enabled" sortBy="#{sensorStation.enabled}" filterBy="#{sensorStation.enabled}">
+                            <h:selectBooleanCheckbox value="#{sensorStation.enabled}" disabled="false">
+                                <p:ajax update="connectTable" listener="#{sensorStationDetailController.saveSensorStation(sensorStation)}"/>
+                            </h:selectBooleanCheckbox>
+                        </p:column>
                     </p:dataTable>
                 </p:outputPanel>
             </p:dialog>
-            <p:dialog widgetVar="spinner" modal="true" draggable="false" closable="true" resizable="false">
+            <p:dialog widgetVar="spinner" modal="true" draggable="false" closable="false" resizable="false">
                 <i class="pi pi-spin pi-spinner" style="font-size: 1rem"></i>
                 <p:outputPanel id="aviableData">
                     <p:poll interval="5" update="aviableData"></p:poll>
