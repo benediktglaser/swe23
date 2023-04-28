@@ -35,6 +35,9 @@ public class FileUploadController {
         if (!file.isEmpty()) {
             try {
                 String fileName = file.getOriginalFilename();
+                if(fileName == null){
+                    throw new FileUploadException("No fileName");
+                }
                 String extension = fileName.substring(fileName.lastIndexOf("."));
                 String uniqueFileName = System.currentTimeMillis() + extension;
                 String uploadDir = request.getServletContext().getRealPath("/resources/images");
