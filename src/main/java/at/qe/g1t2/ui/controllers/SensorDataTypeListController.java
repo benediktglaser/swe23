@@ -34,5 +34,6 @@ public class SensorDataTypeListController{
 
     public void setSensorStation(SensorStation sensorStation) {
         this.sensorStation = sensorStationService.loadSensorStation(sensorStation.getId());
+        sensorStationService.saveSensorStation(sensorStation.getAccessPoint(), sensorStation);
     }
 }
