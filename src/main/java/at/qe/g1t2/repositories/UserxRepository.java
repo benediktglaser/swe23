@@ -28,7 +28,8 @@ public interface UserxRepository extends JpaRepository<Userx, String>, JpaSpecif
 
     @Query("SELECT u FROM Userx u WHERE :role MEMBER OF u.roles")
     List<Userx> findByRole(@Param("role") UserRole role);
-
+    @Query("SELECT u.username FROM Userx u WHERE :role MEMBER OF u.roles")
+    List<String> findUserNameByRole(@Param("role") UserRole role);
 
 
 }

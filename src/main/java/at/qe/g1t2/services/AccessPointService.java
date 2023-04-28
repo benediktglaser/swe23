@@ -45,6 +45,7 @@ public class AccessPointService implements Serializable {
         if (accessPoint.isNew()) {
             accessPoint.setAccessPointRole(AccessPointRole.ACCESS_POINT);
             accessPoint.setCreateDate(LocalDateTime.now());
+            accessPoint.setThresholdInterval(30.0);
         }
         return accessPointRepository.save(accessPoint);
     }

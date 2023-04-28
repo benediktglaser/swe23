@@ -11,7 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.*;
 
 
 @Component
@@ -24,6 +24,8 @@ public class SensorStationGardenerService implements Serializable {
     @Autowired
     SensorStationRepository sensorStationRepository;
 
+    Set<SensorStation> gardenerIsHere = new HashSet<>();
+
 
     public void assignGardener(Userx userx, SensorStation sensorStation){
         sensorStation.setGardener(userx);
@@ -32,8 +34,11 @@ public class SensorStationGardenerService implements Serializable {
 
 
 
+
+
+
     public Collection<SensorStation> getAllSensorStationsOfUser() {
-        return sensorStationRepository.getSensorStationsByGardener(getAuthenticatedUser());
+        return sensorStationRepository.getSensorStationsByGardenerAndEnabledTrue(getAuthenticatedUser());
     }
 
     private Userx getAuthenticatedUser() {
@@ -41,5 +46,11 @@ public class SensorStationGardenerService implements Serializable {
         return userxRepository.findFirstByUsername(auth.getName());
     }
 
+    public Set<SensorStation> getGardenerIsHere() {
+        return gardenerIsHere;
+    }
 
+    public void setGardenerIsHere(Set<SensorStation> gardenerIsHere) {
+        this.gardenerIsHere = gardenerIsHere;
+    }
 }
