@@ -46,7 +46,7 @@ public class AccessPointConnectionController {
         AccessPoint accessPoint = refreshConnection();
         LogMsg<String,AccessPoint> msg = new LogMsg<>(LogMsg.LogType.OTHER, AccessPoint.class,"Access point: "+accessPoint.getAccessPointID(),"AccessPoint asked for sending interval","Access point: "+accessPoint.getAccessPointID());
         LOGGER.info(msg.getMessage());
-        return new ResponseEntity<>(accessPoint.getSendingInterval(), HttpStatus.OK);
+        return new ResponseEntity<>(accessPoint.getCombinedInterval(), HttpStatus.OK);
 
     }
 

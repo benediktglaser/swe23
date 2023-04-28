@@ -72,7 +72,7 @@
                     <p:outputLabel for="plant_category" value="Plant Category: "/>
                     <p:inputText id="plant_category" value="#{sessionSensorStationBean.sensorStation.category}">
                     </p:inputText>
-                    <p:outputLabel for="plant_interval" value="Interval(inlcudes overhead): "/>
+                    <p:outputLabel for="plant_interval" value="Interval(inlcudes overhead #{sessionSensorStationBean.sensorStation.accessPoint.thresholdInterval}): "/>
                     <p:inputText id="plant_interval"
                                  value="#{sessionSensorStationBean.sensorStation.accessPoint.sendingInterval}">
                     </p:inputText>
