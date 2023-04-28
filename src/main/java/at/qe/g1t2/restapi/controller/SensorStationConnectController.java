@@ -5,6 +5,7 @@ import at.qe.g1t2.model.SensorDataType;
 import at.qe.g1t2.model.SensorDataTypeInfo;
 import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.restapi.exception.EntityNotFoundException;
+import at.qe.g1t2.restapi.exception.VisibleMapException;
 import at.qe.g1t2.restapi.model.LimitsDTO;
 import at.qe.g1t2.restapi.model.SensorStationDTO;
 import at.qe.g1t2.restapi.model.SensorStationRegisterDTO;
@@ -30,6 +31,7 @@ import java.util.Map;
 /**
  * This class handles the connection and coupling of the sensorStation and the Webserver
  * Each action on the connection of the SensorStation is logged
+ *
  * @Valid checks if all NotNull attributes of the DTO's have a value otherwise it throws a exception
  */
 
@@ -56,11 +58,13 @@ public class SensorStationConnectController {
      * It returns a SensorStationRegisterDTO. The DTO informs the accesspoint if the sensorStation is already coupled  or
      * if it's available
      * each request confirms the connection of the accessPoint
+     *
      * @param sensorStationDTO
      * @return ResponesEntity<SensorStationRegisterDTO>
      */
     @PostMapping("/register")
-    public ResponseEntity<SensorStationRegisterDTO> addVisibleSensorStations(@Valid @RequestBody SensorStationDTO sensorStationDTO) {;
+    public ResponseEntity<SensorStationRegisterDTO> addVisibleSensorStations(@Valid @RequestBody SensorStationDTO sensorStationDTO) {
+        ;
         AccessPoint accessPoint = getAuthAccessPoint();
 
         satisFyConnection(accessPoint);
@@ -104,6 +108,7 @@ public class SensorStationConnectController {
     /**
      * This endpoint checks if the SensorStation with the given dipId is verified for coupling.
      * The dipId is with the accessPointId a unique identifier for the SensorStation
+     *
      * @param dipId
      * @return
      */
@@ -118,6 +123,7 @@ public class SensorStationConnectController {
     /**
      * This endpoint informs the accessPoint if the sensorStation wit the given DipId is enabled
      * each request confirms the connection of the accessPoint and SensorStation
+     *
      * @param dipId
      * @return
      */
@@ -125,7 +131,7 @@ public class SensorStationConnectController {
     public ResponseEntity<Boolean> checkEnabled(@PathVariable String dipId) {
 
         SensorStation sensorStation = sensorStationService.getSensorStationByAccessPointIdAndDipId(getAuthAccessPoint().getId(), Long.parseLong(dipId));
-        satisFyConnection(getAuthAccessPoint(),sensorStation);
+        satisFyConnection(getAuthAccessPoint(), dipId);
         LogMsg<String, SensorStation> msg = new LogMsg<>(LogMsg.LogType.OTHER, SensorStation.class, "SensorStation: DipId" + sensorStation.getDipId(), "AccessPoint asks if SensorStation with DipId " + sensorStation.getId() + " is enabled", "Access point: " + getAuthAccessPoint().getAccessPointID());
         LOGGER.info(msg.getMessage());
         return new ResponseEntity<>(sensorStation.getEnabled(), HttpStatus.OK);
@@ -134,26 +140,36 @@ public class SensorStationConnectController {
     /**
      * This method is the last step in the coupling mode. If the accesspoint is sending a Request
      * the sensorStation will be created and stored in the database.
+     * If the sensorStation exists, the connection attribute will be updated
+     *
      * @param dipId
      * @return
      */
     @GetMapping("/connected/{dipId}")
-    public ResponseEntity<Boolean> checkConnection(@PathVariable String dipId) {
+    public ResponseEntity<Boolean> connect(@PathVariable String dipId) {
         AccessPoint accessPoint = getAuthAccessPoint();
-            SensorStationDTO sensorStationDTO = visibleSensorStationsService.getSensorStationByAccessPointAndDipId(accessPoint, dipId);
-            if (sensorStationDTO == null) {
-                throw new EntityNotFoundException("SensorStation not verified or registered");
-            }
-            SensorStation newSensorStation = new SensorStation();
-            newSensorStation.setDipId(sensorStationDTO.getDipId());
-            newSensorStation.setMac(sensorStationDTO.getMac());
-            newSensorStation.setLastConnectedDate(LocalDateTime.now());
-            newSensorStation = sensorStationService.saveSensorStation(accessPoint, newSensorStation);
-            sensorStationDTO.setConnected(true);
-            visibleSensorStationsService.replaceSensorStationDTO(accessPoint, dipId, sensorStationDTO);
-            LogMsg<String, SensorStation> msg = new LogMsg<>(LogMsg.LogType.CONNECTED, SensorStation.class, "SensorStation: DipId" + newSensorStation.getDipId(), "connected successfully", "Access point: " + getAuthAccessPoint().getAccessPointID());
-            LOGGER.info(msg.getMessage());
-            return new ResponseEntity<>(newSensorStation.getConnected(), HttpStatus.OK);
+        SensorStation sensorStation = sensorStationService.getSensorStationByAccessPointIdAndDipId(accessPoint.getAccessPointID(), Long.parseLong(dipId));
+        if (sensorStation != null) {
+            satisFyConnection(accessPoint, dipId);
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        }
+        if(visibleSensorStationsService.getVisibleMap().isEmpty()){
+            throw new VisibleMapException("SensorStation not registered");
+        }
+        SensorStationDTO sensorStationDTO = visibleSensorStationsService.getSensorStationByAccessPointAndDipId(accessPoint, dipId);
+        if (sensorStationDTO == null) {
+            throw new VisibleMapException("SensorStation not verified or registered");
+        }
+        SensorStation newSensorStation = new SensorStation();
+        newSensorStation.setDipId(sensorStationDTO.getDipId());
+        newSensorStation.setMac(sensorStationDTO.getMac());
+        newSensorStation.setLastConnectedDate(LocalDateTime.now());
+        newSensorStation = sensorStationService.saveSensorStation(accessPoint, newSensorStation);
+        sensorStationDTO.setConnected(true);
+        visibleSensorStationsService.replaceSensorStationDTO(accessPoint, dipId, sensorStationDTO);
+        LogMsg<String, SensorStation> msg = new LogMsg<>(LogMsg.LogType.CONNECTED, SensorStation.class, "SensorStation: DipId" + newSensorStation.getDipId(), "connected successfully", "Access point: " + getAuthAccessPoint().getAccessPointID());
+        LOGGER.info(msg.getMessage());
+        return new ResponseEntity<>(newSensorStation.getConnected(), HttpStatus.OK);
     }
 
     /**
@@ -168,7 +184,7 @@ public class SensorStationConnectController {
     public ResponseEntity<List<LimitsDTO>> checkIfAccessPointIsConnectedAndUpdateLimits(@PathVariable String dipId) {
         AccessPoint accessPoint = getAuthAccessPoint();
         SensorStation sensorStation = accessPointService.getSensorStationByAccessPointIdAndDipId(accessPoint.getAccessPointID(), Long.parseLong(dipId));
-        satisFyConnection(accessPoint,sensorStation);
+        satisFyConnection(accessPoint, dipId);
         List<LimitsDTO> limitsDTOS = new ArrayList<>();
         sensorDataTypeInfoService.getAllSensorDataTypeInfosBySensorStation(sensorStation).forEach(x -> {
             if (x != null) {
@@ -188,6 +204,7 @@ public class SensorStationConnectController {
 
     /**
      * This method is a helpmethod for getting the id of the requesting accessPoint
+     *
      * @return
      */
     public AccessPoint getAuthAccessPoint() {
@@ -203,16 +220,17 @@ public class SensorStationConnectController {
 
     /**
      * this method confirms the webserver that the accesspoint and sensorStation is connected.
+     *
      * @param accessPoint
-     * @param sensorStation
+     * @param dipId
      */
-    public void satisFyConnection(AccessPoint accessPoint, SensorStation sensorStation){
+    public void satisFyConnection(AccessPoint accessPoint, String dipId) {
         if (accessPoint == null) {
             throw new EntityNotFoundException("AccessPoint is not registered");
         }
         accessPoint.setLastConnectedDate(LocalDateTime.now());
         accessPointService.saveAccessPoint(accessPoint);
-        sensorStation = accessPointService.getSensorStationByAccessPointIdAndDipId(accessPoint.getAccessPointID(), sensorStation.getDipId());
+        SensorStation sensorStation = accessPointService.getSensorStationByAccessPointIdAndDipId(accessPoint.getAccessPointID(), Long.parseLong(dipId));
         if (sensorStation == null) {
             throw new EntityNotFoundException("SensorStation does not exist in database. You have to first connect the Sensor Station");
 
@@ -220,11 +238,13 @@ public class SensorStationConnectController {
         sensorStation.setLastConnectedDate(LocalDateTime.now());
         sensorStationService.saveSensorStation(accessPoint, sensorStation);
     }
+
     /**
      * this method confirms the webserver that the accesspoint is connected.
+     *
      * @param accessPoint
      */
-    public void satisFyConnection(AccessPoint accessPoint){
+    public void satisFyConnection(AccessPoint accessPoint) {
         if (accessPoint == null) {
             throw new EntityNotFoundException("AccessPoint is not registered");
         }

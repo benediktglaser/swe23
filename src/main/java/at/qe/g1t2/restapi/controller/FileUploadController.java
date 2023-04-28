@@ -19,7 +19,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.File;
 import java.io.IOException;
 
-
+/**
+ * This class handles uploading Pictures for the visitor and gardener
+ */
 @RestController
 public class FileUploadController {
 
@@ -35,7 +37,7 @@ public class FileUploadController {
         if (!file.isEmpty()) {
             try {
                 String fileName = file.getOriginalFilename();
-                if(fileName == null){
+                if(fileName == null || fileName.equals("")){
                     throw new FileUploadException("No fileName");
                 }
                 String extension = fileName.substring(fileName.lastIndexOf("."));
@@ -53,12 +55,13 @@ public class FileUploadController {
                 SensorStation sensorStation = sensorStationService.loadSensorStation(sensorStationId);
                 Picture picture = new Picture();
                 picture.setPath(uniqueFileName);
+                picture.setPictureName(fileName);
                 pictureService.save(sensorStation,picture);
                 redirectAttributes.addFlashAttribute("message",
                         "You successfully uploaded " + file.getOriginalFilename() + "!");
                 return new ResponseEntity<>(HttpStatus.OK);
             } catch (IOException e) {
-                throw new FileUploadException("File could not saved"+e.getMessage());
+                throw new FileUploadException("File opening failed"+e.getMessage());
             }
         }
         return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);

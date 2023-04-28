@@ -1,67 +1,80 @@
 package at.qe.g1t2.restapi.controller;
 
-import at.qe.g1t2.model.AccessPoint;
-import at.qe.g1t2.model.Picture;
+
 import at.qe.g1t2.model.SensorStation;
-import at.qe.g1t2.restapi.model.SensorStationDTO;
-import at.qe.g1t2.services.AccessPointService;
+import at.qe.g1t2.services.PictureService;
 import at.qe.g1t2.services.SensorStationService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 @SpringBootTest
 @AutoConfigureMockMvc
-class FileUploadControllerTest {
-
-    @Autowired
-    AccessPointService accessPointService;
-    @Autowired
-    SensorStationService sensorStationService;
-    private final HttpServletRequest requestMock = new MockHttpServletRequest();
-    private final RedirectAttributes redirectAttributesMock = mock(RedirectAttributes.class);
+public class FileUploadControllerTest {
     @Autowired
     private MockMvc mockMvc;
+
+
     @Autowired
-    private FileUploadController fileUploadController;
+    private SensorStationService sensorStationService;
+
 
     @Test
     @DirtiesContext
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
-    public void testHandleFileUpload() throws Exception {
-        SensorStation sensorStation = sensorStationService.loadSensorStation("c57004cc-ca72-41a0-9432-754e642696cb");
+    public void testHandleFileUploadSuccess() throws Exception {
 
-        String fileName = "test.jpg";
-        String contentType = "image/jpeg";
-        byte[] content = {0x01, 0x02, 0x03};
+        String sensorStationId = "fac9c9b9-62cc-4d3d-af5b-06d9965f0f7c";
 
-        MultipartFile file = new MockMultipartFile("file", fileName, contentType, content);
+        MockMultipartFile file = new MockMultipartFile("file", "test.jpg", MediaType.IMAGE_JPEG_VALUE,
+                "test data".getBytes());
 
-        ResponseEntity<Picture> responseEntity = fileUploadController.handleFileUpload(file, sensorStation.getId(), requestMock, redirectAttributesMock);
+        mockMvc.perform(MockMvcRequestBuilders.multipart("/upload").file(file)
+                        .param("sensorStationId", sensorStationId))
+                .andExpect(status().isOk());
+        SensorStation sensorStation = sensorStationService.loadSensorStation(sensorStationId);
+        Assertions.assertEquals(1, sensorStation.getPictures().size());
+        Assertions.assertEquals("test.jpg", sensorStation.getPictures().get(0).getPictureName());
 
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    public void testHandleFileUploadEmptyFile() throws Exception {
+
+        String sensorStationId = "fac9c9b9-62cc-4d3d-af5b-06d9965f0f7c";
+
+        MockMultipartFile file = new MockMultipartFile("file", "", MediaType.IMAGE_JPEG_VALUE,
+                "".getBytes());
+
+        mockMvc.perform(MockMvcRequestBuilders.multipart("/upload").file(file)
+                        .param("sensorStationId", sensorStationId))
+                .andExpect(status().isExpectationFailed());
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    public void testHandleFileUploadNoFileName() throws Exception {
+        String sensorStationId = "fac9c9b9-62cc-4d3d-af5b-06d9965f0f7c";
+
+        MockMultipartFile file = new MockMultipartFile("file",null , MediaType.IMAGE_JPEG_VALUE,
+                "test data".getBytes());
+
+
+        mockMvc.perform(MockMvcRequestBuilders.multipart("/upload").file(file)
+                        .param("sensorStationId", sensorStationId))
+                .andExpect(status().isBadRequest());
+    }
 
 }

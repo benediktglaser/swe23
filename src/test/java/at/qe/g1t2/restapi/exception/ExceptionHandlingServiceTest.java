@@ -78,6 +78,10 @@ class ExceptionHandlingServiceTest {
     public void testHandleQRException() {
         QRException ex = new QRException("QR code error");
         exceptionHandlingService.handleQRException(ex);
-        // No assertions necessary, just making sure the method doesn't throw an exception
+    }
+    @Test
+    public void testVisibleMapException() {
+        VisibleMapException ex = new VisibleMapException("SensorStation is not registered");
+        exceptionHandlingService.handleVisibleMapException(ex);
     }
 }
