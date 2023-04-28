@@ -29,7 +29,7 @@ public class AccessPointRegisterControllerTest {
     @Test
     void registerAccessPoint() throws Exception {
         AccessPointDTO accessPointDTO = new AccessPointDTO();
-        accessPointDTO.setSendingInterval(23.0);
+        accessPointDTO.setSendingInterval(40.0);
         accessPointDTO.setAccessPointName("TV ROOM");
 
         int size = accessPointService.getAllAccessPoints().size();

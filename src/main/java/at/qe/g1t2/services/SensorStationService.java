@@ -48,13 +48,11 @@ public class SensorStationService implements Serializable {
         return sensorStationRepository.findSensorStationById(uuid);
     }
 
-    @PreAuthorize("hasAnyAuthority('ACCESS_POINT','ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ACCESS_POINT','ADMIN','GARDENER')")
     @Transactional
     public SensorStation saveSensorStation(AccessPoint accessPoint, SensorStation sensorStation) {
-        SensorStation checkSensorStation = getSensorStationByAccessPointIdAndDipId(accessPoint.getAccessPointID(), sensorStation.getDipId());
-        if (checkSensorStation != null) {
-            checkSensorStation.setMac(sensorStation.getMac());
-            return sensorStationRepository.save(checkSensorStation);
+        if (!sensorStation.isNew()) {
+            return sensorStationRepository.save(sensorStation);
 
         }
 
@@ -79,9 +77,10 @@ public class SensorStationService implements Serializable {
 
     @Transactional
     public Collection<SensorStation> getAllSensorStations() {
-        return sensorStationRepository.findAll();
+        return sensorStationRepository.getSensorStationByEnabledTrue();
 
     }
+
 
     public Page<SensorStation> getAllSensorStations(Specification<SensorStation>spec, Pageable pageable) {
         return sensorStationRepository.findAll(spec,pageable);
@@ -108,7 +107,7 @@ public class SensorStationService implements Serializable {
     }
 
     public Set<SensorStation> getAllSensorStationsByUser(){
-        return sensorStationRepository.getSensorStationsByUserx(getAuthenticatedUser());
+        return sensorStationRepository.getSensorStationsByUserxAndEnabledTrue(getAuthenticatedUser());
     }
 
     public SensorStation getSensorStation(String mac){

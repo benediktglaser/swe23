@@ -26,5 +26,6 @@ public class AccessPointDTO {
     public void setSendingInterval(Double sendingInterval) {
         this.sendingInterval = sendingInterval;
     }
+
 }
 

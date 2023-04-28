@@ -22,9 +22,9 @@ INSERT INTO userx_user_role  (USERX_USERNAME, ROLES) VALUES ('dave', 'ADMIN');
 
 
 
-INSERT INTO access_point (id,create_date, connected, enabled, sending_interval, update_date, access_point_name,password,access_Point_Role) VALUES ('7269ddec-30c6-44d9-bc1f-8af18da09ed3','2021-07-08 12:30:00',false,true,3.0,'2022-07-08 12:30:00','office','$2y$10$P7im4OMw6hsnPWLpJ1nVKup1jlEFsLIek9D3lglmZv.Tq05GDEhMS','ACCESS_POINT');
-INSERT INTO access_point (id,create_date, connected, enabled, sending_interval, update_date, access_point_name,password,access_Point_Role) VALUES ('4294ba1b-f794-4e3d-b606-896b28237bcb','2021-07-08 12:30:00',false,true,3.0,'2022-07-08 12:30:00','first floor','$2y$10$P7im4OMw6hsnPWLpJ1nVKup1jlEFsLIek9D3lglmZv.Tq05GDEhMS','ACCESS_POINT');
-INSERT INTO access_point (id,create_date, connected, enabled, sending_interval, update_date, access_point_name,password,access_Point_Role, last_Coupling_Date) VALUES ('43d5aba9-29c5-49b4-b4ec-2d430e34104f','2021-07-08 12:30:00',false,true,3.0,'2020-07-08 12:30:00','second floor','$2y$10$P7im4OMw6hsnPWLpJ1nVKup1jlEFsLIek9D3lglmZv.Tq05GDEhMS' ,'ACCESS_POINT','2020-12-08 21:30:00' );
+INSERT INTO access_point (id,create_date, connected, enabled, sending_interval,threshold_interval, update_date, access_point_name,password,access_Point_Role) VALUES ('7269ddec-30c6-44d9-bc1f-8af18da09ed3','2021-07-08 12:30:00',false,true,3.0,30.0,'2022-07-08 12:30:00','office','$2y$10$P7im4OMw6hsnPWLpJ1nVKup1jlEFsLIek9D3lglmZv.Tq05GDEhMS','ACCESS_POINT');
+INSERT INTO access_point (id,create_date, connected, enabled, sending_interval,threshold_interval, update_date, access_point_name,password,access_Point_Role) VALUES ('4294ba1b-f794-4e3d-b606-896b28237bcb','2021-07-08 12:30:00',false,true,3.0,30.0,'2022-07-08 12:30:00','first floor','$2y$10$P7im4OMw6hsnPWLpJ1nVKup1jlEFsLIek9D3lglmZv.Tq05GDEhMS','ACCESS_POINT');
+INSERT INTO access_point (id,create_date, connected, enabled, sending_interval,threshold_interval, update_date, access_point_name,password,access_Point_Role) VALUES ('43d5aba9-29c5-49b4-b4ec-2d430e34104f','2021-07-08 12:30:00',false,true,3.0,30.0,'2022-07-08 12:30:00','second floor','$2y$10$P7im4OMw6hsnPWLpJ1nVKup1jlEFsLIek9D3lglmZv.Tq05GDEhMS' ,'ACCESS_POINT');
 
 
 

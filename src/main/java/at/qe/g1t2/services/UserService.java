@@ -2,6 +2,7 @@ package at.qe.g1t2.services;
 
 import at.qe.g1t2.model.AccessPoint;
 import at.qe.g1t2.model.SensorStation;
+import at.qe.g1t2.model.UserRole;
 import at.qe.g1t2.model.Userx;
 import at.qe.g1t2.repositories.UserxRepository;
 import org.slf4j.Logger;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Service for accessing and manipulating user data.
@@ -132,6 +134,11 @@ public class UserService implements Serializable {
         userx.getSensorStations().remove(sensorStation);
         sensorStation.getUserx().remove(userx);
         userRepository.save(userx);
+    }
+
+
+    public List<String> getAllGardenerUsernames(){
+        return userRepository.findUserNameByRole(UserRole.GARDENER);
     }
 
 

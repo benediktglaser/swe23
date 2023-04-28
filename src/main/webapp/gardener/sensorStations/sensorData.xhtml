@@ -31,6 +31,7 @@
                                  effect="slide" header="Select Type and Limits" showHeaders="true" required="true">
                     <f:selectItems value="#{chartsView.categories}"/>
                     <p:ajax listener="#{chartsView.doUpdate()}"/>
+
                 </p:cascadeSelect>
             </div>
             <p:separator/>

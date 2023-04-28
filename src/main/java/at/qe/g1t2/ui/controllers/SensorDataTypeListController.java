@@ -2,6 +2,7 @@ package at.qe.g1t2.ui.controllers;
 
 import at.qe.g1t2.model.SensorDataTypeInfo;
 import at.qe.g1t2.model.SensorStation;
+import at.qe.g1t2.services.AccessPointService;
 import at.qe.g1t2.services.SensorDataTypeInfoService;
 import at.qe.g1t2.services.SensorStationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,20 +21,24 @@ public class SensorDataTypeListController{
     @Autowired
     SensorStationService sensorStationService;
 
+    @Autowired
+    AccessPointService accessPointService;
+
     private SensorStation sensorStation;
 
-    @Transactional
-    public List<SensorDataTypeInfo> getAllSensorDataTypeBySensorStation(){
+
+    public List<SensorDataTypeInfo> getAllSensorDataTypeBySensorStation(SensorStation sensorStation){
         return sensorDataTypeInfoService.getAllSensorDataTypeInfosBySensorStation(sensorStation);
     }
 
-    @Transactional
+
     public SensorStation getSensorStation() {
         return sensorStationService.loadSensorStation(this.sensorStation.getId());
     }
 
-    @Transactional
     public void setSensorStation(SensorStation sensorStation) {
         this.sensorStation = sensorStationService.loadSensorStation(sensorStation.getId());
+        accessPointService.saveAccessPoint(sensorStation.getAccessPoint());
+        sensorStationService.saveSensorStation(sensorStation.getAccessPoint(), sensorStation);
     }
 }

@@ -1,8 +1,6 @@
 package at.qe.g1t2.restapi.controller;
 
 import at.qe.g1t2.model.AccessPoint;
-import at.qe.g1t2.model.SensorDataType;
-import at.qe.g1t2.model.SensorDataTypeInfo;
 import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.restapi.exception.EntityNotFoundException;
 import at.qe.g1t2.restapi.exception.VisibleMapException;
@@ -11,22 +9,17 @@ import at.qe.g1t2.restapi.model.SensorStationDTO;
 import at.qe.g1t2.restapi.model.SensorStationRegisterDTO;
 import at.qe.g1t2.services.*;
 import jakarta.validation.Valid;
-import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This class handles the connection and coupling of the sensorStation and the Webserver
@@ -49,6 +42,9 @@ public class SensorStationConnectController {
     private AccessPointService accessPointService;
     @Autowired
     private SensorStationService sensorStationService;
+
+    @Autowired
+    private  SensorStationGardenerService sensorStationGardenerService;
 
     @Autowired
     private SensorDataTypeInfoService sensorDataTypeInfoService;
@@ -217,6 +213,15 @@ public class SensorStationConnectController {
         LOGGER.warn(msg.getMessage());
         return accessPoint;
     }
+    @GetMapping("/gardenerHere/{dipId}")
+    public HttpStatus checkIfGardenerIsByStation(@PathVariable String dipId){
+        AccessPoint accessPoint = getAuthAccessPoint();
+        SensorStation sensorStation = sensorStationService.getSensorStationByAccessPointIdAndDipId(accessPoint.getAccessPointID(),Long.parseLong(dipId));
+        sensorStationGardenerService.getGardenerIsHere().add(sensorStation);
+        return HttpStatus.OK;
+    }
+
+
 
     /**
      * this method confirms the webserver that the accesspoint and sensorStation is connected.
