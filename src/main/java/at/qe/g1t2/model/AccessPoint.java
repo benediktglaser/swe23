@@ -99,7 +99,7 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
     }
 
     public void setSendingInterval(Double interval) {
-        this.sendingInterval = interval;
+        this.sendingInterval = interval+thresholdInterval;
     }
 
     public Boolean getEnabled() {

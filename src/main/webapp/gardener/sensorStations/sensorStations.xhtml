@@ -66,17 +66,24 @@
             <p:dialog header="Sensor Station Details" id="sensorStationFormEditDialog"
                       widgetVar="sensorStationFormEditDialog" modal="true" showEffect="fade" hideEffect="fade"
                       resizable="false" dynamic="true">
-                <p:outputPanel id="detailsPanel">
-                    <p:inputText id="plant_name1" value="#{sessionSensorStationBean.sensorStation.name}"/>
-
-                </p:outputPanel>
-                <p:commandButton id="save" value="Save"
-                                 update=":sensorStationForm sensorStationForm:sensorStationTypeDialog sensorStationForm:sensorStationFormEditDialog sensorstationCarousel"
-                                 action="#{sensorDataTypeListController.setSensorStation(sensorStationDetailController.sensorStation)}"/>
+                <h:panelGrid columns="2">
+                    <p:outputLabel for="plant_name" value="Plant Name: "/>
+                    <p:inputText id="plant_name" value="#{sessionSensorStationBean.sensorStation.name}"/>
+                    <p:outputLabel for="plant_category" value="Plant Category: "/>
+                    <p:inputText id="plant_category" value="#{sessionSensorStationBean.sensorStation.category}">
+                    </p:inputText>
+                    <p:outputLabel for="plant_interval" value="Interval(inlcudes overhead): "/>
+                    <p:inputText id="plant_interval"
+                                 value="#{sessionSensorStationBean.sensorStation.accessPoint.sendingInterval}">
+                    </p:inputText>
+                </h:panelGrid>
+                    <p:commandButton id="save" value="Save"
+                                     update=":sensorStationForm sensorStationForm:sensorStationTypeDialog sensorStationForm:sensorStationFormEditDialog sensorstationCarousel"
+                                     action="#{sensorDataTypeListController.setSensorStation(sensorStationDetailController.sensorStation)}"/>
             </p:dialog>
             <p:dialog header="Sensor Type Limits" id="sensorStationTypeDialog"
                       widgetVar="sensorStationTypeDialog" modal="true" showEffect="fade" hideEffect="fade"
-                      resizable="false" >
+                      resizable="false">
 
                 <p:outputPanel id="sensorStationTypeData">
                     <p:dataTable id="dataTable"
