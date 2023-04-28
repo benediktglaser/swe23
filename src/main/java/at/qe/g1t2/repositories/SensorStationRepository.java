@@ -24,8 +24,6 @@ public interface SensorStationRepository extends JpaRepository<SensorStation, St
 
     List<SensorStation> getSensorStationByEnabledTrue();
     Set<SensorStation> getSensorStationsByUserxAndEnabledTrue(Userx user);
-    @Query("SELECT u from SensorStation u")
-    List<SensorStation> getAll();
 
     SensorStation getSensorStationsByMac(String mac);
 

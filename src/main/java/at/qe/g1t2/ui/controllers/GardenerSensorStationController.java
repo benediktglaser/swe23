@@ -84,11 +84,4 @@ public class GardenerSensorStationController {
         this.sensorStation = sensorStation;
     }
 
-    public boolean isValid() {
-        return isValid;
-    }
-
-    public void setValid(boolean valid) {
-        isValid = valid;
-    }
 }

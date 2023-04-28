@@ -32,9 +32,4 @@ public class SensorDataListController extends AbstractListController<String,Sens
         this.setListToPageFunction((spec, page) -> sensorDataService.getAllSensorData(spec, page));
     }
 
-    public Collection<SensorData> getSensorData(SensorStation sensorStation)  {
-
-
-        return sensorStation.getSensorData();
-    }
 }

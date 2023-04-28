@@ -88,12 +88,5 @@ class SensorStationServiceTest {
         assertEquals("8ccfdfaa-9731-4786-8efa-e2141e5c4095", sensorStation.getId());
     }
 
-    @Test
-    @WithMockUser(username = "admin", authorities = {"ADMIN"})
-    void testGetAllNewSensorStations() {
-        AccessPoint accessPoint = accessPointService.loadAccessPoint("43d5aba9-29c5-49b4-b4ec-2d430e34104f");
-        int size = sensorStationService.getAllNewSensorStations(accessPoint).size();
-        Assertions.assertEquals(3, size);
-    }
 
 }

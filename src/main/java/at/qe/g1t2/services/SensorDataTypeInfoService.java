@@ -51,11 +51,6 @@ public class SensorDataTypeInfoService implements Serializable {
         }
         return sensorDataTypeInfoRepository.save(sensorDataTypeInfo);
     }
-    @Transactional
-    public Page<SensorDataTypeInfo> getAllSensorDataTypeInfos(Specification<SensorDataTypeInfo> spec, Pageable pageable) {
-        return sensorDataTypeInfoRepository.findAll(spec,pageable);
-
-    }
 
     @Transactional
     public List<SensorDataTypeInfo> getAllSensorDataTypeInfosBySensorStation(SensorStation sensorStation){

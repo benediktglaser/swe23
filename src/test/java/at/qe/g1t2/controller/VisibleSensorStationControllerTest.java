@@ -31,7 +31,6 @@ public class VisibleSensorStationControllerTest {
     @Test
     void testGetVisibleMap() {
         Map<AccessPoint, Map<Long, SensorStationDTO>> mockVisibleMap = new HashMap<>();
-        AccessPoint accessPoint = accessPointService.loadAccessPoint("43d5aba9-29c5-49b4-b4ec-2d430e34104f");
 
         when(visibleSensorStationsService.getVisibleMap()).thenReturn(mockVisibleMap);
         Map<AccessPoint, Map<Long, SensorStationDTO>> visibleMap = visibleSensorStationController.getVisibleMap();

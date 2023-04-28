@@ -23,21 +23,6 @@ class SensorStationListControllerTest {
     @Autowired
     private SensorStationService sensorStationService;
 
-    @Mock
-    private SensorStationGardenerService sensorStationGardenerService;
-
-    @Mock
-    private SensorDataService sensorDataService;
-
-
-    @Mock
-    private SessionSensorStationBean sessionSensorStationBean;
-
-    @Mock
-    private UserService userService;
-
-    @Mock
-    private AccessPointService accessPointService;
 
     @InjectMocks
     private SensorStationListController sensorStationListController;

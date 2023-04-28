@@ -21,13 +21,6 @@ public interface UserxRepository extends JpaRepository<Userx, String>, JpaSpecif
 
     Userx findFirstByUsername(String username);
 
-    List<Userx> findByUsernameContaining(String username);
-
-    @Query("SELECT u FROM Userx u WHERE CONCAT(u.firstName, ' ', u.lastName) = :wholeName")
-    List<Userx> findByWholeNameConcat(@Param("wholeName") String wholeName);
-
-    @Query("SELECT u FROM Userx u WHERE :role MEMBER OF u.roles")
-    List<Userx> findByRole(@Param("role") UserRole role);
     @Query("SELECT u.username FROM Userx u WHERE :role MEMBER OF u.roles")
     List<String> findUserNameByRole(@Param("role") UserRole role);
 

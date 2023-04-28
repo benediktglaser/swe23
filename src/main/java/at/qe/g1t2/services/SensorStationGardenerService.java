@@ -50,7 +50,4 @@ public class SensorStationGardenerService implements Serializable {
         return gardenerIsHere;
     }
 
-    public void setGardenerIsHere(Set<SensorStation> gardenerIsHere) {
-        this.gardenerIsHere = gardenerIsHere;
-    }
 }
