@@ -75,14 +75,9 @@
                     <p:separator/>
                     Add role/s for user:
                     <h:panelGrid columns="2">
-                        <p:commandButton value="gardener role" id="createStudentRole"
-                                         action="#{adminManagementController.user.addGardener()}"/>
-                        <p:commandButton value="admin role" id="createAdminRole"
-                                         action="#{adminManagementController.user.addAdmin()}"/>
-                        <p:commandButton value="user" id="createUserRole"
-                                         action="#{adminManagementController.user.addAdminGardener()}"/>
-                        <p:commandButton value="admin and gardener role" id="createAdminGardenerRole"
-                                         action="#{adminManagementController.user.addAdminGardener()}"/>
+                        <p:selectBooleanCheckbox value="#{adminManagementController.gardenerRole}" itemLabel="gardener role"/>
+                        <p:selectBooleanCheckbox value="#{adminManagementController.adminRole}" itemLabel="admin role"/>
+                        <p:selectBooleanCheckbox value="#{adminManagementController.userRole}" itemLabel="user role"/>
                     </h:panelGrid>
                     <p:separator/>
                     <h:panelGrid columns="3">
