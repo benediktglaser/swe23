@@ -1281,3 +1281,781 @@ Entity: class at.qe.g1t2.model.AccessPoint
 Id: Access point: UUIDnull
 Detail: enabled: false
 
+2023-04-28 20:09:40,009 [main] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.multipart.support.MissingServletRequestPartException: Required part 'file' is not present.]
+2023-04-28 20:14:35,470 [main] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.multipart.support.MissingServletRequestPartException: Required part 'file' is not present.]
+2023-04-28 20:16:39,771 [main] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.multipart.support.MissingServletRequestPartException: Required part 'file' is not present.]
+2023-04-28 21:10:24,261 [main] WARN  at.qe.g1t2.model.AccessPoint - Operation: CONNECTION_FAILURE
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: UUIDd4sN1C
+Detail: enabled: false
+
+2023-04-28 21:10:24,269 [main] WARN  at.qe.g1t2.model.AccessPoint - Operation: CONNECTION_FAILURE
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: UUIDlBBvwcFbe
+Detail: enabled: false
+
+2023-04-28 21:10:28,291 [main] WARN  a.q.g.r.c.AccessPointConnectionController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:10:28,716 [main] WARN  a.q.g.r.c.AccessPointConnectionController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:10:29,363 [main] WARN  at.qe.g1t2.model.AccessPoint - Operation: CONNECTION_FAILURE
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: UUIDnull
+Detail: enabled: false
+
+2023-04-28 21:10:37,397 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 43d5aba9-29c5-49b4-b4ec-2d430e34104f
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:10:37,441 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:10:37,447 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:10:37,546 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:10:37,550 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:10:37,592 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:10:37,633 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:10:37,683 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:10:37,715 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:10:37,787 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 43d5aba9-29c5-49b4-b4ec-2d430e34104f
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:10:37,843 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:11:09,192 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 21:11:09,198 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 21:11:10,652 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 21:11:10,671 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 21:11:12,013 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 21:11:12,070 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 21:11:12,093 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 21:11:12,103 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 21:11:13,426 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 21:11:13,481 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 21:11:13,490 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 21:11:13,507 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 21:11:14,883 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 21:11:14,935 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 21:11:14,947 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 21:14:08,789 [main] WARN  at.qe.g1t2.model.AccessPoint - Operation: CONNECTION_FAILURE
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: UUID1HqMX
+Detail: enabled: false
+
+2023-04-28 21:14:08,943 [main] WARN  at.qe.g1t2.model.SensorStation - Operation: CONNECTION_FAILURE
+Entity: class at.qe.g1t2.model.SensorStation
+Id: SensorStation: UUIDzwylzpQBQifB
+Detail: enabled: false
+
+2023-04-28 21:14:12,730 [main] WARN  a.q.g.r.c.AccessPointConnectionController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:14:13,146 [main] WARN  a.q.g.r.c.AccessPointConnectionController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:14:13,697 [main] WARN  at.qe.g1t2.model.AccessPoint - Operation: CONNECTION_FAILURE
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: UUIDnull
+Detail: enabled: false
+
+2023-04-28 21:14:24,490 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 43d5aba9-29c5-49b4-b4ec-2d430e34104f
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:14:26,770 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:14:26,776 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:14:28,855 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:14:28,861 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:14:28,885 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:14:30,851 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:14:32,607 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:14:32,642 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:14:34,249 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 43d5aba9-29c5-49b4-b4ec-2d430e34104f
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:14:36,591 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:15:00,732 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 21:15:00,745 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 21:15:02,182 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 21:15:02,191 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 21:15:03,948 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 21:15:03,998 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 21:15:04,041 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 21:15:04,061 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 21:15:06,284 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 21:15:06,393 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 21:15:06,458 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 21:15:06,487 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 21:15:08,163 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 21:15:08,241 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 21:15:08,261 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 21:17:18,242 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:22:51,476 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 43d5aba9-29c5-49b4-b4ec-2d430e34104f
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:23:02,921 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:23:02,941 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:23:11,293 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:23:11,300 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:23:11,775 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:23:22,487 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:23:29,838 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:23:29,881 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:23:42,203 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 43d5aba9-29c5-49b4-b4ec-2d430e34104f
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:23:49,838 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:27:52,789 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:27:52,822 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:30:41,342 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:30:41,376 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:32:21,323 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:32:21,358 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:32:34,678 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 43d5aba9-29c5-49b4-b4ec-2d430e34104f
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:32:43,270 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:32:43,279 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:32:43,677 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:32:52,172 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:32:59,110 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:32:59,166 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:33:05,381 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 43d5aba9-29c5-49b4-b4ec-2d430e34104f
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:33:11,926 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:33:12,085 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:33:12,373 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 21:54:35,231 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:02:38,090 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:06:30,473 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:14:19,242 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:16:45,709 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:16:45,740 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:16:54,639 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 43d5aba9-29c5-49b4-b4ec-2d430e34104f
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:17:00,821 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:17:06,850 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:17:06,861 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:17:07,233 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:17:13,587 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:17:19,402 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:17:19,451 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:17:25,393 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 43d5aba9-29c5-49b4-b4ec-2d430e34104f
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:17:31,462 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:17:31,510 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:17:31,628 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:17:37,099 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:17:42,685 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:17:48,125 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:17:48,175 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:23:34,048 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 43d5aba9-29c5-49b4-b4ec-2d430e34104f
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:23:35,016 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.SensorStation
+Id: SensorStation: DipIddc7d2e05-2953-4b46-a2b4-74705f63e005
+Detail: Already Connected SensorStation with different AccessPoint asked for coupling
+
+2023-04-28 22:28:34,003 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:28:34,774 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.SensorStation
+Id: SensorStation: DipIddc7d2e05-2953-4b46-a2b4-74705f63e005
+Detail: Already Connected SensorStation asked for coupling
+
+2023-04-28 22:32:15,163 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:32:16,064 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.SensorStation
+Id: SensorStation: DipIddc7d2e05-2953-4b46-a2b4-74705f63e005
+Detail: Already Connected SensorStation asked for coupling
+
+2023-04-28 22:35:14,220 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:35:15,132 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.SensorStation
+Id: SensorStation: DipIddc7d2e05-2953-4b46-a2b4-74705f63e005
+Detail: Already Connected SensorStation asked for coupling
+
+2023-04-28 22:36:53,825 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 43d5aba9-29c5-49b4-b4ec-2d430e34104f
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:36:54,786 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.SensorStation
+Id: SensorStation: DipIddc7d2e05-2953-4b46-a2b4-74705f63e005
+Detail: Already Connected SensorStation with different AccessPoint asked for coupling
+
+2023-04-28 22:38:27,697 [main] WARN  at.qe.g1t2.model.AccessPoint - Operation: CONNECTION_FAILURE
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: UUIDfjlCtf
+Detail: enabled: false
+
+2023-04-28 22:38:27,819 [main] WARN  at.qe.g1t2.model.SensorStation - Operation: CONNECTION_FAILURE
+Entity: class at.qe.g1t2.model.SensorStation
+Id: SensorStation: UUID2dz
+Detail: enabled: false
+
+2023-04-28 22:38:32,444 [main] WARN  a.q.g.r.c.AccessPointConnectionController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:38:32,921 [main] WARN  a.q.g.r.c.AccessPointConnectionController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:38:33,605 [main] WARN  at.qe.g1t2.model.AccessPoint - Operation: CONNECTION_FAILURE
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: UUIDnull
+Detail: enabled: false
+
+2023-04-28 22:38:43,222 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:38:43,234 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.SensorStation
+Id: SensorStation: DipIddc7d2e05-2953-4b46-a2b4-74705f63e005
+Detail: Already Connected SensorStation asked for coupling
+
+2023-04-28 22:38:45,446 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:38:45,453 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:38:47,794 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 43d5aba9-29c5-49b4-b4ec-2d430e34104f
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:38:49,855 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:38:52,073 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:38:52,079 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:38:52,119 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:38:54,181 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:38:56,509 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 43d5aba9-29c5-49b4-b4ec-2d430e34104f
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:38:56,529 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.SensorStation
+Id: SensorStation: DipIddc7d2e05-2953-4b46-a2b4-74705f63e005
+Detail: Already Connected SensorStation with different AccessPoint asked for coupling
+
+2023-04-28 22:38:58,361 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:38:58,433 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:39:00,538 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:39:00,612 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:39:00,702 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:39:02,649 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:39:04,541 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:39:06,329 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:39:06,353 [main] WARN  a.q.g.r.c.SensorStationConnectController - Operation: OTHER
+Entity: class at.qe.g1t2.model.AccessPoint
+Id: Access point: 4294ba1b-f794-4e3d-b606-896b28237bcb
+Detail: Call get getAuthAccessPoint()
+
+2023-04-28 22:39:37,500 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 22:39:37,548 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 22:39:41,788 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 22:39:41,899 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 22:39:47,881 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 22:39:48,145 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 22:39:48,192 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 22:39:48,217 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 22:39:51,146 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 22:39:51,299 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 22:39:51,314 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 22:39:51,341 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 22:39:55,567 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 22:39:55,773 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
+2023-04-28 22:39:55,849 [main] WARN  at.qe.g1t2.services.UserService - Operation: WARN
+Entity: class at.qe.g1t2.model.Userx
+Detail: Call getAuthenticatedUser()
+
