@@ -1,5 +1,8 @@
 package at.qe.g1t2.controller;
 
+import at.qe.g1t2.model.SensorStation;
+import at.qe.g1t2.services.*;
+import at.qe.g1t2.ui.beans.SessionSensorStationBean;
 import at.qe.g1t2.ui.controllers.SensorStationListController;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -7,14 +10,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import at.qe.g1t2.model.SensorStation;
-import at.qe.g1t2.services.AccessPointService;
-import at.qe.g1t2.services.SensorDataService;
-import at.qe.g1t2.services.SensorStationGardenerService;
-import at.qe.g1t2.services.SensorStationService;
-import at.qe.g1t2.services.UserService;
-import at.qe.g1t2.ui.beans.SessionSensorStationBean;
 import org.springframework.security.test.context.support.WithMockUser;
 
 @SpringBootTest
@@ -23,6 +18,21 @@ class SensorStationListControllerTest {
     @Autowired
     private SensorStationService sensorStationService;
 
+    @Mock
+    private SensorStationGardenerService sensorStationGardenerService;
+
+    @Mock
+    private SensorDataService sensorDataService;
+
+
+    @Mock
+    private SessionSensorStationBean sessionSensorStationBean;
+
+    @Mock
+    private UserService userService;
+
+    @Mock
+    private AccessPointService accessPointService;
 
     @InjectMocks
     private SensorStationListController sensorStationListController;
