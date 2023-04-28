@@ -4,6 +4,7 @@ import at.qe.g1t2.model.AccessPoint;
 import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.repositories.SensorStationRepository;
 import at.qe.g1t2.repositories.UserxRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -86,4 +87,6 @@ class SensorStationServiceTest {
                 .loadSensorStation("8ccfdfaa-9731-4786-8efa-e2141e5c4095");
         assertEquals("8ccfdfaa-9731-4786-8efa-e2141e5c4095", sensorStation.getId());
     }
+
+
 }

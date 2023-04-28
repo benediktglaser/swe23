@@ -15,6 +15,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class handles each exception thrown by the rest endpoints to avoid errors in runtime and
+ * send clear information to the client what happened
+ */
 @ControllerAdvice
 public class ExceptionHandlingService {
 
@@ -52,6 +56,12 @@ public class ExceptionHandlingService {
     @ExceptionHandler(QRException.class)
     public void handleQRException(@NotNull QRException ex){
         LOGGER.error(ex.getMessage());
+    }
+
+    @ExceptionHandler(VisibleMapException.class)
+    public ResponseEntity<String> handleVisibleMapException(@NotNull VisibleMapException ex){
+        LOGGER.error(ex.getMessage());
+        return new ResponseEntity<>(ex.getMessage(),HttpStatus.NOT_FOUND);
     }
 
 

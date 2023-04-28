@@ -34,8 +34,6 @@ public class AdminManagementController{
 
     private boolean gardenerRole;
 
-    private boolean adminGardenerRole;
-
 
     /**
      * Sets the currently displayed user and reloads it form db. This user is
@@ -98,14 +96,6 @@ public class AdminManagementController{
         user = null;
     }
 
-    public UserService getUserService() {
-        return userService;
-    }
-
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
     public boolean isUserRole() {
         return userRole;
     }
@@ -130,13 +120,6 @@ public class AdminManagementController{
         this.gardenerRole = gardenerRole;
     }
 
-    public boolean isAdminGardenerRole() {
-        return adminGardenerRole;
-    }
-
-    public void setAdminGardenerRole(boolean adminGardenerRole) {
-        this.adminGardenerRole = adminGardenerRole;
-    }
 }
 
 
