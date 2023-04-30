@@ -210,7 +210,7 @@ def gardener_is_at_station(address:str, auth_header:str):
 """Just for testing"""
 if __name__ == "__main__":
     host = "http://localhost:8080"
-    conn = dbconnection.create_database("database.db")
+    conn = dbconnection.access_database("database.db")
     auth = prepare_auth_headers("43d5aba9-29c5-49b4-b4ec-2d430e34104f", "passwd")
 
     # dbconnection.insert_sensor_data(conn, sensordata.SensorData(3, 10, 2, 3, 4, 5, 17))
