@@ -3,6 +3,9 @@
 #include <SPI.h>
 #include <Adafruit_Sensor.h>
 #include "Adafruit_BME680.h"
+#include <ArduinoBLE.h>
+#include <stdio.h>
+#include <time.h>
 
 #define BME_SCK 13
 #define BME_MISO 12
@@ -10,6 +13,9 @@
 #define BME_CS 10
 
 #define SEALEVELPRESSURE_HPA (1013.25)
+
+#define NAME_PREFIX "SensorStation G1T2"
+#define PAIRING_TIMEOUT 60*5
 
 Adafruit_BME680 bme;
 int id;
@@ -40,6 +46,12 @@ void printData(data_struct data);
 data_struct readData(int time_delay);
 void setColor(int red, int green, int blue);
 data_struct collectData(int samples, int time_delay);
+
+// BLE forward declarations
+
+void blePeripheralConnectHandler(BLEDevice central);
+void blePeripheralDisconnectHandler(BLEDevice central);
+void ble_connect();
 
 void setup() {
   Serial.begin(9600);
@@ -73,14 +85,47 @@ void setup() {
   bme.setGasHeater(320, 150); // 320*C for 150 ms
 
   id = readDip();
+
+  if (!BLE.begin()) {
+    Serial.println("Starting BLE failed!");
+
+    while(1);
+  }
+  Serial.println("BLE startet");
+
   Serial.print("Setup, complete, ID is ");
   Serial.println(id);
   Serial.println("==========================");
+
+  // startup sound
+  tone(A0, 257, 200); // C
+  delay(200);
+  tone(A0, 323, 200); // E
+  delay(200);
+  tone(A0, 385, 200); // G
+
 }
 
 void loop() {
-  printData(collectData(10, 2000));
-  delay(1000);
+  bool establish_connection = false;
+  if (!digitalRead(D2)) {
+    establish_connection = true;
+  }
+  if (!BLE.connected() && establish_connection) {
+    Serial.println("Connecting");
+    ble_connect();
+  }
+  // I have to call this every time before poll
+  // otherwise it still advertises
+  BLE.stopAdvertise();
+  BLE.poll();
+  // TODO: set up a loop here that
+  // 1. meassures the data
+  // 2. sends the data and
+  // 3. checks the limit of the recieved data and if necessary, calls the errorLight()-function.
+  // The only way to clear this light is to press the button on D2. If the value is still to
+  // low/high, the light should light up again. If the button on D3 is pressed, the loop should
+  // be left and the pairing-mode should start.
 }
 
 /*
@@ -227,4 +272,114 @@ Serial.println();
   Serial.print("Soil: ");
   Serial.println(data.soil);
   Serial.println("============");
+}
+
+void ble_connect() {
+  char name[255] = {0};
+  sprintf(name, "%s %d", NAME_PREFIX, id);
+  BLE.setLocalName(name);
+  BLE.setDeviceName(name);
+
+  BLE.setEventHandler(BLEConnected, blePeripheralConnectHandler);
+  BLE.setEventHandler(BLEDisconnected, blePeripheralDisconnectHandler);
+
+  BLE.advertise();
+  time_t start_time = time(NULL);
+  long timestamp = 0;
+  while(difftime(time(NULL), start_time) < PAIRING_TIMEOUT) {
+    if(BLE.connected()) {
+      break; 
+    }
+    // according to https://tigoe.github.io/BluetoothLE-Examples/ArduinoBLE_library_examples/
+    // it's better to do these if-clauses instead of delay()
+    // so that BLE.poll() isn't delayed (might lose connection otherwise)
+    if(millis() - timestamp > 100) {
+      setColor(0, 0, 150);
+    }
+    if(millis() - timestamp > 200) {
+      setColor(0, 0, 0);
+      timestamp = millis();
+    }
+    BLE.poll();
+  }
+  setColor(0, 0, 0);
+  if(!BLE.connected()) {
+    // timeout sound
+    tone(A0, 514, 200); // C
+    delay(200);
+    tone(A0, 385, 200); // G
+    delay(200);
+    tone(A0, 323, 200); // E
+    delay(200);
+    tone(A0, 257, 200); // C
+  }
+  Serial.println("Stop advertising");
+}
+
+void blePeripheralConnectHandler(BLEDevice central) {
+  BLE.stopAdvertise();
+  Serial.println("Connected event, central: ");
+  Serial.println(central.address());
+  // connection sound
+  tone(A0, 323, 200); // E
+  delay(200);
+  tone(A0, 385, 200); // G
+  delay(200);
+  tone(A0, 514, 200); // C
+}
+
+void blePeripheralDisconnectHandler(BLEDevice central) {
+  Serial.println("Disconnected event, central: ");
+  Serial.println(central.address());
+}
+
+/*
+This function provides error-codes via the RBG-LED. Different parameters
+(type) have different colors. The larger the error (limit) the faster the
+LED blinks. The number of blinks can be set using count.
+*/
+void errorLight(char* type, float limit, int count){
+  if(type == "temp"){
+    for(int i = 0; i < count; i++){
+      setColor(255, 0, 0);
+      delay(1/limit);
+      setColor(0, 0, 0);
+      delay(1/limit);
+    }
+  } else if(type == "pressure"){
+    for(int i = 0; i < count; i++){
+      setColor(0, 255, 0);
+      delay(1/limit);
+      setColor(0, 0, 0);
+      delay(1/limit);
+    }
+  } else if(type == "quality"){
+    for(int i = 0; i < count; i++){
+      setColor(0, 0, 255);
+      delay(1/limit);
+      setColor(0, 0, 0);
+      delay(1/limit);
+    }
+  } else if(type == "humid"){
+    for(int i = 0; i < count; i++){
+      setColor(255, 255, 0);
+      delay(1/limit);
+      setColor(0, 0, 0);
+      delay(1/limit);
+    }
+  } else if(type == "soil"){
+    for(int i = 0; i < count; i++){
+      setColor(0, 255, 255);
+      delay(1/limit);
+      setColor(0, 0, 0);
+      delay(1/limit);
+    }
+  } else if(type == "light"){
+    for(int i = 0; i < count; i++){
+      setColor(255, 0, 255);
+      delay(1/limit);
+      setColor(0, 0, 0);
+      delay(1/limit);
+    }
+  }
 }
