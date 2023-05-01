@@ -94,25 +94,25 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
     }
 
     public Boolean getEnabled() {
-        logStatusChange("enabled",enabled,(!enabled ?LogMsg.LogType.CONNECTION_FAILURE:LogMsg.LogType.CONNECTED));
+        logStatusChange("enabled", enabled, (!enabled ? LogMsg.LogType.CONNECTION_FAILURE : LogMsg.LogType.CONNECTED));
 
         return enabled;
     }
 
     public void setEnabled(Boolean enabled) {
-        logStatusChange("enabled",enabled,(!enabled ?LogMsg.LogType.CONNECTION_FAILURE:LogMsg.LogType.CONNECTED));
+        logStatusChange("enabled", enabled, (!enabled ? LogMsg.LogType.CONNECTION_FAILURE : LogMsg.LogType.CONNECTED));
 
         this.enabled = enabled;
     }
 
     public Boolean getConnected() {
-        connected =lastConnectedDate != null && LocalDateTime.now().minusSeconds(sendingInterval.longValue() + (thresholdInterval ==null?0:thresholdInterval.longValue())).isBefore(lastConnectedDate);
-        logStatusChange("connected",connected,(!connected ?LogMsg.LogType.CONNECTION_FAILURE:LogMsg.LogType.CONNECTED));
+        connected = lastConnectedDate != null && LocalDateTime.now().minusSeconds(sendingInterval.longValue() + (thresholdInterval == null ? 0 : thresholdInterval.longValue())).isBefore(lastConnectedDate);
+        logStatusChange("connected", connected, (!connected ? LogMsg.LogType.CONNECTION_FAILURE : LogMsg.LogType.CONNECTED));
         return connected;
     }
 
     public void setConnected(Boolean connected) {
-        logStatusChange("connected",connected,(!connected ?LogMsg.LogType.CONNECTION_FAILURE:LogMsg.LogType.CONNECTED));
+        logStatusChange("connected", connected, (!connected ? LogMsg.LogType.CONNECTION_FAILURE : LogMsg.LogType.CONNECTED));
         this.connected = connected;
     }
 
@@ -146,19 +146,6 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
 
     public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        AccessPoint that = (AccessPoint) o;
-        return Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 
     @Override
@@ -204,12 +191,24 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
         this.thresholdInterval = thresholdInterval;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AccessPoint that = (AccessPoint) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
     private void logStatusChange(String fieldName, Boolean fieldValue, LogMsg.LogType type) {
-        LogMsg<String,AccessPoint> msg = new LogMsg<>(type, AccessPoint.class,"Access point: UUID" + id,fieldName+": " + fieldValue.toString(),null);
-        if(fieldValue){
+        LogMsg<String, AccessPoint> msg = new LogMsg<>(type, AccessPoint.class, "Access point: UUID" + id, fieldName + ": " + fieldValue.toString(), null);
+        if (fieldValue) {
             LOGGER.info(msg.getMessage());
-        }
-        else{
+        } else {
             LOGGER.warn(msg.getMessage());
         }
     }

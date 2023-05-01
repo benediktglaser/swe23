@@ -156,8 +156,9 @@ def poll_interval(address: str, auth_header: str):
         time.sleep(20)
         # TODO this method times out after certain
         i = i + 1
-        if i == 3:
-            break
+        #DEBUG
+        #if i == 3:
+            #break
 
 
 def poll_limits(address: str, auth_header: str):
@@ -205,12 +206,12 @@ def send_sensor_data(address: str, auth_header: str):
     # Debug end
     while True:
         # Debug
-        data_1 = sensordata.SensorData(1, 8 * i, 9 * i, 10 * i, 11 * i, 12 * i, 13 * i)
-        data_2 = sensordata.SensorData(
-            2, 18 * i, 19 * i, 110 * i, 111 * i, 112 * i, 113 * i
-        )
-        db.insert_sensor_data(conn, data_1)
-        db.insert_sensor_data(conn, data_2)
+        #data_1 = sensordata.SensorData(1, 8 * i, 9 * i, 10 * i, 11 * i, 12 * i, 13 * i)
+        #data_2 = sensordata.SensorData(
+            #2, 18 * i, 19 * i, 110 * i, 111 * i, 112 * i, 113 * i
+        #)
+        #db.insert_sensor_data(conn, data_1)
+        #db.insert_sensor_data(conn, data_2)
         # Debug end
         list_of_sensorstations = db.get_all_sensorstations(conn)
         for sensorstation_id in list_of_sensorstations:
@@ -242,8 +243,8 @@ def send_sensor_data(address: str, auth_header: str):
             logger.log_error("Reading global interval in sending_data failed: " + e)
         finally:
             lock.release()
-        if i == 3:
-            break
+        #if i == 3:
+            #break
         time.sleep(my_interval)
 
 
@@ -252,8 +253,8 @@ def poll_sensorstation_enabled(address: str, auth_header: str):
     path = "database.db"  # TODO: change on raspberry
     conn = db.access_database(path)
     # Debug
-    db.init_limits(conn, 1)
-    db.init_limits(conn, 2)
+    #db.init_limits(conn, 1)
+    #db.init_limits(conn, 2)
 
     while True:
         list_of_sensorstations = db.get_all_sensorstations(conn)
@@ -264,9 +265,9 @@ def poll_sensorstation_enabled(address: str, auth_header: str):
             print(response, " ", int(sensorstation_id))
 
         # Just for Debug
-        i = i + 1
-        if i == 5:
-            break
+        #i = i + 1
+        #if i == 5:
+            #break
         # End of Debug
         time.sleep(15)
 
