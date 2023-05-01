@@ -26,5 +26,5 @@ src/main/python/__pycache__/
 src/main/python/*.pyc
 
 ## log_files ###
-src/main/*.log
+src/main/resources/*.log
 src/main/python/log.log

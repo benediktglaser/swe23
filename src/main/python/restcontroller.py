@@ -184,7 +184,8 @@ def request_limits(address: str, auth_header: str, dipId: int):
         logger.log_error(e)
         return None
 
-def request_if_is_sensorstation_enabled(address:str, auth_header:str, dipId:int):
+
+def request_if_is_sensorstation_enabled(address: str, auth_header: str, dipId: int):
     """request if sensorstation is still enabled
     return bool"""
     try:
@@ -192,7 +193,10 @@ def request_if_is_sensorstation_enabled(address:str, auth_header:str, dipId:int)
             f"{address}/api/sensorStation/enabled/{dipId}", auth=auth_header
         )
         if resp.status_code != 200:
-            logger.log_error("Error when requesting if sensorstation is enabled: " + str(resp.status_code))
+            logger.log_error(
+                "Error when requesting if sensorstation is enabled: "
+                + str(resp.status_code)
+            )
             return None
         else:
             return resp.json()
@@ -201,10 +205,27 @@ def request_if_is_sensorstation_enabled(address:str, auth_header:str, dipId:int)
         print(e)
         logger.log_error(e)
         return None
-    
-def gardener_is_at_station(address:str, auth_header:str):
-    #TODO
-    pass
+
+
+def gardener_is_at_station(address: str, dipId: int, auth_header: str) -> bool:
+    """Method to inform webserver via REST, that a gardener is a the sensorstation"""
+    try:
+        resp = requests.get(
+            f"{address}/api/sensorStation/gardenerHere/{dipId}", auth=auth_header
+        )
+        if resp.status_code != 200:
+            logger.log_error(
+                "Error when requesting if sensorstation is enabled: "
+                + str(resp.status_code)
+            )
+            return False
+        else:
+            return True
+
+    except Exception as e:
+        print(e)
+        logger.log_error(e)
+        return None
 
 
 """Just for testing"""
