@@ -46,7 +46,7 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
 
     private Double thresholdInterval;
 
-    private LocalDateTime lastCouplingDate;
+
 
 
     private Boolean coupleMode;
@@ -58,19 +58,8 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
     private List<SensorStation> sensorStation = new ArrayList<>();
     private String accessPointName;
 
-    public LocalDateTime getLastCouplingDate() {
-        return (lastCouplingDate==null?LocalDateTime.now():lastCouplingDate);
-    }
-
-    public void setLastCouplingDate(LocalDateTime lastCouplingDate) {
-        this.lastCouplingDate = lastCouplingDate;
-    }
-
     public Boolean getCoupleMode() {
-        if(lastCouplingDate == null){
-            lastCouplingDate = LocalDateTime.now();
-        }
-        coupleMode = (coupleMode!=null && lastCouplingDate.plusMinutes(5).isAfter(LocalDateTime.now()));
+
         return coupleMode;
     }
 

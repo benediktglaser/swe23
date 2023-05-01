@@ -7,6 +7,10 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/main.xhtml">
+    <f:metadata>
+        <f:viewAction action="#{coupleBean.resetCoupleMode()}" />
+    </f:metadata>
+
 
     <ui:define name="content">
         <h:form id="accessPointForm">
@@ -48,7 +52,9 @@
                     <p:commandButton title="SensorStations" value="SensorStations"
                                      update=":accessPointForm:accessPointLinkDialog"
                                      action="#{sensorStationListController.filterSensorStationsByAccessPoint(accessPoint)}"
-                                     oncomplete="PF('accessPointLinkDialog').show()"/>
+                                     oncomplete="PF('accessPointLinkDialog').show()"
+
+                        />
                 </p:column>
             </p:dataTable>
 
@@ -131,6 +137,7 @@
 
             <p:dialog widgetVar="spinner" modal="true" draggable="false" closable="false" resizable="false">
                 <i class="pi pi-spin pi-spinner" style="font-size: 1rem"></i>
+                <p:messages id = "connectMsg"></p:messages>
                 <p:outputPanel id="aviableData">
                     <p:poll interval="5" update="aviableData"></p:poll>
                     <p:dataTable id="avaiableTable"
@@ -154,7 +161,10 @@
                         </p:column>
                         <p:column headerText="Connect">
                             <p:commandButton icon="pi pi-link"
-                                             action="#{visibleSensorStationController.selectSensorStation(sensorStationListController.accessPoint,dipIds)}"/>
+                                             action="#{visibleSensorStationController.selectSensorStation(sensorStationListController.accessPoint,dipIds)}"
+                                             onstart="PF('statusDialog').show()">
+
+                            </p:commandButton>
                         </p:column>
                     </p:dataTable>
                     <p:commandButton title="Assign gardener" value="Deactivate Couplemode"
@@ -165,22 +175,33 @@
 
                 </p:outputPanel>
             </p:dialog>
+            <p:dialog id="statusDialog" widgetVar="statusDialog" modal="true" draggable="false" resizable="false" showHeader="false" closable="false" >
+                <h:outputText value="Connecting" style="margin-left:10px;"/>
+                <i class="pi pi-spin pi-spinner" style="font-size: 0.8rem"/>
+                <p:poll interval="5" listener="#{accessPointCoupleController.connectHandler(visibleSensorStationController.selectedDipId)}" update="aviableData connectMsg"/>
+            </p:dialog>
             <script>
                 var timer;
 
                 function startTimer() {
-                    PF('spinner').show()
+                    PF('spinner').show();
                     timer = setTimeout(function () {
-                        alert("Coupling reached timeout")
-                        PF('spinner').hide();
-                    }, 300000); // 5 minutes in milliseconds
+                        if (!PF('spinner').isVisible()) {
+
+                        }
+                        else{
+                            alert("Coupling reached timeout");
+                            PF('spinner').hide();
+                        }
+
+
+                    },  300000); // 5 minutes in milliseconds
                 }
             </script>
             <script>
 
                 function endCoupleMode() {
 
-                    alert("Ending Couple Mode...");
                     PF('spinner').hide();
 
                 }
