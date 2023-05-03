@@ -6,6 +6,7 @@
 #include <ArduinoBLE.h>
 #include <stdio.h>
 #include <time.h>
+#include <string.h>
 
 #define BME_SCK 13
 #define BME_MISO 12
@@ -24,16 +25,14 @@ typedef struct {
   float temperature;
   uint32_t pressure;
   float humidity;
-  uint32_t gas_resistance;
-  float altitude;
+  uint32_t air_quality;
 } bmeData_struct;
 
 typedef struct {
   float temperature;
   float pressure;
   float humidity;
-  float gas_resistance;
-  float altitude;
+  float air_quality;
   float soil;
   float light;
 } data_struct;
@@ -158,7 +157,7 @@ humidity, gas resistance and altitude. Between reads you must
 wait >= 2000ms. This is ensured in readData(int time_delay).
 */
 bmeData_struct readBME688(){
-  bmeData_struct bmeData = {0, 0, 0, 0, 0};
+  bmeData_struct bmeData = {0, 0, 0, 0};
   if (!bme.beginReading()) {
     Serial.println(F("Failed to begin reading :("));
     return bmeData;
@@ -171,8 +170,7 @@ bmeData_struct readBME688(){
   bmeData.temperature = bme.temperature;                     //temperature [°C]
   bmeData.pressure = bme.pressure / 100.0;                   //pressure [hPa]
   bmeData.humidity = bme.humidity;                           //humidity [%]
-  bmeData.gas_resistance = bme.gas_resistance / 1000.0;      //gas [KOhms]
-  bmeData.altitude = bme.readAltitude(SEALEVELPRESSURE_HPA); //altitude [m]
+  bmeData.air_quality = bme.gas_resistance / 1000.0;      //gas [KOhms]
   
   return bmeData;
 }
@@ -183,15 +181,14 @@ happen to later enable the calculation of the average in the collectData() funct
 <time_delay> must be larger than 2000.
 */
 data_struct readData(int time_delay){
-  data_struct data = {0, 0, 0, 0, 0, 0, 0};
+  data_struct data = {0, 0, 0, 0, 0, 0};
   if(time_delay < 2000){
     Serial.print("time_delay for data_struct readData(int time_delay) must be >= 2000, is ");
     Serial.print(time_delay);
     return data;
   }
   bmeData_struct bmeData = readBME688();
-  data.altitude = bmeData.altitude;
-  data.gas_resistance = (float) bmeData.gas_resistance;
+  data.air_quality = (float) bmeData.air_quality;
   data.humidity = bmeData.humidity;
   data.pressure = (float) bmeData.pressure;
   data.temperature = bmeData.temperature;
@@ -223,12 +220,11 @@ each of them. The aritmetic average is calculated for all of
 them and then returned. <time_delay> must be larger than 2000.
 */
 data_struct collectData(int samples, int time_delay){
-  data_struct average = {0, 0, 0, 0, 0, 0, 0};
+  data_struct average = {0, 0, 0, 0, 0, 0};
   data_struct data;
   for(int i = 0; i < samples; i++){
     data = readData(time_delay);
-    average.altitude += data.altitude;
-    average.gas_resistance += data.gas_resistance;
+    average.air_quality += data.air_quality;
     average.humidity += data.humidity;
     average.light += data.light;
     average.pressure += data.pressure;
@@ -236,8 +232,7 @@ data_struct collectData(int samples, int time_delay){
     average.temperature += data.temperature;
   }
 
-  average.altitude = average.altitude / samples;
-  average.gas_resistance = average.gas_resistance / samples;
+  average.air_quality = average.air_quality / samples;
   average.humidity = average.humidity / samples;
   average.light = average.light / samples;
   average.pressure = average.pressure / samples;
@@ -252,9 +247,6 @@ For debugging purposes only. Prints out all data of a data_struct.
 */
 void printData(data_struct data){
 Serial.println();
-  Serial.print("Altitude: ");
-  Serial.print(data.altitude);
-  Serial.println("m");
   Serial.print("Pressure: ");
   Serial.print(data.pressure);
   Serial.println("hPa");
@@ -262,7 +254,7 @@ Serial.println();
   Serial.print(data.humidity);
   Serial.println("%");
   Serial.print("Gas: ");
-  Serial.print(data.gas_resistance);
+  Serial.print(data.air_quality);
   Serial.println("KOhm");
   Serial.print("Temperature: ");
   Serial.print(data.temperature);
@@ -339,42 +331,42 @@ This function provides error-codes via the RBG-LED. Different parameters
 LED blinks. The number of blinks can be set using count.
 */
 void errorLight(char* type, float limit, int count){
-  if(type == "temp"){
-    for(int i = 0; i < count; i++){
+  if(strcmp(type, "temp") == 0) {
+    for(int i = 0; i < count; i++) {
       setColor(255, 0, 0);
       delay(1/limit);
       setColor(0, 0, 0);
       delay(1/limit);
     }
-  } else if(type == "pressure"){
+  } else if(strcmp(type, "pressure") == 0){
     for(int i = 0; i < count; i++){
       setColor(0, 255, 0);
       delay(1/limit);
       setColor(0, 0, 0);
       delay(1/limit);
     }
-  } else if(type == "quality"){
+  } else if(strcmp(type, "air_quality") == 0){
     for(int i = 0; i < count; i++){
       setColor(0, 0, 255);
       delay(1/limit);
       setColor(0, 0, 0);
       delay(1/limit);
     }
-  } else if(type == "humid"){
+  } else if(strcmp(type, "humid") == 0){
     for(int i = 0; i < count; i++){
       setColor(255, 255, 0);
       delay(1/limit);
       setColor(0, 0, 0);
       delay(1/limit);
     }
-  } else if(type == "soil"){
+  } else if(strcmp(type, "soil") == 0){
     for(int i = 0; i < count; i++){
       setColor(0, 255, 255);
       delay(1/limit);
       setColor(0, 0, 0);
       delay(1/limit);
     }
-  } else if(type == "light"){
+  } else if(strcmp(type, "light") == 0){
     for(int i = 0; i < count; i++){
       setColor(255, 0, 255);
       delay(1/limit);
