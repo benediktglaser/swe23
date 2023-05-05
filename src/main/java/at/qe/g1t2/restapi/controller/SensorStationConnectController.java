@@ -160,6 +160,7 @@ public class SensorStationConnectController {
         newSensorStation.setDipId(sensorStationDTO.getDipId());
         newSensorStation.setMac(sensorStationDTO.getMac());
         newSensorStation.setLastConnectedDate(LocalDateTime.now());
+        newSensorStation.setEnabled(false);
         newSensorStation = sensorStationService.saveSensorStation(accessPoint, newSensorStation);
         sensorStationDTO.setConnected(true);
         visibleSensorStationsService.replaceSensorStationDTO(accessPoint, dipId, sensorStationDTO);
