@@ -23,34 +23,26 @@ public class QRCodeController {
 
 
     @PostConstruct
-    public void myMethod() throws IOException {
-        FacesContext context = FacesContext.getCurrentInstance();
-        ExternalContext externalContext = context.getExternalContext();
-        externalContext.redirect("/login.xhtml");
-        String myParam = externalContext.getRequestParameterMap().get("id");
-        if(myParam == null){
-            try {
-                System.out.println(externalContext);
-                System.out.println(externalContext.getContextName());
+    public void myMethod(){
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            ExternalContext externalContext = context.getExternalContext();
+            String myParam = externalContext.getRequestParameterMap().get("id");
+            if (myParam == null) {
                 externalContext.redirect("/login.xhtml");
                 return;
-            } catch (IOException e) {
-                throw new InvalidAccessException("Redirecting to non existing Page");
             }
-
-        }
-        SensorStation sensorStation = sensorStationService.loadSensorStation(myParam);
-        if(sensorStation == null){
-            try {
+            SensorStation sensorStation = sensorStationService.loadSensorStation(myParam);
+            if (sensorStation == null) {
                 externalContext.redirect("/login.xhtml");
                 return;
-            } catch (IOException e) {
-                throw new InvalidAccessException("Redirecting to non existing Page");
             }
-
+            this.sensorStation = sensorStation;
+        } catch (IOException e) {
+            // Handle the exception here
+            e.printStackTrace();
+            throw new RuntimeException("An error occurred while processing the request.");
         }
-        this.sensorStation = sensorStation;
-
     }
 
     public SensorStation getSensorStation() {
