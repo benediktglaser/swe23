@@ -175,11 +175,18 @@
 
                 </p:outputPanel>
             </p:dialog>
-            <p:dialog id="statusDialog" widgetVar="statusDialog" modal="true" draggable="false" resizable="false" showHeader="false" closable="false" >
+            <p:dialog id="statusDialog" widgetVar="statusDialog" modal="true" draggable="false" resizable="false" showHeader="false" closable="false" onHide="stopPoll()">
                 <h:outputText value="Connecting" style="margin-left:10px;"/>
                 <i class="pi pi-spin pi-spinner" style="font-size: 0.8rem"/>
-                <p:poll interval="5" listener="#{accessPointCoupleController.connectHandler(visibleSensorStationController.selectedDipId)}" update="aviableData connectMsg"/>
+                <p:poll id="connectPoll" interval="5" listener="#{accessPointCoupleController.connectHandler(visibleSensorStationController.selectedDipId)}" update="aviableData connectMsg"/>
             </p:dialog>
+
+            <script>
+                function stopPoll() {
+                    PF('connectPoll').stop();
+                }
+            </script>
+
             <script>
                 var timer;
 

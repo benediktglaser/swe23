@@ -44,7 +44,7 @@ public class AccessPointCoupleController {
 
     public void connectHandler(Long dipId){
         SensorStation sensorStation = sensorStationService.getSensorStationByAccessPointIdAndDipId(accessPoint.getAccessPointID(),dipId);
-        if(sensorStation.getConnected()){
+        if(sensorStation!=null && sensorStation.getConnected()){
             PrimeFaces.current().executeScript("PF('statusDialog').hide()");
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, "SensorStation with DipId " + sensorStation.getDipId() +" connected successfully!", null));
