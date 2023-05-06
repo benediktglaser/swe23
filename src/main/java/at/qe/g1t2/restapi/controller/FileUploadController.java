@@ -40,7 +40,7 @@ public class FileUploadController {
         if (!file.isEmpty()) {
             try {
                 String fileType = file.getContentType();
-                if (!fileType.equals("image/jpeg") && !fileType.equals("image/png")) {
+                if (fileType == null || (!fileType.equals("image/jpeg") && !fileType.equals("image/png"))) {
                     FacesContext.getCurrentInstance().addMessage(null,
                             new FacesMessage("Image has not valid format."));
                     throw new FileUploadException("Only JPEG and PNG images are allowed.");
