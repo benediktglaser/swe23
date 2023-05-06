@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import java.time.LocalDateTime;
 
 @Controller
 @Scope("view")
@@ -23,6 +22,7 @@ public class AccessPointCoupleController {
 
     @Autowired
     private CoupleBean coupleBean;
+
     @Autowired
     AccessPointService accessPointService;
 
@@ -32,24 +32,20 @@ public class AccessPointCoupleController {
         accessPoint.setCoupleMode(true);
         this.accessPoint = accessPointService.saveAccessPoint(accessPoint);
         coupleBean.addAccessPoint(accessPoint);
-
-
     }
 
     public void endCouplingMode(AccessPoint accessPoint) {
         accessPoint.setCoupleMode(false);
         this.accessPoint = accessPointService.saveAccessPoint(accessPoint);
-
     }
 
-    public void connectHandler(Long dipId){
-        SensorStation sensorStation = sensorStationService.getSensorStationByAccessPointIdAndDipId(accessPoint.getAccessPointID(),dipId);
-        if(sensorStation!=null && sensorStation.getConnected()){
+    public void connectHandler(Long dipId) {
+        SensorStation sensorStation = sensorStationService.getSensorStationByAccessPointIdAndDipId(accessPoint.getAccessPointID(), dipId);
+        if (sensorStation != null && sensorStation.getConnected()) {
             PrimeFaces.current().executeScript("PF('statusDialog').hide()");
             FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_INFO, "SensorStation with DipId " + sensorStation.getDipId() +" connected successfully!", null));
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, "SensorStation with DipId " + sensorStation.getDipId() + " connected successfully!", null));
         }
     }
-
 
 }
