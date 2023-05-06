@@ -5,6 +5,7 @@ import at.qe.g1t2.services.SensorStationService;
 import at.qe.g1t2.services.UserService;
 import at.qe.g1t2.ui.beans.SessionSensorStationBean;
 import at.qe.g1t2.ui.controllers.GardenerSensorStationController;
+import jakarta.faces.context.FacesContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -23,7 +24,10 @@ public class GardenerSensorStationControllerTest {
     private SensorStationService sensorStationService;
 
     @Mock
-    SessionSensorStationBean sessionSensorStationBean;
+    private SessionSensorStationBean sessionSensorStationBean;
+
+    @Mock
+    private FacesContext facesContext;
 
     @Mock
     private SensorStationGardenerService sensorStationGardenerService;
@@ -36,7 +40,7 @@ public class GardenerSensorStationControllerTest {
         gardenerSensorStationController.setUsername("user1");
         Assertions.assertEquals("user1", gardenerSensorStationController.getUsername());
     }
-/*
+    /*
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void testAssignGardener() {
@@ -49,7 +53,8 @@ public class GardenerSensorStationControllerTest {
         Assertions.assertEquals(user, station.getGardener());
     }
 
- */
+    */
+
 
 
 }

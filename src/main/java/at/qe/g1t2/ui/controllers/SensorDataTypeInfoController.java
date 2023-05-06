@@ -27,11 +27,6 @@ public class SensorDataTypeInfoController {
     private SensorDataType sensorDataType;
 
     @Transactional
-    public void resetSensorDataTypeInfoController() {
-        sensorDataType = null;
-    }
-
-    @Transactional
     public SensorDataTypeInfo getType() {
         if (type == null) {
             type = new SensorDataTypeInfo();
@@ -72,7 +67,6 @@ public class SensorDataTypeInfoController {
 
     @Transactional
     public void setSensorDataType(SensorDataType sensorDataType) {
-        this.sensorDataType = null;
         this.sensorDataType = sensorDataType;
     }
 
