@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @AutoConfigureMockMvc
 public class AccessPointRegisterControllerTest {
+
     @Autowired
     private MockMvc mockMvc;
     @Autowired

@@ -37,14 +37,6 @@ class SensorStationListControllerTest {
     @InjectMocks
     private SensorStationListController sensorStationListController;
 
-    /*
-    @BeforeEach
-    void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-    }
-
-     */
-
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     void testGetFrontPicture() throws Exception {

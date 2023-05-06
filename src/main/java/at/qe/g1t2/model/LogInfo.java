@@ -19,7 +19,7 @@ public class LogInfo extends DefaultRevisionEntity {
 
     private LocalDateTime changeDate = LocalDateTime.now();
 
-    @Column(name ="REVTYPE")
+    @Column(name = "REVTYPE")
     private String revtype;
 
     public String getUsername() {

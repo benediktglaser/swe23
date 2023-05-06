@@ -21,14 +21,19 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+/**
+ * This class returns the QR-Code used to access the visitor page of the given sensorstation
+ */
+
 @RestController
 @RequestMapping("")
 public class QRCodeRestController {
+
     @Autowired
     private SensorStationService sensorStationService;
 
     @GetMapping(value = "/visitor/sensorStations/gallery.xhtml{sensorStationId}", produces = MediaType.IMAGE_PNG_VALUE)
-    public ResponseEntity<byte[]> sensorStationsQRCode(@PathVariable String sensorStationId){
+    public ResponseEntity<byte[]> sensorStationsQRCode(@PathVariable String sensorStationId) {
         try {
             BufferedImage qrCodeImage = QRCodeService.generateQRCodeImage(sensorStationService.loadSensorStation(sensorStationId));
             ByteArrayOutputStream qr = new ByteArrayOutputStream();
@@ -38,11 +43,10 @@ public class QRCodeRestController {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
             headers.setContentDisposition(ContentDisposition.attachment()
-                    .filename(sensorStationService.loadSensorStation(sensorStationId).getName()+".png").build());
+                    .filename(sensorStationService.loadSensorStation(sensorStationId).getName() + ".png").build());
 
             return ResponseEntity.ok().headers(headers).body(qrCodeBytes);
-        }
-        catch (IOException io){
+        } catch (IOException io) {
             throw new QRException("QR Code generation failed");
         }
     }
