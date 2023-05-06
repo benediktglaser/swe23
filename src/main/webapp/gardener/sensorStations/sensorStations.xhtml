@@ -48,7 +48,7 @@
                                     <p:commandButton id="gallery" value="Gallery"
                                                      action="#{sensorStationListController.redirectToGallery(sensorStation)}"/>
                                     <p:commandButton id="download" value="DownloadQRCode"
-                                                     action="#{QRCodeController.doUpdate(sensorStation.id)}"/>
+                                                     action="#{QRCodeDownloadController.doUpdate(sensorStation.id)}"/>
                                     <script>
                                         function sent(param) {
                                             const sensorLink = "http://localhost:8080/visitor/sensorStations/gallery.xhtml";
