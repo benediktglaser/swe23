@@ -14,7 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Controller for the admin view to manage users.
+ * Controller for the admin view to manage users(Delete, edit,...).
  */
 @Component
 @Scope("session")
@@ -48,7 +48,7 @@ public class AdminManagementController{
     }
 
     /**
-     * Returns the currently displayed user.
+     * Returns the currently displayed user or creates an empty user
      *
      * @return
      */
