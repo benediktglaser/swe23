@@ -66,6 +66,12 @@ public class ExceptionHandlingService {
         return new ResponseEntity<>(ex.getMessage(),HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(VisibleMapException.class)
+    public ResponseEntity<String> handleVisibleMapException(@NotNull VisibleMapException ex){
+        LOGGER.error(ex.getMessage());
+        return new ResponseEntity<>(ex.getMessage(),HttpStatus.NOT_FOUND);
+    }
+
 
 
 }
