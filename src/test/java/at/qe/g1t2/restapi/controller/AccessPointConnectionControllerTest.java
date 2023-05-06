@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest
 @AutoConfigureMockMvc
 class AccessPointConnectionControllerTest {
+
     @Autowired
     private MockMvc mockMvc;
     @Autowired

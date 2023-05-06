@@ -17,6 +17,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * This class is for the cascadeSelect in gardener/sensorData.xhtml
+ */
 @Controller
 @Scope("view")
 public class ChartsView {
@@ -24,11 +27,16 @@ public class ChartsView {
     private List<SelectItem> typeInfos;
     private String selection;
 
+
+
     @Autowired
     SessionSensorStationBean sessionSensorStationBean;
     @Autowired
     SensorDataTypeInfoService sensorDataTypeInfoService;
 
+    /**
+     * Initialize List with all SensorTypes and The limits for the given SensorStation
+     */
     @PostConstruct
     public void init() {
         typeInfos = new ArrayList<>();
@@ -76,7 +84,10 @@ public class ChartsView {
         return sensorDataTypeInfoService.loadSensorDataTypeInfo(selection);
     }
 
-   public void doUpdate(){
+    /**
+     * call JavaScript function with selected SensorDataTypeInfo
+     */
+    public void doUpdate(){
         List<String> types = Arrays.stream(SensorDataType.values()).map(Enum::name).collect(Collectors.toList());
         if(types.contains(selection)){
             PrimeFaces.current().executeScript("myF('" + sessionSensorStationBean.getSensorStation().getId() + "', '" + "Empty" + "', '" + SensorDataType.valueOf(selection) + "')");

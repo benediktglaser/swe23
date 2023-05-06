@@ -1,7 +1,5 @@
 package at.qe.g1t2.controller;
 
-import at.qe.g1t2.model.SensorStation;
-import at.qe.g1t2.model.Userx;
 import at.qe.g1t2.services.SensorStationGardenerService;
 import at.qe.g1t2.services.SensorStationService;
 import at.qe.g1t2.services.UserService;
@@ -13,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.test.context.support.WithMockUser;
+
 
 
 @SpringBootTest

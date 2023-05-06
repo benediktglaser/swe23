@@ -10,4 +10,6 @@ import java.io.Serializable;
 @FunctionalInterface
 public interface CollectionToPageConverter<K,T extends Persistable<K>> extends Serializable {
     Page<T> retrieveData(Specification<T> spec, Pageable page);
+
+
 }

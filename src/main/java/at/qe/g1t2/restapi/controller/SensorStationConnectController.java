@@ -25,7 +25,7 @@ import java.util.List;
  * This class handles the connection and coupling of the sensorStation and the Webserver
  * Each action on the connection of the SensorStation is logged
  *
- * @Valid checks if all NotNull attributes of the DTO's have a value otherwise it throws a exception
+ * @Valid checks if all NotNull attributes of the DTOs have a value otherwise it throws an exception
  */
 
 
@@ -56,11 +56,10 @@ public class SensorStationConnectController {
      * each request confirms the connection of the accessPoint
      *
      * @param sensorStationDTO
-     * @return ResponesEntity<SensorStationRegisterDTO>
+     * @return ResponseEntity<SensorStationRegisterDTO>
      */
     @PostMapping("/register")
     public ResponseEntity<SensorStationRegisterDTO> addVisibleSensorStations(@Valid @RequestBody SensorStationDTO sensorStationDTO) {
-        ;
         AccessPoint accessPoint = getAuthAccessPoint();
 
         satisFyConnection(accessPoint);
@@ -200,7 +199,7 @@ public class SensorStationConnectController {
     }
 
     /**
-     * This method is a helpmethod for getting the id of the requesting accessPoint
+     * This method is a help-method for getting the id of the requesting accessPoint
      *
      * @return
      */
@@ -225,7 +224,7 @@ public class SensorStationConnectController {
 
 
     /**
-     * this method confirms the webserver that the accesspoint and sensorStation is connected.
+     * This method confirms to the webserver that the accesspoint and sensorStation are connected.
      *
      * @param accessPoint
      * @param dipId
@@ -246,7 +245,7 @@ public class SensorStationConnectController {
     }
 
     /**
-     * this method confirms the webserver that the accesspoint is connected.
+     * This method confirms to the webserver that the Accesspoint is connected.
      *
      * @param accessPoint
      */
