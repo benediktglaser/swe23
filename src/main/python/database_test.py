@@ -9,7 +9,7 @@ unittest.TestLoader.sortTestMethodsUsing = None
 class Test_database_insertion_and_retrieval(unittest.TestCase):
     def test_inserting(self):
         path = "database_2.db"
-        conn = db.create_database(path)
+        conn = db.access_database(path)
 
         db.init_limits(conn, 1)
         db.init_limits(conn, 2)
@@ -31,7 +31,7 @@ class Test_database_insertion_and_retrieval(unittest.TestCase):
 
     def test_set_and_get_limit(self):
         path = "database_2.db"
-        conn = db.create_database(path)
+        conn = db.access_database(path)
         db.init_limits(conn, 1)
         db.set_limits(conn, 1, "temp", -4.2, 6.8)
         self.assertEqual(
@@ -46,7 +46,7 @@ class Test_database_insertion_and_retrieval(unittest.TestCase):
 
     def remove_sensor_data(self):
         path = "database_2.db"
-        conn = db.create_database(path)
+        conn = db.access_database(path)
         db.insert_sensor_data(
             conn, sensordata.SensorData(1, 28.4, 1.0, 40.3, 23.1, 600, 87.345)
         )

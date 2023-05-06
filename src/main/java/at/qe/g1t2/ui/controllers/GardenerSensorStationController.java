@@ -15,9 +15,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+/**
+ * Controller for assigning gardeners to a sensorstation.
+ * This class is only used by administrators.
+ */
+
 @Controller
 @Scope("view")
 public class GardenerSensorStationController {
+
     @Autowired
     UserService userService;
 
@@ -84,11 +90,4 @@ public class GardenerSensorStationController {
         this.sensorStation = sensorStation;
     }
 
-    public boolean isValid() {
-        return isValid;
-    }
-
-    public void setValid(boolean valid) {
-        isValid = valid;
-    }
 }

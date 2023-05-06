@@ -21,6 +21,8 @@ public class VisibleSensorStationController {
         return visibleSensorStationsService.getVisibleMap();
     }
 
+    private Long selectedDipId;
+
     public List<Long> getSensorStationsByAccessPoint(AccessPoint accessPoint){
         Map<AccessPoint, Map<Long, SensorStationDTO>> visibleMap = visibleSensorStationsService.getVisibleMap();
         Map<Long,SensorStationDTO> sensorStationDTOs = visibleMap.get(accessPoint);
@@ -34,6 +36,7 @@ public class VisibleSensorStationController {
         SensorStationDTO sensorStationDTO = getSensorStationsByAccessPointAndDipId(accessPoint,dipId);
         sensorStationDTO.setVerified(true);
         visibleSensorStationsService.replaceSensorStationDTO(accessPoint,dipId.toString(),sensorStationDTO);
+        selectedDipId = dipId;
     }
     public SensorStationDTO getSensorStationsByAccessPointAndDipId(AccessPoint accessPoint, Long dipId){
         return visibleSensorStationsService.getSensorStationByAccessPointAndDipId(accessPoint,dipId.toString());
@@ -41,5 +44,9 @@ public class VisibleSensorStationController {
 
     public void resetVisibleList(AccessPoint accessPoint){
         visibleSensorStationsService.resetVisibleList(accessPoint);
+    }
+
+    public Long getSelectedDipId() {
+        return selectedDipId;
     }
 }

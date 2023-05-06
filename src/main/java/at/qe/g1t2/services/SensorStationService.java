@@ -106,16 +106,9 @@ public class SensorStationService implements Serializable {
         return userRepository.findFirstByUsername(auth.getName());
     }
 
-    public Set<SensorStation> getAllSensorStationsByUser(){
-        return sensorStationRepository.getSensorStationsByUserxAndEnabledTrue(getAuthenticatedUser());
-    }
-
     public SensorStation getSensorStation(String mac){
         return sensorStationRepository.getSensorStationsByMac(mac);
 
     }
 
-    public List<SensorStation> getAllNewSensorStations(AccessPoint accessPoint){
-        return sensorStationRepository.getAllNewSensorStationsByAccessPoint(accessPoint);
-    }
 }

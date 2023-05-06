@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 /**
  * Controller for the user list view.
- *
+ * <p>
  * This class is part of the skeleton project provided for students of the
  * course "Software Engineering" offered by the University of Innsbruck.
  */
@@ -24,11 +24,8 @@ public class UserListController extends AbstractListController<String, Userx> im
     @Autowired
     private UserService userService;
 
-    public UserListController() {
-        this.setListToPageFunction((spec, page) -> userService.getAllUsers(spec, page));
-    }
 
-    public List<String> getAllUsername(String query){
+    public List<String> getAllUsername(String query) {
 
         return userService.getAllGardenerUsernames().stream().filter(x -> x.toLowerCase().startsWith(query.toLowerCase())).collect(Collectors.toList());
     }
@@ -38,6 +35,9 @@ public class UserListController extends AbstractListController<String, Userx> im
      *
      * @return
      */
+    public UserListController() {
+        this.setListToPageFunction((spec, page) -> userService.getAllUsers(spec, page));
+    }
 
 
 }

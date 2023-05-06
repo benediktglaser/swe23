@@ -50,14 +50,6 @@ public class SensorStationListController extends AbstractListController<String, 
     }
 
 
-    public void filterSensorStationsByGardner(Userx gardener) {
-        this.getExtraSpecs().add(Specification.where((root, query, criteriaBuilder) -> {
-            Path <String> gardenerId = root.get("gardener").get("username");
-            return criteriaBuilder.equal(gardenerId,gardener.getUsername());
-        }));
-    }
-
-
     public void setAccessPoint(AccessPoint accessPoint) {
         this.accessPoint = accessPoint;
     }
@@ -88,9 +80,7 @@ public class SensorStationListController extends AbstractListController<String, 
         return sensorStation.getPictures().get(0).getPath();
     }
 
-    public List<SensorStation> getAllNewSensorStation(){
-        return sensorStationService.getAllNewSensorStations(accessPoint);
-    }
+
 
 
 

@@ -3,6 +3,10 @@
 #include <SPI.h>
 #include <Adafruit_Sensor.h>
 #include "Adafruit_BME680.h"
+#include <ArduinoBLE.h>
+#include <stdio.h>
+#include <time.h>
+#include <string.h>
 
 #define BME_SCK 13
 #define BME_MISO 12
@@ -11,6 +15,9 @@
 
 #define SEALEVELPRESSURE_HPA (1013.25)
 
+#define NAME_PREFIX "SensorStation G1T2"
+#define PAIRING_TIMEOUT 60*5
+
 Adafruit_BME680 bme;
 int id;
 
@@ -18,16 +25,14 @@ typedef struct {
   float temperature;
   uint32_t pressure;
   float humidity;
-  uint32_t gas_resistance;
-  float altitude;
+  uint32_t air_quality;
 } bmeData_struct;
 
 typedef struct {
   float temperature;
   float pressure;
   float humidity;
-  float gas_resistance;
-  float altitude;
+  float air_quality;
   float soil;
   float light;
 } data_struct;
@@ -40,6 +45,12 @@ void printData(data_struct data);
 data_struct readData(int time_delay);
 void setColor(int red, int green, int blue);
 data_struct collectData(int samples, int time_delay);
+
+// BLE forward declarations
+
+void blePeripheralConnectHandler(BLEDevice central);
+void blePeripheralDisconnectHandler(BLEDevice central);
+void ble_connect();
 
 void setup() {
   Serial.begin(9600);
@@ -73,14 +84,47 @@ void setup() {
   bme.setGasHeater(320, 150); // 320*C for 150 ms
 
   id = readDip();
+
+  if (!BLE.begin()) {
+    Serial.println("Starting BLE failed!");
+
+    while(1);
+  }
+  Serial.println("BLE startet");
+
   Serial.print("Setup, complete, ID is ");
   Serial.println(id);
   Serial.println("==========================");
+
+  // startup sound
+  tone(A0, 257, 200); // C
+  delay(200);
+  tone(A0, 323, 200); // E
+  delay(200);
+  tone(A0, 385, 200); // G
+
 }
 
 void loop() {
-  printData(collectData(10, 2000));
-  delay(1000);
+  bool establish_connection = false;
+  if (!digitalRead(D2)) {
+    establish_connection = true;
+  }
+  if (!BLE.connected() && establish_connection) {
+    Serial.println("Connecting");
+    ble_connect();
+  }
+  // I have to call this every time before poll
+  // otherwise it still advertises
+  BLE.stopAdvertise();
+  BLE.poll();
+  // TODO: set up a loop here that
+  // 1. meassures the data
+  // 2. sends the data and
+  // 3. checks the limit of the recieved data and if necessary, calls the errorLight()-function.
+  // The only way to clear this light is to press the button on D2. If the value is still to
+  // low/high, the light should light up again. If the button on D3 is pressed, the loop should
+  // be left and the pairing-mode should start.
 }
 
 /*
@@ -113,7 +157,7 @@ humidity, gas resistance and altitude. Between reads you must
 wait >= 2000ms. This is ensured in readData(int time_delay).
 */
 bmeData_struct readBME688(){
-  bmeData_struct bmeData = {0, 0, 0, 0, 0};
+  bmeData_struct bmeData = {0, 0, 0, 0};
   if (!bme.beginReading()) {
     Serial.println(F("Failed to begin reading :("));
     return bmeData;
@@ -126,8 +170,7 @@ bmeData_struct readBME688(){
   bmeData.temperature = bme.temperature;                     //temperature [°C]
   bmeData.pressure = bme.pressure / 100.0;                   //pressure [hPa]
   bmeData.humidity = bme.humidity;                           //humidity [%]
-  bmeData.gas_resistance = bme.gas_resistance / 1000.0;      //gas [KOhms]
-  bmeData.altitude = bme.readAltitude(SEALEVELPRESSURE_HPA); //altitude [m]
+  bmeData.air_quality = bme.gas_resistance / 1000.0;      //gas [KOhms]
   
   return bmeData;
 }
@@ -138,15 +181,14 @@ happen to later enable the calculation of the average in the collectData() funct
 <time_delay> must be larger than 2000.
 */
 data_struct readData(int time_delay){
-  data_struct data = {0, 0, 0, 0, 0, 0, 0};
+  data_struct data = {0, 0, 0, 0, 0, 0};
   if(time_delay < 2000){
     Serial.print("time_delay for data_struct readData(int time_delay) must be >= 2000, is ");
     Serial.print(time_delay);
     return data;
   }
   bmeData_struct bmeData = readBME688();
-  data.altitude = bmeData.altitude;
-  data.gas_resistance = (float) bmeData.gas_resistance;
+  data.air_quality = (float) bmeData.air_quality;
   data.humidity = bmeData.humidity;
   data.pressure = (float) bmeData.pressure;
   data.temperature = bmeData.temperature;
@@ -178,12 +220,11 @@ each of them. The aritmetic average is calculated for all of
 them and then returned. <time_delay> must be larger than 2000.
 */
 data_struct collectData(int samples, int time_delay){
-  data_struct average = {0, 0, 0, 0, 0, 0, 0};
+  data_struct average = {0, 0, 0, 0, 0, 0};
   data_struct data;
   for(int i = 0; i < samples; i++){
     data = readData(time_delay);
-    average.altitude += data.altitude;
-    average.gas_resistance += data.gas_resistance;
+    average.air_quality += data.air_quality;
     average.humidity += data.humidity;
     average.light += data.light;
     average.pressure += data.pressure;
@@ -191,8 +232,7 @@ data_struct collectData(int samples, int time_delay){
     average.temperature += data.temperature;
   }
 
-  average.altitude = average.altitude / samples;
-  average.gas_resistance = average.gas_resistance / samples;
+  average.air_quality = average.air_quality / samples;
   average.humidity = average.humidity / samples;
   average.light = average.light / samples;
   average.pressure = average.pressure / samples;
@@ -207,9 +247,6 @@ For debugging purposes only. Prints out all data of a data_struct.
 */
 void printData(data_struct data){
 Serial.println();
-  Serial.print("Altitude: ");
-  Serial.print(data.altitude);
-  Serial.println("m");
   Serial.print("Pressure: ");
   Serial.print(data.pressure);
   Serial.println("hPa");
@@ -217,7 +254,7 @@ Serial.println();
   Serial.print(data.humidity);
   Serial.println("%");
   Serial.print("Gas: ");
-  Serial.print(data.gas_resistance);
+  Serial.print(data.air_quality);
   Serial.println("KOhm");
   Serial.print("Temperature: ");
   Serial.print(data.temperature);
@@ -227,4 +264,114 @@ Serial.println();
   Serial.print("Soil: ");
   Serial.println(data.soil);
   Serial.println("============");
+}
+
+void ble_connect() {
+  char name[255] = {0};
+  sprintf(name, "%s %d", NAME_PREFIX, id);
+  BLE.setLocalName(name);
+  BLE.setDeviceName(name);
+
+  BLE.setEventHandler(BLEConnected, blePeripheralConnectHandler);
+  BLE.setEventHandler(BLEDisconnected, blePeripheralDisconnectHandler);
+
+  BLE.advertise();
+  time_t start_time = time(NULL);
+  long timestamp = 0;
+  while(difftime(time(NULL), start_time) < PAIRING_TIMEOUT) {
+    if(BLE.connected()) {
+      break; 
+    }
+    // according to https://tigoe.github.io/BluetoothLE-Examples/ArduinoBLE_library_examples/
+    // it's better to do these if-clauses instead of delay()
+    // so that BLE.poll() isn't delayed (might lose connection otherwise)
+    if(millis() - timestamp > 100) {
+      setColor(0, 0, 150);
+    }
+    if(millis() - timestamp > 200) {
+      setColor(0, 0, 0);
+      timestamp = millis();
+    }
+    BLE.poll();
+  }
+  setColor(0, 0, 0);
+  if(!BLE.connected()) {
+    // timeout sound
+    tone(A0, 514, 200); // C
+    delay(200);
+    tone(A0, 385, 200); // G
+    delay(200);
+    tone(A0, 323, 200); // E
+    delay(200);
+    tone(A0, 257, 200); // C
+  }
+  Serial.println("Stop advertising");
+}
+
+void blePeripheralConnectHandler(BLEDevice central) {
+  BLE.stopAdvertise();
+  Serial.println("Connected event, central: ");
+  Serial.println(central.address());
+  // connection sound
+  tone(A0, 323, 200); // E
+  delay(200);
+  tone(A0, 385, 200); // G
+  delay(200);
+  tone(A0, 514, 200); // C
+}
+
+void blePeripheralDisconnectHandler(BLEDevice central) {
+  Serial.println("Disconnected event, central: ");
+  Serial.println(central.address());
+}
+
+/*
+This function provides error-codes via the RBG-LED. Different parameters
+(type) have different colors. The larger the error (limit) the faster the
+LED blinks. The number of blinks can be set using count.
+*/
+void errorLight(char* type, float limit, int count){
+  if(strcmp(type, "temp") == 0) {
+    for(int i = 0; i < count; i++) {
+      setColor(255, 0, 0);
+      delay(1/limit);
+      setColor(0, 0, 0);
+      delay(1/limit);
+    }
+  } else if(strcmp(type, "pressure") == 0){
+    for(int i = 0; i < count; i++){
+      setColor(0, 255, 0);
+      delay(1/limit);
+      setColor(0, 0, 0);
+      delay(1/limit);
+    }
+  } else if(strcmp(type, "air_quality") == 0){
+    for(int i = 0; i < count; i++){
+      setColor(0, 0, 255);
+      delay(1/limit);
+      setColor(0, 0, 0);
+      delay(1/limit);
+    }
+  } else if(strcmp(type, "humid") == 0){
+    for(int i = 0; i < count; i++){
+      setColor(255, 255, 0);
+      delay(1/limit);
+      setColor(0, 0, 0);
+      delay(1/limit);
+    }
+  } else if(strcmp(type, "soil") == 0){
+    for(int i = 0; i < count; i++){
+      setColor(0, 255, 255);
+      delay(1/limit);
+      setColor(0, 0, 0);
+      delay(1/limit);
+    }
+  } else if(strcmp(type, "light") == 0){
+    for(int i = 0; i < count; i++){
+      setColor(255, 0, 255);
+      delay(1/limit);
+      setColor(0, 0, 0);
+      delay(1/limit);
+    }
+  }
 }

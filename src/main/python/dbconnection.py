@@ -5,7 +5,7 @@ import logger
 from datetime import datetime
 
 
-def create_database(path):
+def access_database(path):
     """Connects or Creates database and initializes both tables"""
     conn = sqlite3.connect(path)
     create_tables(conn)

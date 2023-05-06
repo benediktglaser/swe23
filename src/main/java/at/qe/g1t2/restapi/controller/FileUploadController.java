@@ -22,7 +22,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.File;
 import java.io.IOException;
 
-
+/**
+ * This class handles uploading Pictures for the visitor and gardener
+ */
 @RestController
 public class FileUploadController {
 
@@ -45,6 +47,9 @@ public class FileUploadController {
                     throw new FileUploadException("Only JPEG and PNG images are allowed.");
                 }
                 String fileName = file.getOriginalFilename();
+                if(fileName == null || fileName.equals("")){
+                    throw new FileUploadException("No fileName");
+                }
                 String extension = fileName.substring(fileName.lastIndexOf("."));
                 String uniqueFileName = System.currentTimeMillis() + extension;
                 String uploadDir = request.getServletContext().getRealPath("/resources/images");
@@ -60,6 +65,7 @@ public class FileUploadController {
                 SensorStation sensorStation = sensorStationService.loadSensorStation(sensorStationId);
                 Picture picture = new Picture();
                 picture.setPath(uniqueFileName);
+                picture.setPictureName(fileName);
                 pictureService.save(sensorStation,picture);
                 redirectAttributes.addFlashAttribute("message",
                         "You successfully uploaded " + file.getOriginalFilename() + "!");

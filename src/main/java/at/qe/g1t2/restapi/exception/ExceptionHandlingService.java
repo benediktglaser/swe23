@@ -17,6 +17,10 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class handles each exception thrown by the rest endpoints to avoid errors in runtime and
+ * send clear information to the client what happened
+ */
 @ControllerAdvice
 public class ExceptionHandlingService {
 

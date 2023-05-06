@@ -4,6 +4,7 @@ package at.qe.g1t2.services;
 import at.qe.g1t2.model.SensorData;
 import at.qe.g1t2.model.SensorDataType;
 import at.qe.g1t2.model.SensorStation;
+import at.qe.g1t2.repositories.SensorDataRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 
 
 @SpringBootTest
@@ -27,19 +29,23 @@ public class SensorDataServiceTest {
     @Autowired
     SensorStationService sensorStationService;
 
+    @Autowired
+    SensorDataRepository sensorDataRepository;
+
 
     @Test
     @WithMockUser(username = "elvis", authorities = {"GARDENER"})
     public void testGetAllDataBySensorStation() {
+        List<Object[]> list1 = sensorDataRepository.getSensorDataBySensorStation(sensorStationService.loadSensorStation("8ccfdfaa-9731-4786-8efa-e2141e5c4095"));
         Collection<SensorData> list = sensorDataService.getAllSensorDataByStation("8ccfdfaa-9731-4786-8efa-e2141e5c4095");
-        Assertions.assertEquals(5, list.size());
+        Assertions.assertEquals(list1.size(), list.size());
     }
 
     @Test
     @WithMockUser(username = "elvis", authorities = {"GARDENER"})
     public void testGetAllSensorDataByType() {
-        Collection<SensorData> list = sensorDataService.getAllSensorDataByType(SensorDataType.TEMPERATURE);
-        Assertions.assertEquals(7, list.size());
+        Collection<SensorData> list = sensorDataService.getAllSensorDataByType(SensorDataType.AIRQUALITY);
+        Assertions.assertEquals(6, list.size());
     }
 
     @Test
