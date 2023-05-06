@@ -22,8 +22,4 @@ public class AccessPointController extends AbstractListController<String,AccessP
         this.setListToPageFunction((spec, page) -> accessPointService.getAllAccessPoints(spec,page));
     }
 
-    @Override
-    public int count(Map<String, FilterMeta> filterBy) {
-        return accessPointService.getAllAccessPoints().size();
-    }
 }
