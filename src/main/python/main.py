@@ -9,9 +9,10 @@ import credentials
 import dbconnection as db
 import restcontroller_init as rci
 import myble
+import sys
 
 lock = threading.Lock()
-interval = 10
+interval = 20
 
 
 def init():
@@ -29,7 +30,11 @@ def init():
     conn = db.access_database(path)
 
     # establish a (first time) connection to the webserver
-    login = credentials.read_from_yaml()
+    try:
+        login = credentials.read_from_yaml()
+        
+    except:
+        sys.exit("Error when reading identification.yaml. Please make sure that the file is in the same directory as this script")
 
     while login is None or login[0] is None or login[1] is None:
         try:

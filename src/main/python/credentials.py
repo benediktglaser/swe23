@@ -17,10 +17,13 @@ def read_from_yaml() -> (str, str):
     try:
         with open(r"identification.yaml", "r") as file:  # TODO: change on raspberry
             data = list(yaml.load_all(file, Loader=yaml.FullLoader))
+            if len(data) == 0:
+                return None
         return data[0]["name"], data[0]["password"]
-    except:
+    except Exception as e:
+        print(e)
         logger.log_error("error reading to identification.yaml")
-        return None
+        raise e
 
 
 if __name__ == "__main__":
