@@ -1,3 +1,9 @@
 #!/bin/bash
 
+echo "installing needed packages if necessary"
+
+pip install requests
+pip install bleak
+pip install pyyaml
+
 python3 main.py

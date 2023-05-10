@@ -1,0 +1,76 @@
+2023-05-09 21:53:37,040  log_debug  DEBUG start interval: 20
+2023-05-09 21:54:05,653  log_debug  DEBUG start interval: 20
+2023-05-09 21:54:05,655  log_info  INFO Login as: 43d5aba9-29c5-49b4-b4ec-2d430e34104f passwd
+2023-05-09 21:54:05,660  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-05-09 21:54:07,383  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/couple HTTP/1.1" 500 None
+2023-05-09 21:54:34,461  log_debug  DEBUG start interval: 20
+2023-05-09 21:54:34,463  log_error  ERROR error reading to identification.yaml
+2023-05-09 21:56:22,202  log_debug  DEBUG start interval: 20
+2023-05-09 21:56:22,211  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-05-09 21:56:22,745  _make_request  DEBUG http://localhost:8080 "POST /api/accessPoint/register HTTP/1.1" 200 None
+2023-05-09 21:56:22,760  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-05-09 21:56:22,951  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/enabled HTTP/1.1" 401 19
+2023-05-09 21:56:32,969  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-05-09 21:56:33,110  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/enabled HTTP/1.1" 401 19
+2023-05-09 21:56:43,120  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-05-09 21:56:43,242  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/enabled HTTP/1.1" 401 19
+2023-05-09 21:57:55,287  log_debug  DEBUG start interval: 20
+2023-05-09 21:57:55,288  log_error  ERROR error reading to identification.yaml
+2023-05-09 22:00:53,662  log_debug  DEBUG start interval: 20
+2023-05-09 22:00:53,663  log_error  ERROR error reading to identification.yaml
+2023-05-09 22:01:24,883  log_debug  DEBUG start interval: 20
+2023-05-09 22:01:24,884  log_error  ERROR error reading to identification.yaml
+2023-05-09 22:03:42,542  log_debug  DEBUG start interval: 20
+2023-05-09 22:03:42,547  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-05-09 22:03:42,812  _make_request  DEBUG http://localhost:8080 "POST /api/accessPoint/register HTTP/1.1" 200 None
+2023-05-09 22:03:42,822  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-05-09 22:03:43,019  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/enabled HTTP/1.1" 401 19
+2023-05-09 22:03:53,033  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-05-09 22:03:53,252  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/enabled HTTP/1.1" 401 19
+2023-05-09 22:04:03,265  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-05-09 22:04:03,450  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/enabled HTTP/1.1" 401 19
+2023-05-09 22:04:13,461  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-05-09 22:04:13,728  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/enabled HTTP/1.1" 401 19
+2023-05-09 22:04:23,743  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-05-09 22:04:23,951  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/enabled HTTP/1.1" 401 19
+2023-05-09 22:04:33,966  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-05-09 22:04:34,130  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/enabled HTTP/1.1" 401 19
+2023-05-09 22:04:44,142  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-05-09 22:04:44,575  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/enabled HTTP/1.1" 200 None
+2023-05-09 22:04:44,588  log_info  INFO Login as: 8612248f-e09e-4553-a459-b73798ddad5f 4cdcc65c-3907-4f55-ab36-13c87012d1bb
+2023-05-09 22:04:44,591  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-05-09 22:04:45,059  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/couple HTTP/1.1" 500 None
+2023-05-09 22:04:55,071  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-05-09 22:04:55,479  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/couple HTTP/1.1" 500 None
+2023-05-09 22:05:05,499  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-05-09 22:05:05,823  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/couple HTTP/1.1" 500 None
+2023-05-09 22:05:15,843  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-05-09 22:05:16,244  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/couple HTTP/1.1" 500 None
+2023-05-09 22:05:21,922  log_debug  DEBUG start interval: 20
+2023-05-09 22:05:21,931  log_info  INFO Login as: 8612248f-e09e-4553-a459-b73798ddad5f 4cdcc65c-3907-4f55-ab36-13c87012d1bb
+2023-05-09 22:05:21,934  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-05-09 22:05:22,353  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/couple HTTP/1.1" 500 None
+2023-05-09 22:05:32,372  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-05-09 22:05:32,878  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/couple HTTP/1.1" 500 None
+2023-05-09 22:05:42,901  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-05-09 22:05:43,371  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/couple HTTP/1.1" 500 None
+2023-05-09 22:05:53,401  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-05-09 22:05:53,765  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/couple HTTP/1.1" 500 None
+2023-05-09 22:09:22,318  log_debug  DEBUG start interval: 20
+2023-05-09 22:09:22,320  log_info  INFO Login as: 8612248f-e09e-4553-a459-b73798ddad5f 4cdcc65c-3907-4f55-ab36-13c87012d1bb
+2023-05-09 22:09:22,323  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-05-09 22:09:22,325  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/accessPoint/couple (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f2ca555c160>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2023-05-09 22:09:45,255  log_debug  DEBUG start interval: 20
+2023-05-09 22:09:45,257  log_info  INFO Login as: 8612248f-e09e-4553-a459-b73798ddad5f 4cdcc65c-3907-4f55-ab36-13c87012d1bb
+2023-05-09 22:09:45,260  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-05-09 22:09:45,262  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/accessPoint/couple (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f8e23804160>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2023-05-09 22:09:55,271  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-05-09 22:09:55,272  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/accessPoint/couple (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f8e23804910>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2023-05-09 22:10:45,529  log_debug  DEBUG start interval: 20
+2023-05-09 22:10:45,531  log_info  INFO Login as: 8612248f-e09e-4553-a459-b73798ddad5f 4cdcc65c-3907-4f55-ab36-13c87012d1bb
+2023-05-09 22:10:45,534  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-05-09 22:10:45,536  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/accessPoint/couple (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f51e0580160>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2023-05-09 22:11:33,306  log_debug  DEBUG start interval: 20
+2023-05-09 22:11:33,309  log_info  INFO Login as: 8612248f-e09e-4553-a459-b73798ddad5f 4cdcc65c-3907-4f55-ab36-13c87012d1bb
+2023-05-09 22:11:33,312  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-05-09 22:11:33,313  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/accessPoint/couple (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f7d875a0160>: Failed to establish a new connection: [Errno 111] Connection refused'))
