@@ -7,8 +7,10 @@ from bleak import BleakScanner, BLEDevice, BleakClient, BleakError
 from bleak.backends.scanner import AdvertisementData
 import dbconnection as db
 import restcontroller_init as rci
+import struct
+from sensordata import SensorData
 
-device_name_prefix = "SensorStation G1T2 "
+device_name_prefix = "Station G1T2 "
 # all already connected SensorStations
 CONNECTED_DEVICES = []
 # all newly scanned SensorStations
@@ -21,6 +23,23 @@ ADDRESS = ""
 AUTH_HEADER = ""
 # mutex on connected and scanned devices
 lock = threading.Lock()
+# UUIDS of BLE characteristics
+DATA_UUIDS = {"temp": "00000000-0000-0000-0000-0000004102a0",
+              "pressure": "00000000-0000-0000-0000-0000004102b0",
+              "humid": "00000000-0000-0000-0000-0000004102c0",
+              "quality": "00000000-0000-0000-0000-0000004102d0",
+              "soil": "00000000-0000-0000-0000-0000004102e0",
+              "light": "00000000-0000-0000-0000-0000004102f0"}
+LIMIT_UUIDS = {"temp": "00000000-0000-0000-0000-0000004102aa",
+               "pressure": "00000000-0000-0000-0000-0000004102bb",
+               "humid": "00000000-0000-0000-0000-0000004102cc",
+               "quality": "00000000-0000-0000-0000-0000004102dd",
+               "soil": "00000000-0000-0000-0000-0000004102ee",
+               "light": "00000000-0000-0000-0000-0000004102ff"}
+# UUID of characteristic whether gardener is at SensorStation
+GARDENER_UUID = "00000000-0000-0000-0000-000000410290"
+# How long the limit should be exceeded so that it's displayed on the SensorStation (in sec)
+EXCESS_LIMIT = 20
 
 
 def ble_function(path, address, auth_header):
@@ -86,6 +105,8 @@ def is_new_sensor_station(device: BLEDevice, advertisement: AdvertisementData) -
     :return: bool
     """
 
+    global SCANNED_DEVICES
+    global CONNECTED_DEVICES
     if advertisement.local_name is None or not advertisement.local_name.startswith(device_name_prefix):
         return False
 
@@ -119,16 +140,19 @@ def ble_thread(device: BLEDevice):
 
     :param device: SensorStation
     """
-
-    if poll_for_verification(device):
+    already_connected, verified = poll_for_verification(device)
+    if not already_connected and verified:
         if not dip_is_available(device):
             return
+        global CONNECTED_DEVICES
         CONNECTED_DEVICES.append(device)
         lock.release()
-        asyncio.run(call_services(device))
+        asyncio.run(call_services(device, already_connected))
+    elif already_connected:
+        asyncio.run(call_services(device, already_connected))
 
 
-def poll_for_verification(device: BLEDevice) -> bool:
+def poll_for_verification(device: BLEDevice) -> (bool, bool):
     """
     Poll for the verification of this SensorStation on the Webserver.
 
@@ -142,9 +166,9 @@ def poll_for_verification(device: BLEDevice) -> bool:
     # check returnBody if SensorStation is available (not already connected to and verified by other AccessPoint)
     response = rci.propose_new_sensorstation_at_server(ADDRESS, dip, device.address, AUTH_HEADER)
     if response["alreadyConnected"]:
-        return True
+        return True, False
     elif not response["available"]:
-        return False
+        return False, False
     timeout = time.time() + 60 * 5
     while not verified:
         # poll if device is verified for this AccessPoint
@@ -156,7 +180,7 @@ def poll_for_verification(device: BLEDevice) -> bool:
         if not dip_is_available(device):
             return False
         lock.release()
-    return verified
+    return False, verified
 
 
 def dip_is_available(device: BLEDevice) -> bool:
@@ -185,26 +209,66 @@ def get_dip_from_device(device: BLEDevice) -> int:
     return int(re.split(device_name_prefix, device.name)[1])
 
 
-async def call_services(device: BLEDevice):
+async def call_services(device: BLEDevice, already_connected: bool):
     """
     Calls the services of the BLEDevice.
 
     :param device: SensorStation
-    :type device: BLEDevice
+    :param already_connected: Whether SensorStation was already connected once with this AccessPoint
     """
 
     conn = db.access_database(PATH)
     dip = get_dip_from_device(device)
+    excesses = {"temp": 0,
+                "pressure": 0,
+                "humid": 0,
+                "quality": 0,
+                "soil": 0,
+                "light": 0}
+    active_excess = False
     print("Connecting")
     # client == sensor_station
     try:
-        async with BleakClient(device, timeout=10) as client:
+        async with BleakClient(device, timeout=30, disconnected_callback=my_disconnected_callback) as client:
             print("Connected to device {0}".format(device.name))
-            rci.register_new_sensorstation_at_server(ADDRESS, dip, AUTH_HEADER)
-            db.init_limits(conn, dip)
-            for i in range(3):
-                print(f"Service {i}")
-                await asyncio.sleep(3)
+            if not already_connected:
+                rci.register_new_sensorstation_at_server(ADDRESS, dip, AUTH_HEADER)
+                db.init_limits(conn, dip)
+            data = SensorData(dip, 0, 0, 0, 0, 0, 0)
+            while True:
+                time.sleep(10)
+                for data_type in DATA_UUIDS.keys():
+                    try:
+                        uuid = DATA_UUIDS[data_type]
+                        value = await client.read_gatt_char(uuid)
+                    except Exception as e:
+                        print("ERROR: reading characteristic {0}. Error is {1}".format(data_type, e))
+                    value = struct.unpack('d', value)[0]
+                    data.set_value(data_type, value)
+
+                    if not active_excess:
+                        lower, upper = db.get_limits(conn, dip, data_type)
+                        excess = db.calculate_limit(value, lower, upper)
+
+                        if abs(excess - 1.0) > 0.001:
+                            excesses[data_type] += 1
+                            # because it takes 10s to read data we can check for how many iterations there was an excess
+                            if excesses[data_type] >= EXCESS_LIMIT / 10:
+                                active_excess = True
+                                excesses = {"temp": -1,
+                                            "pressure": 0,
+                                            "humid": 0,
+                                            "quality": 0,
+                                            "soil": 0,
+                                            "light": 0}
+                                await client.write_gatt_char(LIMIT_UUIDS[data_type], struct.pack('I', int(excess * 100)))
+                                await client.read_gatt_char(LIMIT_UUIDS[data_type])
+                        else:
+                            excesses[data_type] = 0
+                if active_excess:
+                    gardener_is_here = struct.unpack('?', await client.read_gatt_char(GARDENER_UUID))[0]
+                    active_excess = not gardener_is_here
+                db.insert_sensor_data(conn, data)
             print("INFO: Disconnecting from device {0} ...".format(device.name))
         #     TODO: remove limit-entry of SensorStation
         print("INFO: Disconnected from device {0}".format(device.name))
@@ -212,6 +276,12 @@ async def call_services(device: BLEDevice):
         print("Error: Establishing BLE connection timed out")
     finally:
         lock.acquire()
+        global SCANNED_DEVICES
+        global CONNECTED_DEVICES
         SCANNED_DEVICES.remove(device)
         CONNECTED_DEVICES.remove(device)
         lock.release()
+
+
+def my_disconnected_callback(client: BleakClient):
+    print("Disconnected")
