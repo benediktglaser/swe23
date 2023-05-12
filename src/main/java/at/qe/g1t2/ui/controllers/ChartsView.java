@@ -28,11 +28,10 @@ public class ChartsView {
     private String selection;
 
 
-
     @Autowired
-    SessionSensorStationBean sessionSensorStationBean;
+    private SessionSensorStationBean sessionSensorStationBean;
     @Autowired
-    SensorDataTypeInfoService sensorDataTypeInfoService;
+    private SensorDataTypeInfoService sensorDataTypeInfoService;
 
     /**
      * Initialize List with all SensorTypes and The limits for the given SensorStation
@@ -42,25 +41,24 @@ public class ChartsView {
         typeInfos = new ArrayList<>();
         List<SelectItemGroup> groups = new ArrayList<>();
         List<SensorDataType> typeList = Arrays.stream(SensorDataType.values()).collect(Collectors.toList());
-        for (SensorDataType type:typeList) {
+        for (SensorDataType type : typeList) {
             groups.add(new SelectItemGroup(type.name()));
         }
 
         List<List<SelectItem>> selectItemList = new ArrayList<>();
 
-        for(SensorDataType type:typeList){
-            List<SensorDataTypeInfo> sensorDataTypeInfo = sensorDataTypeInfoService.getTypeInfoByStationAndType(sessionSensorStationBean.getSensorStation(),type);
+        for (SensorDataType type : typeList) {
+            List<SensorDataTypeInfo> sensorDataTypeInfo = sensorDataTypeInfoService.getTypeInfoByStationAndType(sessionSensorStationBean.getSensorStation(), type);
             List<SelectItem> items = new ArrayList<>();
-            if(!sensorDataTypeInfo.isEmpty()){
-                sensorDataTypeInfo.forEach(x -> items.add(new SelectItem(x.getId(),x.toString())));
-            }
-            else{
-                items.add(new SelectItem(type.name(),"Show Chart"));
+            if (!sensorDataTypeInfo.isEmpty()) {
+                sensorDataTypeInfo.forEach(x -> items.add(new SelectItem(x.getId(), x.toString())));
+            } else {
+                items.add(new SelectItem(type.name(), "Show Chart"));
             }
             selectItemList.add(items);
-            }
+        }
         int i = 0;
-        for(SelectItemGroup group: groups){
+        for (SelectItemGroup group : groups) {
             group.setSelectItems(selectItemList.get(i));
             i++;
             typeInfos.add(group);
@@ -79,7 +77,7 @@ public class ChartsView {
         this.selection = selection;
     }
 
-    public SensorDataTypeInfo convertSelection(){
+    public SensorDataTypeInfo convertSelection() {
 
         return sensorDataTypeInfoService.loadSensorDataTypeInfo(selection);
     }
@@ -87,13 +85,13 @@ public class ChartsView {
     /**
      * call JavaScript function with selected SensorDataTypeInfo
      */
-    public void doUpdate(){
+    public void doUpdate() {
         List<String> types = Arrays.stream(SensorDataType.values()).map(Enum::name).collect(Collectors.toList());
-        if(types.contains(selection)){
+        if (types.contains(selection)) {
             PrimeFaces.current().executeScript("myF('" + sessionSensorStationBean.getSensorStation().getId() + "', '" + "Empty" + "', '" + SensorDataType.valueOf(selection) + "')");
             return;
         }
-       PrimeFaces.current().executeScript("myF('" + sessionSensorStationBean.getSensorStation().getId() + "', '" + convertSelection().getId() + "', '" + convertSelection().getType().name() + "')");
+        PrimeFaces.current().executeScript("myF('" + sessionSensorStationBean.getSensorStation().getId() + "', '" + convertSelection().getId() + "', '" + convertSelection().getType().name() + "')");
     }
 
 }

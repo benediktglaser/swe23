@@ -12,17 +12,21 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Controller for the list-representation
+ * of the sensordata.
+ */
 @Controller
 @Scope("view")
 public class SensorDataTypeListController{
     @Autowired
-    SensorDataTypeInfoService sensorDataTypeInfoService;
+    private SensorDataTypeInfoService sensorDataTypeInfoService;
 
     @Autowired
-    SensorStationService sensorStationService;
+    private SensorStationService sensorStationService;
 
     @Autowired
-    AccessPointService accessPointService;
+    private AccessPointService accessPointService;
 
     private SensorStation sensorStation;
 

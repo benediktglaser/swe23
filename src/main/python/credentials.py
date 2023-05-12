@@ -3,7 +3,16 @@ import logger
 
 
 def write_to_yaml(name: str, password: str) -> None:
-    """Save name and password in yaml file"""
+    """
+    Write a name and password into the identification.yaml file
+    Parameters
+    ----------
+    name : str
+        The name
+    password: str
+        The password
+    """
+
     credentials = {"name": name, "password": password}
 
     try:
@@ -14,6 +23,13 @@ def write_to_yaml(name: str, password: str) -> None:
 
 
 def read_from_yaml() -> (str, str):
+    """
+    Reads a name and password from the identification.yaml file
+    Returns
+    -------
+    (name : str, password : str)
+    """
+
     try:
         with open(r"identification.yaml", "r") as file:  # TODO: change on raspberry
             data = list(yaml.load_all(file, Loader=yaml.FullLoader))

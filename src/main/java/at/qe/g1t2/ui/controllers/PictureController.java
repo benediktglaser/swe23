@@ -19,12 +19,10 @@ public class PictureController {
 
 
     @Autowired
-    PictureService pictureService;
+    private PictureService pictureService;
 
 
     public List<Picture> getAllPictureBySensorStation(SensorStation sensorStation) {
-
         return pictureService.getAllPictureBySensorStation(sensorStation);
     }
-
 }

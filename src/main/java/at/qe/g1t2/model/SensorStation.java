@@ -1,6 +1,5 @@
 package at.qe.g1t2.model;
 
-import at.qe.g1t2.restapi.controller.AccessPointConnectionController;
 import at.qe.g1t2.services.LogMsg;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Fetch;
@@ -16,6 +15,12 @@ import org.springframework.data.domain.Persistable;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.*;
+
+/**
+ * This class represents the SensorStation Entity and has the purpose of structuring the connection between SensorStation
+ * and AccessPoint. Therefore, contains a "many to one" relationship with AccessPoint. Additionally, this entity contains
+ * a "many to many" relationship with users such that they are able to mark favourite SensorStations.
+ */
 
 @Entity
 @Audited

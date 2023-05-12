@@ -17,27 +17,38 @@ import java.util.Random;
 
 @Controller
 @Scope("view")
-public class DashboardController extends AbstractListController<String, SensorStation>{
+public class DashboardController extends AbstractListController<String, SensorStation> {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    SessionSensorStationBean sessionSensorStationBean;
+    private SessionSensorStationBean sessionSensorStationBean;
     @Autowired
-    SensorStationService sensorStationService;
+    private SensorStationService sensorStationService;
 
     public DashboardController() {
         this.setListToPageFunction((spec, page) -> sensorStationService.getAllSensorStations(spec, page));
     }
 
 
-
-    public void removeFromUsersFavourite(SensorStation sensorStation){
+    /**
+     * Method to remove the given sensorstation from the favourites page
+     * of the user.
+     *
+     * @param sensorStation
+     */
+    public void removeFromUsersFavourite(SensorStation sensorStation) {
 
         userService.removeSensorStationToUser(sensorStation);
     }
 
+    /**
+     * Method to filter only the sensorstation which
+     * belong to the given user.
+     *
+     * @param user
+     */
     public void filterSensorStationsByUser(Userx user) {
         this.getExtraSpecs().add(Specification.where((root, query, criteriaBuilder) -> {
             Join<SensorStation, Userx> userJoin = root.join("userx", JoinType.LEFT);
@@ -52,9 +63,16 @@ public class DashboardController extends AbstractListController<String, SensorSt
         return "sensorDataForUsers.xhtml?faces-redirect=true";
     }
 
-
-    public String getFrontPicture(SensorStation sensorStation){
-        if(sensorStation.getPictures().isEmpty()){
+    /**
+     * This method returns a picture for each sensorstation to be
+     * displayed, if no picture is present a default
+     * picture will be returned.
+     *
+     * @param sensorStation
+     * @return
+     */
+    public String getFrontPicture(SensorStation sensorStation) {
+        if (sensorStation.getPictures().isEmpty()) {
             return "plant-test1.png";
         }
         return sensorStationService.getRandomPicture(sensorStation);

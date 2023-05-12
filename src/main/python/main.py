@@ -32,29 +32,31 @@ def init():
     # establish a (first time) connection to the webserver
     try:
         login = credentials.read_from_yaml()
-        
+
     except:
-        sys.exit("Error when reading identification.yaml. Please make sure that the file is in the same directory as this script")
+        sys.exit(
+            "Error when reading identification.yaml. Please make sure that the file is in the same directory as this script"
+        )
 
-    while login is None or login[0] is None or login[1] is None:
-        try:
-            login = rci.register_access_point_at_server(address, interval, name)
-            credentials.write_to_yaml(login[0], login[1])
-        except:
-            print("No connection possible, trying again in 5sec...")
-            print(
-                "To change the credentials, modify the identification.yaml file and restart the program"
-            )
-            time.sleep(15)
-        auth_header = rci.prepare_auth_headers(login[0], login[1])
+    if login is not None and login[0] is not None:
+        verify_credentials = rci.request_if_accesspoint_exists(address, login[0])
+        if verify_credentials != True:
+            print("Credentials not recognized, register as new accesspoint")
+            login = None
 
-        # This is the loop
-        while True:
-            enabled = rci.request_approval(address, auth_header)
-            if enabled:
-                break
-            print("waiting for authentication")
-            time.sleep(10)
+    if login is None or login[0] is None or login[1] is None:
+        login = register_accesspoint(address, interval, name)
+    print(login)
+    auth_header = rci.prepare_auth_headers(login[0], login[1])
+
+    # This is the loop to check for approval from the webserver
+    while True:
+        enabled = rci.request_approval(address, auth_header)
+        if enabled is True:
+            print("Successfully authenticated")
+            break
+        print("waiting for authentication")
+        time.sleep(10)
 
     print(login)
     logger.log_info("Login as: " + login[0] + " " + login[1])
@@ -107,22 +109,20 @@ def main(args):
     # polling_for_interval_thread.start()
     # polling_for_limits_thread.start()
     # sending_sensor_data_thread.start()
-    # polling_enable_for_sensorstation_thread.start()
+    polling_enable_for_sensorstation_thread.start()
 
     polling_for_couple_mode_thread.join()
     # polling_for_interval_thread.join()
-    # sending_sensor_data_thread.join()
     # polling_for_limits_thread.join()
-    # polling_enable_for_sensorstation_thread.join()
+    # sending_sensor_data_thread.join()
+
+    polling_enable_for_sensorstation_thread.join()
 
 
 def poll_couple_mode(conn, address: str, auth_header: str):
-    i = 0
     while True:
         start_coupling = rci.request_couple_mode(address, auth_header)
-        print("Coupling:", start_coupling)
         if start_coupling is True:
-            # TODO call real coupling method
             logger.log_info("Starting coupling mode")
             myble.ble_function(conn, address, auth_header)
         time.sleep(10)
@@ -140,12 +140,10 @@ def poll_interval(address: str, auth_header: str):
     finally:
         lock.release()
 
-    i = 0
     while True:
         new_interval = rest.request_interval(address, auth_header)
         print("interval:", current_interval)
         if new_interval is not None and new_interval is not current_interval:
-            # TODO call real coupling method
             current_interval = new_interval
             lock.acquire()
             try:
@@ -159,23 +157,11 @@ def poll_interval(address: str, auth_header: str):
                 lock.release()
 
         time.sleep(20)
-        # TODO this method times out after certain
-        i = i + 1
-        #DEBUG
-        #if i == 3:
-            #break
 
 
 def poll_limits(address: str, auth_header: str):
-    i = 1
     path = "database.db"  # TODO: change on raspberry
     conn = db.access_database(path)
-
-    # Just for testing
-    # data_1 = sensordata.SensorData(1, 8 * i, 9 * i, 10 * i, 11 * i, 12 * i, 13 * i)
-    # data_2 = sensordata.SensorData(2, 8 * i, 9 * i, 10 * i, 11 * i, 12 * i, 13 * i)
-    # db.insert_sensor_data(conn, data_1)
-    # db.insert_sensor_data(conn, data_2)
 
     while True:
         list_of_sensorstations = db.get_all_sensorstations(conn)
@@ -183,6 +169,9 @@ def poll_limits(address: str, auth_header: str):
             new_limits = rest.request_limits(
                 address, auth_header, int(sensorstation_id)
             )
+            print(new_limits)
+            if new_limits is None:
+                continue
             for list in new_limits:
                 type_limit = list["dataType"]
                 min_limit = list["minLimit"]
@@ -190,34 +179,15 @@ def poll_limits(address: str, auth_header: str):
                 db.update_limits(
                     conn, int(sensorstation_id), type_limit, min_limit, max_limit
                 )
-        # Just for Debug
-        i = i + 1
-        if i == 5:
-            print(db.get_limits(conn, 1, "all"))
-            print(db.get_limits(conn, 2, "all"))
-            break
-        # End of Debug
-        time.sleep(15)
+        time.sleep(25)
 
 
 def send_sensor_data(address: str, auth_header: str):
-    i = 1
+
     path = "database.db"  # TODO: change on raspberry
     conn = db.access_database(path)
 
-    # Debug
-    db.init_limits(conn, 1)
-    db.init_limits(conn, 2)
-    # Debug end
     while True:
-        # Debug
-        #data_1 = sensordata.SensorData(1, 8 * i, 9 * i, 10 * i, 11 * i, 12 * i, 13 * i)
-        #data_2 = sensordata.SensorData(
-            #2, 18 * i, 19 * i, 110 * i, 111 * i, 112 * i, 113 * i
-        #)
-        #db.insert_sensor_data(conn, data_1)
-        #db.insert_sensor_data(conn, data_2)
-        # Debug end
         list_of_sensorstations = db.get_all_sensorstations(conn)
         for sensorstation_id in list_of_sensorstations:
 
@@ -235,9 +205,9 @@ def send_sensor_data(address: str, auth_header: str):
                 rest.delete_send_sensor_data(conn, sensor_data_delete)
             else:
                 logger.log_info(
-                    "Found no records to send for station with id " + sensorstation_id
+                    "Found no records to send for station with id "
+                    + str(sensorstation_id)
                 )
-        i = i + 1
 
         lock.acquire()
         try:
@@ -248,18 +218,13 @@ def send_sensor_data(address: str, auth_header: str):
             logger.log_error("Reading global interval in sending_data failed: " + e)
         finally:
             lock.release()
-        #if i == 3:
-            #break
         time.sleep(my_interval)
 
 
 def poll_sensorstation_enabled(address: str, auth_header: str):
-    i = 1
+
     path = "database.db"  # TODO: change on raspberry
     conn = db.access_database(path)
-    # Debug
-    #db.init_limits(conn, 1)
-    #db.init_limits(conn, 2)
 
     while True:
         list_of_sensorstations = db.get_all_sensorstations(conn)
@@ -269,12 +234,22 @@ def poll_sensorstation_enabled(address: str, auth_header: str):
             )
             print(response, " ", int(sensorstation_id))
 
-        # Just for Debug
-        #i = i + 1
-        #if i == 5:
-            #break
-        # End of Debug
         time.sleep(15)
+
+
+def register_accesspoint(address: str, interval: int, name: str):
+    login = None
+    while login is None or login[0] is None or login[1] is None:
+        try:
+            login = rci.register_access_point_at_server(address, interval, name)
+            credentials.write_to_yaml(login[0], login[1])
+        except:
+            print("No connection possible, trying again in 5sec...")
+            print(
+                "To change the credentials, modify the identification.yaml file and restart the program"
+            )
+            time.sleep(15)
+    return login
 
 
 if __name__ == "__main__":

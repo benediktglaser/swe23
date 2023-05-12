@@ -10,14 +10,19 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 
 import java.util.Collection;
+
+/**
+ * This controller is responsible for the correct
+ * representation of the sensordata on the webserver.
+ */
 @Controller
 @Scope("view")
-public class SensorDataListController extends AbstractListController<String,SensorData> {
+public class SensorDataListController extends AbstractListController<String, SensorData> {
 
     @Autowired
-    SensorDataService sensorDataService;
+    private SensorDataService sensorDataService;
 
-    SensorStation sensorStation;
+    private SensorStation sensorStation;
 
 
     public void filterSensorDataBySensorStation(SensorStation sensorStation) {

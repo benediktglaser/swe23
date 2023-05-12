@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
+/**
+ * This class provides a REST-interface for the accessPoints to send data from the sensorstations to the webserver
+ */
 @RestController
 @RequestMapping("/api/sensorData")
 public class SensorDataController {
@@ -33,6 +35,14 @@ public class SensorDataController {
     @Autowired
     SensorStationRepository sensorStationRepository;
 
+    /**
+     * This method receives data measurements from the accessPoints.
+     * It returns True if the data has successfully been saved.
+     * If the sensorstation does not exist, False and Http.Status.BAD_REQUEST will be returned.
+     *
+     * @param SensorDataDTO data
+     * @return ResponseEntity<Boolean>
+     */
     @PostMapping
     public ResponseEntity<Boolean> createMeasurement(@Valid @RequestBody SensorDataDTO data) {
         ModelMapper modelMapper = new ModelMapper();

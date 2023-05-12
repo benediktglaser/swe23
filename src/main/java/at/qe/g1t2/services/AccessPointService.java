@@ -5,8 +5,6 @@ import at.qe.g1t2.model.AccessPointRole;
 import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.repositories.AccessPointRepository;
 import at.qe.g1t2.repositories.SensorStationRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
@@ -21,7 +19,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * This Class saves/delete Accesspoints and allows tho remove/add Sensorstations
+ * This class saves/delete accesspoints and allows tho remove/add sensorstations.
  */
 @Component
 @Scope("application")
@@ -32,7 +30,6 @@ public class AccessPointService implements Serializable {
 
     @Autowired
     SensorStationRepository sensorStationRepository;
-
 
 
     public AccessPoint loadAccessPoint(String uuid) {
@@ -46,6 +43,7 @@ public class AccessPointService implements Serializable {
             accessPoint.setAccessPointRole(AccessPointRole.ACCESS_POINT);
             accessPoint.setCreateDate(LocalDateTime.now());
             accessPoint.setThresholdInterval(30.0);
+            accessPoint.setCoupleMode(Boolean.FALSE);
         }
 
         return accessPointRepository.save(accessPoint);
@@ -63,22 +61,19 @@ public class AccessPointService implements Serializable {
     }
 
 
-
-
     public List<AccessPoint> getAllAccessPoints() {
         return accessPointRepository.findAll();
     }
 
-    public Page<AccessPoint> getAllAccessPoints(Specification<AccessPoint> spec,Pageable pageable) {
-        return accessPointRepository.findAll(spec,pageable);
+    public Page<AccessPoint> getAllAccessPoints(Specification<AccessPoint> spec, Pageable pageable) {
+        return accessPointRepository.findAll(spec, pageable);
     }
+
     public SensorStation getSensorStationByAccessPointIdAndDipId(String accessPointId, Long dipId) {
         return sensorStationRepository.findSensorStationByAccessPointAndDipId(loadAccessPoint(accessPointId), dipId);
     }
 
-
-
-    public Long numberOfAccessPoint(){
+    public Long numberOfAccessPoint() {
         return accessPointRepository.count();
     }
 

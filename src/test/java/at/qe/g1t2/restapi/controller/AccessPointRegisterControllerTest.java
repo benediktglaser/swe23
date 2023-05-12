@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
@@ -41,6 +43,23 @@ public class AccessPointRegisterControllerTest {
                         .content(requestBody))
                 .andExpect(MockMvcResultMatchers.status().isOk());
         assertEquals(size + 1, accessPointService.getAllAccessPoints().size());
+    }
+
+    @Test
+    void checkCredentials() throws Exception {
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/api/accessPoint/register/credentials?accessPointId=asdasd")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+        assertEquals("false", result.getResponse().getContentAsString());
+    }
+
+
+    @Test
+    void checkCredentialsWithRealAccessPoint() throws Exception {
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/api/accessPoint/register/credentials?accessPointId=7269ddec-30c6-44d9-bc1f-8af18da09ed3")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+        assertEquals("true", result.getResponse().getContentAsString());
     }
 
 }

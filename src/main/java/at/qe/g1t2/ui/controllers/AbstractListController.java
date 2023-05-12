@@ -25,12 +25,12 @@ import java.util.Map;
  */
 @Controller
 @Scope("view")
-public abstract class AbstractListController<K,T extends Persistable<K> & Serializable & Comparable<T>> extends LazyDataModel<T> {
+public abstract class AbstractListController<K, T extends Persistable<K> & Serializable & Comparable<T>> extends LazyDataModel<T> {
 
-/**
- * A function that converts a collection of persistent entities to a page of entities.
- */
-    private CollectionToPageConverter<K,T> collectionToPageConverterFunction;
+    /**
+     * A function that converts a collection of persistent entities to a page of entities.
+     */
+    private CollectionToPageConverter<K, T> collectionToPageConverterFunction;
     /**
      * This List is for extra specifications to filter the collection in advance
      */
@@ -42,7 +42,6 @@ public abstract class AbstractListController<K,T extends Persistable<K> & Serial
 
 
     /**
-     *
      * returns the number of rows of the hole dataset
      */
     @Override
@@ -56,10 +55,9 @@ public abstract class AbstractListController<K,T extends Persistable<K> & Serial
     }
 
     /**
-     *
-     * @param first the first entry
+     * @param first    the first entry
      * @param pageSize the page size
-     * @param sortBy a map with all sort information
+     * @param sortBy   a map with all sort information
      * @param filterBy a map with all filter information
      * @return This method returns the actual page
      */
@@ -68,21 +66,20 @@ public abstract class AbstractListController<K,T extends Persistable<K> & Serial
         Pageable page = createPage(first, pageSize, sortBy);
         Specification<T> spec = createSpecification(filterBy);
         Specification<T> finalSpec = combineSpecifications(spec);
-        Page<T> entity = collectionToPageConverterFunction.retrieveData(finalSpec,page);
+        Page<T> entity = collectionToPageConverterFunction.retrieveData(finalSpec, page);
         setRowCount((int) entity.getTotalElements());
         System.out.println(entity.getContent());
         return entity.getContent();
     }
 
     /**
-     *A getter to add filter in advance
+     * A getter to add filter in advance
      */
     public List<Specification<T>> getExtraSpecs() {
         return extraSpecs;
     }
 
     /**
-     *
      * @param sortBy
      * @return Creates a sorted/unsorted Page depending on which column(field) the user choose.
      */
@@ -97,7 +94,6 @@ public abstract class AbstractListController<K,T extends Persistable<K> & Serial
     }
 
     /**
-     *
      * @param filterBy
      * @return a specification object depending on the filter
      */
@@ -118,22 +114,19 @@ public abstract class AbstractListController<K,T extends Persistable<K> & Serial
     }
 
     /**
-     *
      * @param spec
      * @return combined filterOptions(user filter + filter in advance)
      */
     private Specification<T> combineSpecifications(Specification<T> spec) {
         Specification<T> finalSpec = spec;
-        for(Specification<T> specification: extraSpecs){
-            if(spec == null || specification == null){
+        for (Specification<T> specification : extraSpecs) {
+            if (spec == null || specification == null) {
                 finalSpec = (spec == null ? specification : spec);
-            }
-            else {
+            } else {
                 finalSpec = finalSpec.and(specification);
             }
         }
         return finalSpec;
     }
-
 
 }

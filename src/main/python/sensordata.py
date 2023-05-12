@@ -3,6 +3,11 @@ from dataclasses import dataclass
 
 @dataclass
 class SensorData:
+    """
+    A dataclass that includes all data collected by the sensorstation.
+    station_id is the dip_id of the station.
+    """
+
     station_id: int
     temperature: float
     pressure: float

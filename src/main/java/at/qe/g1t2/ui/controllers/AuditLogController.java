@@ -9,6 +9,9 @@ import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
+/**
+ * This controller is responsible for retrieving log-entries from the audit-logger.
+ */
 @Controller
 @Scope("view")
 public class AuditLogController {
@@ -17,8 +20,8 @@ public class AuditLogController {
 
     List<LogInfo> infos;
 
-    public List<LogInfo> getLogs(){
-        if(infos == null){
+    public List<LogInfo> getLogs() {
+        if (infos == null) {
             infos = logInfoService.getAllLogEntry();
         }
         return infos;

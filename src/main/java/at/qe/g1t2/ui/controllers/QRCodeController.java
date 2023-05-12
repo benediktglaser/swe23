@@ -11,6 +11,9 @@ import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 
+/**
+ * This controller is responsible for handling the QR-code creation.
+ */
 @Controller
 @Scope("view")
 public class QRCodeController {
@@ -20,7 +23,7 @@ public class QRCodeController {
     private SensorStation sensorStation;
 
     @PostConstruct
-    public void handlingQRCodes(){
+    public void handlingQRCodes() {
         try {
             FacesContext context = FacesContext.getCurrentInstance();
             ExternalContext externalContext = context.getExternalContext();

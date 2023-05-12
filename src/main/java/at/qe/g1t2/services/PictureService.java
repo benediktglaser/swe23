@@ -14,6 +14,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * This service is responsible for managing  the saved pictures.
+ */
 @Service
 public class PictureService {
 

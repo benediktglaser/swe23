@@ -6,11 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+/**
+ * Controller for managing the accesspoint-entity.
+ * Methods for saving, deleting and reloading.
+ */
 @Controller
 @Scope("view")
 public class AccessPointDetailController {
     @Autowired
-    AccessPointService accessPointService;
+    private AccessPointService accessPointService;
 
     private AccessPoint accessPoint;
 
@@ -22,20 +26,20 @@ public class AccessPointDetailController {
         this.accessPoint = accessPoint;
     }
 
-    public void doDeleteAccessPoint(){
+    public void doDeleteAccessPoint() {
         accessPointService.deleteAccessPoint(accessPoint);
-        accessPoint=null;
+        accessPoint = null;
     }
 
-    public void doSaveAccessPoint(){
+    public void doSaveAccessPoint() {
         accessPointService.saveAccessPoint(accessPoint);
     }
 
-    public void doReloadAccessPoint(){
+    public void doReloadAccessPoint() {
         accessPoint = this.accessPointService.loadAccessPoint(accessPoint.getId());
     }
 
-    public void doSaveAccessPoint(AccessPoint accessPoint){
+    public void doSaveAccessPoint(AccessPoint accessPoint) {
         accessPointService.saveAccessPoint(accessPoint);
     }
 

@@ -1,5 +1,8 @@
 package at.qe.g1t2.restapi.model;
 
+/**
+ * This class is used to send the limits for the sensordata to accesspoint.
+ */
 public class LimitsDTO {
 
     String dataType;

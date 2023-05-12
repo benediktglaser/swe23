@@ -69,7 +69,6 @@ public class SensorStationService implements Serializable {
     @PreAuthorize("hasAnyAuthority('ACCESS_POINT','ADMIN')")
     public void deleteSensorStation(SensorStation sensorStation) {
         sensorStationRepository.delete(sensorStation);
-
     }
 
 
@@ -79,11 +78,10 @@ public class SensorStationService implements Serializable {
     }
 
 
-    public Page<SensorStation> getAllSensorStations(Specification<SensorStation>spec, Pageable pageable) {
-        return sensorStationRepository.findAll(spec,pageable);
+    public Page<SensorStation> getAllSensorStations(Specification<SensorStation> spec, Pageable pageable) {
+        return sensorStationRepository.findAll(spec, pageable);
 
     }
-
 
 
     public SensorStation getSensorStationByAccessPointIdAndDipId(String accessPointId, Long dipId) {
@@ -102,7 +100,7 @@ public class SensorStationService implements Serializable {
         return userRepository.findFirstByUsername(auth.getName());
     }
 
-    public SensorStation getSensorStation(String mac){
+    public SensorStation getSensorStation(String mac) {
         return sensorStationRepository.getSensorStationsByMac(mac);
 
     }
