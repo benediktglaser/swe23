@@ -2,7 +2,9 @@ package at.qe.g1t2.restapi.model;
 
 import jakarta.validation.constraints.NotNull;
 
-
+/**
+ * This DTO is sent via REST to propose a new Sensorstation to the web server.
+ */
 public class SensorStationDTO {
 
     @NotNull

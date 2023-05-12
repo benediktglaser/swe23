@@ -6,14 +6,32 @@ from datetime import datetime
 
 
 def access_database(path):
-    """Connects or Creates database and initializes both tables"""
+    """
+    Connects or Creates database and initializes both tables
+    Arguments
+    ---------
+    path : str
+        The path to the database-file
+    Returns
+    -------
+    conn : sqlite3.Connection
+        The connection to the database
+    """
+
     conn = sqlite3.connect(path)
     create_tables(conn)
     return conn
 
 
 def create_tables(conn):
-    """Create limits and sensor_data table"""
+    """
+    Creates the limits and sensor_data table.
+    Arguments
+    ---------
+    conn : str
+        The connection to the database
+    """
+
     cursor = conn.cursor()
     try:
         cursor.execute(
@@ -58,7 +76,16 @@ def create_tables(conn):
 
 
 def init_limits(conn, station_id):
-    """Initialise the limits table with default values"""
+    """
+    Initialise the limits table with default values
+    Arguments
+    ---------
+    conn : sqlite3.Connection
+        The connection to the database
+    station_id : int
+        The station_id of the station of which the limits should be initialized
+    """
+
     cursor = conn.cursor()
     try:
         # TODO: find reasonable default values for limits
@@ -88,11 +115,26 @@ def init_limits(conn, station_id):
 
 
 def calculate_limit(value, lower_limit, upper_limit):
-    """Calculate the how much teh measurement is of the limits"""
+    """
+    Calculates the limit value to the given value. The limit states how much the upper_limit or
+    lower_limit are exceeded or undercut in relation to the value. A limit value of 1 means the
+    value is within the limits.
+    Arguments
+    ---------
+    value : float
+        The value of which the limit should be calculated
+    lower_limit : float
+        The lower limit of the value
+    upper_limit : float
+        The upper limit of the value
+    Returns:
+    limit : float
+        By how much the upper_limit or lower_limit are exceeded or undercut
+    """
+
     # TODO: check what value is sent if sensor isn't picking anything up
     # if value == 0 or value is None:
     #     return 0
-
     if value >= lower_limit:
         if value <= upper_limit:
             return 0
@@ -103,6 +145,15 @@ def calculate_limit(value, lower_limit, upper_limit):
 
 
 def insert_sensor_data(conn, data):
+    """
+    Inserts data into the sensor_data table. The station_id is located in the data-struct.
+    Arguments
+    ---------
+    conn : sqlite3.Connection
+        The connection to the database
+    data : SensorData
+    """
+
     limits = get_limits(conn, data.station_id, "all")
     # lower index = lower_limit, higher index = upper_limit
     temp_limits = limits[0:2]
@@ -143,6 +194,15 @@ def insert_sensor_data(conn, data):
 
 
 def insert_into_sensor_station(conn, station_id: int, connected: bool):
+    """
+    Inserts data into the sensor_data table. The station_id is located in the data-struct.
+    Arguments
+    ---------
+    conn : sqlite3.Connection
+        The connection to the database
+    data : SensorData
+    """
+
     cursor = conn.cursor()
     try:
         cursor.execute(
@@ -157,7 +217,7 @@ def insert_into_sensor_station(conn, station_id: int, connected: bool):
 
 
 def get_all_sensor_station(conn):
-    """Might be DEPRICATED"""
+    """DEPRECATED"""
     cursor = conn.cursor()
     try:
         cursor.execute("SELECT station_id FROM sensor_station")
@@ -173,6 +233,23 @@ def get_all_sensor_station(conn):
 
 
 def set_limits(conn, station_id, type, lower_limit, upper_limit):
+    """
+    Set new limits. Match was not used because of an older python-version
+    running on the raspberry pi not supporting it. 
+    Arguments
+    ---------
+    conn : sqlite3.Connection
+        The connection to the database
+    station_id : int
+        The (dip)id of the SensorStation
+    type : str
+        The type of data of which the limits should be changed.
+    lower_limit : float
+        The new lower limit
+    upper_limit : float
+        The new upper limit
+    """
+
     cursor = conn.cursor()
     try:
 
@@ -249,8 +326,22 @@ def set_limits(conn, station_id, type, lower_limit, upper_limit):
 
 
 def get_limits(conn, station_id, type_limit: str):
-    """Return a list of the limits if type_limit == ALL,
-    otherwise a tuple (min, max) for the given type"""
+    """
+    Return a list of the limits if type_limit == ALL,
+    otherwise a tuple (min, max) for the given type
+    Arguments
+    ---------
+    conn : sqlite3.Connection
+        The connection to the database
+    station_id : int
+        The (dip)id of the SensorStation
+    type_limit : str
+        The type of the limit
+    Returns:
+        a list of the limits if type_limit == ALL,
+        a tuple (min, max) for the given type otherwise
+    """
+
     cursor = conn.cursor()
     try:
         cursor.execute("SELECT * " "FROM limits " "WHERE station_id = ?", (station_id,))
@@ -287,9 +378,25 @@ def get_limits(conn, station_id, type_limit: str):
 
 
 def update_limits(
-    conn, station_id: int, type_limit: str, lower_bound: float, upper_bound: float
-):
+    conn, station_id: int, type_limit: str, lower_bound: float, upper_bound: float):
+    """
+    Updates the limits of the given type
+    Arguments
+    ---------
+    conn : sqlite3.Connection
+        The connection to the database
+    station_id : int
+        The (dip)id of the SensorStation
+    type_limit : str
+        The type of the limit
+    lower_bound: float
+        The new lower limit
+    lower_bound: float
+        The new upper limit
+    """
+
     cursor = conn.cursor()
+
     try:
         if type_limit == "TEMPERATURE":
 
@@ -353,7 +460,19 @@ def update_limits(
 
 
 def get_sensor_data(conn, station_id):
-    """Retrieve sensor_data from database"""
+    """
+    Retrieve sensor_data from database
+    Arguments
+    ---------
+    conn : sqlite3.Connection
+        The connection to the database
+    station_id : int
+        The (dip)id of the SensorStation
+    Returns
+    -------
+    result : [SensorData]
+    """
+
     cursor = conn.cursor()
     try:
         cursor.execute(
@@ -369,7 +488,17 @@ def get_sensor_data(conn, station_id):
 
 
 def remove_sensor_data(conn, station_id, time):
-    """Remove sensor_data according to station_id and time"""
+    """
+    Remove sensor_data according to station_id and time
+    Arguments
+    ---------
+    conn : sqlite3.Connection
+        The connection to the database
+    station_id : int
+        The (dip)id of the SensorStation
+    time : str
+    """
+
     cursor = conn.cursor()
     try:
         cursor.execute(
@@ -384,6 +513,17 @@ def remove_sensor_data(conn, station_id, time):
 
 
 def get_all_sensorstations(conn):
+    """
+    Returns the station_id from all stations.
+    Arguments
+    ---------
+    conn : sqlite3.Connection
+        The connection to the database
+    Returns
+    -------
+    result : [int]
+    """
+
     cursor = conn.cursor()
     try:
         cursor.execute("SELECT DISTINCT station_id FROM limits;")
@@ -399,7 +539,15 @@ def get_all_sensorstations(conn):
 
 
 def drop_sensor_data(conn):
-    """DEBUG ONLY"""
+    """
+    DEBUG ONLY
+    Deletes the entire sensor_data table
+    Arguments
+    ---------
+    conn : sqlite3.Connection
+        The connection to the database
+    """
+
     cursor = conn.cursor()
     try:
         cursor.execute("DROP TABLE IF EXISTS sensor_data;")
@@ -412,7 +560,15 @@ def drop_sensor_data(conn):
 
 
 def drop_limits(conn):
-    """DEBUG ONLY"""
+    """
+    DEBUG ONLY
+    Deletes the entire limits table
+    Arguments
+    ---------
+    conn : sqlite3.Connection
+        The connection to the database
+    """
+
     cursor = conn.cursor()
     try:
         cursor.execute("DROP TABLE IF EXISTS limits;")
@@ -425,5 +581,13 @@ def drop_limits(conn):
 
 
 def delete_database(path):
-    """DEBUG ONLY"""
+    """
+    DEBUG ONLY
+    Deletes the database file
+    Arguments
+    ---------
+    path : str
+        The path to the database-file
+    """
+
     os.remove(path)

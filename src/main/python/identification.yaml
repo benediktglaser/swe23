@@ -1,7 +1,2 @@
-name: 8612248f-e09e-4553-a459-b73798ddad5f
-password: 4cdcc65c-3907-4f55-ab36-13c87012d1bb
-
-
-#Example accesspoint, which is already saved in the Database
-# name: 7269ddec-30c6-44d9-bc1f-8af18da09ed3
-# password: $2y$10$P7im4OMw6hsnPWLpJ1nVKup1jlEFsLIek9D3lglmZv.Tq05GDEhMS
+name: 7269ddec-30c6-44d9-bc1f-8af18da09ed3
+password: passwd

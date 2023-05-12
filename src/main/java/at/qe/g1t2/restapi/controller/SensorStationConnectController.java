@@ -44,7 +44,7 @@ public class SensorStationConnectController {
     private SensorStationService sensorStationService;
 
     @Autowired
-    private  SensorStationGardenerService sensorStationGardenerService;
+    private SensorStationGardenerService sensorStationGardenerService;
 
     @Autowired
     private SensorDataTypeInfoService sensorDataTypeInfoService;
@@ -148,7 +148,7 @@ public class SensorStationConnectController {
             satisFyConnection(accessPoint, dipId);
             return new ResponseEntity<>(true, HttpStatus.OK);
         }
-        if(visibleSensorStationsService.getVisibleMap().isEmpty()){
+        if (visibleSensorStationsService.getVisibleMap().isEmpty()) {
             throw new VisibleMapException("SensorStation not registered");
         }
         SensorStationDTO sensorStationDTO = visibleSensorStationsService.getSensorStationByAccessPointAndDipId(accessPoint, dipId);
@@ -213,14 +213,14 @@ public class SensorStationConnectController {
         LOGGER.warn(msg.getMessage());
         return accessPoint;
     }
+
     @GetMapping("/gardenerHere/{dipId}")
-    public HttpStatus checkIfGardenerIsByStation(@PathVariable String dipId){
+    public HttpStatus checkIfGardenerIsByStation(@PathVariable String dipId) {
         AccessPoint accessPoint = getAuthAccessPoint();
-        SensorStation sensorStation = sensorStationService.getSensorStationByAccessPointIdAndDipId(accessPoint.getAccessPointID(),Long.parseLong(dipId));
+        SensorStation sensorStation = sensorStationService.getSensorStationByAccessPointIdAndDipId(accessPoint.getAccessPointID(), Long.parseLong(dipId));
         sensorStationGardenerService.getGardenerIsHere().add(sensorStation);
         return HttpStatus.OK;
     }
-
 
 
     /**

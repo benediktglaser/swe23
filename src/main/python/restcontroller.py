@@ -9,11 +9,8 @@ import dbconnection
 import sensordata
 
 
-# host = "http://localhost:8080"
-
-
 def prepare_auth_headers(id: str, password: str):
-    """Just for testing. Prepare the authentication via HTTPBasic"""
+    """DEPRECATED!"""
     return HTTPBasicAuth(id, password)
 
 
@@ -21,11 +18,22 @@ def post_measurement_original_single(
     address: str, measurement: dict, auth_header
 ) -> dict:
     """
-    Only for testing not production!
+    DEBUG ONLY
     Post the given measurement.
-    :param measurement: The measurement to post as a dictionary
-    :return: the inserted dictionary
+    Arguments
+    ---------
+    address : str
+        The ip-address of the Server
+    measurement: dict
+        The measurements. The key is the datatype, the data is the value
+    auth_header : str
+        The auth_header for the rest-connection
+    Returns
+    -------
+    response : JSON object
+        the response of the rest-request
     """
+
     # auth_header = prepare_auth_headers()
     resp = requests.post(
         f"{address}/api/sensorData", json=measurement, auth=auth_header
@@ -37,9 +45,20 @@ def post_measurement_original_single(
 def post_measurement(address: str, list_of_measurements: List, auth_header) -> None:
     """
     Post the given measurement.
-    :param measurement: The measurement to post as a dictionary
-    :return: the inserted dictionary
+    Arguments
+    ---------
+    address : str
+        The ip-address of the Server
+    list_of_measurements: List
+        The measurements int he order station_id : int, temperature : float, pressure : float
+    quality : float, humidity : float, soil : float, light : float.
+    auth_header : str
+        The auth_header for the rest-connection
+    Returns
+    -------
+    The inserted dictionary
     """
+
     # auth_header = prepare_auth_headers()
     list_of_responses = []
     measurements = prepare_for_jsf(list_of_measurements)
@@ -70,28 +89,56 @@ def post_measurement(address: str, list_of_measurements: List, auth_header) -> N
 
 
 def adjust_timestamp_for_transfer(data: str) -> str:
-    """This function takes the list from the database
+    """
+    This function takes the list from the database
     and convert the data into a String, which is readable
     for jsf-transmission.
-    :param list of lists
-    :return list of lists
+    Arguments
+    ---------
+    data : str
+       The data
+    Returns
+    -------
+    data : str
     """
+
     for list_data in data:
         list_data[1] = list_data[1].replace(" ", "T")
     return data
 
 
 def adjust_timestamp_for_database_access(date_string: str) -> str:
-    """This function converts the date from the jsf-transmission
-    back to a python-readable representation"""
+    """
+    This function converts the date from the jsf-transmission
+    back to a python-readable representation
+    Arguments
+    ---------
+    date_string : str
+        The date
+    Returns
+    -------
+    date_string : str
+        The date in the new format
+    """
+
     date_string = date_string.replace("T", " ")
     return date_string
 
 
 def prepare_for_jsf(data: List) -> List[dict]:
-    """Prepare the data from the database to
+    """
+    Prepare the data from the database to
     be sent via jsf by breaking it down
-    into a dictionary"""
+    into a dictionary
+    Arguments
+    ---------
+    data : List
+        The data as a list
+    Returns
+    -------
+    data as dictionaries
+    """
+
     data = adjust_timestamp_for_transfer(data)
     list_of_dicts = []
     for list_data in data:
@@ -147,12 +194,36 @@ def prepare_for_jsf(data: List) -> List[dict]:
 
 
 def delete_send_sensor_data(conn, list_of_tuples) -> None:
-    """Remove a specific sensorData entry from the database"""
+    """
+    Remove a specific sensorData entry from the database
+    Arguments
+    ---------
+    conn : sqlite3.Connection
+        The connection to the database
+    list_of_tuples
+        The data
+    """
+
     for sensor_data in list_of_tuples:
         dbconnection.remove_sensor_data(conn, sensor_data[0], sensor_data[1])
 
 
 def request_interval(address: str, auth_header):
+    """
+    Requests the interval from the Server
+    Arguments
+    ---------
+    address : str
+        The ip-address of the Server
+    auth_header : str
+        The auth_header for the rest-connection
+    Returns
+    -------
+    response : JSON object
+        The response of the rest-request
+    or None
+    """
+
     try:
         resp = requests.get(f"{address}/api/accessPoint/interval", auth=auth_header)
         if resp.status_code != 200:
@@ -169,6 +240,23 @@ def request_interval(address: str, auth_header):
 
 
 def request_limits(address: str, auth_header: str, dipId: int):
+    """
+    Requests the limits from the Server
+    Arguments
+    ---------
+    address : str
+        The ip-address of the Server
+    auth_header : str
+        The auth_header for the rest-connection
+    dipId : int
+        The dipId of the SensorStation of which the limits should be changed
+    Returns
+    -------
+    response : JSON object
+        the response of the rest-request
+    or None
+    """
+
     try:
         resp = requests.get(
             f"{address}/api/sensorStation/limits/{dipId}", auth=auth_header
@@ -186,8 +274,22 @@ def request_limits(address: str, auth_header: str, dipId: int):
 
 
 def request_if_is_sensorstation_enabled(address: str, auth_header: str, dipId: int):
-    """request if sensorstation is still enabled
-    return bool"""
+    """
+    Request if SensorStation is still enabled
+    Arguments
+    ---------
+    address : str
+        The ip-address of the Server
+    auth_header : str
+        The auth_header for the rest-connection
+    dipId : int
+        The dipId of the SensorStation of which the limits should be changed
+    Returns
+    -------
+    response : boolean
+        Whether the SensorStation is still enabled
+    """
+
     try:
         resp = requests.get(
             f"{address}/api/sensorStation/enabled/{dipId}", auth=auth_header
@@ -208,7 +310,21 @@ def request_if_is_sensorstation_enabled(address: str, auth_header: str, dipId: i
 
 
 def gardener_is_at_station(address: str, dipId: int, auth_header: str) -> bool:
-    """Method to inform webserver via REST, that a gardener is a the sensorstation"""
+    """
+    Method to inform webserver via REST, that a gardener is at the sensorstation.
+    Arguments
+    ---------
+    address : str
+        The ip-address of the Server
+    dipId: int
+        DipId of the sensorstation
+    auth_header : str
+        The auth_header for the rest-connection
+    Returns
+    -------
+    response : boolean
+        Whether the Message was successfully received.
+    """
     try:
         resp = requests.get(
             f"{address}/api/sensorStation/gardenerHere/{dipId}", auth=auth_header

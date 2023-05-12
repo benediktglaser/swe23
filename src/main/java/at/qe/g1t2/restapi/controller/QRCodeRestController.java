@@ -32,6 +32,11 @@ public class QRCodeRestController {
     @Autowired
     private SensorStationService sensorStationService;
 
+    /**
+     * This method creates the QR-Code for the given SensorStation.
+     * @param sensorStationId
+     * @return ResponseEntity<byte[]>
+     */
     @GetMapping(value = "/visitor/sensorStations/gallery.xhtml{sensorStationId}", produces = MediaType.IMAGE_PNG_VALUE)
     public ResponseEntity<byte[]> sensorStationsQRCode(@PathVariable String sensorStationId) {
         try {

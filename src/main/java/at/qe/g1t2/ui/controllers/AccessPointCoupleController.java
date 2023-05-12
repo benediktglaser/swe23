@@ -12,19 +12,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-
+/**
+ * This controller is responsible for starting and ending the couple mode
+ */
 @Controller
 @Scope("view")
 public class AccessPointCoupleController {
 
     @Autowired
-    SensorStationService sensorStationService;
+    private SensorStationService sensorStationService;
 
     @Autowired
     private CoupleBean coupleBean;
 
     @Autowired
-    AccessPointService accessPointService;
+    private AccessPointService accessPointService;
 
     private AccessPoint accessPoint;
 
@@ -41,6 +43,12 @@ public class AccessPointCoupleController {
         this.accessPoint = accessPointService.saveAccessPoint(accessPoint);
     }
 
+    /**
+     * If the accesspoint is successfully coupled with a sensorstation, this
+     * method will be called to display an according message and hide the sensorstation,
+     * because it is already taken.
+     * @param dipId
+     */
     public void connectHandler(Long dipId) {
         if(accessPoint == null){
             return;

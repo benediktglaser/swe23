@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * Basic request scoped bean to test bean initialization.
- *
+ * <p>
  * This class is part of the skeleton project provided for students of the
  * course "Software Engineering" offered by the University of Innsbruck.
  */

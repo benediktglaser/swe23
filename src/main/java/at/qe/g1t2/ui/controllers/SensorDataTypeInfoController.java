@@ -15,6 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * This controller is responsible for the retrieval
+ * of the sensordatatypeinfo
+ */
 @Controller
 @Scope("session")
 public class SensorDataTypeInfoController {

@@ -4,6 +4,9 @@ import at.qe.g1t2.model.SensorStation;
 import org.primefaces.PrimeFaces;
 import org.springframework.stereotype.Controller;
 
+/**
+ * This controller manages the download of the QR-Code.
+ */
 @Controller
 public class QRCodeDownloadController {
     private SensorStation sensorStation;

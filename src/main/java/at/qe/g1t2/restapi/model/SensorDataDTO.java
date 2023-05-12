@@ -9,6 +9,10 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 
+/**
+ * This DTO is sent via REST from the AccessPoint to the Webserver.
+ * It contains information about the sensordata and the sensorstation it comes from.
+ */
 public class SensorDataDTO implements Serializable {
 
 
