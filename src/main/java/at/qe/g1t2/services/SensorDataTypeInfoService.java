@@ -32,27 +32,22 @@ public class SensorDataTypeInfoService implements Serializable {
         this.sensorStationRepository = sensorStationRepository;
     }
 
-    @Transactional
     public SensorDataTypeInfo loadSensorDataTypeInfo(String id){
         return sensorDataTypeInfoRepository.findSensorDataTypeInfoById(id);
     }
-    @Transactional
+
     public SensorDataTypeInfo save(SensorStation sensorStation,SensorDataTypeInfo sensorDataTypeInfo){
         if(sensorDataTypeInfo.isNew()){
             sensorDataTypeInfo.setCreateDate(LocalDateTime.now());
             sensorDataTypeInfo.setSensorStation(sensorStation);
             sensorStation.getSensorDataTypeInfos().add(sensorDataTypeInfo);
             SensorStation newSensorStation = sensorStationRepository.save(sensorDataTypeInfo.getSensorStation());
-
-            return loadSensorDataTypeInfo(newSensorStation
-                    .getSensorDataTypeInfos()
-                    .get(newSensorStation
-                            .getSensorDataTypeInfos().size()-1).getId());
+            return sensorDataTypeInfoRepository.save(sensorDataTypeInfo);
         }
         return sensorDataTypeInfoRepository.save(sensorDataTypeInfo);
     }
 
-    @Transactional
+
     public List<SensorDataTypeInfo> getAllSensorDataTypeInfosBySensorStation(SensorStation sensorStation){
         List<SensorDataTypeInfo> info = new ArrayList<>();
         for(SensorDataType sensorDataType: SensorDataType.values()){

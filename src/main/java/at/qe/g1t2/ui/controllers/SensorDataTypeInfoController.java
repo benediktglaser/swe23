@@ -16,22 +16,21 @@ import java.util.Arrays;
 import java.util.List;
 
 @Controller
-@Scope("view")
-@RequestScoped
+@Scope("session")
 public class SensorDataTypeInfoController {
     @Autowired
-    SensorDataTypeInfoService sensorDataTypeInfoService;
+    private SensorDataTypeInfoService sensorDataTypeInfoService;
+
+    private SensorStation sensorStation;
 
     private SensorDataTypeInfo type;
 
     private SensorDataType sensorDataType;
 
-    @Transactional
     public SensorDataTypeInfo getType() {
-        if (type == null) {
+        if(type == null){
             type = new SensorDataTypeInfo();
         }
-
         return type;
     }
 
@@ -43,7 +42,7 @@ public class SensorDataTypeInfoController {
         this.type = type;
     }
 
-    @Transactional
+
     public void save(SensorStation sensorStation) {
         type.setType(sensorDataType);
         if (type.getMaxLimit() == null || type.getMinLimit() == null) {
@@ -60,14 +59,28 @@ public class SensorDataTypeInfoController {
         }
     }
 
-    @Transactional
+
     public SensorDataType getSensorDataType() {
         return sensorDataType;
     }
 
-    @Transactional
     public void setSensorDataType(SensorDataType sensorDataType) {
         this.sensorDataType = sensorDataType;
     }
 
+    public SensorDataTypeInfoService getSensorDataTypeInfoService() {
+        return sensorDataTypeInfoService;
+    }
+
+    public void setSensorDataTypeInfoService(SensorDataTypeInfoService sensorDataTypeInfoService) {
+        this.sensorDataTypeInfoService = sensorDataTypeInfoService;
+    }
+
+    public SensorStation getSensorStation() {
+        return sensorStation;
+    }
+
+    public void setSensorStation(SensorStation sensorStation) {
+        this.sensorStation = sensorStation;
+    }
 }

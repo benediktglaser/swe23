@@ -11,8 +11,7 @@ import java.io.Serializable;
 @Scope("session")
 public class SessionSensorStationBean implements Serializable {
 
-    SensorStation sensorStation;
-
+    private SensorStation sensorStation;
 
     public void setSensorStation(SensorStation sensorStation){
         this.sensorStation = sensorStation;
