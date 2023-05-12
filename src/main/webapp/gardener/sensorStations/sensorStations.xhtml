@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -9,52 +9,52 @@
                 template="/WEB-INF/templates/main.xhtml">
 
     <ui:define name="content">
+        <form id="downloadForm" method="get">
+        </form>
         <h:form id="sensorStationForm">
             <div class="card">
-                <p:outputPanel>
-                    <p:carousel id="sensorstationCarousel"
-                                value="#{sensorStationListController.getAllSensorStationByOwner()}"
-                                var="sensorStation"
-                                numVisible="3" numScroll="3">
-                        <div class="sensorStation-item">
-                            <div class="sensorStation-item-content">
-                                <div class="mb-3">
-                                    <h:graphicImage library="images"
-                                                    name="#{sensorStationListController.getFrontPicture(sensorStation)}"
-                                                    height="100" width="200"/>
-                                </div>
-                                <p:outputPanel id="carossel">
-
-                                    <h4 class="mb-1">#{sensorStation.name}</h4>
-                                    <p:commandButton id="minmax" value="Min/Max edit"
-                                                     update=":sensorStationForm"
-                                                     action="#{sensorStationDetailController.redirectToMinMaxEdit(sensorStation)}"
-                                    />
-                                    <p:commandButton id="edit" icon="pi pi-pencil"
-                                                     update=":sensorStationForm"
-                                                     oncomplete="PF('sensorStationFormEditDialog').show()"
-                                                     actionListener="#{sessionSensorStationBean.setSensorStation(sensorStation)}"
-                                                     action="#{sensorStationDetailController.setSensorStation(sensorStation)}"
-                                    />
-                                    <p:commandButton id="sensordata" value="Sensordata"
-                                                     action="#{sensorStationListController.redirectToSensorDataPage(sensorStation)}" />
-                                    <p:commandButton id="gallery" value="Gallery"
-                                                     action="#{sensorStationListController.redirectToGallery(sensorStation)}"/>
-                                    <p:commandButton id="download" value="DownloadQRCode"
-                                                     action="#{QRCodeDownloadController.doUpdate(sensorStation.id)}"/>
-                                    <script>
-                                        function sent(param) {
-                                            const sensorLink = "http://localhost:8080/visitor/sensorStations/gallery.xhtml";
-                                            const sensorUrl = sensorLink + param;
-                                            document.getElementById("downloadForm").setAttribute("action", sensorUrl);
-                                            document.getElementById("downloadForm").submit();
-                                        }
-                                    </script>
-                                </p:outputPanel>
+                <p:carousel id="sensorstationCarousel"
+                            value="#{sensorStationListController.getAllSensorStationByOwner()}"
+                            var="sensorStation"
+                            numVisible="3" numScroll="3">
+                    <div class="sensorStation-item">
+                        <div class="sensorStation-item-content">
+                            <div class="mb-3">
+                                <h:graphicImage library="images"
+                                                name="#{sensorStationListController.getFrontPicture(sensorStation)}"
+                                                height="100" width="200"/>
                             </div>
+                            <p:outputPanel id="carossel">
+
+                                <h4 class="mb-1">#{sensorStation.name}</h4>
+                                <p:commandButton id="minmax" value="Min/Max edit"
+                                                 update=":sensorStationForm"
+                                                 action="#{sensorStationDetailController.redirectToMinMaxEdit(sensorStation)}"
+                                />
+                                <p:commandButton id="edit" icon="pi pi-pencil"
+                                                 update=":sensorStationForm"
+                                                 oncomplete="PF('sensorStationFormEditDialog').show()"
+                                                 actionListener="#{sessionSensorStationBean.setSensorStation(sensorStation)}"
+                                                 action="#{sensorStationDetailController.setSensorStation(sensorStation)}"
+                                />
+                                <p:commandButton id="sensordata" value="Sensordata"
+                                                 action="#{sensorStationListController.redirectToSensorDataPage(sensorStation)}"/>
+                                <p:commandButton id="gallery" value="Gallery"
+                                                 action="#{sensorStationListController.redirectToGallery(sensorStation)}"/>
+                                <p:commandButton id="download" value="DownloadQRCode"
+                                                 action="#{QRCodeDownloadController.doUpdate(sensorStation.id)}"/>
+                            </p:outputPanel>
+                            <script>
+                                function sent(param) {
+                                    const sensorLink = "http://localhost:8080/visitor/sensorStations/gallery.xhtml";
+                                    const sensorUrl = sensorLink + param;
+                                    document.getElementById("downloadForm").setAttribute("action", sensorUrl);
+                                    document.getElementById("downloadForm").submit();
+                                }
+                            </script>
                         </div>
-                    </p:carousel>
-                </p:outputPanel>
+                    </div>
+                </p:carousel>
             </div>
             <p:dialog header="Sensor Station Details" id="sensorStationFormEditDialog"
                       widgetVar="sensorStationFormEditDialog" modal="true" showEffect="fade" hideEffect="fade"
@@ -66,14 +66,15 @@
                     <p:outputLabel for="plant_category" value="Plant Category: "/>
                     <p:inputText id="plant_category" value="#{sessionSensorStationBean.sensorStation.category}">
                     </p:inputText>
-                    <p:outputLabel for="plant_interval" value="Interval(includes overhead #{sessionSensorStationBean.sensorStation.accessPoint.thresholdInterval}): "/>
+                    <p:outputLabel for="plant_interval"
+                                   value="Interval(includes overhead #{sessionSensorStationBean.sensorStation.accessPoint.thresholdInterval}): "/>
                     <p:inputText id="plant_interval"
                                  value="#{sessionSensorStationBean.sensorStation.accessPoint.sendingInterval}">
                     </p:inputText>
                 </h:panelGrid>
-                    <p:commandButton id="saveButtonEdit" value="Save"
-                                     update=":sensorStationForm"
-                                     action="#{sensorDataTypeListController.setSensorStation(sensorStationDetailController.sensorStation)}"/>
+                <p:commandButton id="saveButtonEdit" value="Save"
+                                 update=":sensorStationForm"
+                                 action="#{sensorDataTypeListController.setSensorStation(sensorStationDetailController.sensorStation)}"/>
             </p:dialog>
         </h:form>
     </ui:define>
