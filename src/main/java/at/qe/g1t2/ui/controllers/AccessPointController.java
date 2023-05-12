@@ -17,7 +17,6 @@ public class AccessPointController extends AbstractListController<String,AccessP
     @Autowired
     AccessPointService accessPointService;
 
-
     public AccessPointController() {
         this.setListToPageFunction((spec, page) -> accessPointService.getAllAccessPoints(spec,page));
     }

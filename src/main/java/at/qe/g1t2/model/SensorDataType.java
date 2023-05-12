@@ -2,6 +2,10 @@ package at.qe.g1t2.model;
 
 import java.io.Serializable;
 
+/**
+ * This enum class represents the possibilities a SensorData can be marked as.
+ */
+
 public enum SensorDataType implements Serializable {
     TEMPERATURE("°C"),
     PRESSURE("Pa"),
