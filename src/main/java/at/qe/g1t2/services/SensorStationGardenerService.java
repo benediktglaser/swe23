@@ -13,7 +13,9 @@ import org.springframework.stereotype.Component;
 import java.io.Serializable;
 import java.util.*;
 
-
+/**
+ * This service provides methods for assigning a gardener to a sensorstation
+ */
 @Component
 @Scope("application")
 public class SensorStationGardenerService implements Serializable {
@@ -27,15 +29,10 @@ public class SensorStationGardenerService implements Serializable {
     Set<SensorStation> gardenerIsHere = new HashSet<>();
 
 
-    public void assignGardener(Userx userx, SensorStation sensorStation){
+    public void assignGardener(Userx userx, SensorStation sensorStation) {
         sensorStation.setGardener(userx);
         sensorStationRepository.save(sensorStation);
     }
-
-
-
-
-
 
     public Collection<SensorStation> getAllSensorStationsOfUser() {
         return sensorStationRepository.getSensorStationsByGardenerAndEnabledTrue(getAuthenticatedUser());
@@ -46,6 +43,12 @@ public class SensorStationGardenerService implements Serializable {
         return userxRepository.findFirstByUsername(auth.getName());
     }
 
+    /**
+     * This method returns a set of all sensorstations where the button has been pressed,
+     * indicating that a gardener is on site.
+     *
+     * @return Set<SensorStation>
+     */
     public Set<SensorStation> getGardenerIsHere() {
         return gardenerIsHere;
     }

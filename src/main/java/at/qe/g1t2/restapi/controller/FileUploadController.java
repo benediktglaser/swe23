@@ -34,9 +34,20 @@ public class FileUploadController {
     @Autowired
     private SensorStationService sensorStationService;
 
+
+    /**
+     * This method handles the file upload on the webserver. It also filters for the
+     * two allowed formats: png and jpg.
+     *
+     * @param file
+     * @param sensorStationId
+     * @param request
+     * @param redirectAttributes
+     * @return ResponseEntity<Picture>
+     */
     @PostMapping(value = "/upload")
     public ResponseEntity<Picture> handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("sensorStationId") String sensorStationId,
-                                   HttpServletRequest request, RedirectAttributes redirectAttributes) {
+                                                    HttpServletRequest request, RedirectAttributes redirectAttributes) {
         if (!file.isEmpty()) {
             try {
                 String fileType = file.getContentType();
@@ -46,7 +57,7 @@ public class FileUploadController {
                     throw new FileUploadException("Only JPEG and PNG images are allowed.");
                 }
                 String fileName = file.getOriginalFilename();
-                if(fileName == null || fileName.equals("")){
+                if (fileName == null || fileName.equals("")) {
                     throw new FileUploadException("No fileName");
                 }
                 String extension = fileName.substring(fileName.lastIndexOf("."));
@@ -65,13 +76,13 @@ public class FileUploadController {
                 Picture picture = new Picture();
                 picture.setPath(uniqueFileName);
                 picture.setPictureName(fileName);
-                pictureService.save(sensorStation,picture);
+                pictureService.save(sensorStation, picture);
                 redirectAttributes.addFlashAttribute("message",
                         "You successfully uploaded " + file.getOriginalFilename() + "!");
                 return new ResponseEntity<>(HttpStatus.OK);
 
             } catch (IOException | MaxUploadSizeExceededException e) {
-                throw new FileUploadException("File could not saved"+e.getMessage());
+                throw new FileUploadException("File could not saved" + e.getMessage());
             }
         }
         return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);

@@ -61,18 +61,14 @@ public class SensorStationService implements Serializable {
         sensorStation.setAccessPoint(accessPoint);
         accessPoint = accessPointRepository.save(accessPoint);
 
-        return  loadSensorStation(accessPoint.getSensorStation().remove(accessPoint.getSensorStation().size()-1).getId());
+        return loadSensorStation(accessPoint.getSensorStation().remove(accessPoint.getSensorStation().size() - 1).getId());
 
     }
 
     @PreAuthorize("hasAnyAuthority('ACCESS_POINT','ADMIN')")
     @Transactional
     public void deleteSensorStation(SensorStation sensorStation) {
-
-
-
         sensorStationRepository.delete(sensorStation);
-
     }
 
     @Transactional
@@ -82,11 +78,10 @@ public class SensorStationService implements Serializable {
     }
 
 
-    public Page<SensorStation> getAllSensorStations(Specification<SensorStation>spec, Pageable pageable) {
-        return sensorStationRepository.findAll(spec,pageable);
+    public Page<SensorStation> getAllSensorStations(Specification<SensorStation> spec, Pageable pageable) {
+        return sensorStationRepository.findAll(spec, pageable);
 
     }
-
 
 
     public SensorStation getSensorStationByAccessPointIdAndDipId(String accessPointId, Long dipId) {
@@ -106,7 +101,7 @@ public class SensorStationService implements Serializable {
         return userRepository.findFirstByUsername(auth.getName());
     }
 
-    public SensorStation getSensorStation(String mac){
+    public SensorStation getSensorStation(String mac) {
         return sensorStationRepository.getSensorStationsByMac(mac);
 
     }

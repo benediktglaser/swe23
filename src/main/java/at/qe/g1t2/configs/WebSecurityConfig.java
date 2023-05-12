@@ -59,6 +59,7 @@ public class WebSecurityConfig {
                             .requestMatchers("/upload").permitAll()
                             .requestMatchers("/visitor/**").permitAll()
                             .requestMatchers("/api/accessPoint/register").permitAll()
+                            .requestMatchers("/api/accessPoint/register/credentials").permitAll()
                             .requestMatchers("/api/accessPoint/register/**").hasAnyAuthority(ACCESS_POINT)
                             .requestMatchers("/api/sensorStation/connect").hasAnyAuthority(ACCESS_POINT)
                             .requestMatchers("/").permitAll()

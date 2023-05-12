@@ -1,5 +1,8 @@
 package at.qe.g1t2.restapi.model;
 
+/**
+ * This class is a representation of a picture.
+ */
 public class ResponsePicture {
 
     private String fileName;

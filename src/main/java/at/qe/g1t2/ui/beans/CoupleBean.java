@@ -8,6 +8,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
+/**
+ * This bean is responsible for managing the couple mode on the webserver.
+ */
 @Component
 @Scope("session")
 public class CoupleBean {

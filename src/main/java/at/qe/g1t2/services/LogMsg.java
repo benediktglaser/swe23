@@ -4,9 +4,12 @@ import org.springframework.data.domain.Persistable;
 
 import java.io.Serializable;
 
-public class LogMsg<K,T extends Persistable<K> & Serializable> {
+/**
+ * This class creates the messages for the logger.
+ */
+public class LogMsg<K, T extends Persistable<K> & Serializable> {
 
-    public static enum LogType{
+    public static enum LogType {
         CRUD_CREATE,
         CRUD_READ,
         CRUD_UPDATE,
@@ -37,20 +40,21 @@ public class LogMsg<K,T extends Persistable<K> & Serializable> {
         this.extraMsg = extraMsg;
         this.actor = actor;
     }
-    public LogMsg(LogType type, Class<T> target,String actor) {
-        this(type,target,null,null,actor);
+
+    public LogMsg(LogType type, Class<T> target, String actor) {
+        this(type, target, null, null, actor);
     }
 
 
-    public String getMessage(){
+    public String getMessage() {
         String msg = "Operation: " + type + "\n" +
                 "Entity: " + target + "\n";
-        if(id != null){
+        if (id != null) {
             msg = msg + "Id: " + id + "\n";
         }
-        if(extraMsg != null){
+        if (extraMsg != null) {
             msg = msg + "Detail: " + extraMsg + "\n";
         }
-        return  msg;
+        return msg;
     }
 }

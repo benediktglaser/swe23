@@ -1,6 +1,5 @@
 package at.qe.g1t2.ui.controllers;
 
-import at.qe.g1t2.model.SensorDataType;
 import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.model.UserRole;
 import at.qe.g1t2.model.Userx;
@@ -25,16 +24,16 @@ import org.springframework.stereotype.Controller;
 public class GardenerSensorStationController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    SessionSensorStationBean sessionSensorStationBean;
+    private SessionSensorStationBean sessionSensorStationBean;
 
     @Autowired
-    SensorStationService sensorStationService;
+    private SensorStationService sensorStationService;
 
     @Autowired
-    SensorStationGardenerService sensorStationGardenerService;
+    private SensorStationGardenerService sensorStationGardenerService;
 
 
     private SensorStation sensorStation;
@@ -43,15 +42,20 @@ public class GardenerSensorStationController {
 
     private boolean isValid;
 
-    public void assignSensorStationToGardener(SensorStation sensorStation){
+    /**
+     * This method assign a gardener to a given sensorstation.
+     * In case of a wrong username an error-message is displayed.
+     *
+     * @param sensorStation
+     */
+    public void assignSensorStationToGardener(SensorStation sensorStation) {
         Userx userToBeAssigned = userService.loadUser(username);
-        if(userToBeAssigned!=null && userToBeAssigned.getRoles().contains(UserRole.GARDENER)) {
+        if (userToBeAssigned != null && userToBeAssigned.getRoles().contains(UserRole.GARDENER)) {
             sensorStationGardenerService.assignGardener(userToBeAssigned, sensorStation);
             isValid = true;
             PrimeFaces.current().executeScript("isValid('true')");
 
-        }
-        else {
+        } else {
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "Username does not exists", null));
             isValid = false;
@@ -61,11 +65,15 @@ public class GardenerSensorStationController {
         }
     }
 
-
-
-    public void gardenerIsHere(SensorStation sensorStation){
+    /**
+     * This method displays an notification, that a gardener
+     * has arrived at the given sensorstation
+     *
+     * @param sensorStation
+     */
+    public void gardenerIsHere(SensorStation sensorStation) {
         boolean isThere = sensorStationGardenerService.getGardenerIsHere().contains(sensorStation);
-        if(isThere){
+        if (isThere) {
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, "Gardener is at the station", null));
             PrimeFaces.current().ajax().update("msgs");

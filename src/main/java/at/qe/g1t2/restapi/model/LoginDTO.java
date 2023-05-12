@@ -1,5 +1,9 @@
 package at.qe.g1t2.restapi.model;
 
+/**
+ * This LoginDTO is sent to accessPoint to tell him the credentials to authenticate
+ * via HTTP-Basic.
+ */
 public class LoginDTO {
 
     private String id;

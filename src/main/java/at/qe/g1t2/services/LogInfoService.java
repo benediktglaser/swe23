@@ -11,6 +11,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class provides a service for logging information.
+ */
 @Component
 @Scope("application")
 public class LogInfoService {
@@ -37,8 +40,6 @@ public class LogInfoService {
             logInfo.setType(convertRevTypeToString((Byte) log[3]));
             logInfo.setUsername((String) log[4]);
             list.add(logInfo);
-
-
         }
 
         return list;

@@ -18,6 +18,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Service for accessing and manipulating sensorDataTypeInfo
+ *
+ */
 @Component
 @Scope("application")
 public class SensorDataTypeInfoService implements Serializable {
@@ -50,15 +54,15 @@ public class SensorDataTypeInfoService implements Serializable {
 
     public List<SensorDataTypeInfo> getAllSensorDataTypeInfosBySensorStation(SensorStation sensorStation){
         List<SensorDataTypeInfo> info = new ArrayList<>();
-        for(SensorDataType sensorDataType: SensorDataType.values()){
-            info.add(sensorDataTypeInfoRepository.findSensorDataTypeInfoByCreateDateMax(sensorStation,sensorDataType));
+        for (SensorDataType sensorDataType : SensorDataType.values()) {
+            info.add(sensorDataTypeInfoRepository.findSensorDataTypeInfoByCreateDateMax(sensorStation, sensorDataType));
         }
         return info;
 
     }
 
-    public List<SensorDataTypeInfo> getTypeInfoByStationAndType(SensorStation sensorStation, SensorDataType type){
-        return sensorDataTypeInfoRepository.getSensorDataTypeInfosBySensorStationAndTypeOrderByCreateDate(sensorStation,type);
+    public List<SensorDataTypeInfo> getTypeInfoByStationAndType(SensorStation sensorStation, SensorDataType type) {
+        return sensorDataTypeInfoRepository.getSensorDataTypeInfosBySensorStationAndTypeOrderByCreateDate(sensorStation, type);
     }
 }
 

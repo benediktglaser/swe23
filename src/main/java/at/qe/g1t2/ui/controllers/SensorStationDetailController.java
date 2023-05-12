@@ -17,7 +17,7 @@ import org.springframework.stereotype.Controller;
 public class SensorStationDetailController {
 
     @Autowired
-    SensorStationService sensorStationService;
+    private SensorStationService sensorStationService;
 
     @Autowired
     SessionSensorStationBean sessionSensorStationBean;
