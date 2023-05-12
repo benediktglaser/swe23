@@ -28,7 +28,9 @@ public class AccessPointCoupleController {
 
     private AccessPoint accessPoint;
 
+
     public void startCouplingMode(AccessPoint accessPoint) {
+        System.out.println(accessPoint + "startCouple");
         accessPoint.setCoupleMode(true);
         this.accessPoint = accessPointService.saveAccessPoint(accessPoint);
         coupleBean.addAccessPoint(accessPoint);
@@ -40,6 +42,10 @@ public class AccessPointCoupleController {
     }
 
     public void connectHandler(Long dipId) {
+        if(accessPoint == null){
+            return;
+        }
+        System.out.println(accessPoint + "Handler");
         SensorStation sensorStation = sensorStationService.getSensorStationByAccessPointIdAndDipId(accessPoint.getAccessPointID(), dipId);
         if (sensorStation != null && sensorStation.getConnected()) {
             PrimeFaces.current().executeScript("PF('statusDialog').hide()");
@@ -47,5 +53,6 @@ public class AccessPointCoupleController {
                     new FacesMessage(FacesMessage.SEVERITY_INFO, "SensorStation with DipId " + sensorStation.getDipId() + " connected successfully!", null));
         }
     }
+
 
 }

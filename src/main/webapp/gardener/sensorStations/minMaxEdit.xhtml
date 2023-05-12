@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml">
+
+    <ui:define name="content">
+        <h:form id="form">
+            <p:autoUpdate/>
+            <p:outputPanel id="sensorStationTypeData">
+                <p:dataTable id="dataTable"
+                             value="#{sensorDataTypeListController.getAllSensorDataTypeBySensorStation(sessionSensorStationBean.sensorStation)}"
+                             var="type" scrollable="true" scrollHeight="400">
+
+                    <p:column headerText="Sensor Type">
+                        <h:outputText value="#{type.type}"/>
+                    </p:column>
+                    <p:column headerText="Min Limit">
+                        <h:outputText value="#{type.getMinLimit()}"/>
+                    </p:column>
+                    <p:column headerText="Max Limit">
+                        <h:outputText value="#{type.maxLimit}"/>
+                    </p:column>
+                    <p:column headerText="Create Date">
+                        <h:outputText value="#{type.createDate.toLocalDate()}"/>
+                    </p:column>
+                </p:dataTable>
+                <p:selectOneMenu id="types" value="#{sensorDataTypeInfoController.sensorDataType}">
+                    <f:selectItems value="#{sensorDataTypeInfoController.allTypes}"/>
+                </p:selectOneMenu>
+                <p:messages id="msgs"/>
+                <h:panelGrid columns="2" styleClass="mb-3">
+                    <p:outputLabel for="min" value="Min Limit: "/>
+                    <p:inputText id="min" value="#{sensorDataTypeInfoController.type.minLimit}">
+                    </p:inputText>
+                    <p:outputLabel for="max" value="Max Limit: "/>
+                    <p:inputText id="max" value="#{sensorDataTypeInfoController.type.maxLimit}">
+                    </p:inputText>
+                </h:panelGrid>
+                <p:separator/>
+                <h:panelGrid columns="1">
+                    <p:commandButton value="Save"
+                                     id="saveButton"
+                                     actionListener="#{sensorDataTypeInfoController.save(sessionSensorStationBean.getSensorStation())}"
+                                     update="@form" >
+                        <f:ajax render="form"/>
+
+                    </p:commandButton>
+                </h:panelGrid>
+
+            </p:outputPanel>
+        </h:form>
+    </ui:define>
+</ui:composition>

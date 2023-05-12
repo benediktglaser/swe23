@@ -26,4 +26,5 @@ public interface SensorDataTypeInfoRepository extends JpaRepository<SensorDataTy
     Object[] getTypeInfoById(@Param("id")String id);
 
     List<SensorDataTypeInfo> getSensorDataTypeInfosBySensorStationAndTypeOrderByCreateDate(SensorStation sensorStation,SensorDataType type);
+
 }

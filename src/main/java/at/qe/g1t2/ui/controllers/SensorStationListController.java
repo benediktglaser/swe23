@@ -34,6 +34,7 @@ public class SensorStationListController extends AbstractListController<String, 
     UserService userService;
 
     private AccessPoint accessPoint;
+
     @Autowired
     AccessPointService accessPointService;
 
