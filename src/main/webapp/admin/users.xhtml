@@ -11,7 +11,7 @@
         <h:form id="userForm">
             <p:panel rendered="#{sessionInfoBean.hasRole('ADMIN')}">
                 <f:facet name="header">
-                    <p:commandButton value="New" update=":userForm" oncomplete="PF('userCreateDialog').show()"
+                    <p:commandButton value="Create User" update=":userForm" oncomplete="PF('userCreateDialog').show()"
                                      icon="pi pi-plus">
                         <f:setPropertyActionListener value="#{user}" target="#{adminManagementController.user}"/>
                     </p:commandButton>
@@ -78,6 +78,7 @@
                         <p:selectBooleanCheckbox value="#{adminManagementController.gardenerRole}" itemLabel="gardener role"/>
                         <p:selectBooleanCheckbox value="#{adminManagementController.adminRole}" itemLabel="admin role"/>
                         <p:selectBooleanCheckbox value="#{adminManagementController.userRole}" itemLabel="user role"/>
+                        <p:selectBooleanCheckbox value="#{adminManagementController.superAdminRole}" itemLabel="super-admin role"/>
                     </h:panelGrid>
                     <p:separator/>
                     <h:panelGrid columns="3">

@@ -34,6 +34,8 @@ public class AdminManagementController{
 
     private boolean gardenerRole;
 
+    private boolean superAdminRole;
+
 
     /**
      * Sets the currently displayed user and reloads it form db. This user is
@@ -83,6 +85,12 @@ public class AdminManagementController{
             set.add(UserRole.GARDENER);
             user.setRoles(set);
         }
+        if(superAdminRole){
+            set.add(UserRole.USER);
+            set.add(UserRole.ADMIN);
+            set.add(UserRole.GARDENER);
+            user.setRoles(set);
+        }
         PasswordEncoder encoder = WebSecurityConfig.passwordEncoder();
         user.setPassword(encoder.encode(user.getPassword()));
         user = this.userService.saveUser(user);
@@ -120,6 +128,13 @@ public class AdminManagementController{
         this.gardenerRole = gardenerRole;
     }
 
+    public boolean isSuperAdminRole() {
+        return superAdminRole;
+    }
+
+    public void setSuperAdminRole(boolean superAdminRole) {
+        this.superAdminRole = superAdminRole;
+    }
 }
 
 
