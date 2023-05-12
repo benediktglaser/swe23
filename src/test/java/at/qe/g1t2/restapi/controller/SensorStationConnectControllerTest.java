@@ -77,6 +77,53 @@ class SensorStationConnectControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser(username = "4294ba1b-f794-4e3d-b606-896b28237bcb", authorities = {"ACCESS_POINT"})
+    void registerSensorStationWithExistingDipId() throws Exception {
+        AccessPoint accessPoint = accessPointService.loadAccessPoint("4294ba1b-f794-4e3d-b606-896b28237bcb");
+        SensorStationDTO sensorStationDTO = new SensorStationDTO();
+        sensorStationDTO.setDipId(20L);
+        sensorStationDTO.setMac("14");
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String requestBody = objectMapper.writeValueAsString(sensorStationDTO);
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/api/sensorStation/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+
+        Assertions.assertEquals("{\"available\":false,\"alreadyConnected\":false}",result.getResponse().getContentAsString());
+    }
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "4294ba1b-f794-4e3d-b606-896b28237bcb", authorities = {"ACCESS_POINT"})
+    void registerTwoSensorStationWithSameDipId() throws Exception {
+        AccessPoint accessPoint = accessPointService.loadAccessPoint("4294ba1b-f794-4e3d-b606-896b28237bcb");
+        SensorStationDTO sensorStationDTO = new SensorStationDTO();
+        sensorStationDTO.setDipId(1L);
+        sensorStationDTO.setMac("100");
+        SensorStationDTO sensorStationDTO2 = new SensorStationDTO();
+        sensorStationDTO2.setDipId(1L);
+        sensorStationDTO2.setMac("200");
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String requestBody = objectMapper.writeValueAsString(sensorStationDTO);
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/api/sensorStation/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+
+        Assertions.assertEquals("{\"available\":true,\"alreadyConnected\":false}",result.getResponse().getContentAsString());
+        requestBody = objectMapper.writeValueAsString(sensorStationDTO2);
+        result = mockMvc.perform(MockMvcRequestBuilders.post("/api/sensorStation/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+
+        Assertions.assertEquals("{\"available\":false,\"alreadyConnected\":false}",result.getResponse().getContentAsString());
+    }
+
+    @Test
+    @DirtiesContext
     @WithMockUser(username = "43d5aba9-29c5-49b4-b4ec-2d430e34104f", authorities = {"ACCESS_POINT"})
     void registerExistingSensorStationOtherAccessPoint() throws Exception {
         AccessPoint accessPoint = accessPointService.loadAccessPoint("43d5aba9-29c5-49b4-b4ec-2d430e34104f");

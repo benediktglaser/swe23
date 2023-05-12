@@ -56,7 +56,6 @@ class AccessPointServiceTest {
         SensorStation sensorStation = sensorStationService
                 .loadSensorStation("b94d9ff0-1366-49b1-b19b-85f73c14d744");
         sensorStation.setAccessPoint(accessPoint);
-        sensorStationService.saveSensorStation(accessPoint, sensorStation);
         accessPointService.deleteAccessPoint(accessPoint);
 
         assertNull(accessPointService

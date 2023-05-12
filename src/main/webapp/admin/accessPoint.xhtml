@@ -64,14 +64,14 @@
             </p:confirmDialog>
 
             <p:dialog header="Link AccessPoint" id="accessPointLinkDialog" widgetVar="accessPointLinkDialog"
-                      modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                      modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true">
                 <p:outputPanel id="accessPointLinkData">
                     <p:commandButton value="Activate Couplemode"
                                      actionListener="#{accessPointCoupleController.startCouplingMode(sensorStationListController.accessPoint)}"
                                      onstart="startTimer()">
                     </p:commandButton>
                     <p:dataTable id="connectTable" value="#{sensorStationListController}" var="sensorStation"
-                                 lazy="true" rows="2" paginator="true" scrollable="true" scrollHeight="400">
+                                 lazy="true" rows="3" paginator="true" dynamic="true">
                         <p:column headerText="UUID" sortBy="#{sensorStation.id}" filterBy="#{sensorStation.id}">
                             <h:outputText value="#{sensorStation.id}"/>
                         </p:column>

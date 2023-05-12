@@ -1,6 +1,7 @@
 package at.qe.g1t2.restapi.controller;
 
 
+import at.qe.g1t2.model.Picture;
 import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.services.PictureService;
 import at.qe.g1t2.services.SensorStationService;
@@ -15,6 +16,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import java.util.stream.Collectors;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 @SpringBootTest
@@ -43,7 +46,7 @@ public class FileUploadControllerTest {
                 .andExpect(status().isOk());
         SensorStation sensorStation = sensorStationService.loadSensorStation(sensorStationId);
         Assertions.assertEquals(1, sensorStation.getPictures().size());
-        Assertions.assertEquals("test.jpg", sensorStation.getPictures().get(0).getPictureName());
+        Assertions.assertTrue(sensorStation.getPictures().stream().map(Picture::getPictureName).toList().contains("test.jpg"));
 
     }
 

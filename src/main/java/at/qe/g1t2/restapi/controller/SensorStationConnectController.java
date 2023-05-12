@@ -66,6 +66,24 @@ public class SensorStationConnectController {
         LogMsg<String, SensorStation> msg;
         SensorStation existingSensorStation = sensorStationService.getSensorStation(sensorStationDTO.getMac());
         SensorStationRegisterDTO sensorStationRegisterDTO = new SensorStationRegisterDTO();
+        SensorStation existingStationDipId = sensorStationService.getSensorStationByAccessPointIdAndDipId(accessPoint.getAccessPointID(), sensorStationDTO.getDipId());
+        SensorStationDTO existingDTO = visibleSensorStationsService.getSensorStationByAccessPointAndDipId(accessPoint, Long.toString(sensorStationDTO.getDipId()));
+        if (existingDTO != null) {
+            sensorStationRegisterDTO.setAvailable(false);
+            sensorStationRegisterDTO.setAlreadyConnected(false);
+            msg = new LogMsg<>(LogMsg.LogType.OTHER, SensorStation.class, "SensorStation: DipId", "DipId of requesting SensorStation is already registered", "Access point: " + accessPoint.getAccessPointID());
+            LOGGER.warn(msg.getMessage());
+            return new ResponseEntity<>(sensorStationRegisterDTO, HttpStatus.OK);
+        }
+        //Checks if the DipId of the requesting sensorStation is already in database
+        if (existingStationDipId != null && (!existingStationDipId.getMac().equals(sensorStationDTO.getMac()))) {
+            sensorStationRegisterDTO.setAvailable(false);
+            sensorStationRegisterDTO.setAlreadyConnected(false);
+            msg = new LogMsg<>(LogMsg.LogType.OTHER, SensorStation.class, "SensorStation: DipId" + existingSensorStation.getId(), "DipId of requesting SensorStation is already used", "Access point: " + accessPoint.getAccessPointID());
+            LOGGER.warn(msg.getMessage());
+            return new ResponseEntity<>(sensorStationRegisterDTO, HttpStatus.OK);
+        }
+
         /*
         If the sensor station is already in the database with the same access point, which asks for register
         the response body indicates that the sensor station is not available for coupling because its already coupeld
@@ -78,9 +96,11 @@ public class SensorStationConnectController {
             LOGGER.warn(msg.getMessage());
             return new ResponseEntity<>(sensorStationRegisterDTO, HttpStatus.OK);
         }
+
         /*
         If the sensor station is registered with a different access point,
         the response body indicates that the sensor station is not available for registration
+
          */
         if (existingSensorStation != null) {
             sensorStationRegisterDTO.setAvailable(false);
@@ -89,6 +109,7 @@ public class SensorStationConnectController {
             LOGGER.warn(msg.getMessage());
             return new ResponseEntity<>(sensorStationRegisterDTO, HttpStatus.OK);
         }
+
         sensorStationDTO.setConnected(false);
         sensorStationDTO.setVerified(false);
         sensorStationRegisterDTO.setAvailable(true);

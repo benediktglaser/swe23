@@ -30,7 +30,10 @@ public class VisibleSensorStationsService {
         }
     }
 
-    public SensorStationDTO getSensorStationByAccessPointAndDipId(AccessPoint accessPoint, String dipId) {
+    public SensorStationDTO getSensorStationByAccessPointAndDipId(AccessPoint accessPoint,String dipId){
+        if(visibleMap.get(accessPoint)==null){
+            return null;
+        }
         return visibleMap.get(accessPoint).get(Long.parseLong(dipId));
     }
 

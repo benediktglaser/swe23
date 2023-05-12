@@ -44,8 +44,9 @@ public class SensorDataTypeInfoService implements Serializable {
         if(sensorDataTypeInfo.isNew()){
             sensorDataTypeInfo.setCreateDate(LocalDateTime.now());
             sensorDataTypeInfo.setSensorStation(sensorStation);
+            sensorDataTypeInfo = sensorDataTypeInfoRepository.save(sensorDataTypeInfo);
             sensorStation.getSensorDataTypeInfos().add(sensorDataTypeInfo);
-            SensorStation newSensorStation = sensorStationRepository.save(sensorDataTypeInfo.getSensorStation());
+            sensorStationRepository.save(sensorStation);
             return sensorDataTypeInfoRepository.save(sensorDataTypeInfo);
         }
         return sensorDataTypeInfoRepository.save(sensorDataTypeInfo);

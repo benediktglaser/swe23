@@ -12,9 +12,7 @@ import org.springframework.data.domain.Persistable;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Entity presenting a AccessPoint.
@@ -47,7 +45,7 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
     private Boolean coupleMode;
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime updateDate;
-    @OneToMany(mappedBy = "accessPoint", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "accessPoint", fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @AuditJoinTable
     private List<SensorStation> sensorStation = new ArrayList<>();

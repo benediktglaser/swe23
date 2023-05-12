@@ -6,6 +6,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.envers.AuditJoinTable;
 import org.hibernate.envers.Audited;
 import org.springframework.data.domain.Persistable;
 
@@ -62,6 +63,7 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     @JoinTable(name = "user_sensor_station",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "sensor_station_id"))
+    @AuditJoinTable
     private Set<SensorStation> sensorStations = new HashSet<>();
 
     public Set<SensorStation> getSensorStations() {

@@ -37,7 +37,7 @@ public class AccessPointService implements Serializable {
         return accessPointRepository.findAccessPointById(uuid);
     }
 
-    @Transactional
+
     public AccessPoint saveAccessPoint(AccessPoint accessPoint) {
         if (accessPoint.isNew()) {
             accessPoint.setAccessPointRole(AccessPointRole.ACCESS_POINT);
@@ -45,12 +45,12 @@ public class AccessPointService implements Serializable {
             accessPoint.setThresholdInterval(30.0);
             accessPoint.setCoupleMode(Boolean.FALSE);
         }
+
         return accessPointRepository.save(accessPoint);
     }
 
 
     @PreAuthorize("hasAnyAuthority('ACCESS_POINT','ADMIN')")
-    @Transactional
     public void deleteAccessPoint(AccessPoint accessPoint) {
         accessPointRepository.delete(accessPoint);
     }
