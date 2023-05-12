@@ -22,6 +22,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 
@@ -43,13 +44,12 @@ public class SensorStationService implements Serializable {
     @Autowired
     AccessPointRepository accessPointRepository;
 
-    @Transactional
+
     public SensorStation loadSensorStation(String uuid) {
         return sensorStationRepository.findSensorStationById(uuid);
     }
 
     @PreAuthorize("hasAnyAuthority('ACCESS_POINT','ADMIN','GARDENER')")
-    @Transactional
     public SensorStation saveSensorStation(AccessPoint accessPoint, SensorStation sensorStation) {
         if (!sensorStation.isNew()) {
             return sensorStationRepository.save(sensorStation);
@@ -57,25 +57,22 @@ public class SensorStationService implements Serializable {
         }
 
         sensorStation.setCreateDate(LocalDateTime.now());
-        accessPoint.getSensorStation().add(sensorStation);
         sensorStation.setAccessPoint(accessPoint);
-        accessPoint = accessPointRepository.save(accessPoint);
+        sensorStation = sensorStationRepository.save(sensorStation);
+        accessPoint.getSensorStation().add(sensorStation);
+        accessPointRepository.save(accessPoint);
 
-        return  loadSensorStation(accessPoint.getSensorStation().remove(accessPoint.getSensorStation().size()-1).getId());
+        return  sensorStation;
 
     }
 
     @PreAuthorize("hasAnyAuthority('ACCESS_POINT','ADMIN')")
-    @Transactional
     public void deleteSensorStation(SensorStation sensorStation) {
-
-
-
         sensorStationRepository.delete(sensorStation);
 
     }
 
-    @Transactional
+
     public Collection<SensorStation> getAllSensorStations() {
         return sensorStationRepository.getSensorStationByEnabledTrue();
 
@@ -94,7 +91,6 @@ public class SensorStationService implements Serializable {
     }
 
     @PreAuthorize("hasAnyAuthority('ACCESS_POINT','ADMIN')")
-    @Transactional
     public void removeSensorStationFromAccessPoint(AccessPoint accessPoint, SensorStation sensorStation) {
         accessPoint.getSensorStation().remove(sensorStation);
         accessPointRepository.save(accessPoint);
@@ -109,6 +105,9 @@ public class SensorStationService implements Serializable {
     public SensorStation getSensorStation(String mac){
         return sensorStationRepository.getSensorStationsByMac(mac);
 
+    }
+    public String getRandomPicture(SensorStation sensorStation){
+        return sensorStation.getPictures().get(new Random().nextInt(sensorStation.getPictures().size())).getPath();
     }
 
 }

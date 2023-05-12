@@ -71,6 +71,15 @@ public class SensorDataServiceTest {
         String sensorDataId = sensorDataService.saveSensorData(sensorStation, newSensorData).getId();
         Assertions.assertEquals(sizeOfListBefore + 1, sensorStationService.loadSensorStation(sensorStation.getId()).getSensorData().size());
         Assertions.assertEquals(sensorStation.getId(), sensorDataService.loadSensorData(sensorDataId).getSensorStation().getId());
+        for(int i = 0; i < 10; i++){
+            SensorData sensorStation1 = new SensorData();
+            sensorStation1.setType(SensorDataType.SOIL);
+            sensorStation1.setTimestamp(LocalDateTime.now());
+            sensorDataService.saveSensorData(sensorStation, sensorStation1);
+
+        }
+        Assertions.assertEquals(sizeOfListBefore + 1 + 10, sensorStationService.loadSensorStation(sensorStation.getId()).getSensorData().size());
+
     }
 
     @Test

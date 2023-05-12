@@ -35,13 +35,11 @@ public class SensorDataService implements Serializable {
 
 
     @PreAuthorize("hasAnyAuthority('ACCESS_POINT','GARDENER')")
-    @Transactional
     public SensorData loadSensorData(String uuid) {
         return sensorDataRepository.findSensorDataById(uuid);
     }
 
     @PreAuthorize("hasAnyAuthority('ACCESS_POINT','GARDENER')")
-    @Transactional
     public SensorData saveSensorData(SensorStation sensorStation, SensorData sensorData) {
         if (sensorData.isNew()) {
             if(sensorData.getTimestamp()==null){
@@ -50,9 +48,10 @@ public class SensorDataService implements Serializable {
             LocalDateTime createDate = LocalDateTime.now();
             sensorData.setCreateDate(createDate);
             sensorData.setSensorStation(sensorStation);
+            sensorData = sensorDataRepository.save(sensorData);
             sensorStation.getSensorData().add(sensorData);
             sensorStation = sensorStationRepository.save(sensorStation);
-            return sensorStation.getSensorData().get(sensorStation.getSensorData().size() - 1);
+            return sensorData;
         }
 
         return sensorDataRepository.save(sensorData);

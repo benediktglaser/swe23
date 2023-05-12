@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PictureService {
@@ -29,24 +30,28 @@ public class PictureService {
         } else throw new EntityNotFoundException("Entity Not Found");
     }
 
-    @Transactional
+
     public Picture save(SensorStation sensorStation, Picture picture) {
         if (picture.isNew()) {
             LocalDateTime createDate = LocalDateTime.now();
             picture.setCreateDate(createDate);
             picture.setSensorStation(sensorStation);
+            picture = pictureRepository.save(picture);
             sensorStation.getPictures().add(picture);
             sensorStation = sensorStationRepository.save(sensorStation);
-            return sensorStation.getPictures().get(sensorStation.getPictures().size() - 1);
+
+            return picture;
         }
         return pictureRepository.save(picture);
     }
 
-    @Transactional
     public void delete(Picture picture) {
-        pictureRepository.delete(picture);
+        System.out.println(picture.getSensorStation().getId());
         picture.getSensorStation().getPictures().remove(picture);
         sensorStationRepository.save(picture.getSensorStation());
+        pictureRepository.delete(picture);
+        System.out.println("Here remove from list"+picture.getSensorStation().getPictures().stream().map(Picture::getId).collect(Collectors.toList()));
+        System.out.println("Here after save");
 
     }
 

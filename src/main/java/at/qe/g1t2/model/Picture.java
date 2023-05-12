@@ -31,9 +31,9 @@ public class Picture implements Persistable<String>, Serializable, Comparable<Pi
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Picture)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Picture picture = (Picture) o;
-        return id.equals(picture.id);
+        return Objects.equals(id, picture.id);
     }
 
     @Override

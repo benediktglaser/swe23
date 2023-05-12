@@ -67,9 +67,9 @@ public class SensorDataTypeInfo implements Persistable<String>, Serializable, Co
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof SensorDataTypeInfo)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         SensorDataTypeInfo that = (SensorDataTypeInfo) o;
-        return id.equals(that.id);
+        return Objects.equals(id, that.id);
     }
 
     @Override

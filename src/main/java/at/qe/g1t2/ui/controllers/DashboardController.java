@@ -13,6 +13,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 
+import java.util.Random;
+
 @Controller
 @Scope("view")
 public class DashboardController extends AbstractListController<String, SensorStation>{
@@ -55,7 +57,7 @@ public class DashboardController extends AbstractListController<String, SensorSt
         if(sensorStation.getPictures().isEmpty()){
             return "plant-test1.png";
         }
-        return sensorStation.getPictures().get(0).getPath();
+        return sensorStationService.getRandomPicture(sensorStation);
     }
 
 }
