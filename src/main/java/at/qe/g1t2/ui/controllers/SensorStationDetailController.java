@@ -7,6 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+/**
+ * This controller manages SensorStations which is needed in accessPoint.xhtml. Therefore, contains save function which
+ * calls a service function responsible for saving the entity.
+ */
+
 @Controller
 @Scope("view")
 public class SensorStationDetailController {

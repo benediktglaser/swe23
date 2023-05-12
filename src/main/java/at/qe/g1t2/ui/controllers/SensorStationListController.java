@@ -15,28 +15,24 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * This controller manages the SensorStations which are needed in accessPoint.xhtml. Therefore, contains filter functions,
+ * redirect functions which are needed in frontend and getter for corresponding sensorStations lists.
+ */
 
 @Component
 @Scope("view")
 public class SensorStationListController extends AbstractListController<String, SensorStation> {
     @Autowired
-    SensorStationService sensorStationService;
+    private SensorStationService sensorStationService;
 
     @Autowired
-    SensorDataService sensorDataService;
+    private SensorStationGardenerService sensorStationGardenerService;
 
     @Autowired
-    SensorStationGardenerService sensorStationGardenerService;
-
-    @Autowired
-    SessionSensorStationBean sessionSensorStationBean;
-    @Autowired
-    UserService userService;
+    private SessionSensorStationBean sessionSensorStationBean;
 
     private AccessPoint accessPoint;
-
-    @Autowired
-    AccessPointService accessPointService;
 
     public SensorStationListController() {
         this.setListToPageFunction((spec, page) -> sensorStationService.getAllSensorStations(spec, page));

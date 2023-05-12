@@ -4,6 +4,9 @@ import org.hibernate.envers.RevisionListener;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+/**
+ * This class is listening to changes which are made in the webserver.
+ */
 public class LogListener implements RevisionListener {
 
     @Override

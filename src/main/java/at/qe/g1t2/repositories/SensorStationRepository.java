@@ -12,6 +12,11 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Repository for managing {@link SensorStation} entities.
+ *
+ */
+
 public interface SensorStationRepository extends JpaRepository<SensorStation, String>, JpaSpecificationExecutor<SensorStation>, Serializable {
 
     SensorStation findSensorStationById(String uuid);

@@ -1,5 +1,6 @@
 package at.qe.g1t2.repositories;
 
+import at.qe.g1t2.model.AccessPoint;
 import at.qe.g1t2.model.SensorDataType;
 import at.qe.g1t2.model.SensorDataTypeInfo;
 import at.qe.g1t2.model.SensorStation;
@@ -11,6 +12,11 @@ import org.springframework.data.repository.query.Param;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
+
+/**
+ * Repository for managing {@link SensorDataType} entities.
+ *
+ */
 
 public interface SensorDataTypeInfoRepository extends JpaRepository<SensorDataTypeInfo,String>, JpaSpecificationExecutor<SensorDataTypeInfo>, Serializable {
 

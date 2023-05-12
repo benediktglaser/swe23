@@ -11,6 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class is responsible for displaying the visible SensorStations for different AccessPoints.
+ */
+
 @Controller
 @Scope("view")
 public class VisibleSensorStationController {
@@ -23,6 +27,10 @@ public class VisibleSensorStationController {
 
     private Long selectedDipId;
 
+    /**
+     * This method retrieves a list of SensorStation IDs that are visible to a given AccessPoint using a map.
+     * @param accessPoint
+     */
     public List<Long> getSensorStationsByAccessPoint(AccessPoint accessPoint){
         Map<AccessPoint, Map<Long, SensorStationDTO>> visibleMap = visibleSensorStationsService.getVisibleMap();
         Map<Long,SensorStationDTO> sensorStationDTOs = visibleMap.get(accessPoint);
@@ -32,6 +40,13 @@ public class VisibleSensorStationController {
         return sensorStationDTOs.keySet().stream().toList();
     }
 
+    /**
+     *  This method is used to select a SensorStationDTO object based on the AccessPoint and dipId parameters,
+     *  mark it as verified, and update the visibleSensorStationsService with the updated SensorStationDTO.
+     *  The selectedDipId field is also updated to the dipId parameter.
+     * @param accessPoint
+     * @param dipId
+     */
     public void selectSensorStation(AccessPoint accessPoint, Long dipId){
         SensorStationDTO sensorStationDTO = getSensorStationsByAccessPointAndDipId(accessPoint,dipId);
         sensorStationDTO.setVerified(true);
