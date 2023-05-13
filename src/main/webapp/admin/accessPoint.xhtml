@@ -104,30 +104,30 @@
                                         listener="#{sensorStationDetailController.saveSensorStation(sensorStation)}"/>
                             </h:selectBooleanCheckbox>
                         </p:column>
-                        <p:column>
+                        <p:column style="width:5%;text-align: center">
                             <p:commandButton title="Assign gardener" value="Assign"
                                              action="#{gardenerSensorStationController.setSensorStation(sensorStation)}"
                                              update=":accessPointForm:assignDialog"
                                              oncomplete="PF('assignDialog').show()"/>
                         </p:column>
-                        <p:column >
+                        <p:column style="width:7%;text-align: center">
                             <p:commandButton update=":accessPointForm" value="MinMaxEdit"
                                              action="#{sensorStationDetailController.redirectToMinMaxEdit(sensorStation)}"/>
                         </p:column>
-                        <p:column >
+                        <p:column style="width:2%;text-align: center">
                             <p:commandButton id="edit" icon="pi pi-pencil"
                                              update=":accessPointForm:sensorStationFormEditDialog"
                                              oncomplete="PF('sensorStationFormEditDialog').show()"
                                              action="#{sensorStationDetailController.setSensorStation(sensorStation)}"
                             />
                         </p:column>
-                        <p:column >
+                        <p:column style="width:7%;text-align: center">
                             <p:commandButton id="sensordata" value="Sensordata"
                                              action="#{sensorStationListController.redirectToSensorDataPage(sensorStation)}"/>
                         </p:column>
                         <p:commandButton id="gallery" value="Gallery"
                                          action="#{sensorStationListController.redirectToGallery(sensorStation)}"/>
-                        <p:column >
+                        <p:column style="width:10%;text-align: center">
                             <p:commandButton id="download" value="DownloadQRCode"
                                              action="#{QRCodeDownloadController.doUpdate(sensorStation.id)}"/>
                         </p:column>
@@ -186,8 +186,6 @@
                     }
                 </script>
             </p:dialog>
-
-
             <p:dialog widgetVar="spinner" modal="true" draggable="false" closable="false" resizable="false" dynamic="true">
                 <i class="pi pi-spin pi-spinner" style="font-size: 1rem"></i>
                 <p:messages id="connectMsg"></p:messages>
@@ -274,14 +272,12 @@
                 }
             </script>
             <script>
-
                 function endCoupleMode() {
 
                     PF('spinner').hide();
 
                 }
             </script>
-
             <script>
                 function updateTable() {
                     PF('ConnectTable').loadLazyData();
