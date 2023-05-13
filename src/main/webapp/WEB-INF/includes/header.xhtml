@@ -12,7 +12,7 @@
 <ui:composition>
     <h:form>
         <p:menubar>
-            <p:menuitem value="Sensor Stations" rendered="#{sessionInfoBean.hasRole('GARDENER') || sessionInfoBean.hasRole('ADMIN')}" url="/gardener/sensorStations/sensorStations.xhtml"/>
+            <p:menuitem value="Sensor Stations" rendered="#{sessionInfoBean.hasRole('GARDENER')}" url="/gardener/sensorStations/sensorStations.xhtml"/>
             <p:menuitem value="Dashboard" rendered="#{sessionInfoBean.hasRole('USER') || sessionInfoBean.hasRole('ADMIN')}" url="/user/dashboard/dashboard.xhtml"/>
             <p:menuitem value="All Plants" rendered="#{sessionInfoBean.hasRole('USER')|| sessionInfoBean.hasRole('ADMIN')}" url="/user/usersAllSensorStations.xhtml"/>
             <p:menuitem value="Manage Users" rendered="#{sessionInfoBean.hasRole('ADMIN')}" url="/admin/users.xhtml"/>
