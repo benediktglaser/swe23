@@ -15,7 +15,19 @@ lock = threading.Lock()
 interval = 20
 
 
-def init():
+def init()->None:
+    """
+    This function intialises the database,
+    check the credentials, asks if the
+    accesspoint is enabled.
+    If the accesspoint has no credentails
+    or has some which are not known
+    to the webserver it will register
+    a new one
+    ---------
+    Returns None
+    """
+
     # read the conf.yaml file
     config = configparser.ConfigParser()
     config.read_file(open(r"conf.yaml"))  # TODO: change on raspberry
@@ -28,8 +40,9 @@ def init():
     # establish the database-connection
     path = "database.db"  # TODO: change on raspberry
     conn = db.access_database(path)
+    db.create_tables(conn)
 
-    # establish a (first time) connection to the webserver
+    # Read name and password from identification.yaml
     try:
         login = credentials.read_from_yaml()
 
@@ -38,18 +51,21 @@ def init():
             "Error when reading identification.yaml. Please make sure that the file is in the same directory as this script"
         )
 
+    #Check if accesspoint exists on webserver, if not create a new one
     if login is not None and login[0] is not None:
         verify_credentials = rci.request_if_accesspoint_exists(address, login[0])
         if verify_credentials != True:
             print("Credentials not recognized, register as new accesspoint")
             login = None
 
+    #Register new accesspoint if necessary
     if login is None or login[0] is None or login[1] is None:
+        print("Register as new accesspoint")
         login = register_accesspoint(address, interval, name)
     print(login)
     auth_header = rci.prepare_auth_headers(login[0], login[1])
 
-    # This is the loop to check for approval from the webserver
+    # This loop checks for approval from the webserver
     while True:
         enabled = rci.request_approval(address, auth_header)
         if enabled is True:
@@ -71,6 +87,20 @@ def init():
 
 
 def main(args):
+    """
+    This function starts all the
+    threads.
+     Arguments
+    ---------
+    args: a dictionary containing:
+    authentication_header: str
+        the auth_header for the rest-connection
+    address: str,
+    db_path: str,
+    ---------
+    Returns None
+    """
+   
     polling_for_couple_mode_thread = Thread(
         target=poll_couple_mode,
         args=(args["db_path"], args["address"], args["authentication_header"]),
@@ -106,29 +136,54 @@ def main(args):
         ),
     )
     polling_for_couple_mode_thread.start()
-    # polling_for_interval_thread.start()
-    # polling_for_limits_thread.start()
-    # sending_sensor_data_thread.start()
+    polling_for_interval_thread.start()
+    polling_for_limits_thread.start()
+    sending_sensor_data_thread.start()
     polling_enable_for_sensorstation_thread.start()
 
     polling_for_couple_mode_thread.join()
-    # polling_for_interval_thread.join()
-    # polling_for_limits_thread.join()
-    # sending_sensor_data_thread.join()
-
+    polling_for_interval_thread.join()
+    polling_for_limits_thread.join()
+    sending_sensor_data_thread.join()
     polling_enable_for_sensorstation_thread.join()
 
 
-def poll_couple_mode(conn, address: str, auth_header: str):
+def poll_couple_mode(path: str, address: str, auth_header: str):
+    """
+    This function polls an checks
+    if the couple mode has been activated
+     Arguments
+    ---------
+    path: str,
+    address: str,
+    authentication_header: str
+        the auth_header for the rest-connection
+    ---------
+    Returns None
+    """
+
+    conn = db.access_database(path)
     while True:
         start_coupling = rci.request_couple_mode(address, auth_header)
         if start_coupling is True:
             logger.log_info("Starting coupling mode")
             myble.ble_function(conn, address, auth_header)
-        time.sleep(10)
+        time.sleep(30)
 
 
 def poll_interval(address: str, auth_header: str):
+    """
+    This function polls an checks
+    if the interval has changed
+    Arguments
+    ---------
+    address: str,
+    authentication_header: str
+        the auth_header for the rest-connection
+    ---------
+    Returns None
+    """
+    
     lock.acquire()
     try:
         global interval
@@ -156,33 +211,61 @@ def poll_interval(address: str, auth_header: str):
             finally:
                 lock.release()
 
-        time.sleep(20)
+        time.sleep(40)
 
 
 def poll_limits(address: str, auth_header: str):
+    """
+    This function polls to check
+    if the limits have changed
+    Arguments
+    ---------
+    address: str,
+    authentication_header: str
+        the auth_header for the rest-connection
+    ---------
+    Returns None
+    """
+
     path = "database.db"  # TODO: change on raspberry
     conn = db.access_database(path)
 
+    
     while True:
         list_of_sensorstations = db.get_all_sensorstations(conn)
         for sensorstation_id in list_of_sensorstations:
             new_limits = rest.request_limits(
                 address, auth_header, int(sensorstation_id)
             )
-            print(new_limits)
+
             if new_limits is None:
                 continue
             for list in new_limits:
                 type_limit = list["dataType"]
                 min_limit = list["minLimit"]
                 max_limit = list["maxLimit"]
+                
+                #print(list)
+                   
                 db.update_limits(
                     conn, int(sensorstation_id), type_limit, min_limit, max_limit
                 )
-        time.sleep(25)
+                    
+        time.sleep(300)
 
 
 def send_sensor_data(address: str, auth_header: str):
+    """
+    This function sends sensor_data
+    and then deletes them from the database
+    Arguments
+    ---------
+    address: str,
+    authentication_header: str
+        the auth_header for the rest-connection
+    ---------
+    Returns None
+    """
 
     path = "database.db"  # TODO: change on raspberry
     conn = db.access_database(path)
@@ -222,7 +305,17 @@ def send_sensor_data(address: str, auth_header: str):
 
 
 def poll_sensorstation_enabled(address: str, auth_header: str):
-
+    """
+    This function poll if the sensorstations 
+    are enabled
+    Arguments
+    ---------
+    address: str,
+    authentication_header: str
+        the auth_header for the rest-connection
+    ---------
+    Returns None
+    """
     path = "database.db"  # TODO: change on raspberry
     conn = db.access_database(path)
 
@@ -232,12 +325,23 @@ def poll_sensorstation_enabled(address: str, auth_header: str):
             response = rest.request_if_is_sensorstation_enabled(
                 address, auth_header, int(sensorstation_id)
             )
-            print(response, " ", int(sensorstation_id))
+            #print(response, " ", int(sensorstation_id))
 
-        time.sleep(15)
+        time.sleep(60)
 
 
 def register_accesspoint(address: str, interval: int, name: str):
+    """
+    Register a new accesspoint
+    Arguments
+    ---------
+    address: str,
+    interval: int,
+    name: str
+    ---------
+    Returns None
+    """
+
     login = None
     while login is None or login[0] is None or login[1] is None:
         try:

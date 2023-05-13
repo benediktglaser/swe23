@@ -19,7 +19,7 @@ def access_database(path):
     """
 
     conn = sqlite3.connect(path)
-    create_tables(conn)
+    #create_tables(conn)
     return conn
 
 
@@ -453,6 +453,8 @@ def update_limits(
                     station_id,
                 ),
             )
+        conn.commit()
+        cursor.close()
 
     except sqlite3.Error as e:
         print(e)
@@ -579,6 +581,25 @@ def drop_limits(conn):
         print(e)
         logger.log_error(e)
 
+def delete_all_from_limits(conn:str):
+    """
+    DEBUG ONLY
+    Deletes all entries from the limits table
+    Arguments
+    ---------
+    conn : sqlite3.Connection
+        The connection to the database
+    """
+
+    cursor = conn.cursor()
+    try:
+        cursor.execute("DELETE FROM limits;")
+        conn.commit()
+        cursor.close()
+
+    except sqlite3.Error as e:
+        print(e)
+        logger.log_error(e)
 
 def delete_database(path):
     """
@@ -591,3 +612,9 @@ def delete_database(path):
     """
 
     os.remove(path)
+
+"""Just for testing"""
+if __name__ == "__main__":
+    host = "http://localhost:8080"
+    print(sqlite3.threadsafety)
+
