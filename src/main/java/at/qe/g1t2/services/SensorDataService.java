@@ -50,10 +50,18 @@ public class SensorDataService implements Serializable {
                 sensorData.setTimestamp(LocalDateTime.now());
             }
             SensorDataTypeInfo sensorDataTypeInfo = sensorDataTypeInfoRepository.findSensorDataTypeInfoByCreateDateMax(sensorStation,sensorData.getType());
+            if(sensorDataTypeInfo == null){
+                sensorData.setLimitDate(null);
+                sensorData.setMinLimit(null);
+                sensorData.setMaxLimit(null);
+            }
+            else{
+                sensorData.setLimitDate(sensorDataTypeInfo.getCreateDate());
+                sensorData.setMinLimit(sensorDataTypeInfo.getMinLimit());
+                sensorData.setMaxLimit(sensorDataTypeInfo.getMaxLimit());
+            }
+
             LocalDateTime createDate = LocalDateTime.now();
-            sensorData.setLimitDate(sensorDataTypeInfo.getCreateDate());
-            sensorData.setMinLimit(sensorDataTypeInfo.getMinLimit());
-            sensorData.setMaxLimit(sensorDataTypeInfo.getMaxLimit());
             sensorData.setCreateDate(createDate);
             sensorData.setSensorStation(sensorStation);
             sensorData = sensorDataRepository.save(sensorData);
