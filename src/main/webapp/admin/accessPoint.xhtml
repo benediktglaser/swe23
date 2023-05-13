@@ -145,6 +145,7 @@
             <p:dialog header="Sensor Station Details" id="sensorStationFormEditDialog"
                       widgetVar="sensorStationFormEditDialog" modal="true" showEffect="fade" hideEffect="fade"
                       resizable="false" dynamic="true">
+                <p:defaultCommand target="saveButtonEdit"/>
                 <h:panelGrid columns="2">
                     <p:outputLabel for="plant_name" value="Plant Name: "/>
                     <p:inputText id="plant_name" value="#{sensorStationDetailController.sensorStation.name}"/>
@@ -165,7 +166,7 @@
             </p:dialog>
             <p:dialog header="Assign a gardener" widgetVar="assignDialog" id="assignDialog" modal="true"
                       draggable="false" closable="true" resizable="false" dynamic="true">
-                <p:messages id="validMsg"></p:messages>
+                <p:messages id="validMsg"/>
                 <p:outputPanel id="assignPanel">
                     <p:defaultCommand target="assignButton"/>
                     <p:autoComplete id="event" value="#{gardenerSensorStationController.username}"
@@ -188,9 +189,9 @@
             </p:dialog>
             <p:dialog widgetVar="spinner" modal="true" draggable="false" closable="false" resizable="false" dynamic="true">
                 <i class="pi pi-spin pi-spinner" style="font-size: 1rem"></i>
-                <p:messages id="connectMsg"></p:messages>
+                <p:messages id="connectMsg"/>
                 <p:outputPanel id="aviableData">
-                    <p:poll interval="5" update="aviableData"></p:poll>
+                    <p:poll interval="5" update="aviableData"/>
                     <p:dataTable id="avaiableTable"
                                  value="#{visibleSensorStationController.getSensorStationsByAccessPoint(sensorStationListController.accessPoint)}"
                                  var="dipIds"
@@ -238,10 +239,8 @@
             <script>
                 var timer;
                 function startTimer1() {
-                    alert("here");
                     timer = setTimeout(function () {
                         if (!PF('statusDialog').isVisible()) {
-
                         } else {
                             alert("Connecting reached timeout");
                             PF('statusDialog').hide();

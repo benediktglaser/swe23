@@ -51,10 +51,10 @@ INSERT INTO sensor_data_type_info(ID, TYPE, MIN_LIMIT, MAX_LIMIT, SENSOR_STATION
 VALUES
     ('id1cc', 'TEMPERATURE', 0, 100, '8ccfdfaa-9731-4786-8efa-e2141e5c4095', '2023-04-04'),
     ('id2cc', 'TEMPERATURE', 10.0, 50.0, 'f11c3324-125f-4b2d-8b82-3692b0772d95', '2023-05-04'),
-    ('id3cc', 'TEMPERATURE', -20, 80,'b94d9ff0-1366-49b1-b19b-85f73c14d744', '2023-06-04'),
-    ('id4cc', 'TEMPERATURE', 5, 90,  '9f98b70c-4de7-46c0-a611-21160743be7e', '2023-07-04'),
-    ('id5cc', 'TEMPERATURE', 15, 75, 'c57004cc-ca72-41a0-9432-754e642696cb', '2023-08-04'),
-    ('id6cc', 'TEMPERATURE', -30, 60, '4e9bca4a-5df7-4d5f-af5f-4493458f57f7', '2023-09-04'),
+    ('id3cc', 'TEMPERATURE', -20, 80,'b94d9ff0-1366-49b1-b19b-85f73c14d744', '2023-01-04'),
+    ('id4cc', 'TEMPERATURE', 5, 90,  '9f98b70c-4de7-46c0-a611-21160743be7e', '2023-02-04'),
+    ('id5cc', 'TEMPERATURE', 15, 75, 'c57004cc-ca72-41a0-9432-754e642696cb', '2023-03-04'),
+    ('id6cc', 'TEMPERATURE', -30, 60, '4e9bca4a-5df7-4d5f-af5f-4493458f57f7', '2023-04-04'),
     ('id7cc', 'TEMPERATURE', -10, 110,'71243b9c-1eaf-4d3f-a3c3-2b32a8e96c7e', '2023-04-05'),
     ('id8cc', 'TEMPERATURE', 20, 70,  '77d7b5a5-5e43-4828-bdf2-7e3e3d83796c', '2023-04-06'),
     ('id9cc', 'TEMPERATURE', -25, 85, '1be4c4f4-2b08-4bc8-8b44-1c0965b58ee9', '2023-04-07'),
@@ -65,12 +65,12 @@ VALUES
     ('id14c', 'TEMPERATURE', -5, 95,  'fac9c9b9-62cc-4d3d-af5b-06d9965f0f7c', '2023-04-14'),
     ('id1cc1', 'PRESSURE', 4, 30, '8ccfdfaa-9731-4786-8efa-e2141e5c4095', '2023-04-14'),
     ('id1cc2', 'LIGHT', 4, 30, 'ce9b6d71-2a2b-4baf-bf52-717d1b3a4ea4', '2023-04-05'),
-    ('id15c', 'PRESSURE', -10, 90,'b94d9ff0-1366-49b1-b19b-85f73c14d744', '2023-06-04'),
-    ('id16c', 'HUMIDITY', 0, 60,'b94d9ff0-1366-49b1-b19b-85f73c14d744', '2023-06-04'),
-    ('id17c', 'SOIL', 1, 70,'b94d9ff0-1366-49b1-b19b-85f73c14d744', '2023-06-04'),
-    ('id18c', 'LIGHT', 2, 80,'b94d9ff0-1366-49b1-b19b-85f73c14d744', '2023-06-04'),
+    ('id15c', 'PRESSURE', -10, 90,'b94d9ff0-1366-49b1-b19b-85f73c14d744', '2023-05-04'),
+    ('id16c', 'HUMIDITY', 0, 60,'b94d9ff0-1366-49b1-b19b-85f73c14d744', '2023-02-04'),
+    ('id17c', 'SOIL', 1, 70,'b94d9ff0-1366-49b1-b19b-85f73c14d744', '2023-02-04'),
+    ('id18c', 'LIGHT', 2, 80,'b94d9ff0-1366-49b1-b19b-85f73c14d744', '2023-02-04'),
     ('id18cc','PRESSURE', 3, 78, 'cf6d8d3e-9b9c-4172-98d8-50b29f1e1f87', '2023-04-27'),
-    ('id19c', 'AIRQUALITY', -20, 800,'b94d9ff0-1366-49b1-b19b-85f73c14d744', '2023-06-04');
+    ('id19c', 'AIRQUALITY', -20, 800,'b94d9ff0-1366-49b1-b19b-85f73c14d744', '2023-02-04');
 
 
 
