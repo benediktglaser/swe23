@@ -36,6 +36,7 @@ public class SensorStationDetailController {
     }
 
     public void setSensorStation(SensorStation sensorStation) {
+        System.out.println("Here in Setter");
         this.sensorStation = sensorStation;
     }
 

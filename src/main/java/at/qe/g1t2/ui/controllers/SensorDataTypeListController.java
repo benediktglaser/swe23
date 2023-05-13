@@ -25,13 +25,12 @@ public class SensorDataTypeListController{
     @Autowired
     private SensorStationService sensorStationService;
 
-    @Autowired
-    private AccessPointService accessPointService;
 
     private SensorStation sensorStation;
 
 
     public List<SensorDataTypeInfo> getAllSensorDataTypeBySensorStation(SensorStation sensorStation){
+        System.out.println(sensorStation);
         return sensorDataTypeInfoService.getAllSensorDataTypeInfosBySensorStation(sensorStation);
     }
 
@@ -41,8 +40,6 @@ public class SensorDataTypeListController{
     }
 
     public void setSensorStation(SensorStation sensorStation) {
-        this.sensorStation = sensorStationService.loadSensorStation(sensorStation.getId());
-        accessPointService.saveAccessPoint(sensorStation.getAccessPoint());
-        sensorStationService.saveSensorStation(sensorStation.getAccessPoint(), sensorStation);
+        this.sensorStation = sensorStation;
     }
 }
