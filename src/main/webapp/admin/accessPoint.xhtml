@@ -167,10 +167,10 @@
                       draggable="false" closable="true" resizable="false" dynamic="true">
                 <p:messages id="validMsg"></p:messages>
                 <p:outputPanel id="assignPanel">
-
+                    <p:defaultCommand target="assignButton"/>
                     <p:autoComplete id="event" value="#{gardenerSensorStationController.username}"
                                     completeMethod="#{userListController.getAllUsername}" scrollHeight="250"/>
-                    <p:commandButton value="SUBMIT"
+                    <p:commandButton id="assignButton" value="SUBMIT"
                                      action="#{gardenerSensorStationController.assignSensorStationToGardener(gardenerSensorStationController.sensorStation)}"
                                      update="connectTable assignDialog">
                     </p:commandButton>
@@ -228,16 +228,29 @@
 
                 </p:outputPanel>
             </p:dialog>
-            <p:dialog id="statusDialog" widgetVar="statusDialog" modal="true" draggable="false" resizable="false"
-                      showHeader="false" closable="false" onHide="stopPoll()" dynamic="true">
+            <p:dialog widgetVar="statusDialog" onShow="startTimer1();" modal="true" draggable="false"
+                      resizable="false" showHeader="false" closable="false" onHide="stopPoll();">
                 <h:outputText value="Connecting" style="margin-left:10px;"/>
                 <i class="pi pi-spin pi-spinner" style="font-size: 0.8rem"/>
                 <p:poll id="connectPoll" interval="5"
                         listener="#{accessPointCoupleController.connectHandler(visibleSensorStationController.selectedDipId)}"
                         update="aviableData connectMsg"/>
-            </p:dialog>
 
+            </p:dialog>
             <script>
+                var timer;
+                function startTimer1() {
+                    alert("here");
+                    timer = setTimeout(function () {
+                        if (!PF('statusDialog').isVisible()) {
+
+                        } else {
+                            alert("Connecting reached timeout");
+                            PF('statusDialog').hide();
+                        }
+                    }, 30000); // 30 sec in milliseconds
+                }
+
                 function stopPoll() {
                     PF('connectPoll').stop();
                 }

@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import java.time.LocalDateTime;
+
 /**
  * This controller is responsible for starting and ending the couple mode
  */
@@ -29,6 +31,16 @@ public class AccessPointCoupleController {
     private AccessPointService accessPointService;
 
     private AccessPoint accessPoint;
+
+    private LocalDateTime connectStartTime;
+
+    public LocalDateTime getConnectStartTime() {
+        return connectStartTime;
+    }
+
+    public void setConnectStartTime(LocalDateTime connectStartTime) {
+        this.connectStartTime = connectStartTime;
+    }
 
 
     public void startCouplingMode(AccessPoint accessPoint) {

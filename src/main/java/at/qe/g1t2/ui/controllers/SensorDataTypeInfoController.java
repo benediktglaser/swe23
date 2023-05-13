@@ -4,13 +4,11 @@ import at.qe.g1t2.model.SensorDataType;
 import at.qe.g1t2.model.SensorDataTypeInfo;
 import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.services.SensorDataTypeInfoService;
-import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
