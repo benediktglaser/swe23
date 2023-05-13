@@ -27,14 +27,13 @@
                             <p:outputPanel id="carossel">
 
                                 <h4 class="mb-1">#{sensorStation.name}</h4>
-                                <p:commandButton id="minmax" value="Min/Max edit"
+                             <p:commandButton id="minmax" value="Min/Max edit"
                                                  update=":sensorStationForm"
                                                  action="#{sensorStationDetailController.redirectToMinMaxEdit(sensorStation)}"
                                 />
                                 <p:commandButton id="edit" icon="pi pi-pencil"
-                                                 update=":sensorStationForm"
+                                                 update=":sensorStationForm:sensorStationFormEditDialog"
                                                  oncomplete="PF('sensorStationFormEditDialog').show()"
-                                                 actionListener="#{sessionSensorStationBean.setSensorStation(sensorStation)}"
                                                  action="#{sensorStationDetailController.setSensorStation(sensorStation)}"
                                 />
                                 <p:commandButton id="sensordata" value="Sensordata"
@@ -63,19 +62,19 @@
                 <p:defaultCommand target="saveButtonEdit"/>
                 <h:panelGrid id="editMinMax" columns="2">
                     <p:outputLabel for="plant_name" value="Plant Name: "/>
-                    <p:inputText id="plant_name" value="#{sessionSensorStationBean.sensorStation.name}"/>
+                    <p:inputText id="plant_name" value="#{sensorStationDetailController.sensorStation.name}"/>
                     <p:outputLabel for="plant_category" value="Plant Category: "/>
-                    <p:inputText id="plant_category" value="#{sessionSensorStationBean.sensorStation.category}">
+                    <p:inputText id="plant_category" value="#{sensorStationDetailController.sensorStation.category}">
                     </p:inputText>
                     <p:outputLabel for="plant_interval"
-                                   value="Interval(includes overhead #{sessionSensorStationBean.sensorStation.accessPoint.thresholdInterval}): "/>
+                                   value="Interval(includes overhead #{sensorStationDetailController.sensorStation.accessPoint.thresholdInterval}): "/>
                     <p:inputText id="plant_interval"
-                                 value="#{sessionSensorStationBean.sensorStation.accessPoint.sendingInterval}">
+                                 value="#{sensorStationDetailController.sensorStation.accessPoint.sendingInterval}">
                     </p:inputText>
                 </h:panelGrid>
                 <p:commandButton id="saveButtonEdit" value="Save"
                                  update=":sensorStationForm"
-                                 action="#{sensorDataTypeListController.setSensorStation(sensorStationDetailController.sensorStation)}"/>
+                                 action="#{sensorStationDetailController.saveSensorStation(sensorStationDetailController.sensorStation)}"/>
             </p:dialog>
         </h:form>
     </ui:define>

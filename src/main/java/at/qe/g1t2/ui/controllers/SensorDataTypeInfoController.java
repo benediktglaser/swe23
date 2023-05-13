@@ -18,7 +18,7 @@ import java.util.List;
  * of the sensordatatypeinfo
  */
 @Controller
-@Scope("session")
+@Scope("view")
 public class SensorDataTypeInfoController {
     @Autowired
     private SensorDataTypeInfoService sensorDataTypeInfoService;
@@ -46,6 +46,7 @@ public class SensorDataTypeInfoController {
 
 
     public void save(SensorStation sensorStation) {
+        System.out.println(sensorStation);
         type.setType(sensorDataType);
         if (type.getMaxLimit() == null || type.getMinLimit() == null) {
             FacesContext.getCurrentInstance().addMessage(null,

@@ -13,6 +13,8 @@
 
 
     <ui:define name="content">
+        <form id="downloadForm" method="get">
+        </form>
         <h:form id="accessPointForm">
             <p:dataTable id="accessPointTable" var="accessPoint" value="#{accessPointController}" lazy="true" rows="3"
                          paginator="true" scrollable="true" scrollHeight="400">
@@ -70,8 +72,9 @@
                                      actionListener="#{accessPointCoupleController.startCouplingMode(sensorStationListController.accessPoint)}"
                                      onstart="startTimer()">
                     </p:commandButton>
+
                     <p:dataTable id="connectTable" value="#{sensorStationListController}" var="sensorStation"
-                                 lazy="true" rows="3" paginator="true" dynamic="true">
+                                 lazy="true" rows="3" paginator="true">
                         <p:column headerText="UUID" sortBy="#{sensorStation.id}" filterBy="#{sensorStation.id}">
                             <h:outputText value="#{sensorStation.id}"/>
                         </p:column>
@@ -107,11 +110,61 @@
                                              update=":accessPointForm:assignDialog"
                                              oncomplete="PF('assignDialog').show()"/>
                         </p:column>
+                        <p:column >
+                            <p:commandButton update=":accessPointForm" value="MinMaxEdit"
+                                             action="#{sensorStationDetailController.redirectToMinMaxEdit(sensorStation)}"/>
+                        </p:column>
+                        <p:column >
+                            <p:commandButton id="edit" icon="pi pi-pencil"
+                                             update=":accessPointForm:sensorStationFormEditDialog"
+                                             oncomplete="PF('sensorStationFormEditDialog').show()"
+                                             action="#{sensorStationDetailController.setSensorStation(sensorStation)}"
+                            />
+                        </p:column>
+                        <p:column >
+                            <p:commandButton id="sensordata" value="Sensordata"
+                                             action="#{sensorStationListController.redirectToSensorDataPage(sensorStation)}"/>
+                        </p:column>
+                        <p:commandButton id="gallery" value="Gallery"
+                                         action="#{sensorStationListController.redirectToGallery(sensorStation)}"/>
+                        <p:column >
+                            <p:commandButton id="download" value="DownloadQRCode"
+                                             action="#{QRCodeDownloadController.doUpdate(sensorStation.id)}"/>
+                        </p:column>
                     </p:dataTable>
                 </p:outputPanel>
             </p:dialog>
+            <script>
+                function sent(param) {
+                    const sensorLink = "http://localhost:8080/visitor/sensorStations/gallery.xhtml";
+                    const sensorUrl = sensorLink + param;
+                    document.getElementById("downloadForm").setAttribute("action", sensorUrl);
+                    document.getElementById("downloadForm").submit();
+                }
+            </script>
+            <p:dialog header="Sensor Station Details" id="sensorStationFormEditDialog"
+                      widgetVar="sensorStationFormEditDialog" modal="true" showEffect="fade" hideEffect="fade"
+                      resizable="false" dynamic="true">
+                <h:panelGrid columns="2">
+                    <p:outputLabel for="plant_name" value="Plant Name: "/>
+                    <p:inputText id="plant_name" value="#{sensorStationDetailController.sensorStation.name}"/>
+                    <p:outputLabel for="plant_category" value="Plant Category: "/>
+                    <p:inputText id="plant_category" value="#{sensorStationDetailController.sensorStation.category}">
+                    </p:inputText>
+                    <p:outputLabel for="plant_interval"
+                                   value="Interval(includes overhead #{sensorStationDetailController.sensorStation.accessPoint.thresholdInterval}): "/>
+                    <p:inputText id="plant_interval"
+                                 value="#{sensorStationDetailController.sensorStation.accessPoint.sendingInterval}">
+                    </p:inputText>
+                </h:panelGrid>
+                <p:commandButton id="saveButtonEdit" value="Save"
+                                 update="accessPointLinkData"
+                                 action="#{sensorStationDetailController.saveSensorStation(sensorStationDetailController.sensorStation)}"
+                                 oncomplete="PF('sensorStationFormEditDialog').hide()"
+                />
+            </p:dialog>
             <p:dialog header="Assign a gardener" widgetVar="assignDialog" id="assignDialog" modal="true"
-                      draggable="false" closable="true" resizable="false">
+                      draggable="false" closable="true" resizable="false" dynamic="true">
                 <p:messages id="validMsg"></p:messages>
                 <p:outputPanel id="assignPanel">
                     <p:defaultCommand target="assignButton"/>
@@ -135,7 +188,7 @@
             </p:dialog>
 
 
-            <p:dialog widgetVar="spinner" modal="true" draggable="false" closable="false" resizable="false">
+            <p:dialog widgetVar="spinner" modal="true" draggable="false" closable="false" resizable="false" dynamic="true">
                 <i class="pi pi-spin pi-spinner" style="font-size: 1rem"></i>
                 <p:messages id="connectMsg"></p:messages>
                 <p:outputPanel id="aviableData">
@@ -237,7 +290,7 @@
                 setInterval(updateTable, 10000); // 10 seconds
             </script>
             <p:dialog header="Edit AccessPoint" id="accessPointEditDialog" widgetVar="accessPointEditDialog"
-                      modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                      modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true">
                 <p:outputPanel id="accessPointData" rendered="#{not empty accessPointDetailController.accessPoint}">
                     <p:panelGrid columns="2">
                         <p:outputLabel for="UUID" value="UUID: "/>
