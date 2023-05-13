@@ -10,7 +10,6 @@
 
     <ui:define name="content">
         <h:form id="form">
-            <p:autoUpdate/>
             <p:outputPanel id="sensorStationTypeData">
                 <p:dataTable id="dataTable"
                              value="#{sensorDataTypeListController.getAllSensorDataTypeBySensorStation(sessionSensorStationBean.sensorStation)}"
@@ -48,7 +47,6 @@
                                      actionListener="#{sensorDataTypeInfoController.save(sessionSensorStationBean.getSensorStation())}"
                                      update="@form" >
                         <f:ajax render="form"/>
-
                     </p:commandButton>
                 </h:panelGrid>
 

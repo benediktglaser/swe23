@@ -58,9 +58,10 @@
             </div>
             <p:dialog header="Sensor Station Details" id="sensorStationFormEditDialog"
                       widgetVar="sensorStationFormEditDialog" modal="true" showEffect="fade" hideEffect="fade"
-                      resizable="false" dynamic="true">
+                      resizable="false" dynamic="true" autoUpdate="true">
+                <p:messages id="msgs"/>
                 <p:defaultCommand target="saveButtonEdit"/>
-                <h:panelGrid columns="2">
+                <h:panelGrid id="editMinMax" columns="2">
                     <p:outputLabel for="plant_name" value="Plant Name: "/>
                     <p:inputText id="plant_name" value="#{sessionSensorStationBean.sensorStation.name}"/>
                     <p:outputLabel for="plant_category" value="Plant Category: "/>
