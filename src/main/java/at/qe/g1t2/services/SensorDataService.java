@@ -3,8 +3,10 @@ package at.qe.g1t2.services;
 
 import at.qe.g1t2.model.SensorData;
 import at.qe.g1t2.model.SensorDataType;
+import at.qe.g1t2.model.SensorDataTypeInfo;
 import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.repositories.SensorDataRepository;
+import at.qe.g1t2.repositories.SensorDataTypeInfoRepository;
 import at.qe.g1t2.repositories.SensorStationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -31,6 +33,8 @@ public class SensorDataService implements Serializable {
     private SensorDataRepository sensorDataRepository;
 
     @Autowired
+    private SensorDataTypeInfoRepository sensorDataTypeInfoRepository;
+    @Autowired
     private SensorStationRepository sensorStationRepository;
 
 
@@ -45,7 +49,11 @@ public class SensorDataService implements Serializable {
             if(sensorData.getTimestamp()==null){
                 sensorData.setTimestamp(LocalDateTime.now());
             }
+            SensorDataTypeInfo sensorDataTypeInfo = sensorDataTypeInfoRepository.findSensorDataTypeInfoByCreateDateMax(sensorStation,sensorData.getType());
             LocalDateTime createDate = LocalDateTime.now();
+            sensorData.setLimitDate(sensorDataTypeInfo.getCreateDate());
+            sensorData.setMinLimit(sensorDataTypeInfo.getMinLimit());
+            sensorData.setMaxLimit(sensorDataTypeInfo.getMaxLimit());
             sensorData.setCreateDate(createDate);
             sensorData.setSensorStation(sensorStation);
             sensorData = sensorDataRepository.save(sensorData);

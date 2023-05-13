@@ -1,8 +1,10 @@
 package at.qe.g1t2.ui.controllers;
 
 import at.qe.g1t2.model.SensorData;
+import at.qe.g1t2.model.SensorDataTypeInfo;
 import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.services.SensorDataService;
+import at.qe.g1t2.services.SensorDataTypeInfoService;
 import jakarta.persistence.criteria.Path;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -22,6 +24,9 @@ public class SensorDataListController extends AbstractListController<String, Sen
     @Autowired
     private SensorDataService sensorDataService;
 
+    @Autowired
+    private SensorDataTypeInfoService sensorDataTypeInfoService;
+
     private SensorStation sensorStation;
 
 
@@ -35,6 +40,17 @@ public class SensorDataListController extends AbstractListController<String, Sen
 
     public SensorDataListController() {
         this.setListToPageFunction((spec, page) -> sensorDataService.getAllSensorData(spec, page));
+    }
+
+    public String checkLimit(SensorData sensorData){
+        if(sensorData.getMinLimit() == null || sensorData.getMaxLimit() == null){
+            return "white";
+        }
+
+        if(sensorData.getMeasurement() > sensorData.getMinLimit() && sensorData.getMeasurement() < sensorData.getMaxLimit()){
+            return "green";
+        }
+        return "red";
     }
 
 }

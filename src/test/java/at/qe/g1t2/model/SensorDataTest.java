@@ -35,7 +35,7 @@ public class SensorDataTest {
 
 
         validator.validate(new PojoClassExcludedFields(PojoClassFactory.getPojoClass(SensorData.class),
-                Set.of("createDate", "timestamp")));
+                Set.of("createDate", "timestamp","limitDate")));
         SensorData sensorData = new SensorData();
         LocalDateTime dateTest = LocalDateTime.now();
         sensorData.setCreateDate(dateTest);

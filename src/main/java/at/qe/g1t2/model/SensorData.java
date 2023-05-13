@@ -37,6 +37,12 @@ public class SensorData implements Persistable<String>, Serializable, Comparable
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createDate;
 
+    private Double minLimit;
+
+    private Double maxLimit;
+
+    private LocalDateTime limitDate;
+
     public LocalDateTime getTimestamp() {
         return timestamp;
     }
@@ -109,5 +115,27 @@ public class SensorData implements Persistable<String>, Serializable, Comparable
         return Objects.hash(id);
     }
 
+    public Double getMinLimit() {
+        return minLimit;
+    }
 
+    public void setMinLimit(Double minLimit) {
+        this.minLimit = minLimit;
+    }
+
+    public Double getMaxLimit() {
+        return maxLimit;
+    }
+
+    public void setMaxLimit(Double maxLimit) {
+        this.maxLimit = maxLimit;
+    }
+
+    public LocalDateTime getLimitDate() {
+        return limitDate;
+    }
+
+    public void setLimitDate(LocalDateTime limitDate) {
+        this.limitDate = limitDate;
+    }
 }

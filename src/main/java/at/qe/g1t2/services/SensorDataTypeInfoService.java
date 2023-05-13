@@ -65,5 +65,9 @@ public class SensorDataTypeInfoService implements Serializable {
     public List<SensorDataTypeInfo> getTypeInfoByStationAndType(SensorStation sensorStation, SensorDataType type) {
         return sensorDataTypeInfoRepository.getSensorDataTypeInfosBySensorStationAndTypeOrderByCreateDate(sensorStation, type);
     }
+
+    public SensorDataTypeInfo getActualLimits(SensorStation sensorStation, SensorDataType type){
+        return sensorDataTypeInfoRepository.findSensorDataTypeInfoByCreateDateMax(sensorStation,type);
+    }
 }
 

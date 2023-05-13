@@ -39,7 +39,7 @@
                          class="sensorDataTable" lazy="true" rows="3" paginator="true">
                 <p:column headerText="Measurement" class="ui-datatable-header" sortBy="#{sensorData.measurement}"
                           filterBy="#{sensorData.measurement}">
-                    <h:outputText value="#{sensorData.measurement}"/>
+                    <h:outputText value="#{sensorData.measurement}" style="color: #{sensorDataListController.checkLimit(sensorData)};"/>
                 </p:column>
                 <p:column headerText="Unit" class="ui-datatable-header" sortBy="#{sensorData.type}"
                           filterBy="#{sensorData.type}">
@@ -52,6 +52,18 @@
                 <p:column headerText="Date" class="ui-datatable-header" sortBy="#{sensorData.timestamp}"
                           filterBy="#{sensorData.timestamp}">
                     <h:outputText value="#{(sensorData.timestamp).toLocalDate()}"/>
+                </p:column>
+                <p:column headerText="Min Limit" class="ui-datatable-header" sortBy="#{sensorData.minLimit}"
+                          filterBy="#{sensorData.minLimit}">
+                    <h:outputText value="#{(sensorData.minLimit)}"/>
+                </p:column>
+                <p:column headerText="Max Limit" class="ui-datatable-header" sortBy="#{sensorData.maxLimit}"
+                          filterBy="#{sensorData.maxLimit}">
+                    <h:outputText value="#{(sensorData.getMaxLimit())}"/>
+                </p:column>
+                <p:column headerText="Limit Date" class="ui-datatable-header" sortBy="#{sensorData.limitDate}"
+                          filterBy="#{sensorData.limitDate}">
+                    <h:outputText value="#{(sensorData.getLimitDate()).toLocalDate()}"/>
                 </p:column>
             </p:dataTable>
             <p:poll interval="40" update=":sensorDataForm:sensorDataTable"></p:poll>

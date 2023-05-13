@@ -28,8 +28,8 @@ CREATE TABLE access_point
     create_date        timestamp    NULL,
     connected          BOOLEAN      NULL,
     enabled            BOOLEAN      NULL,
-    sending_interval   DOUBLE       NULL,
-    threshold_interval DOUBLE       NULL,
+    sending_interval   DOUBLE PRECISION      NULL,
+    threshold_interval DOUBLE PRECISION       NULL,
     update_date        timestamp    NULL,
     last_Coupling_Date        timestamp    NULL,
     last_Connected_Date        timestamp    NULL,
@@ -44,11 +44,14 @@ CREATE TABLE access_point
 CREATE TABLE sensor_data
 (
     id                VARCHAR(255) NOT NULL,
-    measurement       DOUBLE       NOT NULL,
+    measurement       DOUBLE PRECISION       NOT NULL,
     sensor_station_id VARCHAR(255) NOT NULL ,
     type              VARCHAR(255) NOT NULL ,
     timestamp         timestamp    NOT NULL ,
     create_date       timestamp    NOT NULL,
+    min_limit         DOUBLE PRECISION,
+    max_limit          DOUBLE PRECISION,
+    limit_date         timestamp,
     CONSTRAINT pk_sensordata PRIMARY KEY (id)
 );
 
@@ -56,8 +59,8 @@ CREATE TABLE sensor_data_type_info
 (
     id                VARCHAR(255) NOT NULL,
     type              VARCHAR(100),
-    min_Limit         DOUBLE,
-    max_Limit         DOUBLE,
+    min_Limit         DOUBLE PRECISION,
+    max_Limit         DOUBLE PRECISION,
     create_date       timestamp    NOT NULL,
     sensor_station_id VARCHAR(255) NULL,
     CONSTRAINT pf_sensor_data_type_info PRIMARY KEY (id)
