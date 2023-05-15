@@ -1,6 +1,7 @@
 package at.qe.g1t2.ui.controllers;
 
 import at.qe.g1t2.model.SensorStation;
+import at.qe.g1t2.services.AccessPointService;
 import at.qe.g1t2.services.SensorStationService;
 import at.qe.g1t2.ui.beans.SessionSensorStationBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +24,15 @@ public class SensorStationDetailController {
     SessionSensorStationBean sessionSensorStationBean;
 
     @Autowired
+    AccessPointService accessPointService;
+
+    @Autowired
     SensorDataTypeInfoController sensorDataTypeInfoController;
 
     private SensorStation sensorStation;
 
     public void saveSensorStation(SensorStation sensorStation){
+        accessPointService.saveAccessPoint(sensorStation.getAccessPoint());
         sensorStationService.saveSensorStation(sensorStation.getAccessPoint(),sensorStation);
     }
 
@@ -36,7 +41,6 @@ public class SensorStationDetailController {
     }
 
     public void setSensorStation(SensorStation sensorStation) {
-        System.out.println("Here in Setter");
         this.sensorStation = sensorStation;
     }
 

@@ -55,13 +55,11 @@ public class SensorStationService implements Serializable {
             return sensorStationRepository.save(sensorStation);
 
         }
-
         sensorStation.setCreateDate(LocalDateTime.now());
         sensorStation.setAccessPoint(accessPoint);
         sensorStation = sensorStationRepository.save(sensorStation);
         accessPoint.getSensorStation().add(sensorStation);
         accessPointRepository.save(accessPoint);
-
         return  sensorStation;
 
     }
@@ -74,7 +72,6 @@ public class SensorStationService implements Serializable {
 
     public Collection<SensorStation> getAllSensorStations() {
         return sensorStationRepository.getSensorStationByEnabledTrue();
-
     }
 
 
