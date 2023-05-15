@@ -28,6 +28,9 @@ public class AccessPointCoupleController {
     private CoupleBean coupleBean;
 
     @Autowired
+    private VisibleSensorStationController visibleSensorStationController;
+
+    @Autowired
     private AccessPointService accessPointService;
 
     private AccessPoint accessPoint;
@@ -44,10 +47,9 @@ public class AccessPointCoupleController {
 
 
     public void startCouplingMode(AccessPoint accessPoint) {
-        System.out.println(accessPoint + "startCouple");
+        visibleSensorStationController.resetVisibleList(accessPoint);
         accessPoint.setCoupleMode(true);
         this.accessPoint = accessPointService.saveAccessPoint(accessPoint);
-        coupleBean.addAccessPoint(accessPoint);
     }
 
     public void endCouplingMode(AccessPoint accessPoint) {

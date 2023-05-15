@@ -9,6 +9,13 @@
                 template="/WEB-INF/templates/main.xhtml">
     <f:metadata>
         <f:viewAction action="#{dashboardController.filterSensorStationsByUser(sessionInfoBean.getCurrentUser())}" />
+        <link href="/resources/css/theme.css" rel="stylesheet" type="text/css"/>
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/modules/stock.js"></script>
+        <script src="https://code.highcharts.com/modules/scrollbar.js"></script>
+        <script src="https://code.highcharts.com/stock/highstock.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
     </f:metadata>
     <ui:define name="content">
         <div class="card">

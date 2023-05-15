@@ -77,6 +77,9 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
     }
 
     public Double getSendingInterval() {
+        if(sendingInterval < thresholdInterval){
+            sendingInterval = thresholdInterval;
+        }
         return sendingInterval;
     }
 
@@ -85,6 +88,14 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
     }
 
     public void setSendingInterval(Double interval) {
+        if(thresholdInterval == null){
+            this.thresholdInterval = interval;
+        }
+        if(interval < thresholdInterval){
+            this.sendingInterval = thresholdInterval;
+            return;
+        }
+
         this.sendingInterval = interval;
     }
 
