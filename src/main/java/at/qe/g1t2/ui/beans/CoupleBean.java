@@ -23,7 +23,6 @@ public class CoupleBean {
 
     public void resetCoupleMode(){
         for(AccessPoint accessPoint: accessPointSet){
-            accessPoint.setCoupleMode(false);
             visibleSensorStationsService.resetVisibleList(accessPoint);
             accessPointSet.remove(accessPoint);
         }

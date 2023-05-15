@@ -60,7 +60,6 @@ public class GardenerSensorStationController {
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "Username does not exists", null));
             isValid = false;
             PrimeFaces.current().executeScript("isValid('false')");
-            PrimeFaces.current().ajax().update("validMsg");
 
         }
     }

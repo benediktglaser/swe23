@@ -1,7 +1,6 @@
 package at.qe.g1t2.restapi.controller;
 
-import at.qe.g1t2.model.AccessPoint;
-import at.qe.g1t2.model.SensorStation;
+import at.qe.g1t2.model.*;
 import at.qe.g1t2.restapi.exception.EntityNotFoundException;
 import at.qe.g1t2.restapi.exception.VisibleMapException;
 import at.qe.g1t2.restapi.model.LimitsDTO;
@@ -182,6 +181,13 @@ public class SensorStationConnectController {
         newSensorStation.setLastConnectedDate(LocalDateTime.now());
         newSensorStation.setEnabled(false);
         newSensorStation = sensorStationService.saveSensorStation(accessPoint, newSensorStation);
+        for(SensorDataType type: SensorDataType.values()){
+            SensorDataTypeInfo sensorDataTypeInfo = new SensorDataTypeInfo();
+            sensorDataTypeInfo.setType(type);
+            sensorDataTypeInfo.setMinLimit(0.0);
+            sensorDataTypeInfo.setMaxLimit(0.0);
+            sensorDataTypeInfoService.save(newSensorStation,sensorDataTypeInfo);
+        }
         sensorStationDTO.setConnected(true);
         visibleSensorStationsService.replaceSensorStationDTO(accessPoint, dipId, sensorStationDTO);
         LogMsg<String, SensorStation> msg = new LogMsg<>(LogMsg.LogType.CONNECTED, SensorStation.class, "SensorStation: DipId" + newSensorStation.getDipId(), "connected successfully", "Access point: " + getAuthAccessPoint().getAccessPointID());

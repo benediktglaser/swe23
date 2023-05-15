@@ -7,9 +7,7 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/main.xhtml">
-    <f:metadata>
-        <f:viewAction action="#{coupleBean.resetCoupleMode()}"/>
-    </f:metadata>
+
 
 
     <ui:define name="content">
@@ -166,14 +164,15 @@
             </p:dialog>
             <p:dialog header="Assign a gardener" widgetVar="assignDialog" id="assignDialog" modal="true"
                       draggable="false" closable="true" resizable="false" dynamic="true">
-                <p:messages id="validMsg"/>
+
                 <p:outputPanel id="assignPanel">
+                    <p:messages id="validMsg"/>
                     <p:defaultCommand target="assignButton"/>
                     <p:autoComplete id="event" value="#{gardenerSensorStationController.username}"
                                     completeMethod="#{userListController.getAllUsername}" scrollHeight="250"/>
                     <p:commandButton id="assignButton" value="SUBMIT"
                                      action="#{gardenerSensorStationController.assignSensorStationToGardener(gardenerSensorStationController.sensorStation)}"
-                                     update="connectTable assignDialog">
+                                     update="connectTable assignPanel validMsg">
                     </p:commandButton>
                 </p:outputPanel>
                 <script>
@@ -219,10 +218,10 @@
                             </p:commandButton>
                         </p:column>
                     </p:dataTable>
-                    <p:commandButton title="Assign gardener" value="Deactivate Couplemode"
+                    <p:commandButton value="Deactivate Couplemode"
                                      actionListener="#{accessPointCoupleController.endCouplingMode(sensorStationListController.accessPoint)}"
                                      action="#{visibleSensorStationController.resetVisibleList(sensorStationListController.accessPoint)}"
-                                     oncomplete="endCoupleMode()">
+                                     oncomplete="endCoupleMode()" update="accessPointLinkData">
                     </p:commandButton>
 
                 </p:outputPanel>
@@ -298,11 +297,6 @@
                         <p:outputLabel for="accessPointThresholdInterval" value="Threshold Interval: "/>
                         <p:inputText id="accessPointThresholdInterval"
                                      value="#{accessPointDetailController.accessPoint.thresholdInterval}"/>
-
-                        <p:outputLabel for="connected" value="Connected: "/>
-                        <p:selectBooleanCheckbox id="connected"
-                                                 value="#{accessPointDetailController.accessPoint.connected}"
-                                                 disabled="true"/>
 
                         <p:outputLabel for="enabled" value="Enabled: "/>
                         <p:selectBooleanCheckbox id="enabled"

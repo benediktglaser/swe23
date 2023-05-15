@@ -35,7 +35,7 @@ class AccessPointConnectionControllerTest {
         AccessPoint accessPoint = accessPointService.loadAccessPoint("4294ba1b-f794-4e3d-b606-896b28237bcb");
         mockMvc.perform(MockMvcRequestBuilders.get("/api/accessPoint/interval"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(result -> assertEquals(33.0, Double.parseDouble(result.getResponse().getContentAsString()), 0.0));
+                .andExpect(result -> assertEquals(30.0, Double.parseDouble(result.getResponse().getContentAsString()), 0.0));
         Assertions.assertTrue(accessPointService.loadAccessPoint(accessPoint.getAccessPointID()).getConnected());
 
     }

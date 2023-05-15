@@ -49,22 +49,22 @@
                           filterBy="#{sensorData.createDate}">
                     <h:outputText value="#{(sensorData.timestamp).toLocalDate()}"/>
                 </p:column>
-                <p:column headerText="Min Limit" class="ui-datatable-header" sortBy="#{sensorData.minLimit}"
+                <p:column headerText="Min Limit" sortBy="#{sensorData.minLimit}"
                           filterBy="#{sensorData.minLimit}">
                     <h:outputText value="#{(sensorData.minLimit)}"/>
                 </p:column>
-                <p:column headerText="Max Limit" class="ui-datatable-header" sortBy="#{sensorData.maxLimit}"
+                <p:column headerText="Max Limit" sortBy="#{sensorData.maxLimit}"
                           filterBy="#{sensorData.maxLimit}">
                     <h:outputText value="#{(sensorData.getMaxLimit())}"/>
                 </p:column>
-                <p:column headerText="Limit Date" class="ui-datatable-header" sortBy="#{sensorData.limitDate}"
+                <p:column headerText="Limit Date" sortBy="#{sensorData.limitDate}"
                           filterBy="#{sensorData.limitDate}">
                     <h:outputText value="#{(sensorData.getLimitDate()).toLocalDate()}"/>
                 </p:column>
             </p:dataTable>
 
 
-
+            <p:separator/>
 
             <div style="flex:1">
                 <!-- Hier steht der Code für das Highcharts-Diagramm -->
