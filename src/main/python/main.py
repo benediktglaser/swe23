@@ -161,13 +161,12 @@ def poll_couple_mode(path: str, address: str, auth_header: str):
     ---------
     Returns None
     """
-
-    conn = db.access_database(path)
+    
     while True:
         start_coupling = rci.request_couple_mode(address, auth_header)
         if start_coupling is True:
             logger.log_info("Starting coupling mode")
-            myble.ble_function(conn, address, auth_header)
+            myble.ble_function(path, address, auth_header)
         time.sleep(30)
 
 
