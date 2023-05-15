@@ -14,6 +14,7 @@
         <form id="downloadForm" method="get">
         </form>
         <h:form id="accessPointForm">
+            <p:poll interval="6" update="accessPointTable"></p:poll>
             <p:dataTable id="accessPointTable" var="accessPoint" value="#{accessPointController}" lazy="true" rows="3"
                          paginator="true" scrollable="true" scrollHeight="400">
                 <p:column headerText="UUID" sortBy="#{accessPoint.id}" filterBy="#{accessPoint.id}">

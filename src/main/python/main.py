@@ -34,7 +34,7 @@ def init()->None:
     address = config.get("config", "address")
     global interval
     interval = int(config.get("config", "interval"))
-    logger.log_debug("start interval: " + str(interval))
+    logger.log_info("start interval: " + str(interval))
     name = config.get("config", "name")
 
     # establish the database-connection
@@ -196,7 +196,7 @@ def poll_interval(address: str, auth_header: str):
 
     while True:
         new_interval = rest.request_interval(address, auth_header)
-        print("interval:", current_interval)
+        print("interval:",new_interval)
         if new_interval is not None and new_interval is not current_interval:
             current_interval = new_interval
             lock.acquire()
@@ -210,7 +210,7 @@ def poll_interval(address: str, auth_header: str):
             finally:
                 lock.release()
 
-        time.sleep(40)
+        time.sleep(30)
 
 
 def poll_limits(address: str, auth_header: str):
@@ -250,7 +250,7 @@ def poll_limits(address: str, auth_header: str):
                     conn, int(sensorstation_id), type_limit, min_limit, max_limit
                 )
                     
-        time.sleep(300)
+        time.sleep(60)
 
 
 def send_sensor_data(address: str, auth_header: str):
@@ -294,10 +294,10 @@ def send_sensor_data(address: str, auth_header: str):
         lock.acquire()
         try:
             my_interval = interval
-            logger.log_debug("interval in send_data: " + str(my_interval))
+            logger.log_info("interval in send_data: " + str(my_interval))
 
-        except Exception as e:
-            logger.log_error("Reading global interval in sending_data failed: " + e)
+        except Exception as e:  
+            logger.log_error("Reading global interval in sending_data failed: " + str(e))
         finally:
             lock.release()
         time.sleep(my_interval)
