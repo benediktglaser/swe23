@@ -3824,3 +3824,10 @@
 2023-05-13 16:46:14,149  _make_request  DEBUG http://localhost:8080 "POST /api/accessPoint/register HTTP/1.1" 200 None
 2023-05-13 16:46:14,167  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
 2023-05-13 16:46:14,424  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/enabled HTTP/1.1" 401 19
+2023-05-14 17:51:30,467  log_debug  DEBUG start interval: 20
+2023-05-14 17:51:30,486  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-05-14 17:51:30,488  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/accessPoint/register (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fa6f9c00a60>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2023-05-14 17:51:45,507  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-05-14 17:51:47,330  _make_request  DEBUG http://localhost:8080 "POST /api/accessPoint/register HTTP/1.1" 200 None
+2023-05-14 17:51:47,349  _new_conn  DEBUG Starting new HTTP connection (1): localhost:8080
+2023-05-14 17:51:48,136  _make_request  DEBUG http://localhost:8080 "GET /api/accessPoint/enabled HTTP/1.1" 401 19
