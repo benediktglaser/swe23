@@ -28,14 +28,14 @@ def create_tables(conn):
     Creates the limits and sensor_data table.
     Arguments
     ---------
-    conn : str
+    conn : sqlite3.Connection
         The connection to the database
     """
 
     cursor = conn.cursor()
     try:
         cursor.execute(
-            "CREATE TABLE IF NOT EXISTS limits(station_id INTEGER,"
+            "CREATE TABLE IF NOT EXISTS limits(station_id INTEGER, mac TEXT,"
             "temp_lower REAL, temp_upper REAL,"
             "pressure_lower REAL, pressure_upper REAL,"
             "quality_lower REAL, quality_upper REAL,"
@@ -75,7 +75,7 @@ def create_tables(conn):
         logger.log_error(e)
 
 
-def init_limits(conn, station_id):
+def init_limits(conn, station_id, mac):
     """
     Initialise the limits table with default values
     Arguments
@@ -84,15 +84,17 @@ def init_limits(conn, station_id):
         The connection to the database
     station_id : int
         The station_id of the station of which the limits should be initialized
+    mac : str
+        MAC-Address of station
     """
 
     cursor = conn.cursor()
     try:
-        # TODO: find reasonable default values for limits
         cursor.execute(
-            "INSERT INTO limits values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            "INSERT INTO limits values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             (
                 station_id,
+                mac,
                 0,
                 1,  # temp
                 0,
@@ -127,14 +129,12 @@ def calculate_limit(value, lower_limit, upper_limit):
         The lower limit of the value
     upper_limit : float
         The upper limit of the value
-    Returns:
+    Returns
+    ---------
     limit : float
         By how much the upper_limit or lower_limit are exceeded or undercut
     """
 
-    # TODO: check what value is sent if sensor isn't picking anything up
-    # if value == 0 or value is None:
-    #     return 0
     if value >= lower_limit:
         if value <= upper_limit:
             return 0
@@ -352,25 +352,25 @@ def get_limits(conn, station_id, type_limit: str):
             result.append(value)
 
         if type_limit == "temp":
-            return (result[1], result[2])
+            return (result[2], result[3])
 
         if type_limit == "pressure":
-            return (result[3], result[4])
+            return (result[4], result[5])
 
         if type_limit == "quality":
-            return (result[5], result[6])
+            return (result[6], result[7])
 
         if type_limit == "humid":
-            return (result[7], result[8])
+            return (result[8], result[9])
 
         if type_limit == "soil":
-            return (result[9], result[10])
+            return (result[10], result[11])
 
         if type_limit == "light":
-            return (result[11], result[12])
+            return (result[12], result[13])
 
         if type_limit == "all":
-            return result[1:]
+            return result[2:]
 
     except sqlite3.Error as e:
         print(e)
@@ -528,10 +528,10 @@ def get_all_sensorstations(conn):
 
     cursor = conn.cursor()
     try:
-        cursor.execute("SELECT DISTINCT station_id FROM limits;")
+        cursor.execute("SELECT DISTINCT station_id, mac FROM limits;")
         record = cursor.fetchall()
         # convert record [(a, b), (c, d)] into a 2D-array [[a, b], [c, d]]
-        result = [item for row in record for item in row]
+        result = [row for row in record]
         cursor.close()
         return result
 

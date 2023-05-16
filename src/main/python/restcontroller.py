@@ -1,4 +1,3 @@
-import time
 import logger
 from typing import List
 
@@ -6,7 +5,6 @@ import requests
 from requests.auth import HTTPBasicAuth
 
 import dbconnection
-import sensordata
 
 
 def prepare_auth_headers(id: str, password: str):
@@ -18,7 +16,7 @@ def post_measurement_original_single(
     address: str, measurement: dict, auth_header
 ) -> dict:
     """
-    DEBUG ONLY
+    DEBUG ONLY.
     Post the given measurement.
     Arguments
     ---------
@@ -42,7 +40,7 @@ def post_measurement_original_single(
     return resp.json()
 
 
-def post_measurement(address: str, list_of_measurements: List, auth_header) -> None:
+def post_measurement(address: str, list_of_measurements: List, auth_header):
     """
     Post the given measurement.
     Arguments

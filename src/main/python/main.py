@@ -1,7 +1,6 @@
 import configparser
 import time
 import restcontroller as rest
-import sensordata
 import logger
 from threading import Thread
 import threading
@@ -15,22 +14,25 @@ lock = threading.Lock()
 interval = 20
 
 
-def init()->None:
+def init() -> dict:
     """
-    This function intialises the database,
-    check the credentials, asks if the
+    This function initialises the database,
+    checks the credentials, asks if the
     accesspoint is enabled.
     If the accesspoint has no credentails
     or has some which are not known
     to the webserver it will register
     a new one
+
+    Returns
     ---------
-    Returns None
+    dict:
+        auth_head, DB-Path, Webserver-Address
     """
 
     # read the conf.yaml file
     config = configparser.ConfigParser()
-    config.read_file(open(r"conf.yaml"))  # TODO: change on raspberry
+    config.read_file(open(r"conf.yaml"))
     address = config.get("config", "address")
     global interval
     interval = int(config.get("config", "interval"))
@@ -38,7 +40,7 @@ def init()->None:
     name = config.get("config", "name")
 
     # establish the database-connection
-    path = "database.db"  # TODO: change on raspberry
+    path = "database.db"
     conn = db.access_database(path)
     db.create_tables(conn)
 
@@ -51,14 +53,14 @@ def init()->None:
             "Error when reading identification.yaml. Please make sure that the file is in the same directory as this script"
         )
 
-    #Check if accesspoint exists on webserver, if not create a new one
+    # Check if accesspoint exists on webserver, if not create a new one
     if login is not None and login[0] is not None:
         verify_credentials = rci.request_if_accesspoint_exists(address, login[0])
         if verify_credentials != True:
             print("Credentials not recognized, register as new accesspoint")
             login = None
 
-    #Register new accesspoint if necessary
+    # Register new accesspoint if necessary
     if login is None or login[0] is None or login[1] is None:
         print("Register as new accesspoint")
         login = register_accesspoint(address, interval, name)
@@ -86,21 +88,23 @@ def init()->None:
     return argument_list
 
 
-def main(args):
+def main(args: dict):
     """
     This function starts all the
     threads.
-     Arguments
+
+    Arguments
     ---------
     args: a dictionary containing:
-    authentication_header: str
-        the auth_header for the rest-connection
-    address: str,
-    db_path: str,
-    ---------
-    Returns None
+        auth_header: str,
+        address: str,
+        db_path: str
     """
-   
+
+    # Reconnect to already connected SensorStations after restart of AccessPoint
+    for (_, mac) in db.get_all_sensorstations(db.access_database(args["db_path"])):
+        Thread(target=myble.reconnect_thread, args=(args["db_path"], args["address"], args["authentication_header"], mac)).start()
+
     polling_for_couple_mode_thread = Thread(
         target=poll_couple_mode,
         args=(args["db_path"], args["address"], args["authentication_header"]),
@@ -150,13 +154,16 @@ def main(args):
 
 def poll_couple_mode(path: str, address: str, auth_header: str):
     """
-    This function polls an checks
-    if the couple mode has been activated
-     Arguments
+    This function polls and checks
+    if the couple mode has been activated.
+
+    Arguments
     ---------
-    path: str,
-    address: str,
-    authentication_header: str
+    path: str
+        Path to Database
+    address: str
+        Address of the Webserver
+    auth_header: str
         the auth_header for the rest-connection
     ---------
     Returns None
@@ -176,8 +183,9 @@ def poll_interval(address: str, auth_header: str):
     if the interval has changed
     Arguments
     ---------
-    address: str,
-    authentication_header: str
+    address: str
+        Address of the Webserver
+    auth_header: str
         the auth_header for the rest-connection
     ---------
     Returns None
@@ -216,23 +224,24 @@ def poll_interval(address: str, auth_header: str):
 def poll_limits(address: str, auth_header: str):
     """
     This function polls to check
-    if the limits have changed
+    if the limits have changed.
+
     Arguments
     ---------
-    address: str,
-    authentication_header: str
+    address: str
+        Address of the Webserver
+    auth_header: str
         the auth_header for the rest-connection
     ---------
     Returns None
     """
 
-    path = "database.db"  # TODO: change on raspberry
+    path = "database.db"
     conn = db.access_database(path)
 
-    
     while True:
         list_of_sensorstations = db.get_all_sensorstations(conn)
-        for sensorstation_id in list_of_sensorstations:
+        for (sensorstation_id, mac) in list_of_sensorstations:
             new_limits = rest.request_limits(
                 address, auth_header, int(sensorstation_id)
             )
@@ -244,8 +253,6 @@ def poll_limits(address: str, auth_header: str):
                 min_limit = list["minLimit"]
                 max_limit = list["maxLimit"]
                 
-                #print(list)
-                   
                 db.update_limits(
                     conn, int(sensorstation_id), type_limit, min_limit, max_limit
                 )
@@ -256,22 +263,24 @@ def poll_limits(address: str, auth_header: str):
 def send_sensor_data(address: str, auth_header: str):
     """
     This function sends sensor_data
-    and then deletes them from the database
+    and then deletes them from the database.
+
     Arguments
     ---------
-    address: str,
-    authentication_header: str
+    address: str
+        Address of the Webserver
+    auth_header: str
         the auth_header for the rest-connection
     ---------
     Returns None
     """
 
-    path = "database.db"  # TODO: change on raspberry
+    path = "database.db"
     conn = db.access_database(path)
 
     while True:
         list_of_sensorstations = db.get_all_sensorstations(conn)
-        for sensorstation_id in list_of_sensorstations:
+        for (sensorstation_id, _) in list_of_sensorstations:
 
             list = db.get_sensor_data(conn, sensorstation_id)
             if len(list) != 0:
@@ -306,37 +315,42 @@ def send_sensor_data(address: str, auth_header: str):
 def poll_sensorstation_enabled(address: str, auth_header: str):
     """
     This function poll if the sensorstations 
-    are enabled
+    are enabled.
+
     Arguments
     ---------
-    address: str,
-    authentication_header: str
+    address: str
+        Address of the Webserver
+    auth_header: str
         the auth_header for the rest-connection
     ---------
     Returns None
     """
-    path = "database.db"  # TODO: change on raspberry
+    path = "database.db"
     conn = db.access_database(path)
 
     while True:
         list_of_sensorstations = db.get_all_sensorstations(conn)
-        for sensorstation_id in list_of_sensorstations:
+        for (sensorstation_id, _) in list_of_sensorstations:
             response = rest.request_if_is_sensorstation_enabled(
                 address, auth_header, int(sensorstation_id)
             )
-            #print(response, " ", int(sensorstation_id))
 
         time.sleep(60)
 
 
 def register_accesspoint(address: str, interval: int, name: str):
     """
-    Register a new accesspoint
+    Register a new accesspoint.
+
     Arguments
     ---------
-    address: str,
-    interval: int,
+    address: str
+        Address of the Webserver
+    interval: int
+        Interval in which registration is attempted.
     name: str
+        Name of the accesspoint
     ---------
     Returns None
     """
