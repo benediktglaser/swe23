@@ -48,8 +48,10 @@ data_struct mean_data = {0};
 unsigned long timestamp_data = millis();
 // timestamp for error light
 unsigned long timestamp_error = millis();
-bool gardener_is_here = false;
+unsigned long timestamp_gardener = millis();
+bool gardener_is_here = true;
 bool active_excess = false;
+bool disconnected = false;
 unsigned int excess = 1;
 char error_uuid[64] = {0};
 char data_types[6][16] = {"temp", "pressure", "air_quality", "humid", "soil", "light"};
@@ -177,25 +179,40 @@ void setup() {
   Serial.println("==========================");
 
   // startup sound
-  tone(A0, 257, 200); // C
+  tone(A0, 261, 200); // C
   delay(200);
-  tone(A0, 323, 200); // E
+  tone(A0, 329, 200); // E
   delay(200);
-  tone(A0, 385, 200); // G
+  tone(A0, 392, 200); // G
 }
 
 void loop() {
+  BLE.poll();
   static bool error_light_is_on = false;
   bool establish_connection = false;
   if (!digitalRead(BLE_BUTTON)) {
+    // so that active_excess is cleared on SensorStation and on AccessPoint
+    // when reconnecting
+    timestamp_gardener = millis();
+    gardener_is_here = true;
     establish_connection = true;
   }
   if (!BLE.connected() && establish_connection) {
     Serial.println("Connecting");
     ble_connect();
   }
-  
-  BLE.poll();
+
+  if (disconnected) {
+    if (millis() - timestamp_error > 200) {
+      if (error_light_is_on) {
+        setColor(0, 0, 0);
+      } else {
+        setColor(255, 0, 0);
+      }
+      timestamp_error = millis();
+      error_light_is_on = !error_light_is_on;
+    }
+  }
 
 // select samples every 2000ms
   if (millis() - timestamp_data > 2000) {
@@ -204,23 +221,16 @@ void loop() {
     timestamp_data = millis();
   }
 
-// if NUM_SAMPLES samples have been collected, send mean of samples
-if (iteration == NUM_SAMPLES) {
-  iteration = 0;
-  mean_data = calculateMeanData(data);
-  setSensorDataInBLE(mean_data);
-  printData(mean_data);
-}  
-  // TODO: set up a loop here that
-  // 1. meassures the data
-  // 2. sends the data and
-  // 3. checks the limit of the recieved data and if necessary, calls the errorLight()-function.
-  // The only way to clear this light is to press the button on D2. If the value is still to
-  // low/high, the light should light up again. If the button on D3 is pressed, the loop should
-  // be left and the pairing-mode should start.
+  // if NUM_SAMPLES samples have been collected, send mean of samples
+  if (iteration == NUM_SAMPLES) {
+    iteration = 0;
+    mean_data = calculateMeanData(data);
+    setSensorDataInBLE(mean_data);
+    printData(mean_data);
+  }
 
-  if (active_excess) {
-    if (millis() - timestamp_error > 50000 / excess) {
+  if (active_excess && !gardener_is_here && !disconnected) {
+    if (millis() - timestamp_error > 25000 / excess) {
       if (error_light_is_on) {
         setColor(0, 0, 0); 
       } else {
@@ -230,10 +240,15 @@ if (iteration == NUM_SAMPLES) {
       error_light_is_on = !error_light_is_on;
     }
   }
-  if (active_excess && !digitalRead(ERROR_BUTTON)) {
+  if (!digitalRead(ERROR_BUTTON)) {
     active_excess = false;
     gardener_is_here = true;
     setColor(0, 0, 0);
+    timestamp_gardener = millis();
+  }
+  // gardenere_is_here is set for 1 minute
+  if (gardener_is_here && millis() - timestamp_gardener > 60000) {
+    gardener_is_here = false;
   }
   gardener.setValue(gardener_is_here);
 }
@@ -387,13 +402,13 @@ void ble_connect() {
   setColor(0, 0, 0);
   if(!BLE.connected()) {
     // timeout sound
-    tone(A0, 514, 200); // C
+    tone(A0, 524, 200); // C
     delay(200);
-    tone(A0, 385, 200); // G
+    tone(A0, 392, 200); // G
     delay(200);
-    tone(A0, 323, 200); // E
+    tone(A0, 329, 200); // E
     delay(200);
-    tone(A0, 257, 200); // C
+    tone(A0, 261, 200); // C
   }
   Serial.println("Stop advertising");
 }
@@ -411,17 +426,28 @@ void blePeripheralConnectHandler(BLEDevice central) {
   BLE.stopAdvertise();
   Serial.println("Connected event, central: ");
   Serial.println(central.address());
+  disconnected = false;
+  // turn off light if it is still on
+  setColor(0, 0, 0);
   // connection sound
-  tone(A0, 323, 200); // E
+  tone(A0, 329, 200); // E
   delay(200);
-  tone(A0, 385, 200); // G
+  tone(A0, 392, 200); // G
   delay(200);
-  tone(A0, 514, 200); // C
+  tone(A0, 524, 200); // C
 }
 
 void blePeripheralDisconnectHandler(BLEDevice central) {
   Serial.println("Disconnected event, central: ");
   Serial.println(central.address());
+  disconnected = true;
+  // disconnect sound
+  tone(A0, 494, 500); // H
+  delay(500);
+  tone(A0, 494, 500); // H
+  delay(500);
+  tone(A0, 494, 500); // H
+  delay(500);
 }
 
 void writeLimitHandler(BLEDevice central, BLECharacteristic characteristic) {
@@ -436,7 +462,6 @@ void writeLimitHandler(BLEDevice central, BLECharacteristic characteristic) {
 
 void readGardenerHandler(BLEDevice central, BLECharacteristic characteristic) {
   Serial.println("Gardener-Value read");
-  gardener_is_here = false;
 }
 
 /*
@@ -445,16 +470,16 @@ This function provides error-codes via the RBG-LED. Different parameters
 */
 void setErrorLight() {
   if(strcmp(error_uuid, temp_limit_uuid) == 0) {
-    setColor(255, 0, 0);
+    setColor(255, 135, 0); // orange
   } else if(strncmp(error_uuid, pressure_limit_uuid, 8) == 0) {
-    setColor(0, 255, 0);
+    setColor(0, 255, 0); // green
   } else if(strncmp(error_uuid, quality_limit_uuid, 8) == 0) {
-    setColor(0, 0, 255);
+    setColor(0, 0, 255); // blue
   } else if(strncmp(error_uuid, humid_limit_uuid, 8) == 0) {
-    setColor(255, 255, 0);
+    setColor(255, 255, 0); // yellow
   } else if(strncmp(error_uuid, soil_limit_uuid, 8) == 0) {
-    setColor(0, 255, 255);
+    setColor(0, 255, 255); // cyan
   } else if(strncmp(error_uuid, light_limit_uuid, 8) == 0) {
-    setColor(255, 0, 255);
+    setColor(255, 0, 255); // violett
   }
 }
