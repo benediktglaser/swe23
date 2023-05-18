@@ -6,6 +6,8 @@ import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.restapi.exception.FileUploadException;
 import at.qe.g1t2.services.PictureService;
 import at.qe.g1t2.services.SensorStationService;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,13 +15,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
 import java.io.IOException;
 
-
+/**
+ * This class handles uploading Pictures for the visitor and gardener
+ */
 @RestController
 public class FileUploadController {
 
@@ -29,12 +34,32 @@ public class FileUploadController {
     @Autowired
     private SensorStationService sensorStationService;
 
+
+    /**
+     * This method handles the file upload on the webserver. It also filters for the
+     * two allowed formats: png and jpg.
+     *
+     * @param file
+     * @param sensorStationId
+     * @param request
+     * @param redirectAttributes
+     * @return ResponseEntity<Picture>
+     */
     @PostMapping(value = "/upload")
     public ResponseEntity<Picture> handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("sensorStationId") String sensorStationId,
-                                   HttpServletRequest request, RedirectAttributes redirectAttributes) {
+                                                    HttpServletRequest request, RedirectAttributes redirectAttributes) {
         if (!file.isEmpty()) {
             try {
+                String fileType = file.getContentType();
+                if (fileType == null || (!fileType.equals("image/jpeg") && !fileType.equals("image/png"))) {
+                    FacesContext.getCurrentInstance().addMessage(null,
+                            new FacesMessage("Image has not valid format."));
+                    throw new FileUploadException("Only JPEG and PNG images are allowed.");
+                }
                 String fileName = file.getOriginalFilename();
+                if (fileName == null || fileName.equals("")) {
+                    throw new FileUploadException("No fileName");
+                }
                 String extension = fileName.substring(fileName.lastIndexOf("."));
                 String uniqueFileName = System.currentTimeMillis() + extension;
                 String uploadDir = request.getServletContext().getRealPath("/resources/images");
@@ -50,12 +75,14 @@ public class FileUploadController {
                 SensorStation sensorStation = sensorStationService.loadSensorStation(sensorStationId);
                 Picture picture = new Picture();
                 picture.setPath(uniqueFileName);
-                pictureService.save(sensorStation,picture);
+                picture.setPictureName(fileName);
+                pictureService.save(sensorStation, picture);
                 redirectAttributes.addFlashAttribute("message",
                         "You successfully uploaded " + file.getOriginalFilename() + "!");
                 return new ResponseEntity<>(HttpStatus.OK);
-            } catch (IOException e) {
-                throw new FileUploadException("File could not saved"+e.getMessage());
+
+            } catch (IOException | MaxUploadSizeExceededException e) {
+                throw new FileUploadException("File could not saved" + e.getMessage());
             }
         }
         return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);

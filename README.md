@@ -4,26 +4,12 @@
 Plant Care
 
 ## Description
-Plant Care is project, which provides a setup to improve the gardening of various plants. It includes a web-server, from which the most important
-things are controlled and data from the plants are  displayed. 
-The Accesspoint connects the Sensorstation, in which the plant grows with the web-server. 
-
-
+Project for the PS Software Engineering in the summer semester 2023. The project is about a greenhouse that is monitored with the help of sensors. This data is forwarded to an AccessPoint. The AccessPoint transmits the data to a web server, which then presents it to the various users of the web system.
+For more information please visit the wiki.
 
 ## Installation
-To run the web-server on your system, you need a running Mysql-Database with name 'software_engineering_project' and a user with the according rights called
-'se' with the password 'password'. The web-server can be started with 'mvn spring-boot:run'.
-
-## Usage
-Here are some roles to login to the server. The password is always 'passwd'.
-
-name: role
-
-'admin': Administrator
-'user2': User
-'user1' : Gardener
-
-
+Please reference the wiki on git, especially the Quick Start Guide in the 'Bedienungsanleitung'.
+The password to all users is always 'passwd'. To see a list of users and their roles please reference the wiki especially the 'Bedienungsanleitung'.
 
 ## Authors and acknowledgment
 

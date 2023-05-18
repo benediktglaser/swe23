@@ -25,6 +25,9 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 
+/**
+ * This class provides the data which will be display in the graphs on the Webpage
+ */
 @RestController
 @RequestMapping("/chart")
 public class ChartController {
@@ -41,6 +44,16 @@ public class ChartController {
     @Autowired
     SensorDataTypeInfoService sensorDataTypeInfoService;
 
+
+    /**
+     * This method returns all the sensordata which matches the parameters
+     *
+     * @param sensorStationId
+     * @param sensorDataTypeId
+     * @param typeId
+     * @return String
+     * @throws JsonProcessingException
+     */
     @GetMapping()
     public String getSensorData(@RequestParam String sensorStationId, @RequestParam String sensorDataTypeId, @RequestParam String typeId) throws JsonProcessingException {
 
@@ -68,6 +81,19 @@ public class ChartController {
         return writer.writeValueAsString(seriesArray);
     }
 
+
+    /**
+     * This method returns the sensordata which matches the parameter and
+     * is newer than the given @param lastDate
+     * It is used for polling the new SensorData
+     *
+     * @param sensorStationId
+     * @param sensorDataTypeId
+     * @param typeId
+     * @param lastDate
+     * @return
+     * @throws JsonProcessingException
+     */
     @GetMapping("/add")
     public String getNewSensorData(@RequestParam String sensorStationId, @RequestParam String sensorDataTypeId, @RequestParam String typeId, @RequestParam String lastDate) throws JsonProcessingException {
         long timestamp = Long.parseLong(lastDate);

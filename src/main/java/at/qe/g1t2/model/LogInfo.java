@@ -8,9 +8,12 @@ import org.hibernate.envers.RevisionEntity;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+/**
+ * This Entity is the structure of the Logging information which only admins are able to access.
+ */
+
 @Entity
 @RevisionEntity(LogListener.class)
-
 public class LogInfo extends DefaultRevisionEntity {
     @Column(name = "MODIFIED_BY")
     private String username;
@@ -19,7 +22,7 @@ public class LogInfo extends DefaultRevisionEntity {
 
     private LocalDateTime changeDate = LocalDateTime.now();
 
-    @Column(name ="REVTYPE")
+    @Column(name = "REVTYPE")
     private String revtype;
 
     public String getUsername() {

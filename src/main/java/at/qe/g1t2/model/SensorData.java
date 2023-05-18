@@ -9,6 +9,14 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+/**
+ * This class represents an Entity for managing SensorData. Therefore, it contains a "many to one" connection to SensorStation.
+ * Additionally, this class contains a measurement, which is being sent from the SensorStation including its-own SensorDataType.
+ *
+ * @timestamp is being sent via the AccessPoint
+ * @createDate once the entity is being created in webserver the LocalDateTime is being generated.
+ */
+
 @Entity
 @Audited
 public class SensorData implements Persistable<String>, Serializable, Comparable<SensorData> {
@@ -29,6 +37,12 @@ public class SensorData implements Persistable<String>, Serializable, Comparable
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createDate;
+
+    private Double minLimit;
+
+    private Double maxLimit;
+
+    private LocalDateTime limitDate;
 
     public LocalDateTime getTimestamp() {
         return timestamp;
@@ -81,12 +95,28 @@ public class SensorData implements Persistable<String>, Serializable, Comparable
         return (null == createDate);
     }
 
+    public void setCreateDate(LocalDateTime createDate) {
+        this.createDate = createDate;
+    }
+
     public LocalDateTime getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(LocalDateTime createDate) {
-        this.createDate = createDate;
+    public Double getMinLimit() {
+        return minLimit;
+    }
+
+    public void setMinLimit(Double minLimit) {
+        this.minLimit = minLimit;
+    }
+
+    public Double getMaxLimit() {
+        return maxLimit;
+    }
+
+    public void setMaxLimit(Double maxLimit) {
+        this.maxLimit = maxLimit;
     }
 
     @Override
@@ -102,5 +132,11 @@ public class SensorData implements Persistable<String>, Serializable, Comparable
         return Objects.hash(id);
     }
 
+    public LocalDateTime getLimitDate() {
+        return limitDate;
+    }
 
+    public void setLimitDate(LocalDateTime limitDate) {
+        this.limitDate = limitDate;
+    }
 }

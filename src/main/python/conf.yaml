@@ -1,4 +1,4 @@
 [config]
 address: http://localhost:8080
-interval: 10
-name: test A
+interval: 20
+name: Hörsaal A

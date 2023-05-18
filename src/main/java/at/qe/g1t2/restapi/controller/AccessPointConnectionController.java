@@ -3,8 +3,11 @@ package at.qe.g1t2.restapi.controller;
 import at.qe.g1t2.model.AccessPoint;
 import at.qe.g1t2.restapi.exception.EntityNotFoundException;
 import at.qe.g1t2.services.AccessPointService;
+import at.qe.g1t2.services.LogMsg;
 import at.qe.g1t2.services.SensorDataTypeInfoService;
 import at.qe.g1t2.services.SensorStationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,40 +41,84 @@ public class AccessPointConnectionController {
     @Autowired
     SensorStationService sensorStationService;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AccessPointConnectionController.class);
+
+    /**
+     * This method retrieve the authenticated access point and sends the current combined Sending Interval
+     *
+     * @return combinedInterval(sendingInterval + threshold) and Http.Status.OK
+     */
     @GetMapping("/interval")
     public ResponseEntity<Double> checkIfAccessPointIsConnectedAndSendInterval() {
         AccessPoint accessPoint = refreshConnection();
-
-
+        LogMsg<String, AccessPoint> msg = new LogMsg<>(LogMsg.LogType.OTHER, AccessPoint.class, "Access point: " + accessPoint.getAccessPointID(), "AccessPoint asked for sending interval", "Access point: " + accessPoint.getAccessPointID());
+        LOGGER.info(msg.getMessage());
         return new ResponseEntity<>(accessPoint.getSendingInterval(), HttpStatus.OK);
 
     }
 
+    /**
+     * This method retrieve the authenticated access point and sends if the accesspoint is in the
+     * couple mode.
+     *
+     * @return boolean and Http.Status.OK
+     */
     @GetMapping("/couple")
     public ResponseEntity<Boolean> switchToCoupleMode() {
 
         AccessPoint accessPoint = refreshConnection();
+        LOGGER.info(accessPoint.toString());
+        String switched = accessPoint.getCoupleMode().toString();
+        LogMsg<String, AccessPoint> msg = new LogMsg<>(LogMsg.LogType.OTHER, AccessPoint.class, "Access point: " + accessPoint.getAccessPointID(), "AccessPoint ask for coupling mode / Switched: " + switched, "Access point: " + accessPoint.getAccessPointID());
+        LOGGER.info(msg.getMessage());
+
         return new ResponseEntity<>(accessPoint.getCoupleMode(), HttpStatus.OK);
     }
 
+    /**
+     * This method retrieve the authenticated access point and sends as return if the accessPoint is enabled or not
+     * If the AccessPoint is not enabled it will receive Http.Status 401 otherwise true.
+     *
+     * @return boolean and Http.Status.OK
+     */
     @GetMapping("/enabled")
     public ResponseEntity<Boolean> checkEnabled() {
         AccessPoint accessPoint = refreshConnection();
+        String enabled = accessPoint.getEnabled().toString();
+        LogMsg<String, AccessPoint> msg = new LogMsg<>(LogMsg.LogType.OTHER, AccessPoint.class, "Access point: " + accessPoint.getAccessPointID(), "AccessPoint ask for coupling mode / Enabled =" + enabled, "Access point: " + accessPoint.getAccessPointID());
+        LOGGER.info(msg.getMessage());
         return new ResponseEntity<>(accessPoint.getEnabled(), HttpStatus.OK);
     }
 
+    /**
+     * This method identifies the AccessPoint, who sent the message.
+     *
+     * @return AccessPoint
+     */
     public AccessPoint getAuthAccessPoint() {
         String accessPointId = SecurityContextHolder.getContext().getAuthentication().getName();
         AccessPoint accessPoint = accessPointService.loadAccessPoint(accessPointId);
         if (accessPoint == null) {
+            LogMsg<String, AccessPoint> msg = new LogMsg<>(LogMsg.LogType.FAILURE, AccessPoint.class, null, "Entity Not found Exception", null);
+            LOGGER.error(msg.getMessage());
             throw new EntityNotFoundException("AccessPoint is not registered");
         }
+        LogMsg<String, AccessPoint> msg = new LogMsg<>(LogMsg.LogType.OTHER, AccessPoint.class, "Access point: " + accessPoint.getAccessPointID(), "Call get getAuthAccessPoint()", "Access point: " + accessPoint.getAccessPointID());
+        LOGGER.warn(msg.getMessage());
         return accessPoint;
     }
 
+    /**
+     * This method sets date, at which the current authenticated AccessPoint was last
+     * connected to the current Date
+     *
+     * @return AccessPoint
+     */
     private AccessPoint refreshConnection() {
         AccessPoint accessPoint = getAuthAccessPoint();
         accessPoint.setLastConnectedDate(LocalDateTime.now());
+        LogMsg<String, AccessPoint> msg = new LogMsg<>(LogMsg.LogType.CONNECTED, AccessPoint.class, "Access point: " + accessPoint.getAccessPointID(), "AccessPoint is Connected", "Access point: " + accessPoint.getAccessPointID());
+        LOGGER.error(msg.getMessage());
         return accessPointService.saveAccessPoint(accessPoint);
     }
 }

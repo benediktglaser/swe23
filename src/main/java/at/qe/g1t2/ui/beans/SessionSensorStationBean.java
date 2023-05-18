@@ -6,15 +6,16 @@ import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 
-
+/**
+ * Bean for managing the selected sensorstation.
+ */
 @Component
 @Scope("session")
 public class SessionSensorStationBean implements Serializable {
 
-    SensorStation sensorStation;
+    private SensorStation sensorStation;
 
-
-    public void setSensorStation(SensorStation sensorStation){
+    public void setSensorStation(SensorStation sensorStation) {
         this.sensorStation = sensorStation;
 
     }

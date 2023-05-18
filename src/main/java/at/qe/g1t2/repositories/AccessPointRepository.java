@@ -6,6 +6,11 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.io.Serializable;
 
+/**
+ * Repository for managing {@link AccessPoint} entities.
+ *
+ */
+
 public interface AccessPointRepository extends JpaRepository<AccessPoint, String>, JpaSpecificationExecutor<AccessPoint>, Serializable {
 
     AccessPoint findAccessPointById(String uuid);

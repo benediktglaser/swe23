@@ -1,0 +1,60 @@
+package at.qe.g1t2.controller;
+
+import at.qe.g1t2.services.SensorStationGardenerService;
+import at.qe.g1t2.services.SensorStationService;
+import at.qe.g1t2.services.UserService;
+import at.qe.g1t2.ui.beans.SessionSensorStationBean;
+import at.qe.g1t2.ui.controllers.GardenerSensorStationController;
+import jakarta.faces.context.FacesContext;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.springframework.boot.test.context.SpringBootTest;
+
+
+
+@SpringBootTest
+public class GardenerSensorStationControllerTest {
+
+    @InjectMocks
+    private GardenerSensorStationController gardenerSensorStationController;
+
+    @Mock
+    private SensorStationService sensorStationService;
+
+    @Mock
+    private SessionSensorStationBean sessionSensorStationBean;
+
+    @Mock
+    private FacesContext facesContext;
+
+    @Mock
+    private SensorStationGardenerService sensorStationGardenerService;
+
+    @Mock
+    private UserService userService;
+
+    @Test
+    public void testSettingUsers() {
+        gardenerSensorStationController.setUsername("user1");
+        Assertions.assertEquals("user1", gardenerSensorStationController.getUsername());
+    }
+    /*
+    @Test
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    public void testAssignGardener() {
+        Userx user = userService.loadUser("petersen");
+        gardenerSensorStationController.setUsername("petersen");
+        SensorStation station = sensorStationService.loadSensorStation("cf6d8d3e-9b9c-4172-98d8-50b29f1e1f87");
+
+        gardenerSensorStationController.assignSensorStationToGardener(station);
+        station = sensorStationService.loadSensorStation("cf6d8d3e-9b9c-4172-98d8-50b29f1e1f87");
+        Assertions.assertEquals(user, station.getGardener());
+    }
+
+    */
+
+
+
+}

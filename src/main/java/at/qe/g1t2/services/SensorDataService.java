@@ -3,8 +3,10 @@ package at.qe.g1t2.services;
 
 import at.qe.g1t2.model.SensorData;
 import at.qe.g1t2.model.SensorDataType;
+import at.qe.g1t2.model.SensorDataTypeInfo;
 import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.repositories.SensorDataRepository;
+import at.qe.g1t2.repositories.SensorDataTypeInfoRepository;
 import at.qe.g1t2.repositories.SensorStationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -13,7 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -31,28 +32,41 @@ public class SensorDataService implements Serializable {
     private SensorDataRepository sensorDataRepository;
 
     @Autowired
+    private SensorDataTypeInfoRepository sensorDataTypeInfoRepository;
+    @Autowired
     private SensorStationRepository sensorStationRepository;
 
 
     @PreAuthorize("hasAnyAuthority('ACCESS_POINT','GARDENER')")
-    @Transactional
     public SensorData loadSensorData(String uuid) {
         return sensorDataRepository.findSensorDataById(uuid);
     }
 
     @PreAuthorize("hasAnyAuthority('ACCESS_POINT','GARDENER')")
-    @Transactional
     public SensorData saveSensorData(SensorStation sensorStation, SensorData sensorData) {
         if (sensorData.isNew()) {
             if(sensorData.getTimestamp()==null){
                 sensorData.setTimestamp(LocalDateTime.now());
             }
+            SensorDataTypeInfo sensorDataTypeInfo = sensorDataTypeInfoRepository.findSensorDataTypeInfoByCreateDateMax(sensorStation,sensorData.getType());
+            if(sensorDataTypeInfo == null){
+                sensorData.setLimitDate(null);
+                sensorData.setMinLimit(null);
+                sensorData.setMaxLimit(null);
+            }
+            else{
+                sensorData.setLimitDate(sensorDataTypeInfo.getCreateDate());
+                sensorData.setMinLimit(sensorDataTypeInfo.getMinLimit());
+                sensorData.setMaxLimit(sensorDataTypeInfo.getMaxLimit());
+            }
+
             LocalDateTime createDate = LocalDateTime.now();
             sensorData.setCreateDate(createDate);
             sensorData.setSensorStation(sensorStation);
+            sensorData = sensorDataRepository.save(sensorData);
             sensorStation.getSensorData().add(sensorData);
             sensorStation = sensorStationRepository.save(sensorStation);
-            return sensorStation.getSensorData().get(sensorStation.getSensorData().size() - 1);
+            return sensorData;
         }
 
         return sensorDataRepository.save(sensorData);

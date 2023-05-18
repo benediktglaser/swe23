@@ -10,8 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests to ensure correct behavior of the methods. Especially for correct interacting with
@@ -72,6 +71,7 @@ class SensorStationServiceTest {
                 .loadSensorStation("9f98b70c-4de7-46c0-a611-21160743be7e");
 
         sensorStationService.removeSensorStationFromAccessPoint(accessPoint, sensorStation);
+        assertFalse(accessPoint.getSensorStation().contains(sensorStation));
         sensorStation = sensorStationService
                 .loadSensorStation("9f98b70c-4de7-46c0-a611-21160743be7e");
 
@@ -86,4 +86,6 @@ class SensorStationServiceTest {
                 .loadSensorStation("8ccfdfaa-9731-4786-8efa-e2141e5c4095");
         assertEquals("8ccfdfaa-9731-4786-8efa-e2141e5c4095", sensorStation.getId());
     }
+
+
 }

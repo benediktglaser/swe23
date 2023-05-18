@@ -8,6 +8,11 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Repository for managing {@link LogInfo} entities.
+ *
+ */
+
 public interface LogInfoRepository extends JpaRepository<LogInfo, Integer>, Serializable {
 
     @Query(value = """

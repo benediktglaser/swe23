@@ -3,21 +3,28 @@ package at.qe.g1t2.ui.controllers;
 import at.qe.g1t2.model.SensorData;
 import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.services.SensorDataService;
+import at.qe.g1t2.services.SensorDataTypeInfoService;
 import jakarta.persistence.criteria.Path;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 
-import java.util.Collection;
+/**
+ * This controller is responsible for the correct
+ * representation of the sensordata on the webserver.
+ */
 @Controller
 @Scope("view")
-public class SensorDataListController extends AbstractListController<String,SensorData> {
+public class SensorDataListController extends AbstractListController<String, SensorData> {
 
     @Autowired
-    SensorDataService sensorDataService;
+    private SensorDataService sensorDataService;
 
-    SensorStation sensorStation;
+    @Autowired
+    private SensorDataTypeInfoService sensorDataTypeInfoService;
+
+    private SensorStation sensorStation;
 
 
     public void filterSensorDataBySensorStation(SensorStation sensorStation) {
@@ -32,9 +39,15 @@ public class SensorDataListController extends AbstractListController<String,Sens
         this.setListToPageFunction((spec, page) -> sensorDataService.getAllSensorData(spec, page));
     }
 
-    public Collection<SensorData> getSensorData(SensorStation sensorStation)  {
+    public String checkLimit(SensorData sensorData){
+        if(sensorData.getMinLimit() == null || sensorData.getMaxLimit() == null){
+            return "white";
+        }
 
-
-        return sensorStation.getSensorData();
+        if(sensorData.getMeasurement() > sensorData.getMinLimit() && sensorData.getMeasurement() < sensorData.getMaxLimit()){
+            return "green";
+        }
+        return "red";
     }
+
 }

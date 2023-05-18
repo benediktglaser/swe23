@@ -7,12 +7,15 @@ import at.qe.g1t2.repositories.SensorStationRepository;
 import at.qe.g1t2.restapi.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+/**
+ * This service is responsible for managing  the saved pictures.
+ */
 @Service
 public class PictureService {
 
@@ -29,24 +32,26 @@ public class PictureService {
         } else throw new EntityNotFoundException("Entity Not Found");
     }
 
-    @Transactional
+
     public Picture save(SensorStation sensorStation, Picture picture) {
         if (picture.isNew()) {
             LocalDateTime createDate = LocalDateTime.now();
             picture.setCreateDate(createDate);
             picture.setSensorStation(sensorStation);
+            picture = pictureRepository.save(picture);
             sensorStation.getPictures().add(picture);
             sensorStation = sensorStationRepository.save(sensorStation);
-            return sensorStation.getPictures().get(sensorStation.getPictures().size() - 1);
+
+            return picture;
         }
         return pictureRepository.save(picture);
     }
 
-    @Transactional
     public void delete(Picture picture) {
-        pictureRepository.delete(picture);
         picture.getSensorStation().getPictures().remove(picture);
         sensorStationRepository.save(picture.getSensorStation());
+        pictureRepository.delete(picture);
+
 
     }
 

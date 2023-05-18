@@ -9,18 +9,20 @@ import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
+/**
+ * This class is used to retrieve the pictures for the photo-gallery,
+ * specific for every sensorstation
+ */
 @Controller
 @Scope("view")
 public class PictureController {
 
 
     @Autowired
-    PictureService pictureService;
+    private PictureService pictureService;
 
 
-    public List<Picture> getAllPictureBySensorStation(SensorStation sensorStation){
-
+    public List<Picture> getAllPictureBySensorStation(SensorStation sensorStation) {
         return pictureService.getAllPictureBySensorStation(sensorStation);
     }
-
 }

@@ -20,29 +20,9 @@
             <script src="https://code.highcharts.com/modules/scrollbar.js"></script>
 
         </h:head>
+        <p:growl id="msgs"/>
+        <p:poll interval="10" update=":sensorDataForm:sensorDataTable" listener="#{gardenerSensorStationController.gardenerIsHere(sessionSensorStationBean.sensorStation)}"></p:poll>
         <h:form id="sensorDataForm">
-            <p:dataTable id="sensorDataTable" var="sensorData" value="#{sensorDataListController}"
-                         class="sensorDataTable" lazy="true" rows="3" paginator="true">
-                <p:column headerText="Measurement" class="ui-datatable-header" sortBy="#{sensorData.measurement}"
-                          filterBy="#{sensorData.measurement}">
-                    <h:outputText value="#{sensorData.measurement}"/>
-                </p:column>
-                <p:column headerText="Unit" class="ui-datatable-header" sortBy="#{sensorData.type}"
-                          filterBy="#{sensorData.type}">
-                    <h:outputText value="#{sensorData.getType().getUnit()}"/>
-                </p:column>
-                <p:column headerText="Type" class="ui-datatable-header" sortBy="#{sensorData.type}"
-                          filterBy="#{sensorData.type}">
-                    <h:outputText value="#{sensorData.type}"/>
-                </p:column>
-                <p:column headerText="Date" class="ui-datatable-header" sortBy="#{sensorData.createDate}"
-                          filterBy="#{sensorData.createDate}">
-                    <h:outputText value="#{(sensorData.timestamp).toLocalDate()}"/>
-                </p:column>
-            </p:dataTable>
-            <p:poll interval="10" update=":sensorDataForm:sensorDataTable"></p:poll>
-
-            <p:separator/>
             <div class="card">
                 <p:cascadeSelect placeholder="Select a dataType for chart" value="#{chartsView.selection}"
                                  effect="slide" header="Select Type and Limits" showHeaders="true" required="true">
@@ -50,7 +30,42 @@
                     <p:ajax listener="#{chartsView.doUpdate()}"/>
                 </p:cascadeSelect>
             </div>
+            <p:separator style="border-color: transparent; opacity: 0;"></p:separator>
+            <p:dataTable id="sensorDataTable" var="sensorData" value="#{sensorDataListController}"
+                         class="sensorDataTable" lazy="true" rows="3" paginator="true">
+                <p:column headerText="Measurement" style="text-align: center" sortBy="#{sensorData.measurement}"
+                          filterBy="#{sensorData.measurement}">
+                    <h:outputText value="#{sensorData.measurement}" style="color: #{sensorDataListController.checkLimit(sensorData)};"/>
+                </p:column>
+                <p:column headerText="Unit" style="text-align: center" sortBy="#{sensorData.type}"
+                          filterBy="#{sensorData.type}">
+                    <h:outputText value="#{sensorData.getType().getUnit()}"/>
+                </p:column>
+                <p:column headerText="Type" style="text-align: center"  sortBy="#{sensorData.type}"
+                          filterBy="#{sensorData.type}">
+                    <h:outputText value="#{sensorData.type}"/>
+                </p:column>
+                <p:column headerText="Date" style="text-align: center"  sortBy="#{sensorData.createDate}"
+                          filterBy="#{sensorData.createDate}">
+                    <h:outputText value="#{(sensorData.timestamp).toLocalDate()}"/>
+                </p:column>
+                <p:column headerText="Min Limit" sortBy="#{sensorData.minLimit}"
+                          filterBy="#{sensorData.minLimit}">
+                    <h:outputText value="#{(sensorData.minLimit)}"/>
+                </p:column>
+                <p:column headerText="Max Limit" sortBy="#{sensorData.maxLimit}"
+                          filterBy="#{sensorData.maxLimit}">
+                    <h:outputText value="#{(sensorData.getMaxLimit())}"/>
+                </p:column>
+                <p:column headerText="Limit Date" sortBy="#{sensorData.limitDate}"
+                          filterBy="#{sensorData.limitDate}">
+                    <h:outputText value="#{(sensorData.getLimitDate()).toLocalDate()}"/>
+                </p:column>
+            </p:dataTable>
+
+
             <p:separator/>
+
             <div style="flex:1">
                 <!-- Hier steht der Code für das Highcharts-Diagramm -->
                 <div id="chart-container"></div>

@@ -1,9 +1,10 @@
 package at.qe.g1t2.restapi.model;
 
-
 import jakarta.validation.constraints.NotNull;
 
-
+/**
+ * This class is used to propose a new AccessPoint at the server.
+ */
 public class AccessPointDTO {
 
     @NotNull
@@ -26,5 +27,6 @@ public class AccessPointDTO {
     public void setSendingInterval(Double sendingInterval) {
         this.sendingInterval = sendingInterval;
     }
+
 }
 

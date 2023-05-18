@@ -12,14 +12,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * This Class saves/delete Accesspoints and allows tho remove/add Sensorstations
+ * This class saves/delete accesspoints and allows tho remove/add sensorstations.
  */
 @Component
 @Scope("application")
@@ -32,24 +31,25 @@ public class AccessPointService implements Serializable {
     SensorStationRepository sensorStationRepository;
 
 
-
     public AccessPoint loadAccessPoint(String uuid) {
 
         return accessPointRepository.findAccessPointById(uuid);
     }
 
-    @Transactional
+
     public AccessPoint saveAccessPoint(AccessPoint accessPoint) {
         if (accessPoint.isNew()) {
             accessPoint.setAccessPointRole(AccessPointRole.ACCESS_POINT);
             accessPoint.setCreateDate(LocalDateTime.now());
+            accessPoint.setThresholdInterval(30.0);
+            accessPoint.setCoupleMode(Boolean.FALSE);
         }
+
         return accessPointRepository.save(accessPoint);
     }
 
 
     @PreAuthorize("hasAnyAuthority('ACCESS_POINT','ADMIN')")
-    @Transactional
     public void deleteAccessPoint(AccessPoint accessPoint) {
         accessPointRepository.delete(accessPoint);
     }
@@ -60,22 +60,19 @@ public class AccessPointService implements Serializable {
     }
 
 
-
-
     public List<AccessPoint> getAllAccessPoints() {
         return accessPointRepository.findAll();
     }
 
-    public Page<AccessPoint> getAllAccessPoints(Specification<AccessPoint> spec,Pageable pageable) {
-        return accessPointRepository.findAll(spec,pageable);
+    public Page<AccessPoint> getAllAccessPoints(Specification<AccessPoint> spec, Pageable pageable) {
+        return accessPointRepository.findAll(spec, pageable);
     }
+
     public SensorStation getSensorStationByAccessPointIdAndDipId(String accessPointId, Long dipId) {
         return sensorStationRepository.findSensorStationByAccessPointAndDipId(loadAccessPoint(accessPointId), dipId);
     }
 
-
-
-    public Long numberOfAccessPoint(){
+    public Long numberOfAccessPoint() {
         return accessPointRepository.count();
     }
 

@@ -7,14 +7,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+
+/**
+ * This controller manages access to the accespoint-entity from the frontend
+ */
 @Controller
 @Scope("view")
 public class AccessPointController extends AbstractListController<String,AccessPoint> {
 
     @Autowired
-    AccessPointService accessPointService;
+    private AccessPointService accessPointService;
 
     public AccessPointController() {
         this.setListToPageFunction((spec, page) -> accessPointService.getAllAccessPoints(spec,page));
     }
+
 }

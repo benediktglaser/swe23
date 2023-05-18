@@ -1,23 +1,46 @@
 import yaml
+import logger
 
 
 def write_to_yaml(name: str, password: str) -> None:
+    """
+    Write a name and password into the identification.yaml file
+    Parameters
+    ----------
+    name : str
+        The name
+    password: str
+        The password
+    """
+
     credentials = {"name": name, "password": password}
 
     try:
-        with open(r"identification.yaml", "w+") as file:        #TODO: change on raspberry
+        with open(r"identification.yaml", "w+") as file:  # TODO: change on raspberry
             docs = yaml.dump(credentials, file)
     except:
-        print("e")
+        logger.log_error("error writing to identification.yaml")
 
 
-def read_from_yaml():
+def read_from_yaml() -> (str, str):
+    """
+    Reads a name and password from the identification.yaml file
+    Returns
+    -------
+    (name : str, password : str)
+    """
+
     try:
-        with open(r"identification.yaml", "r") as file:         #TODO: change on raspberry
+        with open(r"identification.yaml", "r") as file:  # TODO: change on raspberry
             data = list(yaml.load_all(file, Loader=yaml.FullLoader))
-        return (data[0]["name"], data[0]["password"])
-    except:
-        return None
+            if len(data) == 0:
+                return None
+        return data[0]["name"], data[0]["password"]
+    except Exception as e:
+        print(e)
+        logger.log_error("error reading to identification.yaml")
+        raise e
+
 
 if __name__ == "__main__":
     print(read_from_yaml()[0])
