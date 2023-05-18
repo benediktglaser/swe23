@@ -7,7 +7,6 @@ import at.qe.g1t2.repositories.SensorStationRepository;
 import at.qe.g1t2.restapi.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -49,12 +48,10 @@ public class PictureService {
     }
 
     public void delete(Picture picture) {
-        System.out.println(picture.getSensorStation().getId());
         picture.getSensorStation().getPictures().remove(picture);
         sensorStationRepository.save(picture.getSensorStation());
         pictureRepository.delete(picture);
-        System.out.println("Here remove from list"+picture.getSensorStation().getPictures().stream().map(Picture::getId).collect(Collectors.toList()));
-        System.out.println("Here after save");
+
 
     }
 

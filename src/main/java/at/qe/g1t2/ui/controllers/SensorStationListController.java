@@ -3,18 +3,16 @@ package at.qe.g1t2.ui.controllers;
 
 import at.qe.g1t2.model.AccessPoint;
 import at.qe.g1t2.model.SensorStation;
-import at.qe.g1t2.model.Userx;
-import at.qe.g1t2.services.*;
+import at.qe.g1t2.services.SensorStationGardenerService;
+import at.qe.g1t2.services.SensorStationService;
 import at.qe.g1t2.ui.beans.SessionSensorStationBean;
 import jakarta.persistence.criteria.Path;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * This controller manages the SensorStations which are needed in accessPoint.xhtml. Therefore, contains filter functions,
@@ -40,7 +38,6 @@ public class SensorStationListController extends AbstractListController<String, 
     }
 
     public void filterSensorStationsByAccessPoint(AccessPoint accessPoint) {
-        System.out.println(accessPoint);
         this.accessPoint = accessPoint;
         this.getExtraSpecs().add(Specification.where((root, query, criteriaBuilder) -> {
             Path<String> accessPointId = root.get("accessPoint").get("id");

@@ -46,7 +46,6 @@ public class SensorDataTypeInfoController {
 
 
     public void save(SensorStation sensorStation) {
-        System.out.println(sensorStation);
         type.setType(sensorDataType);
         if (type.getMaxLimit() == null || type.getMinLimit() == null) {
             FacesContext.getCurrentInstance().addMessage(null,

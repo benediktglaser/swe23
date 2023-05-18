@@ -8,9 +8,11 @@ import at.qe.g1t2.services.SensorStationService;
 import at.qe.g1t2.ui.controllers.SensorDataTypeInfoController;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
+import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 class SensorDataTypeInfoControllerTest {

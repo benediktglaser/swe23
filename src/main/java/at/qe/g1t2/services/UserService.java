@@ -1,6 +1,5 @@
 package at.qe.g1t2.services;
 
-import at.qe.g1t2.model.AccessPoint;
 import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.model.UserRole;
 import at.qe.g1t2.model.Userx;
@@ -132,7 +131,6 @@ public class UserService implements Serializable {
     }
     public void removeSensorStationToUser(SensorStation sensorStation){
         Userx userx = getAuthenticatedUser();
-        System.out.println(userx.getSensorStations().stream().map(x -> x.getId()).collect(Collectors.toList()));
        //System.out.println(sensorStation.getUserx());
         userx.getSensorStations().remove(sensorStation);
        // sensorStation.getUserx().remove(userx);

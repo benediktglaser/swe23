@@ -5,8 +5,6 @@ import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.model.Userx;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.io.Serializable;
 import java.util.List;
