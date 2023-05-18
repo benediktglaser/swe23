@@ -1,6 +1,9 @@
 package at.qe.g1t2.restapi.controller;
 
-import at.qe.g1t2.model.*;
+import at.qe.g1t2.model.AccessPoint;
+import at.qe.g1t2.model.SensorDataType;
+import at.qe.g1t2.model.SensorDataTypeInfo;
+import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.restapi.exception.EntityNotFoundException;
 import at.qe.g1t2.restapi.exception.VisibleMapException;
 import at.qe.g1t2.restapi.model.LimitsDTO;

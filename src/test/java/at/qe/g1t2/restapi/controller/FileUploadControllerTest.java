@@ -3,7 +3,6 @@ package at.qe.g1t2.restapi.controller;
 
 import at.qe.g1t2.model.Picture;
 import at.qe.g1t2.model.SensorStation;
-import at.qe.g1t2.services.PictureService;
 import at.qe.g1t2.services.SensorStationService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -16,8 +15,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import java.util.stream.Collectors;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 @SpringBootTest

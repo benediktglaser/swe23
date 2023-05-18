@@ -13,7 +13,6 @@ import org.springframework.stereotype.Controller;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -68,7 +67,6 @@ public abstract class AbstractListController<K, T extends Persistable<K> & Seria
         Specification<T> finalSpec = combineSpecifications(spec);
         Page<T> entity = collectionToPageConverterFunction.retrieveData(finalSpec, page);
         setRowCount((int) entity.getTotalElements());
-        System.out.println(entity.getContent());
         return entity.getContent();
     }
 

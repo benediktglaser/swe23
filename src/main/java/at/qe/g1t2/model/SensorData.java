@@ -12,6 +12,7 @@ import java.util.Objects;
 /**
  * This class represents an Entity for managing SensorData. Therefore, it contains a "many to one" connection to SensorStation.
  * Additionally, this class contains a measurement, which is being sent from the SensorStation including its-own SensorDataType.
+ *
  * @timestamp is being sent via the AccessPoint
  * @createDate once the entity is being created in webserver the LocalDateTime is being generated.
  */
@@ -94,25 +95,12 @@ public class SensorData implements Persistable<String>, Serializable, Comparable
         return (null == createDate);
     }
 
-    public LocalDateTime getCreateDate() {
-        return createDate;
-    }
-
     public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        SensorData that = (SensorData) o;
-        return Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public LocalDateTime getCreateDate() {
+        return createDate;
     }
 
     public Double getMinLimit() {
@@ -129,6 +117,19 @@ public class SensorData implements Persistable<String>, Serializable, Comparable
 
     public void setMaxLimit(Double maxLimit) {
         this.maxLimit = maxLimit;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SensorData that = (SensorData) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     public LocalDateTime getLimitDate() {

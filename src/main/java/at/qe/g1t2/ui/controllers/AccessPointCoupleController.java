@@ -67,7 +67,6 @@ public class AccessPointCoupleController {
         if(accessPoint == null){
             return;
         }
-        System.out.println(accessPoint + "Handler");
         SensorStation sensorStation = sensorStationService.getSensorStationByAccessPointIdAndDipId(accessPoint.getAccessPointID(), dipId);
         if (sensorStation != null && sensorStation.getConnected()) {
             PrimeFaces.current().executeScript("PF('statusDialog').hide()");

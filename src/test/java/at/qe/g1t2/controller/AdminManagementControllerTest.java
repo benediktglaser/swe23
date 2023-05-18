@@ -1,7 +1,5 @@
 package at.qe.g1t2.controller;
 
-import at.qe.g1t2.configs.WebSecurityConfig;
-import at.qe.g1t2.model.AccessPoint;
 import at.qe.g1t2.model.PojoClassExcludedFields;
 import at.qe.g1t2.model.UserRole;
 import at.qe.g1t2.model.Userx;
@@ -18,7 +16,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 

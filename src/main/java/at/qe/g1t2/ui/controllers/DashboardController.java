@@ -13,8 +13,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 
-import java.util.Random;
-
 @Controller
 @Scope("view")
 public class DashboardController extends AbstractListController<String, SensorStation> {

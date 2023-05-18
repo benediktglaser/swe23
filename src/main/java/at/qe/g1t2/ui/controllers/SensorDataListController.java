@@ -1,7 +1,6 @@
 package at.qe.g1t2.ui.controllers;
 
 import at.qe.g1t2.model.SensorData;
-import at.qe.g1t2.model.SensorDataTypeInfo;
 import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.services.SensorDataService;
 import at.qe.g1t2.services.SensorDataTypeInfoService;
@@ -10,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
-
-import java.util.Collection;
 
 /**
  * This controller is responsible for the correct

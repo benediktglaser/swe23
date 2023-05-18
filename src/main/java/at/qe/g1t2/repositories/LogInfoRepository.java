@@ -1,6 +1,5 @@
 package at.qe.g1t2.repositories;
 
-import at.qe.g1t2.model.AccessPoint;
 import at.qe.g1t2.model.LogInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
