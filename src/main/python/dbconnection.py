@@ -139,9 +139,9 @@ def calculate_limit(value, lower_limit, upper_limit):
         if value <= upper_limit:
             return 0
 
-        return abs(value - upper_limit) / upper_limit - lower_limit
+        return abs(value - upper_limit) / (upper_limit - lower_limit)
 
-    return abs(lower_limit - value) / upper_limit - lower_limit
+    return abs(lower_limit - value) / (upper_limit - lower_limit)
 
 
 def insert_sensor_data(conn, data):
@@ -155,6 +155,9 @@ def insert_sensor_data(conn, data):
     """
 
     limits = get_limits(conn, data.station_id, "all")
+    if (limits ==[]):
+        logger.log_error("Found no limits for station "+str(data.station_id)+" in insert_sensor_data")
+        return None
     # lower index = lower_limit, higher index = upper_limit
     temp_limits = limits[0:2]
     pressure_limits = limits[2:4]
@@ -348,8 +351,12 @@ def get_limits(conn, station_id, type_limit: str):
         record = cursor.fetchone()
         # convert the record into a list
         result = []
-        for value in record:
-            result.append(value)
+        if record ==None:
+            logger.log_error("Found no record for station with id "+str(station_id)+" in get_limits")
+            return []
+        if (record !=None):
+            for value in record:
+                result.append(value)
 
         if type_limit == "temp":
             return (result[2], result[3])
@@ -373,8 +380,8 @@ def get_limits(conn, station_id, type_limit: str):
             return result[2:]
 
     except sqlite3.Error as e:
-        print(e)
         logger.log_error(e)
+        return []
 
 
 def update_limits(
