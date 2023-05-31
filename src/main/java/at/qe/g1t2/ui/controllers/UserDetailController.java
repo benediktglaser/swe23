@@ -1,13 +1,16 @@
 package at.qe.g1t2.ui.controllers;
 
+import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.model.Userx;
 import at.qe.g1t2.repositories.LogInfoRepository;
+import at.qe.g1t2.services.SensorStationService;
 import at.qe.g1t2.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 /**
  * Controller for the user detail view.
@@ -23,6 +26,8 @@ public class UserDetailController implements Serializable {
     private UserService userService;
     @Autowired
     private LogInfoRepository logInfoRepository;
+    @Autowired
+    private SensorStationService sensorStationService;
     /**
      * Attribute to cache the currently displayed user
      */
@@ -69,6 +74,7 @@ public class UserDetailController implements Serializable {
      * Action to delete the currently displayed user.
      */
     public void doDeleteUser() {
+
         this.userService.deleteUser(user);
         user = null;
     }
