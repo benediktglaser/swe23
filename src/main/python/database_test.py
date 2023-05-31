@@ -63,3 +63,4 @@ def test_remove_sensor_data():
     db.drop_sensor_data(conn)
     db.drop_limits(conn)
     conn.close()
+    db.delete_database(path)
