@@ -132,24 +132,24 @@ def main(args: dict):
         ),
     )
 
-    polling_enable_for_sensorstation_thread = Thread(
-        target=poll_sensorstation_enabled,
-        args=(
-            arguments["address"],
-            arguments["authentication_header"],
-        ),
-    )
+    #polling_enable_for_sensorstation_thread = Thread(
+        #target=poll_sensorstation_enabled,
+        #args=(
+            #arguments["address"],
+            #arguments["authentication_header"],
+        #),
+    #)
     polling_for_couple_mode_thread.start()
     polling_for_interval_thread.start()
     polling_for_limits_thread.start()
     sending_sensor_data_thread.start()
-    polling_enable_for_sensorstation_thread.start()
+    #polling_enable_for_sensorstation_thread.start()
 
     polling_for_couple_mode_thread.join()
     polling_for_interval_thread.join()
     polling_for_limits_thread.join()
     sending_sensor_data_thread.join()
-    polling_enable_for_sensorstation_thread.join()
+    #polling_enable_for_sensorstation_thread.join()
 
 
 def poll_couple_mode(path: str, address: str, auth_header: str):

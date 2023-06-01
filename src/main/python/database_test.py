@@ -117,3 +117,25 @@ def test_update_limits():
 
 
 
+def test_delete_sensorstation():
+    path = "database_2.db"
+    conn = db.access_database(path)
+
+    db.create_tables(conn)
+    db.init_limits(conn, 1, "B::CA")
+    db.init_limits(conn, 2, "AF::CA")
+    db.remove_sensorstation_from_limits(conn, 2)
+    assert 1 == len(db.get_all_sensorstations(conn))
+
+    db.remove_sensorstation_from_limits(conn,1 )
+    assert 0 == len(db.get_all_sensorstations(conn))
+
+
+    db.drop_sensor_data(conn)
+    db.drop_limits(conn)
+    conn.close()
+    db.delete_database(path)
+
+
+
+

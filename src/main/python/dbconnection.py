@@ -63,17 +63,6 @@ def create_tables(conn):
         print(e)
         logger.log_error(e)
 
-    try:
-        cursor.execute(
-            "CREATE TABLE IF NOT EXISTS sensor_station(dipId INTEGER, connected INTEGER, create_date TEXT, PRIMARY KEY(dipId));"
-        )
-        conn.commit()
-        cursor.close()
-    except sqlite3.Error as e:
-        print(e)
-        logger.log_error(e)
-
-
 def init_limits(conn, station_id, mac):
     """
     Initialise the limits table with default values
@@ -199,43 +188,7 @@ def insert_sensor_data(conn, data):
         logger.log_error(e)
 
 
-def insert_into_sensor_station(conn, station_id: int, connected: bool):
-    """
-    Inserts data into the sensor_data table. The station_id is located in the data-struct.
-    Arguments
-    ---------
-    conn : sqlite3.Connection
-        The connection to the database
-    data : SensorData
-    """
 
-    cursor = conn.cursor()
-    try:
-        cursor.execute(
-            "INSERT INTO sensor_station values(?, ?, ?)",
-            (station_id, connected, datetime.now()),
-        )
-        conn.commit()
-        cursor.close()
-    except sqlite3.Error as e:
-        print(e)
-        logger.log_error(e)
-
-
-def get_all_sensor_station(conn):
-    """DEPRECATED"""
-    cursor = conn.cursor()
-    try:
-        cursor.execute("SELECT station_id FROM sensor_station")
-        conn.commit()
-        cursor.close()
-        record = cursor.fetchall()
-        # convert record [(a, b), (c, d)] into a 2D-array [[a, b], [c, d]]
-        result = [list(x) for x in record]
-        return result
-    except sqlite3.Error as e:
-        print(e)
-        logger.log_error(e)
 
 
 def set_limits(conn, station_id, type, lower_limit, upper_limit):
@@ -529,10 +482,36 @@ def remove_sensor_data(conn, station_id, time):
         print(e)
         logger.log_error(e)
 
-
-def get_all_sensorstations(conn):
+def remove_sensorstation_from_limits (conn:str, station_id:int):
     """
-    Returns the station_id from all stations.
+    Remove sensorstation according to station_id from the limits table
+    Arguments
+    ---------
+    conn : sqlite3.Connection
+        The connection to the database
+    station_id : int
+        The (dip)id of the SensorStation
+    """
+
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            "DELETE FROM limits " "WHERE station_id = ?;",
+            (str(station_id)),
+        )
+        conn.commit()
+        cursor.close()
+    except sqlite3.Error as e:
+        print(e)
+        logger.log_error(e)
+
+
+
+
+
+def get_all_sensorstations(conn:str):
+    """
+    Returns the station_id from all stations from the limits table.
     Arguments
     ---------
     conn : sqlite3.Connection
