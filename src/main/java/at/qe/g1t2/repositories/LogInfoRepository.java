@@ -16,17 +16,17 @@ import java.util.List;
 public interface LogInfoRepository extends JpaRepository<LogInfo, Integer>, Serializable {
 
     @Query(value = """
-            SELECT log_info.id, log_info.timestamp, changed_at, ua.revtype, modified_by from log_info join userx_aud ua on log_info.id = ua.rev
+            SELECT log_info.id, log_info.timestamp, changed_at, ua.revtype, modified_by, ua.username,'USER'from log_info join userx_aud ua on log_info.id = ua.rev
             UNION ALL
-            SELECT log_info.id, log_info.timestamp, changed_at, access_point_aud.revtype, modified_by from log_info join access_point_aud on log_info.id = access_point_aud.rev
+            SELECT log_info.id, log_info.timestamp, changed_at, access_point_aud.revtype, modified_by,access_point_aud.id,'ACCESS_POINT' from log_info join access_point_aud on log_info.id = access_point_aud.rev
             UNION ALL
-            SELECT log_info.id, log_info.timestamp, changed_at, sda.revtype, modified_by from log_info join sensor_data_aud sda on log_info.id = sda.rev
+            SELECT log_info.id, log_info.timestamp, changed_at, sda.revtype, modified_by,sda.id,'SENSOR_DATA' from log_info join sensor_data_aud sda on log_info.id = sda.rev
             UNION ALL
-            SELECT log_info.id, log_info.timestamp, changed_at, ssa.revtype, modified_by from log_info join sensor_station_aud ssa on log_info.id = ssa.rev
+            SELECT log_info.id, log_info.timestamp, changed_at, ssa.revtype, modified_by,ssa.id,'SENSORSTATION' from log_info join sensor_station_aud ssa on log_info.id = ssa.rev
             UNION ALL
-            SELECT log_info.id, log_info.timestamp, changed_at, sda.revtype, modified_by from log_info join sensor_data_type_info_aud sda on log_info.id = sda.rev
+            SELECT log_info.id, log_info.timestamp, changed_at, sda.revtype, modified_by ,sda.id, 'SENSORDATATYPEINFO'from log_info join sensor_data_type_info_aud sda on log_info.id = sda.rev
             UNION ALL 
-            SELECT log_info.id, log_info.timestamp, changed_at, pda.revtype, modified_by from log_info join picture_aud pda on log_info.id = pda.rev;""", nativeQuery = true)
+            SELECT log_info.id, log_info.timestamp, changed_at, pda.revtype, modified_by,pda.id, 'PICTURE' from log_info join picture_aud pda on log_info.id = pda.rev;""", nativeQuery = true)
     List<Object[]> joinAccessAud();
 
     List<LogInfo> findLogInfoByChangeDateBetween(LocalDateTime firstDate, LocalDateTime lastDate);

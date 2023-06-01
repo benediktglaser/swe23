@@ -73,6 +73,10 @@
                     <p:galleria value="#{pictureController.getAllPictureBySensorStation(sessionSensorStationBean.sensorStation)}" var="photo" numVisible="5"
                                 showItemNavigators="true" circular="true" showItemNavigatorsOnHover="true" showThumbnails="false" showIndicators="true" style="max-width: 640px">
                         <p:graphicImage library="images" name="#{photo.path}" style="width: 100%; display: block;" />
+                        <p:column>
+                            <p:commandButton update="@form" icon="pi pi-trash"
+                                             action="#{pictureController.deletePicture(photo)}"/>
+                        </p:column>
                     </p:galleria>
                 </div>
             </p:outputPanel>
