@@ -39,6 +39,8 @@ public class LogInfoService {
             logInfo.setChangeDate(stamp.toLocalDateTime());
             logInfo.setType(convertRevTypeToString((Byte) log[3]));
             logInfo.setUsername((String) log[4]);
+            logInfo.setIdTarget((String) log[5]);
+            logInfo.setTargetType((String) log[6]);
             list.add(logInfo);
         }
 
@@ -52,11 +54,11 @@ public class LogInfoService {
 
     private String convertRevTypeToString(Byte revType) {
         if (revType == 0) {
-            return "ADD";
+            return "CREATE";
         }
         if (revType == 1) {
-            return "MOD";
+            return "MODIFIED";
         }
-        return "DEL";
+        return "DELETED";
     }
 }

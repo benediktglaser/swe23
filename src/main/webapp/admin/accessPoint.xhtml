@@ -28,7 +28,7 @@
                 <p:column headerText="connected" sortBy="#{accessPoint.connected}" filterBy="#{accessPoint.connected}">
                     <h:selectBooleanCheckbox value="#{accessPoint.connected}" disabled="true"/>
                 </p:column>
-                <p:column headerText="Enabled" sortBy="#{accessPoint.enabled}" filterBy="#{accessPoint.enabled}">
+                <p:column headerText="Enabled" sortBy="#{accessPoint.enabled}">
                     <h:selectBooleanCheckbox value="#{accessPoint.enabled}" disabled="#{accessPoint.enabled}">
                         <p:ajax update="accessPointTable"
                                 listener="#{accessPointDetailController.doSaveAccessPoint(accessPoint)}"/>
@@ -81,8 +81,8 @@
                         <p:column headerText="DIP Id" sortBy="#{sensorStation.dipId}" filterBy="#{sensorStation.dipId}">
                             <h:outputText value="#{sensorStation.dipId}"/>
                         </p:column>
-                        <p:column headerText="Plant Name" sortBy="#{sensorStation.category}"
-                                  filterBy="#{sensorStation.category}">
+                        <p:column headerText="Plant Name" sortBy="#{sensorStation.name}"
+                                  filterBy="#{sensorStation.name}">
                             <h:outputText value="#{sensorStation.name}"/>
                         </p:column>
                         <p:column headerText="Plant Category" sortBy="#{sensorStation.category}"
@@ -91,14 +91,14 @@
                         </p:column>
                         <p:column headerText="Create Date" sortBy="#{sensorStation.createDate}"
                                   filterBy="#{sensorStation.createDate}">
-                            <h:outputText value="#{sensorStation.createDate.toLocalDate()}"/>
+                            <h:outputText value="#{sensorStation.createDate.toLocalDate().toString()}"/>
                         </p:column>
                         <p:column headerText="Gardener" sortBy="#{sensorStation.gardener}"
                                   filterBy="#{sensorStation.gardener}">
                             <h:outputText value="#{sensorStation.gardener}"/>
                         </p:column>
                         <p:column headerText="Enabled" sortBy="#{sensorStation.enabled}"
-                                  filterBy="#{sensorStation.enabled}">
+                                  >
                             <h:selectBooleanCheckbox value="#{sensorStation.enabled}" disabled="false">
                                 <p:ajax update="connectTable"
                                         listener="#{sensorStationDetailController.saveSensorStation(sensorStation)}"/>

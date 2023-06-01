@@ -25,6 +25,29 @@ public class LogInfo extends DefaultRevisionEntity {
     @Column(name = "REVTYPE")
     private String revtype;
 
+
+    @Column(name = "ID_OF_TARGET")
+    private String idTarget;
+
+    @Column(name ="TARGET_TYPE")
+    private String targetType;
+
+    public String getIdTarget() {
+        return idTarget;
+    }
+
+    public void setIdTarget(String idTarget) {
+        this.idTarget = idTarget;
+    }
+
+    public String getTargetType() {
+        return targetType;
+    }
+
+    public void setTargetType(String targetType) {
+        this.targetType = targetType;
+    }
+
     public String getUsername() {
         return username;
     }

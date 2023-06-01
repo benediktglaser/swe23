@@ -11,7 +11,7 @@
             <div class="container">
                 <p:dataTable id ="auditLogTable" var="auditLog" value="#{auditLogController.getLogs()}"
                              class="auditLogTable" >
-                    <p:column headerText="Log Id" class="ui-datatable-header" sortBy ="#{auditLog.getId()}" filterBy="#{auditLog.id}">
+                    <p:column headerText="Revision" class="ui-datatable-header" sortBy ="#{auditLog.getId()}" filterBy="#{auditLog.id}">
                         <h:outputText value="#{auditLog.getId()}"/>
                     </p:column>
                     <p:column headerText="Modified by" class="ui-datatable-header" sortBy= "#{auditLog.getUsername()}" filterBy="#{auditLog.username}">
@@ -22,6 +22,12 @@
                     </p:column>
                     <p:column headerText="Log Date" class="ui-datatable-header" sortBy="#{auditLog.getChangeDate()}" filterBy="#{auditLog.changeDate}">
                         <h:outputText value="#{(auditLog.getChangeDate()).toLocalDate()}"/>
+                    </p:column>
+                    <p:column headerText="Target ID" class="ui-datatable-header" sortBy="#{auditLog.getIdTarget()}" filterBy="#{auditLog.getIdTarget()}">
+                        <h:outputText value="#{(auditLog.getIdTarget())}"/>
+                    </p:column>
+                    <p:column headerText="Target Type" class="ui-datatable-header" sortBy="#{auditLog.getTargetType()}" filterBy="#{auditLog.getTargetType()}">
+                        <h:outputText value="#{(auditLog.getTargetType())}"/>
                     </p:column>
                 </p:dataTable>
 
