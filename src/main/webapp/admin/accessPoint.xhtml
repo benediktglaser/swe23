@@ -74,15 +74,15 @@
                     </p:commandButton>
 
                     <p:dataTable id="connectTable" value="#{sensorStationListController}" var="sensorStation"
-                                 lazy="true" rows="5" paginator="true" scrollable="true" scrollHeight="400">
+                                 lazy="true" rows="5" paginator="true" scrollable="true" scrollHeight="300">
                         <p:column headerText="UUID" sortBy="#{sensorStation.id}" filterBy="#{sensorStation.id}">
                             <h:outputText value="#{sensorStation.id}"/>
                         </p:column>
                         <p:column headerText="DIP Id" sortBy="#{sensorStation.dipId}" filterBy="#{sensorStation.dipId}">
                             <h:outputText value="#{sensorStation.dipId}"/>
                         </p:column>
-                        <p:column headerText="Plant Name" sortBy="#{sensorStation.category}"
-                                  filterBy="#{sensorStation.category}">
+                        <p:column headerText="Plant Name" sortBy="#{sensorStation.name}"
+                                  filterBy="#{sensorStation.name}">
                             <h:outputText value="#{sensorStation.name}"/>
                         </p:column>
                         <p:column headerText="Plant Category" sortBy="#{sensorStation.category}"
@@ -91,7 +91,7 @@
                         </p:column>
                         <p:column headerText="Create Date" sortBy="#{sensorStation.createDate}"
                                   filterBy="#{sensorStation.createDate}">
-                            <h:outputText value="#{sensorStation.createDate.toLocalDate()}"/>
+                            <h:outputText value="#{sensorStation.createDate}"/>
                         </p:column>
                         <p:column headerText="Gardener" sortBy="#{sensorStation.gardener}"
                                   filterBy="#{sensorStation.gardener}">
