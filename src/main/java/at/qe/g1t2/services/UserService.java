@@ -3,6 +3,7 @@ package at.qe.g1t2.services;
 import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.model.UserRole;
 import at.qe.g1t2.model.Userx;
+import at.qe.g1t2.repositories.SensorStationRepository;
 import at.qe.g1t2.repositories.UserxRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +36,8 @@ public class UserService implements Serializable {
 
     @Autowired
     private UserxRepository userRepository;
+    @Autowired
+    private SensorStationRepository sensorStationRepository;
 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
@@ -110,6 +113,12 @@ public class UserService implements Serializable {
      */
     @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteUser(Userx user) {
+        List<SensorStation> sensorStations = sensorStationRepository.getSensorStationsByGardener(user);
+        sensorStations.forEach(x -> {
+
+            x.setGardener(null);
+            sensorStationRepository.save(x);
+        });
         LogMsg<String,Userx> msg = new LogMsg<>(LogMsg.LogType.CRUD_DELETE, Userx.class, user.getId(),null, getAuthenticatedUser().getId());
 
         LOGGER.info(msg.getMessage());
