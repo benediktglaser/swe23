@@ -133,6 +133,10 @@
                             <p:commandButton id="download" value="DownloadQRCode"
                                              action="#{QRCodeDownloadController.doUpdate(sensorStation.id)}"/>
                         </p:column>
+                        <p:column>
+                            <p:commandButton update="connectTable" icon="pi pi-trash"
+                                             action="#{sensorStationDetailController.deleteSensorStation(sensorStation)}"/>
+                        </p:column>
                     </p:dataTable>
                 </p:outputPanel>
             </p:dialog>

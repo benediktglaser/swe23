@@ -9,6 +9,7 @@ import at.qe.g1t2.restapi.exception.VisibleMapException;
 import at.qe.g1t2.restapi.model.LimitsDTO;
 import at.qe.g1t2.restapi.model.SensorStationDTO;
 import at.qe.g1t2.restapi.model.SensorStationRegisterDTO;
+import at.qe.g1t2.restapi.model.SensorStationStatusDTO;
 import at.qe.g1t2.services.*;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -146,13 +147,21 @@ public class SensorStationConnectController {
      * @return
      */
     @GetMapping("/enabled/{dipId}")
-    public ResponseEntity<Boolean> checkEnabled(@PathVariable String dipId) {
+    public ResponseEntity<SensorStationStatusDTO> checkEnabled(@PathVariable String dipId) {
 
         SensorStation sensorStation = sensorStationService.getSensorStationByAccessPointIdAndDipId(getAuthAccessPoint().getId(), Long.parseLong(dipId));
+        SensorStationStatusDTO sensorStationStatusDTO = new SensorStationStatusDTO();
+        if(sensorStation == null){
+            sensorStationStatusDTO.setDeleted(true);
+            sensorStationStatusDTO.setEnabled(false);
+            return new ResponseEntity<>(sensorStationStatusDTO, HttpStatus.NOT_FOUND);
+        }
+        sensorStationStatusDTO.setDeleted(false);
+        sensorStationStatusDTO.setEnabled(true);
         satisFyConnection(getAuthAccessPoint(), dipId);
         LogMsg<String, SensorStation> msg = new LogMsg<>(LogMsg.LogType.OTHER, SensorStation.class, "SensorStation: DipId" + sensorStation.getDipId(), "AccessPoint asks if SensorStation with DipId " + sensorStation.getId() + " is enabled", "Access point: " + getAuthAccessPoint().getAccessPointID());
         LOGGER.info(msg.getMessage());
-        return new ResponseEntity<>(sensorStation.getEnabled(), HttpStatus.OK);
+        return new ResponseEntity<>(sensorStationStatusDTO, HttpStatus.OK);
     }
 
     /**

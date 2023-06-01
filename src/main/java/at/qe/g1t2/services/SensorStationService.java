@@ -63,6 +63,10 @@ public class SensorStationService implements Serializable {
 
     @PreAuthorize("hasAnyAuthority('ACCESS_POINT','ADMIN')")
     public void deleteSensorStation(SensorStation sensorStation) {
+        if(sensorStation.getAccessPoint()!=null){
+            sensorStation.getAccessPoint().getSensorStation().remove(sensorStation);
+            accessPointRepository.save(sensorStation.getAccessPoint());
+        }
         sensorStationRepository.delete(sensorStation);
     }
 
