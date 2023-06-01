@@ -70,7 +70,7 @@ public class WebSecurityConfig {
                             .requestMatchers("/admin/**").hasAnyAuthority(ADMIN)
                             .requestMatchers("/secured/**").hasAnyAuthority(ADMIN, GARDENER, USER)
                             .requestMatchers("/gardener/**").hasAnyAuthority(ADMIN, GARDENER)
-                            .requestMatchers("/user/**").hasAnyAuthority(USER,ADMIN)
+                            .requestMatchers("/user/**").hasAnyAuthority(USER,ADMIN,GARDENER)
                             .requestMatchers("/omnifaces.push/**").hasAnyAuthority(ADMIN, GARDENER, USER)
                             .anyRequest().authenticated())
                     .formLogin()

@@ -57,7 +57,7 @@ public class GardenerSensorStationController {
 
         } else {
             FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Username does not exists", null));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Username does not exists or user is not a gardener", null));
             isValid = false;
             PrimeFaces.current().executeScript("isValid('false')");
 
