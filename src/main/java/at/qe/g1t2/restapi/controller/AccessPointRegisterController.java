@@ -51,7 +51,8 @@ public class AccessPointRegisterController {
         AccessPoint newAccessPoint = modelMapper.map(accessPointDTO, AccessPoint.class);
         newAccessPoint.setPassword(encodedPassword);
         newAccessPoint.setEnabled(false);
-        newAccessPoint.setThresholdInterval(30.0);
+        newAccessPoint.setThresholdInterval(accessPointDTO.getSendingInterval());
+        newAccessPoint.setSendingInterval(accessPointDTO.getSendingInterval());
         newAccessPoint = accessPointService.saveAccessPoint(newAccessPoint);
 
         LogMsg<String, AccessPoint> msg = new LogMsg<>(LogMsg.LogType.NEW_CONNECTION, AccessPoint.class, "Access point: " + newAccessPoint.getAccessPointID(), "New Access point registered", null);

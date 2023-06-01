@@ -4,6 +4,8 @@ from typing import List
 import requests
 from requests.auth import HTTPBasicAuth
 
+import time
+
 import dbconnection
 
 
@@ -271,9 +273,10 @@ def request_limits(address: str, auth_header: str, dipId: int):
         return None
 
 
-def request_if_is_sensorstation_enabled(address: str, auth_header: str, dipId: int):
+def request_if_is_sensorstation_enabled(address: str, auth_header: str, dipId: int)->dict[bool, bool] :
     """
-    Request if SensorStation is still enabled
+    Request if SensorStation is still enabled (true) and
+    if SensorStation is deleted
     Arguments
     ---------
     address : str
@@ -284,8 +287,8 @@ def request_if_is_sensorstation_enabled(address: str, auth_header: str, dipId: i
         The dipId of the SensorStation of which the limits should be changed
     Returns
     -------
-    response : boolean
-        Whether the SensorStation is still enabled
+    response : dictionary with two booleans
+       
     """
 
     try:
@@ -304,7 +307,7 @@ def request_if_is_sensorstation_enabled(address: str, auth_header: str, dipId: i
     except Exception as e:
         print(e)
         logger.log_error(e)
-        return None
+        return (None, None)
 
 
 def gardener_is_at_station(address: str, dipId: int, auth_header: str) -> bool:
@@ -322,6 +325,9 @@ def gardener_is_at_station(address: str, dipId: int, auth_header: str) -> bool:
     -------
     response : boolean
         Whether the Message was successfully received.
+        resp["enabled"] = true if the station is enabled, false otherwise
+        resp["deleted"] = true if the station has been deleted, false otherwise
+    
     """
     try:
         resp = requests.get(
@@ -352,30 +358,13 @@ if __name__ == "__main__":
 
     # dbconnection.drop_sensor_data(conn)
     # dbconnection.drop_limits(conn)
-    dbconnection.init_limits(conn, 3)
-    dbconnection.init_limits(conn, 0)
-    dbconnection.init_limits(conn, 1)
-    dbconnection.init_limits(conn, 2)
-    # answer = request_limits(host, auth, 1)
-    print(dbconnection.get_limits(conn, 1, "temp"))
-    dbconnection.update_limits(conn, 1, "TEMPERATURE", 12, 23)
-    print(dbconnection.get_limits(conn, 1, "temp"))
-    # print("data", data)
-    # data = adjust_timestamp_for_transfer(data)
+    dbconnection.init_limits(conn, 1, "AC")
+    dbconnection.init_limits(conn, 2, "BCC")
+    while(True):
+        response = request_if_is_sensorstation_enabled(host, auth, 1)
+        print("enabled:", response["enabled"])
+        print("deleted:", response["deleted"])
+        time.sleep(30)
 
-    # data = prepare_for_jsf(data)
-
-    # print(data)
-    # for i in range(3):
-    # dbconnection.insert_sensor_data(
-    # conn, sensordata.SensorData(i, (i + 1) * 20, 10, 2, 3, 4, 5)
-    # )
-    # data = dbconnection.get_sensor_data(conn, 3)
-    # response = post_measurement(host, data, auth)
-    # print("resp", response)
-    # delete_send_sensor_data(conn, response)
-
-    # print(dbconnection.get_all_sensorstations(conn))
-    # delete_send_sensor_data(conn, response)
-    # dbconnection.drop_limits(conn)
-    # dbconnection.drop_sensor_data(conn)
+    dbconnection.drop_limits(conn)
+    dbconnection.drop_sensor_data(conn)

@@ -154,10 +154,10 @@ public class SensorStationConnectController {
         if(sensorStation == null){
             sensorStationStatusDTO.setDeleted(true);
             sensorStationStatusDTO.setEnabled(false);
-            return new ResponseEntity<>(sensorStationStatusDTO, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(sensorStationStatusDTO, HttpStatus.OK);
         }
         sensorStationStatusDTO.setDeleted(false);
-        sensorStationStatusDTO.setEnabled(true);
+        sensorStationStatusDTO.setEnabled(sensorStation.getEnabled());
         satisFyConnection(getAuthAccessPoint(), dipId);
         LogMsg<String, SensorStation> msg = new LogMsg<>(LogMsg.LogType.OTHER, SensorStation.class, "SensorStation: DipId" + sensorStation.getDipId(), "AccessPoint asks if SensorStation with DipId " + sensorStation.getId() + " is enabled", "Access point: " + getAuthAccessPoint().getAccessPointID());
         LOGGER.info(msg.getMessage());
