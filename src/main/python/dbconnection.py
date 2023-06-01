@@ -19,7 +19,6 @@ def access_database(path):
     """
 
     conn = sqlite3.connect(path)
-    #create_tables(conn)
     return conn
 
 
@@ -63,17 +62,6 @@ def create_tables(conn):
     except sqlite3.Error as e:
         print(e)
         logger.log_error(e)
-
-    try:
-        cursor.execute(
-            "CREATE TABLE IF NOT EXISTS sensor_station(dipId INTEGER, connected INTEGER, create_date TEXT, PRIMARY KEY(dipId));"
-        )
-        conn.commit()
-        cursor.close()
-    except sqlite3.Error as e:
-        print(e)
-        logger.log_error(e)
-
 
 def init_limits(conn, station_id, mac):
     """
@@ -139,9 +127,9 @@ def calculate_limit(value, lower_limit, upper_limit):
         if value <= upper_limit:
             return 0
 
-        return abs(value - upper_limit) / upper_limit - lower_limit
+        return abs(value - upper_limit) / (upper_limit - lower_limit)
 
-    return abs(lower_limit - value) / upper_limit - lower_limit
+    return abs(lower_limit - value) / (upper_limit - lower_limit)
 
 
 def insert_sensor_data(conn, data):
@@ -155,6 +143,13 @@ def insert_sensor_data(conn, data):
     """
 
     limits = get_limits(conn, data.station_id, "all")
+    if limits == []:
+        logger.log_error(
+            "Found no limits for station "
+            + str(data.station_id)
+            + " in insert_sensor_data"
+        )
+        return None
     # lower index = lower_limit, higher index = upper_limit
     temp_limits = limits[0:2]
     pressure_limits = limits[2:4]
@@ -193,49 +188,13 @@ def insert_sensor_data(conn, data):
         logger.log_error(e)
 
 
-def insert_into_sensor_station(conn, station_id: int, connected: bool):
-    """
-    Inserts data into the sensor_data table. The station_id is located in the data-struct.
-    Arguments
-    ---------
-    conn : sqlite3.Connection
-        The connection to the database
-    data : SensorData
-    """
 
-    cursor = conn.cursor()
-    try:
-        cursor.execute(
-            "INSERT INTO sensor_station values(?, ?, ?)",
-            (station_id, connected, datetime.now()),
-        )
-        conn.commit()
-        cursor.close()
-    except sqlite3.Error as e:
-        print(e)
-        logger.log_error(e)
-
-
-def get_all_sensor_station(conn):
-    """DEPRECATED"""
-    cursor = conn.cursor()
-    try:
-        cursor.execute("SELECT station_id FROM sensor_station")
-        conn.commit()
-        cursor.close()
-        record = cursor.fetchall()
-        # convert record [(a, b), (c, d)] into a 2D-array [[a, b], [c, d]]
-        result = [list(x) for x in record]
-        return result
-    except sqlite3.Error as e:
-        print(e)
-        logger.log_error(e)
 
 
 def set_limits(conn, station_id, type, lower_limit, upper_limit):
     """
     Set new limits. Match was not used because of an older python-version
-    running on the raspberry pi not supporting it. 
+    running on the raspberry pi not supporting it.
     Arguments
     ---------
     conn : sqlite3.Connection
@@ -325,7 +284,7 @@ def set_limits(conn, station_id, type, lower_limit, upper_limit):
         logger.log_error(e)
 
 
-def get_limits(conn, station_id, type_limit: str):
+def get_limits(conn:str, station_id:int, type_limit: str):
     """
     Return a list of the limits if type_limit == ALL,
     otherwise a tuple (min, max) for the given type
@@ -348,9 +307,17 @@ def get_limits(conn, station_id, type_limit: str):
         record = cursor.fetchone()
         # convert the record into a list
         result = []
-        for value in record:
-            result.append(value)
-
+        if record == None:
+            logger.log_error(
+                "Found no record for station with id "
+                + str(station_id)
+                + " in get_limits"
+            )
+            return []
+        if record != None:
+            for value in record:
+                result.append(value)
+        print(result)
         if type_limit == "temp":
             return (result[2], result[3])
 
@@ -372,13 +339,15 @@ def get_limits(conn, station_id, type_limit: str):
         if type_limit == "all":
             return result[2:]
 
+        logger.log_error("Couldn't find limit with name " + type_limit)
     except sqlite3.Error as e:
-        print(e)
         logger.log_error(e)
+        return []
 
 
 def update_limits(
-    conn, station_id: int, type_limit: str, lower_bound: float, upper_bound: float):
+    conn:str, station_id: int, type_limit: str, lower_bound: float, upper_bound: float
+):
     """
     Updates the limits of the given type
     Arguments
@@ -513,10 +482,36 @@ def remove_sensor_data(conn, station_id, time):
         print(e)
         logger.log_error(e)
 
-
-def get_all_sensorstations(conn):
+def remove_sensorstation_from_limits (conn:str, station_id:int):
     """
-    Returns the station_id from all stations.
+    Remove sensorstation according to station_id from the limits table
+    Arguments
+    ---------
+    conn : sqlite3.Connection
+        The connection to the database
+    station_id : int
+        The (dip)id of the SensorStation
+    """
+
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            "DELETE FROM limits " "WHERE station_id = ?;",
+            (str(station_id)),
+        )
+        conn.commit()
+        cursor.close()
+    except sqlite3.Error as e:
+        print(e)
+        logger.log_error(e)
+
+
+
+
+
+def get_all_sensorstations(conn:str):
+    """
+    Returns the station_id from all stations from the limits table.
     Arguments
     ---------
     conn : sqlite3.Connection
@@ -581,7 +576,8 @@ def drop_limits(conn):
         print(e)
         logger.log_error(e)
 
-def delete_all_from_limits(conn:str):
+
+def delete_all_from_limits(conn: str):
     """
     DEBUG ONLY
     Deletes all entries from the limits table
@@ -601,6 +597,7 @@ def delete_all_from_limits(conn:str):
         print(e)
         logger.log_error(e)
 
+
 def delete_database(path):
     """
     DEBUG ONLY
@@ -613,8 +610,7 @@ def delete_database(path):
 
     os.remove(path)
 
+
 """Just for testing"""
 if __name__ == "__main__":
     host = "http://localhost:8080"
-    print(sqlite3.threadsafety)
-
