@@ -78,6 +78,7 @@ public class AdminManagementController{
         }
         if(adminRole){
             set.add(UserRole.ADMIN);
+            set.add(UserRole.GARDENER);
             user.setRoles(set);
         }
         if(gardenerRole){

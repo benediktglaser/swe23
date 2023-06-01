@@ -48,4 +48,8 @@ public class SensorStationDetailController {
         sessionSensorStationBean.setSensorStation(sensorStation);
         return "minMaxEdit.xhtml?faces-redirect=true";
     }
+
+    public void deleteSensorStation(SensorStation sensorStation){
+        sensorStationService.deleteSensorStation(sensorStation);
+    }
 }
