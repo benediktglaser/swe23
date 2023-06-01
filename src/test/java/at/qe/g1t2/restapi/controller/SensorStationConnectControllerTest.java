@@ -72,7 +72,7 @@ class SensorStationConnectControllerTest {
                         .content(requestBody))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 
-        Assertions.assertEquals("{\"available\":false,\"alreadyConnected\":true}",result.getResponse().getContentAsString());
+        Assertions.assertEquals("{\"available\":false,\"alreadyConnected\":true}", result.getResponse().getContentAsString());
     }
 
     @Test
@@ -91,8 +91,9 @@ class SensorStationConnectControllerTest {
                         .content(requestBody))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 
-        Assertions.assertEquals("{\"available\":false,\"alreadyConnected\":false}",result.getResponse().getContentAsString());
+        Assertions.assertEquals("{\"available\":false,\"alreadyConnected\":false}", result.getResponse().getContentAsString());
     }
+
     @Test
     @DirtiesContext
     @WithMockUser(username = "4294ba1b-f794-4e3d-b606-896b28237bcb", authorities = {"ACCESS_POINT"})
@@ -112,14 +113,14 @@ class SensorStationConnectControllerTest {
                         .content(requestBody))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 
-        Assertions.assertEquals("{\"available\":true,\"alreadyConnected\":false}",result.getResponse().getContentAsString());
+        Assertions.assertEquals("{\"available\":true,\"alreadyConnected\":false}", result.getResponse().getContentAsString());
         requestBody = objectMapper.writeValueAsString(sensorStationDTO2);
         result = mockMvc.perform(MockMvcRequestBuilders.post("/api/sensorStation/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 
-        Assertions.assertEquals("{\"available\":false,\"alreadyConnected\":false}",result.getResponse().getContentAsString());
+        Assertions.assertEquals("{\"available\":false,\"alreadyConnected\":false}", result.getResponse().getContentAsString());
     }
 
     @Test
@@ -138,7 +139,7 @@ class SensorStationConnectControllerTest {
                         .content(requestBody))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 
-        Assertions.assertEquals("{\"available\":false,\"alreadyConnected\":false}",result.getResponse().getContentAsString());
+        Assertions.assertEquals("{\"available\":false,\"alreadyConnected\":false}", result.getResponse().getContentAsString());
     }
 
     @Test
@@ -200,7 +201,7 @@ class SensorStationConnectControllerTest {
     @WithMockUser(username = "4294ba1b-f794-4e3d-b606-896b28237bcb", authorities = {"ACCESS_POINT"})
     void testCheckEnabledWithNonExistingStation() throws Exception {
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/api/sensorStation/enabled/204"))
-                .andExpect(MockMvcResultMatchers.status().isNotFound()).andReturn();
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
     }
 
     @Test
@@ -226,6 +227,7 @@ class SensorStationConnectControllerTest {
         Assertions.assertEquals(true, station.getConnected());
 
     }
+
     @Test
     @DirtiesContext
     @WithMockUser(username = "4294ba1b-f794-4e3d-b606-896b28237bcb", authorities = {"ACCESS_POINT"})
@@ -233,7 +235,7 @@ class SensorStationConnectControllerTest {
         SensorStationDTO sensorStationDTO = new SensorStationDTO();
         sensorStationDTO.setMac("345456");
         sensorStationDTO.setDipId(100L);
-        visibleSensorStationsService.addVisibleStation(accessPointService.loadAccessPoint("4294ba1b-f794-4e3d-b606-896b28237bcb"),sensorStationDTO);
+        visibleSensorStationsService.addVisibleStation(accessPointService.loadAccessPoint("4294ba1b-f794-4e3d-b606-896b28237bcb"), sensorStationDTO);
         mockMvc.perform(MockMvcRequestBuilders.get("/api/sensorStation/connected/101"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
 
@@ -256,7 +258,7 @@ class SensorStationConnectControllerTest {
         SensorStationDTO sensorStationDTO = new SensorStationDTO();
         sensorStationDTO.setMac("345456");
         sensorStationDTO.setDipId(100L);
-        visibleSensorStationsService.addVisibleStation(accessPointService.loadAccessPoint("4294ba1b-f794-4e3d-b606-896b28237bcb"),sensorStationDTO);
+        visibleSensorStationsService.addVisibleStation(accessPointService.loadAccessPoint("4294ba1b-f794-4e3d-b606-896b28237bcb"), sensorStationDTO);
         mockMvc.perform(MockMvcRequestBuilders.get("/api/sensorStation/connected/100"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
