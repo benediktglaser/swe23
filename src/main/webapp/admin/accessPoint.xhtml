@@ -14,7 +14,8 @@
         <form id="downloadForm" method="get">
         </form>
         <h:form id="accessPointForm">
-            <p:poll interval="6" update="accessPointTable"></p:poll>
+
+            <p:poll interval="6" update="accessPointTable"/>
             <p:dataTable id="accessPointTable" var="accessPoint" value="#{accessPointController}" lazy="true" rows="3"
                          paginator="true" scrollable="true" scrollHeight="400">
                 <p:column headerText="UUID" sortBy="#{accessPoint.id}" filterBy="#{accessPoint.id}">
@@ -65,7 +66,7 @@
             </p:confirmDialog>
 
             <p:dialog header="Link AccessPoint" id="accessPointLinkDialog" widgetVar="accessPointLinkDialog"
-                      modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true">
+                      modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" scrollHeight="400">
                 <p:outputPanel id="accessPointLinkData">
                     <p:commandButton value="Activate Couplemode"
                                      actionListener="#{accessPointCoupleController.startCouplingMode(sensorStationListController.accessPoint)}"
@@ -73,7 +74,7 @@
                     </p:commandButton>
 
                     <p:dataTable id="connectTable" value="#{sensorStationListController}" var="sensorStation"
-                                 lazy="true" rows="3" paginator="true">
+                                 lazy="true" rows="5" paginator="true" scrollable="true" scrollHeight="400">
                         <p:column headerText="UUID" sortBy="#{sensorStation.id}" filterBy="#{sensorStation.id}">
                             <h:outputText value="#{sensorStation.id}"/>
                         </p:column>
@@ -124,8 +125,10 @@
                             <p:commandButton id="sensordata" value="Sensordata"
                                              action="#{sensorStationListController.redirectToSensorDataPage(sensorStation)}"/>
                         </p:column>
+                        <p:column>
                         <p:commandButton id="gallery" value="Gallery"
                                          action="#{sensorStationListController.redirectToGallery(sensorStation)}"/>
+                        </p:column>
                         <p:column style="width:10%;text-align: center">
                             <p:commandButton id="download" value="DownloadQRCode"
                                              action="#{QRCodeDownloadController.doUpdate(sensorStation.id)}"/>

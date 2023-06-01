@@ -38,6 +38,10 @@
                                          action="#{dashboardController.removeFromUsersFavourite(plant)}"/>
                     </p:column>
                     <p:column>
+                        <p:commandButton id="gallery" value="Gallery"
+                                         action="#{sensorStationListController.redirectToGallery(plant)}"/>
+                    </p:column>
+                    <p:column>
                         <p:commandButton value="Plant Data" action="#{dashboardController.redirectToSensorDataPage(plant)}"/>
                     </p:column>
                 </p:dataTable>
