@@ -74,7 +74,7 @@
                     </p:commandButton>
 
                     <p:dataTable id="connectTable" value="#{sensorStationListController}" var="sensorStation"
-                                 lazy="true" rows="5" paginator="true" scrollable="true" scrollHeight="400">
+                                 lazy="true" rows="5" paginator="true" scrollable="true" scrollHeight="300">
                         <p:column headerText="UUID" sortBy="#{sensorStation.id}" filterBy="#{sensorStation.id}">
                             <h:outputText value="#{sensorStation.id}"/>
                         </p:column>

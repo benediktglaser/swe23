@@ -115,8 +115,17 @@
                                         }
                                     },
                                     xAxis: {
-                                        title: {
-                                            text: 'Measure Date'
+                                        labels: {
+                                            color:'white'
+                                            ,style: {
+                                                color: 'white'
+                                            }
+                                        }
+                                        ,title: {
+                                            style: {
+                                                color: 'white'
+                                            }
+                                            ,text: 'Measure Date'
                                         },
                                         type: 'datetime',
                                         maxZoom: 24 * 36000000,
@@ -156,9 +165,18 @@
                                             }
                                         }],
                                         title: {
-                                            text: 'Measurement'
+                                            style: {
+                                                color: 'white'
+                                            }
+                                            , text: 'Measurement'
                                         },
-                                        gridLineColor: '#090101',
+                                        labels: {
+                                            color:'white'
+                                            ,style: {
+                                                color: 'white'
+                                            }
+                                        }
+                                        ,gridLineColor: '#090101',
                                         gridLineWidth: 1,
                                         gridLineDashStyle: 'solid'
                                     },
@@ -178,6 +196,9 @@
                                     navigation: {
                                         menuStyle: {
                                             background: '#01243f'
+                                        }
+                                        , menuItemStyle: {
+                                            color: 'white'
                                         }
                                     }
                                 });
