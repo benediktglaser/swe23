@@ -19,7 +19,6 @@ def access_database(path):
     """
 
     conn = sqlite3.connect(path)
-    #create_tables(conn)
     return conn
 
 
@@ -155,8 +154,12 @@ def insert_sensor_data(conn, data):
     """
 
     limits = get_limits(conn, data.station_id, "all")
-    if (limits ==[]):
-        logger.log_error("Found no limits for station "+str(data.station_id)+" in insert_sensor_data")
+    if limits == []:
+        logger.log_error(
+            "Found no limits for station "
+            + str(data.station_id)
+            + " in insert_sensor_data"
+        )
         return None
     # lower index = lower_limit, higher index = upper_limit
     temp_limits = limits[0:2]
@@ -238,7 +241,7 @@ def get_all_sensor_station(conn):
 def set_limits(conn, station_id, type, lower_limit, upper_limit):
     """
     Set new limits. Match was not used because of an older python-version
-    running on the raspberry pi not supporting it. 
+    running on the raspberry pi not supporting it.
     Arguments
     ---------
     conn : sqlite3.Connection
@@ -328,7 +331,7 @@ def set_limits(conn, station_id, type, lower_limit, upper_limit):
         logger.log_error(e)
 
 
-def get_limits(conn, station_id, type_limit: str):
+def get_limits(conn:str, station_id:int, type_limit: str):
     """
     Return a list of the limits if type_limit == ALL,
     otherwise a tuple (min, max) for the given type
@@ -351,13 +354,17 @@ def get_limits(conn, station_id, type_limit: str):
         record = cursor.fetchone()
         # convert the record into a list
         result = []
-        if record ==None:
-            logger.log_error("Found no record for station with id "+str(station_id)+" in get_limits")
+        if record == None:
+            logger.log_error(
+                "Found no record for station with id "
+                + str(station_id)
+                + " in get_limits"
+            )
             return []
-        if (record !=None):
+        if record != None:
             for value in record:
                 result.append(value)
-
+        print(result)
         if type_limit == "temp":
             return (result[2], result[3])
 
@@ -379,13 +386,15 @@ def get_limits(conn, station_id, type_limit: str):
         if type_limit == "all":
             return result[2:]
 
+        logger.log_error("Couldn't find limit with name " + type_limit)
     except sqlite3.Error as e:
         logger.log_error(e)
         return []
 
 
 def update_limits(
-    conn, station_id: int, type_limit: str, lower_bound: float, upper_bound: float):
+    conn:str, station_id: int, type_limit: str, lower_bound: float, upper_bound: float
+):
     """
     Updates the limits of the given type
     Arguments
@@ -588,7 +597,8 @@ def drop_limits(conn):
         print(e)
         logger.log_error(e)
 
-def delete_all_from_limits(conn:str):
+
+def delete_all_from_limits(conn: str):
     """
     DEBUG ONLY
     Deletes all entries from the limits table
@@ -608,6 +618,7 @@ def delete_all_from_limits(conn:str):
         print(e)
         logger.log_error(e)
 
+
 def delete_database(path):
     """
     DEBUG ONLY
@@ -620,8 +631,7 @@ def delete_database(path):
 
     os.remove(path)
 
+
 """Just for testing"""
 if __name__ == "__main__":
     host = "http://localhost:8080"
-    print(sqlite3.threadsafety)
-

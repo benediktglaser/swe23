@@ -31,6 +31,7 @@ def test_set_and_get_limit():
     db.create_tables(conn)
 
     db.init_limits(conn, 1, "B::CA")
+    list_of_types = ["temp", ]
     db.set_limits(conn, 1, "temp", -4.2, 6.8)
     assert db.get_limits(conn, 1, "temp")[0] == -4.2
     assert db.get_limits(conn, 1, "temp")[1] == 6.8
@@ -64,3 +65,55 @@ def test_remove_sensor_data():
     db.drop_limits(conn)
     conn.close()
     db.delete_database(path)
+
+
+def test_calculate_limits_inside():
+    result = db.calculate_limit(10, 8, 15)
+    assert result == 0
+
+
+def test_calculate_limits_under_limit():
+    result = db.calculate_limit(5, 10, 20)
+    assert result == 0.5
+
+
+def test_calculate_limits_over_limit():
+    result = db.calculate_limit(25, 10, 20)
+    assert result == 0.5
+
+def test_get_all_sensorstations():
+    path = "database_2.db"
+    conn = db.access_database(path)
+    db.create_tables(conn)
+    db.init_limits(conn, 1, "B::CA")
+    db.init_limits(conn, 2, "AF::CA")
+    assert 2 == len(db.get_all_sensorstations(conn))
+    db.drop_sensor_data(conn)
+    db.drop_limits(conn)
+    conn.close()
+    db.delete_database(path)
+    
+
+
+def test_update_limits():
+    path = "database_2.db"
+    conn = db.access_database(path)
+    db.create_tables(conn)
+    db.init_limits(conn, 1, "B::CA")
+    db.init_limits(conn, 2, "AF::CA")       
+    list_of_tuples = [("HUMIDITY", "humid"),("TEMPERATURE","temp"),("PRESSURE","pressure"), ("SOIL","soil"),("AIRQUALITY","quality" )]
+    for tuple in list_of_tuples:
+        db.update_limits(conn, 1, tuple[0], -4.0, 12)
+        assert -4.0 == db.get_limits(conn, 1, tuple[1])[0]
+        assert 12 == db.get_limits(conn, 1,tuple[1])[1]
+    
+    db.update_limits(conn, 1, "LIGHT", 33, 93)
+    assert 33 == db.get_limits(conn, 1, "light")[0]
+    assert 93 == db.get_limits(conn, 1,"light")[1]
+    db.drop_sensor_data(conn)
+    db.drop_limits(conn)
+    conn.close()
+    db.delete_database(path)
+
+
+
