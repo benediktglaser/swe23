@@ -8,6 +8,20 @@
                 template="/WEB-INF/templates/main.xhtml">
     <ui:define name="content">
         <h:form id="form">
+            <style>
+                .sensorStation-item .sensorStation-item-content {
+                    border: 1px solid var(--surface-d);
+                    border-radius: 3px;
+                    margin: .3rem;
+                    text-align: center;
+                    padding: 2rem 0;
+                    background-color: #5b7c30;
+                }
+
+                .sensorStation-item {
+                    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
+                }
+            </style>
             <div class="card">
                 <p:carousel value="#{plantsForUsersController.getAllSensorStations()}" var="sensorStation"
                             numVisible="3" numScroll="3">
