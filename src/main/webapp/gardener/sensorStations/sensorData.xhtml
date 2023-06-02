@@ -9,6 +9,8 @@
                 template="/WEB-INF/templates/main.xhtml">
 
     <ui:define name="content">
+
+        <div class="ui-fluid">
         <h:head>
             <h:body>
                 <f:metadata>
@@ -18,9 +20,9 @@
             </h:body>
             <script src="https://code.highcharts.com/highcharts.js"></script>
             <script src="https://code.highcharts.com/modules/stock.js"></script>
-            <script src="https://code.highcharts.com/modules/scrollbar.js"></script>
-            <script src="https://code.highcharts.com/stock/highstock.js"></script>
             <script src="https://code.highcharts.com/modules/exporting.js"></script>
+            <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
 
         </h:head>
 
@@ -34,7 +36,7 @@
                 </p:cascadeSelect>
             </div>
             <p:separator/>
-            <p:dataTable id="sensorDataTable" var="sensorData" value="#{sensorDataListController}"
+            <p:dataTable reflow="true" style="margin-top:20px" id="sensorDataTable" var="sensorData" value="#{sensorDataListController}"
                          class="sensorDataTable" lazy="true" rows="3" paginator="true">
                 <p:column headerText="Measurement" class="ui-datatable-header" sortBy="#{sensorData.measurement}"
                           filterBy="#{sensorData.measurement}">
@@ -200,6 +202,7 @@
                                             color: 'white'
                                         }
                                     }
+
                                 });
                                 let lastTimestamp;
                                 if (transformedData.length===0){
@@ -224,7 +227,11 @@
                                                 return [timestamp,point[1]];
                                             });
 
-                                            lastTimestamp = transformedDataNew[transformedDataNew.length - 1][0];
+                                            if (transformedDataNew.length === 0) {
+                                                lastTimestamp = Date.now();
+                                            } else {
+                                                lastTimestamp = transformedDataNew[transformedDataNew.length - 1][0];
+                                            }
                                             chartsi.redraw(true);
 
 
@@ -236,11 +243,13 @@
                             });
 
                     }
+
                 </script>
 
 
             </div>
 
     </h:form>
+        </div>
     </ui:define>
 </ui:composition>

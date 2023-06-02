@@ -17,7 +17,7 @@
                     </p:commandButton>
                 </f:facet>
                 <p:dataTable id="usersTable" var="user" value="#{userListController}" lazy="true" rows="5"
-                             paginator="true">
+                             paginator="true" style="margin-top:20px" reflow="true" >
                     <p:growl id="msgs"/>
                     <p:column headerText="Username" sortBy="#{user.username}" filterBy="#{user.username}">
                         <h:outputText value="#{user.username}"/>

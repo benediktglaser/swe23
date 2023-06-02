@@ -15,7 +15,8 @@
         </form>
         <h:form id="accessPointForm">
             <p:poll interval="6" update="accessPointTable"/>
-            <p:dataTable id="accessPointTable" var="accessPoint" value="#{accessPointController}" lazy="true" rows="3"
+
+            <p:dataTable reflow="true" style="margin-top:20px" id="accessPointTable" var="accessPoint" value="#{accessPointController}" lazy="true" rows="3"
                          paginator="true" scrollable="true" scrollHeight="400">
                 <p:column headerText="UUID" sortBy="#{accessPoint.id}" filterBy="#{accessPoint.id}" style="text-align: center">
                     <h:outputText value="#{accessPoint.id}"/>
@@ -64,7 +65,7 @@
                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times"/>
             </p:confirmDialog>
 
-            <p:dialog header="Link AccessPoint" id="accessPointLinkDialog" widgetVar="accessPointLinkDialog"
+            <p:dialog responsive="true" header="Link AccessPoint" id="accessPointLinkDialog" widgetVar="accessPointLinkDialog"
                       modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" scrollHeight="400">
                 <p:outputPanel id="accessPointLinkData">
                     <p:commandButton value="Activate Couplemode"
@@ -73,7 +74,7 @@
                     </p:commandButton>
 
                     <p:dataTable id="connectTable" value="#{sensorStationListController}" var="sensorStation"
-                                 lazy="true" rows="5" paginator="true" scrollable="true" scrollHeight="300" style="text-align: center">
+                                 lazy="true" rows="5" paginator="true" scrollable="true" scrollHeight="300" style="margin-top:20px; width: auto; text-align: center" reflow="true" >
                         <p:column headerText="UUID" sortBy="#{sensorStation.id}" filterBy="#{sensorStation.id}">
                             <h:outputText value="#{sensorStation.id}"/>
                         </p:column>
@@ -102,21 +103,21 @@
                                         listener="#{sensorStationDetailController.saveSensorStation(sensorStation)}"/>
                             </h:selectBooleanCheckbox>
                         </p:column>
-                        <p:column style="width:6%;text-align: center">
+                        <p:column style="width:auto;text-align: center">
                             <p:commandButton title="Assign gardener" value="Assign"
                                              action="#{gardenerSensorStationController.setSensorStation(sensorStation)}"
                                              update=":accessPointForm:assignDialog"
                                              oncomplete="PF('assignDialog').show()"/>
                         </p:column>
-                        <p:column style="width:3%;text-align: center">
+                        <p:column style="width:auto;text-align: center">
                             <p:commandButton id="sensordata" icon="pi pi-chart-bar"
                                              action="#{sensorStationListController.redirectToSensorDataPage(sensorStation)}"/>
                         </p:column>
-                        <p:column style="width:3%;text-align: center">
+                        <p:column style="width:auto;text-align: center">
                         <p:commandButton id="gallery" icon="pi pi-image"
                                          action="#{sensorStationListController.redirectToGallery(sensorStation)}"/>
                         </p:column>
-                        <p:column style="width:3%;text-align: center">
+                        <p:column style="width:auto;text-align: center">
                             <p:commandButton id="download" icon="pi pi-qrcode"
                                              action="#{QRCodeDownloadController.doUpdate(sensorStation.id)}"/>
                         </p:column>
@@ -198,7 +199,7 @@
                     <p:dataTable id="avaiableTable"
                                  value="#{visibleSensorStationController.getSensorStationsByAccessPoint(sensorStationListController.accessPoint)}"
                                  var="dipIds"
-                                 lazy="true" rows="3" paginator="true" scrollable="true" scrollHeight="400">
+                                 lazy="true" rows="3" paginator="true" scrollable="true" scrollHeight="400" style="margin-top:20px" reflow="true">
                         <p:column headerText="DIP Id"
                                   filterBy="#{visibleSensorStationController.getSensorStationsByAccessPointAndDipId(sensorStationListController.accessPoint,dipIds).dipId}">
                             <h:outputText
@@ -217,7 +218,7 @@
                         <p:column headerText="Connect">
                             <p:commandButton icon="pi pi-link"
                                              action="#{visibleSensorStationController.selectSensorStation(sensorStationListController.accessPoint,dipIds)}"
-                                             onstart="PF('statusDialog').show()">
+                                             onstart="PF('statusDialog').show()" >
 
                             </p:commandButton>
                         </p:column>
@@ -280,13 +281,7 @@
 
                 }
             </script>
-            <script>
-                function updateTable() {
-                    PF('ConnectTable').loadLazyData();
-                }
 
-                setInterval(updateTable, 10000); // 10 seconds
-            </script>
             <p:dialog header="Edit AccessPoint" id="accessPointEditDialog" widgetVar="accessPointEditDialog"
                       modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true">
                 <p:outputPanel id="accessPointData" rendered="#{not empty accessPointDetailController.accessPoint}">

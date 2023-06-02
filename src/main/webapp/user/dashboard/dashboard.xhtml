@@ -9,7 +9,7 @@
                 template="/WEB-INF/templates/main.xhtml">
     <f:metadata>
         <f:viewAction action="#{dashboardController.filterSensorStationsByUser(sessionInfoBean.getCurrentUser())}" />
-        <link href="/resources/css/theme.css" rel="stylesheet" type="text/css"/>
+
         <script src="https://code.highcharts.com/highcharts.js"></script>
         <script src="https://code.highcharts.com/modules/stock.js"></script>
         <script src="https://code.highcharts.com/modules/scrollbar.js"></script>
@@ -21,7 +21,7 @@
         <div class="card">
             <h:form id="form">
                 <p:dataTable id="dt-products" var="plant" value="#{dashboardController}"
-                             styleClass="products-table" rows="3" lazy="true" paginator="true">
+                             styleClass="products-table" rows="3" lazy="true" paginator="true" style="margin-top:20px" reflow="true" >
 
                     <p:column headerText="Name" sortBy="#{plant.name}" filterBy="#{plant.name}" style="text-align: center">
                         <h:outputText value="#{plant.name}"/>

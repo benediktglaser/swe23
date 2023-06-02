@@ -11,6 +11,7 @@
     <ui:define name="content">
         <form id="downloadForm" method="get">
         </form>
+        <div class="ui-fluid">
         <h:form id="sensorStationForm">
             <style>
                 .sensorStation-item .sensorStation-item-content {
@@ -30,7 +31,7 @@
                 <p:carousel id="sensorstationCarousel"
                             value="#{sensorStationListController.getAllSensorStationByOwner()}"
                             var="sensorStation"
-                            numVisible="3" numScroll="3">
+                            numVisible="3" numScroll="3" >
                     <div class="sensorStation-item">
                         <div class="sensorStation-item-content">
                             <div class="mb-3">
@@ -45,6 +46,7 @@
                                                  update=":sensorStationForm"
                                                  action="#{sensorStationDetailController.redirectToMinMaxEdit(sensorStation)}"
                                 />
+                                <p:separator/>
                                 <p:commandButton id="edit" icon="pi pi-pencil"
                                                  update=":sensorStationForm:sensorStationFormEditDialog"
                                                  oncomplete="PF('sensorStationFormEditDialog').show()"
@@ -67,6 +69,7 @@
                             </script>
                         </div>
                     </div>
+
                 </p:carousel>
             </div>
             <p:dialog header="Sensor Station Details" id="sensorStationFormEditDialog"
@@ -91,5 +94,6 @@
                                  action="#{sensorStationDetailController.saveSensorStation(sensorStationDetailController.sensorStation)}"/>
             </p:dialog>
         </h:form>
+        </div>
     </ui:define>
 </ui:composition>

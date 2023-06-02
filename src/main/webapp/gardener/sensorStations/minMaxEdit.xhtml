@@ -10,6 +10,7 @@
 
     <ui:define name="content">
         <h:form id="form">
+            <div class="ui-fluid">
             <p:outputPanel id="sensorStationTypeData">
                 <p:dataTable id="dataTable"
                              value="#{sensorDataTypeListController.getAllSensorDataTypeBySensorStation(sessionSensorStationBean.sensorStation)}"
@@ -51,6 +52,7 @@
                 </h:panelGrid>
 
             </p:outputPanel>
+            </div>
         </h:form>
     </ui:define>
 </ui:composition>
