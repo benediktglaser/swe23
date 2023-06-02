@@ -14,10 +14,11 @@
                 <f:viewAction
                         action="#{sensorDataListController.filterSensorDataBySensorStation(sessionSensorStationBean.sensorStation)}"/>
             </f:metadata>
-            <link href="/resources/css/theme.css" rel="stylesheet" type="text/css"/>
+
             <script src="https://code.highcharts.com/highcharts.js"></script>
             <script src="https://code.highcharts.com/modules/stock.js"></script>
-            <script src="https://code.highcharts.com/modules/scrollbar.js"></script>
+            <script src="https://code.highcharts.com/modules/exporting.js"></script>
+            <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
         </h:head>
         <p:growl id="msgs"/>
@@ -32,7 +33,7 @@
             </div>
             <p:separator style="border-color: transparent; opacity: 0;"></p:separator>
             <p:dataTable id="sensorDataTable" var="sensorData" value="#{sensorDataListController}"
-                         class="sensorDataTable" lazy="true" rows="3" paginator="true">
+                         class="sensorDataTable" lazy="true" rows="3" paginator="true" style="margin-top:20px" reflow="true" >
                 <p:column headerText="Measurement" style="text-align: center" sortBy="#{sensorData.measurement}"
                           filterBy="#{sensorData.measurement}">
                     <h:outputText value="#{sensorData.measurement}" style="color: #{sensorDataListController.checkLimit(sensorData)};"/>
@@ -218,8 +219,12 @@
                                                 chartsi.series[0].addPoint([timestamp, point[1]]);
                                                 return [timestamp,point[1]];
                                             });
-
-                                            lastTimestamp = transformedDataNew[transformedDataNew.length - 1][0];
+                                            if (transformedData.length===0){
+                                                lastTimestamp = Date.now();
+                                            }
+                                            else {
+                                                lastTimestamp = transformedData[transformedData.length - 1][0];
+                                            }
                                             chartsi.redraw(true);
 
 

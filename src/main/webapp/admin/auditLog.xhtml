@@ -7,9 +7,10 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/main.xhtml">
     <ui:define name="content">
+        <div class="ui-fluid">
         <h:form>
             <div class="container">
-                <p:dataTable id ="auditLogTable" var="auditLog" value="#{auditLogController.getLogs()}"
+                <p:dataTable id ="auditLogTable" style="margin-top:20px" reflow="true" var="auditLog" value="#{auditLogController.getLogs()}"
                              class="auditLogTable" >
                     <p:column headerText="Revision" class="ui-datatable-header" sortBy ="#{auditLog.getId()}" filterBy="#{auditLog.id}">
                         <h:outputText value="#{auditLog.getId()}"/>
@@ -33,5 +34,6 @@
 
            </div>
         </h:form>
+        </div>
     </ui:define>
 </ui:composition>
