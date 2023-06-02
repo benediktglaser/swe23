@@ -5,10 +5,16 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/main.xhtml">
     <ui:define name="content">
-
             <form id="login_form" action="#{request.contextPath}/login" method="post" class="login">
+                <style>
+                    .centering{
+                        margin-left: auto;
+                        margin-right: auto;
+                        width: 8em;
+                    }
+                </style>
                 <h:panelGrid styleClass="centering">
-                    <h:graphicImage library="images" name="login-img.png" height="200" width="250"/>
+                    <h:graphicImage library="images" name="PlantCare-logo.png" height="200" width="250"/>
                 </h:panelGrid>
 
                 <h:panelGrid columns="2" styleClass="centering">

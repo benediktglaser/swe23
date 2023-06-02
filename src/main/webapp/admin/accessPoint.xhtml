@@ -14,21 +14,20 @@
         <form id="downloadForm" method="get">
         </form>
         <h:form id="accessPointForm">
-
             <p:poll interval="6" update="accessPointTable"/>
             <p:dataTable id="accessPointTable" var="accessPoint" value="#{accessPointController}" lazy="true" rows="3"
                          paginator="true" scrollable="true" scrollHeight="400">
-                <p:column headerText="UUID" sortBy="#{accessPoint.id}" filterBy="#{accessPoint.id}">
+                <p:column headerText="UUID" sortBy="#{accessPoint.id}" filterBy="#{accessPoint.id}" style="text-align: center">
                     <h:outputText value="#{accessPoint.id}"/>
                 </p:column>
                 <p:column headerText="AccessPoint name" sortBy="#{accessPoint.accessPointName}"
-                          filterBy="#{accessPoint.accessPointName}">
+                          filterBy="#{accessPoint.accessPointName}" style="text-align: center">
                     <h:outputText value="#{accessPoint.accessPointName}"/>
                 </p:column>
-                <p:column headerText="connected" sortBy="#{accessPoint.connected}" filterBy="#{accessPoint.connected}">
+                <p:column headerText="connected" sortBy="#{accessPoint.connected}" filterBy="#{accessPoint.connected}" style="text-align: center">
                     <h:selectBooleanCheckbox value="#{accessPoint.connected}" disabled="true"/>
                 </p:column>
-                <p:column headerText="Enabled" sortBy="#{accessPoint.enabled}">
+                <p:column headerText="Enabled" sortBy="#{accessPoint.enabled}" style="text-align: center">
                     <h:selectBooleanCheckbox value="#{accessPoint.enabled}" disabled="#{accessPoint.enabled}">
                         <p:ajax update="accessPointTable"
                                 listener="#{accessPointDetailController.doSaveAccessPoint(accessPoint)}"/>
@@ -70,11 +69,11 @@
                 <p:outputPanel id="accessPointLinkData">
                     <p:commandButton value="Activate Couplemode"
                                      actionListener="#{accessPointCoupleController.startCouplingMode(sensorStationListController.accessPoint)}"
-                                     onstart="startTimer()">
+                                     onstart="startTimer()" style="text-align: center">
                     </p:commandButton>
 
                     <p:dataTable id="connectTable" value="#{sensorStationListController}" var="sensorStation"
-                                 lazy="true" rows="5" paginator="true" scrollable="true" scrollHeight="300">
+                                 lazy="true" rows="5" paginator="true" scrollable="true" scrollHeight="300" style="text-align: center">
                         <p:column headerText="UUID" sortBy="#{sensorStation.id}" filterBy="#{sensorStation.id}">
                             <h:outputText value="#{sensorStation.id}"/>
                         </p:column>
@@ -97,45 +96,42 @@
                                   filterBy="#{sensorStation.gardener}">
                             <h:outputText value="#{sensorStation.gardener}"/>
                         </p:column>
-                        <p:column headerText="Enabled" sortBy="#{sensorStation.enabled}"
-                                  >
+                        <p:column headerText="Enabled" sortBy="#{sensorStation.enabled}">
                             <h:selectBooleanCheckbox value="#{sensorStation.enabled}" disabled="false">
                                 <p:ajax update="connectTable"
                                         listener="#{sensorStationDetailController.saveSensorStation(sensorStation)}"/>
                             </h:selectBooleanCheckbox>
                         </p:column>
-                        <p:column style="width:5%;text-align: center">
+                        <p:column style="width:6%;text-align: center">
                             <p:commandButton title="Assign gardener" value="Assign"
                                              action="#{gardenerSensorStationController.setSensorStation(sensorStation)}"
                                              update=":accessPointForm:assignDialog"
                                              oncomplete="PF('assignDialog').show()"/>
                         </p:column>
-                        <p:column style="width:7%;text-align: center">
-                            <p:commandButton update=":accessPointForm" value="MinMaxEdit"
-                                             action="#{sensorStationDetailController.redirectToMinMaxEdit(sensorStation)}"/>
-                        </p:column>
-                        <p:column style="width:2%;text-align: center">
-                            <p:commandButton id="edit" icon="pi pi-pencil"
-                                             update=":accessPointForm:sensorStationFormEditDialog"
-                                             oncomplete="PF('sensorStationFormEditDialog').show()"
-                                             action="#{sensorStationDetailController.setSensorStation(sensorStation)}"
-                            />
-                        </p:column>
-                        <p:column style="width:7%;text-align: center">
-                            <p:commandButton id="sensordata" value="Sensordata"
+                        <p:column style="width:3%;text-align: center">
+                            <p:commandButton id="sensordata" icon="pi pi-chart-bar"
                                              action="#{sensorStationListController.redirectToSensorDataPage(sensorStation)}"/>
                         </p:column>
-                        <p:column>
-                        <p:commandButton id="gallery" value="Gallery"
+                        <p:column style="width:3%;text-align: center">
+                        <p:commandButton id="gallery" icon="pi pi-image"
                                          action="#{sensorStationListController.redirectToGallery(sensorStation)}"/>
                         </p:column>
-                        <p:column style="width:10%;text-align: center">
-                            <p:commandButton id="download" value="DownloadQRCode"
+                        <p:column style="width:3%;text-align: center">
+                            <p:commandButton id="download" icon="pi pi-qrcode"
                                              action="#{QRCodeDownloadController.doUpdate(sensorStation.id)}"/>
                         </p:column>
                         <p:column>
-                            <p:commandButton update="connectTable" icon="pi pi-trash"
+                            <p:splitButton id="splitButton" icon="pi pi-cog">
+                                <p:menuitem id="deleteSensorStation" update="connectTable" icon="pi pi-trash"
                                              action="#{sensorStationDetailController.deleteSensorStation(sensorStation)}"/>
+                                <p:menuitem id="edit" icon="pi pi-pencil"
+                                                 update=":accessPointForm:sensorStationFormEditDialog"
+                                                 oncomplete="PF('sensorStationFormEditDialog').show()"
+                                                 action="#{sensorStationDetailController.setSensorStation(sensorStation)}"
+                                />
+                                <p:menuitem id="minmaxEdit" update=":accessPointForm" value="MinMaxEdit"
+                                                 action="#{sensorStationDetailController.redirectToMinMaxEdit(sensorStation)}"/>
+                            </p:splitButton>
                         </p:column>
                     </p:dataTable>
                 </p:outputPanel>
