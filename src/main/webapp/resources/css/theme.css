@@ -7033,3 +7033,9 @@ body .ui-wizard .ui-icon-arrowthick-1-e:before {
 .chart-container{
   float:right;
 }
+.centering{
+  margin-left: auto;
+  margin-right: auto;
+  width: 8em;
+}
+
