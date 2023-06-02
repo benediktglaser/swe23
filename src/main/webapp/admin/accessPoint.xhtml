@@ -74,7 +74,7 @@
                     </p:commandButton>
 
                     <p:dataTable id="connectTable" value="#{sensorStationListController}" var="sensorStation"
-                                 lazy="true" rows="5" paginator="true" scrollable="true" scrollHeight="300" style="margin-top:20px" reflow="true" >
+                                 lazy="true" rows="5" paginator="true" scrollable="true" scrollHeight="300" style="margin-top:20px; width: auto; text-align: center" reflow="true" >
                         <p:column headerText="UUID" sortBy="#{sensorStation.id}" filterBy="#{sensorStation.id}">
                             <h:outputText value="#{sensorStation.id}"/>
                         </p:column>
@@ -103,21 +103,21 @@
                                         listener="#{sensorStationDetailController.saveSensorStation(sensorStation)}"/>
                             </h:selectBooleanCheckbox>
                         </p:column>
-                        <p:column style="width:6%;text-align: center">
+                        <p:column style="width:auto;text-align: center">
                             <p:commandButton title="Assign gardener" value="Assign"
                                              action="#{gardenerSensorStationController.setSensorStation(sensorStation)}"
                                              update=":accessPointForm:assignDialog"
                                              oncomplete="PF('assignDialog').show()"/>
                         </p:column>
-                        <p:column style="width:3%;text-align: center">
+                        <p:column style="width:auto;text-align: center">
                             <p:commandButton id="sensordata" icon="pi pi-chart-bar"
                                              action="#{sensorStationListController.redirectToSensorDataPage(sensorStation)}"/>
                         </p:column>
-                        <p:column style="width:3%;text-align: center">
+                        <p:column style="width:auto;text-align: center">
                         <p:commandButton id="gallery" icon="pi pi-image"
                                          action="#{sensorStationListController.redirectToGallery(sensorStation)}"/>
                         </p:column>
-                        <p:column style="width:3%;text-align: center">
+                        <p:column style="width:auto;text-align: center">
                             <p:commandButton id="download" icon="pi pi-qrcode"
                                              action="#{QRCodeDownloadController.doUpdate(sensorStation.id)}"/>
                         </p:column>
