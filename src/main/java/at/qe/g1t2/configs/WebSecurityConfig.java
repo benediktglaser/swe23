@@ -51,6 +51,15 @@ public class WebSecurityConfig {
     }
 
     @Bean
+    public ServletContextInitializer servletContextInitializer() {
+        return servletContext -> {
+            servletContext.setInitParameter("javax.faces.PROJECT_STAGE", "Production");
+            servletContext.setInitParameter("primefaces.THEME", "luna-green");
+
+        };
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         try {
             http.csrf().disable();

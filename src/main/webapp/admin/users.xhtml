@@ -52,6 +52,7 @@
             <p:dialog header="Create User" id="userCreateDialog" widgetVar="userCreateDialog" modal="true"
                       showEffect="fade" hideEffect="fade" resizable="false">
                 <p:outputPanel id="userCreateData" rendered="#{not empty adminManagementController.user}">
+                    <p:defaultCommand target="save"/>
                     <h:panelGrid columns="2">
                         <p:outputLabel for="createUsername" value="Username: "/>
                         <p:inputText id="createUsername" value="#{adminManagementController.user.username}"/>
@@ -82,7 +83,7 @@
                     </h:panelGrid>
                     <p:separator/>
                     <h:panelGrid columns="3">
-                        <p:commandButton value="Save" action="#{adminManagementController.doSaveUser()}"
+                        <p:commandButton id="save" value="Save" action="#{adminManagementController.doSaveUser()}"
                                          oncomplete="PF('userCreateDialog').hide()" update=":userForm:usersTable"/>
                         <p:commandButton value="Reload" action="#{adminManagementController.doReloadUser()}"
                                          update=":userForm:userData"/>
@@ -91,10 +92,10 @@
                 </p:outputPanel>
             </p:dialog>
 
-
             <p:dialog header="Edit User" id="userEditDialog" widgetVar="userEditDialog" modal="true" showEffect="fade"
                       hideEffect="fade" resizable="false">
                 <p:outputPanel id="userData" rendered="#{not empty userDetailController.user}">
+                    <p:defaultCommand target="save1"/>
                     <h:panelGrid columns="2">
                         <p:outputLabel for="username" value="Username: "/>
                         <p:inputText id="username" value="#{userDetailController.user.username}" disabled="true"/>
@@ -120,7 +121,7 @@
                     </h:panelGrid>
                     <p:separator/>
                     <h:panelGrid columns="3">
-                        <p:commandButton value="Save" action="#{userDetailController.doSaveUser()}"
+                        <p:commandButton id="save1" value="Save" action="#{userDetailController.doSaveUser()}"
                                          oncomplete="PF('userEditDialog').hide()" update=":userForm:usersTable"/>
                         <p:commandButton value="Reload" action="#{userDetailController.doReloadUser()}"
                                          update=":userForm:userData"/>

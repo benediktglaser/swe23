@@ -13,6 +13,20 @@
         </form>
         <div class="ui-fluid">
         <h:form id="sensorStationForm">
+            <style>
+                .sensorStation-item .sensorStation-item-content {
+                    border: 1px solid var(--surface-d);
+                    border-radius: 3px;
+                    margin: .3rem;
+                    text-align: center;
+                    padding: 2rem 0;
+                    background-color: #5b7c30;
+                }
+
+                .sensorStation-item {
+                    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
+                }
+            </style>
             <div class="card">
                 <p:carousel id="sensorstationCarousel"
                             value="#{sensorStationListController.getAllSensorStationByOwner()}"
@@ -37,11 +51,11 @@
                                                  oncomplete="PF('sensorStationFormEditDialog').show()"
                                                  action="#{sensorStationDetailController.setSensorStation(sensorStation)}"
                                 />
-                                <p:commandButton id="sensordata" value="Sensordata"
+                                <p:commandButton id="sensordata" icon="pi pi-chart-bar"
                                                  action="#{sensorStationListController.redirectToSensorDataPage(sensorStation)}"/>
-                                <p:commandButton id="gallery" value="Gallery"
+                                <p:commandButton id="gallery" icon="pi pi-image"
                                                  action="#{sensorStationListController.redirectToGallery(sensorStation)}"/>
-                                <p:commandButton id="download" value="DownloadQRCode"
+                                <p:commandButton id="download" icon="pi pi-qrcode"
                                                  action="#{QRCodeDownloadController.doUpdate(sensorStation.id)}"/>
                             </p:outputPanel>
                             <script>
