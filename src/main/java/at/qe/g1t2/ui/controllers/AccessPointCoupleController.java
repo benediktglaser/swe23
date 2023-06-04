@@ -47,9 +47,16 @@ public class AccessPointCoupleController {
 
 
     public void startCouplingMode(AccessPoint accessPoint) {
+        accessPoint = accessPointService.loadAccessPoint(accessPoint.getId());
+        if(accessPoint.getCoupleMode()){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Another admin has already started the couple mode. This can take up to 5 minutes!", null));
+            return;
+        }
         visibleSensorStationController.resetVisibleList(accessPoint);
         accessPoint.setCoupleMode(true);
         this.accessPoint = accessPointService.saveAccessPoint(accessPoint);
+        PrimeFaces.current().executeScript("startTimer()");
     }
 
     public void endCouplingMode(AccessPoint accessPoint) {

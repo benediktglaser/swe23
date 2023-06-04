@@ -192,6 +192,7 @@ public class SensorStationConnectController {
         newSensorStation.setMac(sensorStationDTO.getMac());
         newSensorStation.setLastConnectedDate(LocalDateTime.now());
         newSensorStation.setEnabled(false);
+        newSensorStation.setName("New sensorstation create date: "+newSensorStation.getLastConnectedDate() + " and DipId is:" + newSensorStation.getDipId());
         newSensorStation = sensorStationService.saveSensorStation(accessPoint, newSensorStation);
         for(SensorDataType type: SensorDataType.values()){
             SensorDataTypeInfo sensorDataTypeInfo = new SensorDataTypeInfo();
