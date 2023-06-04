@@ -10,14 +10,22 @@
         </h:head>
 
         <form id="login_form" action="#{request.contextPath}/login" method="post" class="login">
-            <h:panelGrid columns="2">
+            <style>
+                .centering {
+                    margin-left: auto;
+                    margin-right: auto;
+                    width: 30%;
+                }
+            </style>
+            <!--<p:graphicImage library="images" name="PlantCare-logo.png" style="width: 30%; display: block;" styleClass="centering"/>-->
+            <h:panelGrid columns="2" styleClass="centering">
                 <p:outputLabel for="username" value="Username:"/>
                 <p:inputText id="username" type="text" required="true"/>
 
                 <p:outputLabel for="password" value="Password:"/>
                 <p:inputText id="password" type="password" required="true"/>
 
-                <button type="submit" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+                <button type="submit" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" styleClass="centering">
                     <span class="ui-button-text">Login</span>
                 </button>
                 <p:outputLabel style="color:red" rendered="#{param.error}">Invalid password or username.</p:outputLabel>
