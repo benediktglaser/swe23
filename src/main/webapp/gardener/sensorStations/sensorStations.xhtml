@@ -27,7 +27,7 @@
                     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
                 }
             </style>
-            <div class="card">
+            <div class="ui-fluid">
                 <p:carousel id="sensorstationCarousel"
                             value="#{sensorStationListController.getAllSensorStationByOwner()}"
                             var="sensorStation"
@@ -42,16 +42,26 @@
                             <p:outputPanel id="carossel">
 
                                 <h4 class="mb-1">#{sensorStation.name}</h4>
-                                <p:commandButton id="edit" icon="pi pi-pencil"
+                             <p:commandButton id="minmax" value="Min/Max edit"
+                                                 update=":sensorStationForm"
+                                                 action="#{sensorStationDetailController.redirectToMinMaxEdit(sensorStation)}"
+                                />
+                                <div>
+
+                                <p:selectBooleanCheckbox id="stationEnabeld"  title="When disabled all functions are still active but the station recieves no data anymore. Only admins can change the state!" value="#{sensorStation.enabled}" disabled="true"/>
+                                    <p:tooltip for="stationEnabeld" position="top" />
+                                </div>
+                                <p:separator/>
+                                <p:commandButton title="Edit sensorstation" id="edit" icon="pi pi-pencil"
                                                  update=":sensorStationForm:sensorStationFormEditDialog"
                                                  oncomplete="PF('sensorStationFormEditDialog').show()"
                                                  action="#{sensorStationDetailController.setSensorStation(sensorStation)}"
                                 />
-                                <p:commandButton id="sensordata" icon="pi pi-chart-bar"
+                                <p:commandButton title="Sensordata" id="sensordata" icon="pi pi-chart-bar"
                                                  action="#{sensorStationListController.redirectToSensorDataPage(sensorStation)}"/>
-                                <p:commandButton id="gallery" icon="pi pi-image"
+                                <p:commandButton title="Gallery" id="gallery" icon="pi pi-image"
                                                  action="#{sensorStationListController.redirectToGallery(sensorStation)}"/>
-                                <p:commandButton id="download" icon="pi pi-qrcode"
+                                <p:commandButton title="Download QR Code" id="download" icon="pi pi-qrcode"
                                                  action="#{QRCodeDownloadController.doUpdate(sensorStation.id)}"/>
                                 <p:separator/>
                                 <p:commandButton id="minmax" value="Min/Max edit"
