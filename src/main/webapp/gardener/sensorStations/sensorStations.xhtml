@@ -42,11 +42,6 @@
                             <p:outputPanel id="carossel">
 
                                 <h4 class="mb-1">#{sensorStation.name}</h4>
-                             <p:commandButton id="minmax" value="Min/Max edit"
-                                                 update=":sensorStationForm"
-                                                 action="#{sensorStationDetailController.redirectToMinMaxEdit(sensorStation)}"
-                                />
-                                <p:separator/>
                                 <p:commandButton id="edit" icon="pi pi-pencil"
                                                  update=":sensorStationForm:sensorStationFormEditDialog"
                                                  oncomplete="PF('sensorStationFormEditDialog').show()"
@@ -58,6 +53,11 @@
                                                  action="#{sensorStationListController.redirectToGallery(sensorStation)}"/>
                                 <p:commandButton id="download" icon="pi pi-qrcode"
                                                  action="#{QRCodeDownloadController.doUpdate(sensorStation.id)}"/>
+                                <p:separator/>
+                                <p:commandButton id="minmax" value="Min/Max edit"
+                                                 update=":sensorStationForm"
+                                                 action="#{sensorStationDetailController.redirectToMinMaxEdit(sensorStation)}"
+                                />
                             </p:outputPanel>
                             <script>
                                 function sent(param) {
@@ -72,11 +72,12 @@
 
                 </p:carousel>
             </div>
+            <p:growl id="msgs"/>
             <p:dialog header="Sensor Station Details" id="sensorStationFormEditDialog"
-                      widgetVar="sensorStationFormEditDialog" modal="true" showEffect="fade" hideEffect="fade"
+                      widgetVar="sensorStationFormEditDialog" modal="true" showEffect="fade"
                       resizable="false" dynamic="true" autoUpdate="true">
-                <p:messages id="msgs"/>
                 <p:defaultCommand target="saveButtonEdit"/>
+                <p:outputPanel id="editOutputPanel">
                 <h:panelGrid id="editMinMax" columns="2">
                     <p:outputLabel for="plant_name" value="Plant Name: "/>
                     <p:inputText id="plant_name" value="#{sensorStationDetailController.sensorStation.name}"/>
@@ -84,14 +85,15 @@
                     <p:inputText id="plant_category" value="#{sensorStationDetailController.sensorStation.category}">
                     </p:inputText>
                     <p:outputLabel for="plant_interval"
-                                   value="Interval(min Value is #{sensorStationDetailController.sensorStation.accessPoint.thresholdInterval}): "/>
-                    <p:inputText id="plant_interval"
-                                 value="#{sensorStationDetailController.sensorStation.accessPoint.sendingInterval}">
-                    </p:inputText>
+                                   value="Interval(min value is #{sensorStationDetailController.sensorStation.accessPoint.thresholdInterval}): "/>
+                    <p:inputNumber id="plant_interval"
+                                 value="#{sensorStationDetailController.sensorStation.accessPoint.sendingInterval}" symbol="s" symbolPosition="s">
+                    </p:inputNumber>
                 </h:panelGrid>
                 <p:commandButton id="saveButtonEdit" value="Save"
-                                 update=":sensorStationForm"
+                                 update=":sensorStationForm editOutputPanel msgs"
                                  action="#{sensorStationDetailController.saveSensorStation(sensorStationDetailController.sensorStation)}"/>
+                </p:outputPanel>
             </p:dialog>
         </h:form>
         </div>

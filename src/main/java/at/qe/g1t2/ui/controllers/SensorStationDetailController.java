@@ -4,6 +4,8 @@ import at.qe.g1t2.model.SensorStation;
 import at.qe.g1t2.services.AccessPointService;
 import at.qe.g1t2.services.SensorStationService;
 import at.qe.g1t2.ui.beans.SessionSensorStationBean;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -32,8 +34,13 @@ public class SensorStationDetailController {
     private SensorStation sensorStation;
 
     public void saveSensorStation(SensorStation sensorStation){
-        accessPointService.saveAccessPoint(sensorStation.getAccessPoint());
-        sensorStationService.saveSensorStation(sensorStation.getAccessPoint(),sensorStation);
+        if(sensorStation.getAccessPoint().getSendingInterval()>36000){
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: Sending interval should be below 36000 seconds.(equals 10 hours)", null));
+        }else {
+            accessPointService.saveAccessPoint(sensorStation.getAccessPoint());
+            sensorStationService.saveSensorStation(sensorStation.getAccessPoint(), sensorStation);
+        }
     }
 
     public SensorStation getSensorStation() {
