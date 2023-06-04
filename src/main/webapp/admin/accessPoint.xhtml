@@ -110,15 +110,15 @@
                                              oncomplete="PF('assignDialog').show()"/>
                         </p:column>
                         <p:column style="width:auto;text-align: center">
-                            <p:commandButton id="sensordata" icon="pi pi-chart-bar"
+                            <p:commandButton title="SensorData" id="sensordata" icon="pi pi-chart-bar"
                                              action="#{sensorStationListController.redirectToSensorDataPage(sensorStation)}"/>
                         </p:column>
                         <p:column style="width:auto;text-align: center">
-                        <p:commandButton id="gallery" icon="pi pi-image"
+                        <p:commandButton title="Gallery" id="gallery" icon="pi pi-image"
                                          action="#{sensorStationListController.redirectToGallery(sensorStation)}"/>
                         </p:column>
                         <p:column style="width:auto;text-align: center">
-                            <p:commandButton id="download" icon="pi pi-qrcode"
+                            <p:commandButton title="Download QrCode" id="download" icon="pi pi-qrcode"
                                              action="#{QRCodeDownloadController.doUpdate(sensorStation.id)}"/>
                         </p:column>
                         <p:column>
@@ -145,7 +145,6 @@
                     document.getElementById("downloadForm").submit();
                 }
             </script>
-            <p:growl id="msgs"/>
             <p:dialog header="Sensor Station Details" id="sensorStationFormEditDialog"
                       widgetVar="sensorStationFormEditDialog" modal="true" showEffect="fade" hideEffect="fade"
                       resizable="false" dynamic="true">
@@ -157,13 +156,14 @@
                     <p:inputText id="plant_category" value="#{sensorStationDetailController.sensorStation.category}">
                     </p:inputText>
                     <p:outputLabel for="plant_interval"
-                                   value="Interval(includes overhead #{sensorStationDetailController.sensorStation.accessPoint.thresholdInterval}): "/>
-                    <p:inputNumber id="plant_interval"
-                                   value="#{sensorStationDetailController.sensorStation.accessPoint.sendingInterval}" symbol="s" symbolPosition="s">
+                                   value="Sending Interval (minvalue: #{sensorStationDetailController.sensorStation.accessPoint.thresholdInterval}): "/>
+                    <p:inputNumber id="plant_interval" title="Enter the sending interval for sending data. Max value is 36000 seconds equals 10 hours"
+                                   value="#{sensorStationDetailController.sensorStation.accessPoint.sendingInterval}" symbol="s" symbolPosition="s" maxValue="36000">
                     </p:inputNumber>
+                    <p:tooltip for="plant_interval" position="top" />
                 </h:panelGrid>
                 <p:commandButton id="saveButtonEdit" value="Save"
-                                 update="accessPointLinkData msgs"
+                                 update="accessPointLinkData"
                                  action="#{sensorStationDetailController.saveSensorStation(sensorStationDetailController.sensorStation)}"
                                  oncomplete="PF('sensorStationFormEditDialog').hide()"
                 />

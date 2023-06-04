@@ -42,10 +42,6 @@
                             <p:outputPanel id="carossel">
 
                                 <h4 class="mb-1">#{sensorStation.name}</h4>
-                             <p:commandButton id="minmax" value="Min/Max edit"
-                                                 update=":sensorStationForm"
-                                                 action="#{sensorStationDetailController.redirectToMinMaxEdit(sensorStation)}"
-                                />
                                 <div>
 
                                 <p:selectBooleanCheckbox id="stationEnabeld"  title="When disabled all functions are still active but the station recieves no data anymore. Only admins can change the state!" value="#{sensorStation.enabled}" disabled="true"/>
