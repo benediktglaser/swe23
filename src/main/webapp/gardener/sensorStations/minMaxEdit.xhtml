@@ -28,6 +28,9 @@
                     <p:column headerText="Create Date">
                         <h:outputText value="#{type.createDate.toLocalDate()}"/>
                     </p:column>
+                    <p:column headerText="Unit">
+                        <h:outputText value="#{type.type.unit}"/>
+                    </p:column>
                 </p:dataTable>
                 <p:selectOneMenu id="types" value="#{sensorDataTypeInfoController.sensorDataType}">
                     <f:selectItems value="#{sensorDataTypeInfoController.allTypes}"/>
@@ -35,11 +38,11 @@
                 <p:messages id="msgs"/>
                 <h:panelGrid columns="2" styleClass="mb-3">
                     <p:outputLabel for="min" value="Min Limit: "/>
-                    <p:inputText id="min" value="#{sensorDataTypeInfoController.type.minLimit}">
-                    </p:inputText>
+                    <p:inputNumber id="min" value="#{sensorDataTypeInfoController.type.minLimit}">
+                    </p:inputNumber>
                     <p:outputLabel for="max" value="Max Limit: "/>
-                    <p:inputText id="max" value="#{sensorDataTypeInfoController.type.maxLimit}">
-                    </p:inputText>
+                    <p:inputNumber id="max" value="#{sensorDataTypeInfoController.type.maxLimit}" >
+                    </p:inputNumber>
                 </h:panelGrid>
                 <p:separator/>
                 <h:panelGrid columns="1">

@@ -37,7 +37,7 @@ public class SensorStationGardenerService implements Serializable {
     }
 
     public Collection<SensorStation> getAllSensorStationsOfUser() {
-        return sensorStationRepository.getSensorStationsByGardenerAndEnabledTrue(getAuthenticatedUser());
+        return sensorStationRepository.getSensorStationsByGardener(getAuthenticatedUser());
     }
 
     private Userx getAuthenticatedUser() {

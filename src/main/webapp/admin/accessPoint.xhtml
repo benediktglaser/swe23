@@ -26,13 +26,13 @@
                     <h:outputText value="#{accessPoint.accessPointName}"/>
                 </p:column>
                 <p:column headerText="connected" sortBy="#{accessPoint.connected}" filterBy="#{accessPoint.connected}" style="text-align: center">
-                    <h:selectBooleanCheckbox value="#{accessPoint.connected}" disabled="true"/>
+                    <p:selectBooleanCheckbox value="#{accessPoint.connected}" disabled="true"/>
                 </p:column>
                 <p:column headerText="Enabled" sortBy="#{accessPoint.enabled}" style="text-align: center">
-                    <h:selectBooleanCheckbox value="#{accessPoint.enabled}" disabled="#{accessPoint.enabled}">
+                    <p:selectBooleanCheckbox value="#{accessPoint.enabled}" disabled="#{accessPoint.enabled}">
                         <p:ajax update="accessPointTable"
                                 listener="#{accessPointDetailController.doSaveAccessPoint(accessPoint)}"/>
-                    </h:selectBooleanCheckbox>
+                    </p:selectBooleanCheckbox>
                 </p:column>
 
                 <p:column style="text-align: center">
@@ -68,11 +68,11 @@
             <p:dialog responsive="true" header="Link AccessPoint" id="accessPointLinkDialog" widgetVar="accessPointLinkDialog"
                       modal="true" showEffect="fade" hideEffect="fade" resizable="false" dynamic="true" scrollHeight="400">
                 <p:outputPanel id="accessPointLinkData">
+                    <p:messages id="alreadyCoupleMode"></p:messages>
                     <p:commandButton value="Activate Couplemode"
                                      actionListener="#{accessPointCoupleController.startCouplingMode(sensorStationListController.accessPoint)}"
-                                     onstart="startTimer()" style="text-align: center">
+                                     style="text-align: center" update="accessPointLinkData" >
                     </p:commandButton>
-
                     <p:dataTable id="connectTable" value="#{sensorStationListController}" var="sensorStation"
                                  lazy="true" rows="5" paginator="true" scrollable="true" scrollHeight="300" style="margin-top:20px; width: auto; text-align: center" reflow="true" >
                         <p:column headerText="UUID" sortBy="#{sensorStation.id}" filterBy="#{sensorStation.id}">
@@ -98,10 +98,10 @@
                             <h:outputText value="#{sensorStation.gardener}"/>
                         </p:column>
                         <p:column headerText="Enabled" sortBy="#{sensorStation.enabled}">
-                            <h:selectBooleanCheckbox value="#{sensorStation.enabled}" disabled="false">
+                            <p:selectBooleanCheckbox value="#{sensorStation.enabled}" disabled="false">
                                 <p:ajax update="connectTable"
                                         listener="#{sensorStationDetailController.saveSensorStation(sensorStation)}"/>
-                            </h:selectBooleanCheckbox>
+                            </p:selectBooleanCheckbox>
                         </p:column>
                         <p:column style="width:auto;text-align: center">
                             <p:commandButton title="Assign gardener" value="Assign"
@@ -223,7 +223,7 @@
                             </p:commandButton>
                         </p:column>
                     </p:dataTable>
-                    <p:commandButton value="Deactivate Couplemode"
+                    <p:commandButton value="Deactivate Couplemode" widgetVar="deactivateButton"
                                      actionListener="#{accessPointCoupleController.endCouplingMode(sensorStationListController.accessPoint)}"
                                      action="#{visibleSensorStationController.resetVisibleList(sensorStationListController.accessPoint)}"
                                      oncomplete="endCoupleMode()" update="accessPointLinkData">
@@ -246,6 +246,7 @@
                     timer = setTimeout(function () {
                         if (!PF('statusDialog').isVisible()) {
                         } else {
+
                             alert("Connecting reached timeout");
                             PF('statusDialog').hide();
                         }
@@ -266,8 +267,9 @@
                         if (!PF('spinner').isVisible()) {
 
                         } else {
+                            PF('deactivateButton').jq.click();
                             alert("Coupling reached timeout");
-                            PF('spinner').hide();
+                           // PF('spinner').hide();
                         }
 
 
@@ -293,13 +295,15 @@
                         <p:inputText id="accessPointName"
                                      value="#{accessPointDetailController.accessPoint.accessPointName}"/>
 
-                        <p:outputLabel for="accessPointThresholdInterval" value="Threshold Interval: "/>
-                        <p:inputText id="accessPointThresholdInterval"
-                                     value="#{accessPointDetailController.accessPoint.thresholdInterval}"/>
+                        <p:outputLabel for="accessPointThresholdInterval" value="Threshold of sending interval: "/>
+                        <p:inputNumber id="accessPointThresholdInterval" title="Enter the threshold interval for sending data. This determines the minimum time interval between consecutive data transmissions. Max value is 36000 seconds or 10 hours"
+                                       value="#{accessPointDetailController.accessPoint.thresholdInterval}" symbol="s" symbolPosition="s" maxValue="36000">
+                        </p:inputNumber>
 
                         <p:outputLabel for="enabled" value="Enabled: "/>
                         <p:selectBooleanCheckbox id="enabled"
                                                  value="#{accessPointDetailController.accessPoint.enabled}"/>
+                        <p:tooltip for="accessPointThresholdInterval" position="top" />
                     </p:panelGrid>
                     <p:commandButton value="Save" action="#{accessPointDetailController.doSaveAccessPoint()}"
                                      oncomplete="PF('accessPointEditDialog').hide()"
