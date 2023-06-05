@@ -125,7 +125,7 @@ def calculate_limit(value, lower_limit, upper_limit):
 
     if value >= lower_limit:
         if value <= upper_limit:
-            return 0
+            return 1.0
 
         return abs(value - upper_limit) / (upper_limit - lower_limit)
 
@@ -482,7 +482,8 @@ def remove_sensor_data(conn, station_id, time):
         print(e)
         logger.log_error(e)
 
-def remove_sensorstation_from_limits (conn:str, station_id:int):
+
+def remove_sensorstation_from_limits(conn:str, station_id:int):
     """
     Remove sensorstation according to station_id from the limits table
     Arguments
@@ -496,8 +497,9 @@ def remove_sensorstation_from_limits (conn:str, station_id:int):
     cursor = conn.cursor()
     try:
         cursor.execute(
-            "DELETE FROM limits " "WHERE station_id = ?;",
-            (str(station_id)),
+            "DELETE FROM limits "
+            "WHERE station_id = ?;",
+            (str(station_id),)
         )
         conn.commit()
         cursor.close()
@@ -506,10 +508,7 @@ def remove_sensorstation_from_limits (conn:str, station_id:int):
         logger.log_error(e)
 
 
-
-
-
-def get_all_sensorstations(conn:str):
+def get_all_sensorstations(conn: sqlite3.Connection):
     """
     Returns the station_id from all stations from the limits table.
     Arguments
@@ -533,6 +532,7 @@ def get_all_sensorstations(conn:str):
     except sqlite3.Error as e:
         print(e)
         logger.log_error(e)
+        return []
 
 
 def drop_sensor_data(conn):

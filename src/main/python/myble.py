@@ -1,8 +1,7 @@
 import asyncio
 import time
 import re
-import threading
-from threading import Thread
+from asyncio_taskpool import TaskPool
 from bleak import BleakScanner, BLEDevice, BleakClient
 from bleak.backends.scanner import AdvertisementData
 import dbconnection as db
@@ -18,13 +17,13 @@ CONNECTED_DEVICES = set()
 # all newly scanned SensorStations
 SCANNED_DEVICES = set()
 # Database connection
-PATH = ""
+CONN = None
 # Webserver address
 ADDRESS = ""
 # Auth_header for rest
 AUTH_HEADER = ""
-# mutex on connected and scanned devices
-lock = threading.Lock()
+# Taskpool for all sensorstations
+TASKPOOL = TaskPool()
 # UUIDS of BLE characteristics
 DATA_UUIDS = {"temp": "00000000-0000-0000-0000-0000004102a0",
               "pressure": "00000000-0000-0000-0000-0000004102b0",
@@ -44,7 +43,7 @@ GARDENER_UUID = "00000000-0000-0000-0000-000000410290"
 EXCESS_LIMIT = 20
 
 
-def ble_function(path, address, auth_header):
+def start_ble(path, address, auth_header):
     """
     Function which sets the DB-Connection and the authentication for REST and starts scanning.
 
@@ -58,13 +57,62 @@ def ble_function(path, address, auth_header):
         Authentication-Header for HTTP-Basic
     """
 
-    global PATH
-    PATH = path
+    global CONN
+    CONN = db.access_database(path)
     global ADDRESS
     ADDRESS = address
     global AUTH_HEADER
     AUTH_HEADER = auth_header
-    asyncio.run(scan_for_devices())
+    asyncio.run(ble_function())
+
+
+async def ble_function():
+    connected_sensorstations = db.get_all_sensorstations(CONN)
+    for (_, mac) in connected_sensorstations:
+        TASKPOOL.apply(reconnect, args=[mac])
+    await poll_for_coupling()
+
+
+async def reconnect(mac: str):
+    """
+    In order to reconnect to device after restarting of AccessPoint.
+
+    Arguments
+    ----------
+    mac: str
+        MAC-Address of the Device
+
+    """
+
+    device = await search_for_device(mac)
+    logger.log_info("Calling Services")
+    await call_services(device, True)
+    logger.log_info("After call services")
+
+
+async def search_for_device(mac: str):
+    """
+    Searches for a BLEDevice by MAC-Address and calls services.
+
+    Arguments
+    ----------
+    mac: str
+        MAC-Address of the Device.
+    """
+    device = None
+    while device is None or device.name is None:
+        logger.log_info(f"Trying to find device with MAC {mac}")
+        device = await BleakScanner.find_device_by_address(mac)
+    logger.log_info(f"Device with MAC {mac} found. Name: {device.name}")
+    return device
+
+
+async def poll_for_coupling():
+    while True:
+        coupling = rci.request_couple_mode(ADDRESS, AUTH_HEADER)
+        if coupling:
+            await scan_for_devices()
+        await asyncio.sleep(30)
 
 
 async def scan_for_devices():
@@ -125,22 +173,18 @@ def is_new_sensor_station(device: BLEDevice, advertisement: AdvertisementData) -
     if advertisement.local_name is None or not advertisement.local_name.startswith(device_name_prefix):
         return False
 
-    lock.acquire()
     if any(d.name == advertisement.local_name for d in CONNECTED_DEVICES):
-        lock.release()
         return False
     # in order to avoid calling my_callback multiple times per device
     if any(d.address == device.address for d in SCANNED_DEVICES):
-        lock.release()
         return False
     SCANNED_DEVICES.add(device)
-    lock.release()
     return True
 
 
 async def establish_connection(device: BLEDevice):
     """
-    Starts a Thread for each new SensorStation.
+    Function for each SensorStation which polls for Verification and calls services.
 
     Arguments
     ----------
@@ -148,31 +192,16 @@ async def establish_connection(device: BLEDevice):
         SensorStation
     """
 
-    thread = Thread(target=ble_thread, args=[device])
-    thread.start()
-
-
-def ble_thread(device: BLEDevice):
-    """
-    Thread function for each SensorStation which polls for Verification and calls services.
-
-    Arguments
-    ----------
-    device: BLEDevice
-        SensorStation
-    """
-
-    already_connected, verified = poll_for_verification(device)
+    already_connected, verified = await poll_for_verification(device)
     if already_connected or verified:
         if not already_connected and not dip_is_available(device):
             return
         CONNECTED_DEVICES.add(device)
         SCANNED_DEVICES.remove(device)
-        lock.release()
-        asyncio.run(call_services(device, already_connected))
+        TASKPOOL.apply(call_services, args=[device, already_connected])
 
 
-def poll_for_verification(device: BLEDevice) -> (bool, bool):
+async def poll_for_verification(device: BLEDevice) -> (bool, bool):
     """
     Poll for the verification of this SensorStation on the Webserver.
 
@@ -201,13 +230,12 @@ def poll_for_verification(device: BLEDevice) -> (bool, bool):
     while not verified:
         # poll if device is verified for this AccessPoint
         verified = rci.request_sensorstation_if_verified(ADDRESS, dip, AUTH_HEADER)
-        time.sleep(5)
+        await asyncio.sleep(5)
         if time.time() > timeout:
             logger.log_info(f"Polling for Verification of {device.name} timed out")
-            return False
+            return False, False
         if not dip_is_available(device):
-            return False
-        lock.release()
+            return False, False
     return False, verified
 
 
@@ -226,11 +254,7 @@ def dip_is_available(device: BLEDevice) -> bool:
         True if Dip-ID is free.
     """
 
-    lock.acquire()
-    available = all(d.name != device.name for d in CONNECTED_DEVICES)
-    if not available:
-        lock.release()
-    return available
+    return all(d.name != device.name for d in CONNECTED_DEVICES)
 
 
 def get_dip_from_device(device: BLEDevice) -> int:
@@ -248,7 +272,8 @@ def get_dip_from_device(device: BLEDevice) -> int:
         Dip-ID
     """
 
-    return int(re.split(device_name_prefix, device.name)[1])
+    dip = int(re.split(device_name_prefix, device.name)[1])
+    return dip
 
 
 async def call_services(device: BLEDevice, already_connected: bool):
@@ -264,7 +289,6 @@ async def call_services(device: BLEDevice, already_connected: bool):
 
     """
 
-    conn = db.access_database(PATH)
     dip = get_dip_from_device(device)
     excesses = {"temp": 0,
                 "pressure": 0,
@@ -274,20 +298,26 @@ async def call_services(device: BLEDevice, already_connected: bool):
                 "light": 0}
     active_excess = False
     # client == sensor_station
-    client = BleakClient(device, timeout=30, disconnected_callback=my_disconnected_callback)
+    client = BleakClient(device, timeout=30)
+    await client.connect()
     if not already_connected:
         rci.register_new_sensorstation_at_server(ADDRESS, dip, AUTH_HEADER)
-        db.init_limits(conn, dip, device.address)
+        db.init_limits(CONN, dip, device.address)
     data = SensorData(dip, 0, 0, 0, 0, 0, 0)
     while True:
         try:
             if not client.is_connected:
                 logger.log_info(f"Connecting to {device.name}")
                 await client.connect()
-                with lock:
-                    CONNECTED_DEVICES.add(device)
+                CONNECTED_DEVICES.add(device)
                 logger.log_info(f"Connected to {device.name}")
             time.sleep(10)
+            sensorstation_status = rc.request_sensorstation_status(ADDRESS, AUTH_HEADER, dip)
+            if sensorstation_status:
+                if not sensorstation_status["enabled"]:
+                    continue
+                if sensorstation_status["deleted"]:
+                    break
             for data_type in DATA_UUIDS.keys():
                 try:
                     uuid = DATA_UUIDS[data_type]
@@ -295,7 +325,7 @@ async def call_services(device: BLEDevice, already_connected: bool):
                     data.set_value(data_type, value)
 
                     if not active_excess:
-                        lower, upper = db.get_limits(conn, dip, data_type)
+                        lower, upper = db.get_limits(CONN, dip, data_type)
                         excess = db.calculate_limit(value, lower, upper)
 
                         if abs(excess - 1.0) > 0.001:
@@ -304,7 +334,7 @@ async def call_services(device: BLEDevice, already_connected: bool):
                                 if gardener_is_here:
                                     continue
                             except Exception as e:
-                                logger.log_error(f"Error reading gardener characteristic: {e}")
+                                logger.log_error(f"Couldn't read gardener characteristic: {e}")
                             excesses[data_type] += 1
                             # because it takes 10s to read data we can check for how many iterations there was an excess
                             if excesses[data_type] >= EXCESS_LIMIT / 10:
@@ -319,11 +349,11 @@ async def call_services(device: BLEDevice, already_connected: bool):
                                     await client.write_gatt_char(LIMIT_UUIDS[data_type], struct.pack('I', int(excess * 100)))
                                     await client.read_gatt_char(LIMIT_UUIDS[data_type])
                                 except Exception as e:
-                                    logger.log_error(f"Error reading limit characteristic of {data_type}: {e}")
+                                    logger.log_error(f"Couldn't read limit characteristic of {data_type}: {e}")
                         else:
                             excesses[data_type] = 0
                 except Exception as e:
-                    logger.log_error(f"Error reading characteristic {data_type}: {e}")
+                    logger.log_error(f"Couldn't read characteristic {data_type}: {e}")
             if active_excess:
                 try:
                     gardener_is_here = struct.unpack('?', await client.read_gatt_char(GARDENER_UUID))[0]
@@ -331,69 +361,11 @@ async def call_services(device: BLEDevice, already_connected: bool):
                         active_excess = False
                         rc.gardener_is_at_station(ADDRESS, dip, AUTH_HEADER)
                 except Exception as e:
-                    logger.log_error(f"Error reading gardener characteristic: {e}")
-            db.insert_sensor_data(conn, data)
+                    logger.log_error(f"Couldn't read gardener characteristic: {e}")
+            db.insert_sensor_data(CONN, data)
         except (asyncio.exceptions.CancelledError, asyncio.exceptions.TimeoutError):
             logger.log_error("Establishing BLE connection timed out")
-        finally:
-            with lock:
-                if device in CONNECTED_DEVICES:
-                    CONNECTED_DEVICES.remove(device)
-
-
-def my_disconnected_callback(client: BleakClient):
-    """
-    Logs disconnect from SensorStation.
-
-    Parameters
-    ----------
-    client: BLEClient
-        Needed so that this method can be registered as disconnect_callback
-        in BLEClient
-
-    """
-
-    logger.log_error("Disconnected")
-
-
-def reconnect_thread(path: str, address: str, auth_header: str, mac: str):
-    """
-    In order to reconnect to device after restarting of AccessPoint.
-
-    Arguments
-    ----------
-    path: str
-        Path to the Database
-    address: str
-        Address of the Webserver
-    auth_header: str
-        Authentication-Header for HTTP-Basic
-    mac: str
-        MAC-Address of the Device
-
-    """
-
-    global PATH
-    global ADDRESS
-    global AUTH_HEADER
-    PATH = path
-    ADDRESS = address
-    AUTH_HEADER = auth_header
-    asyncio.run(search_for_device(mac))
-
-
-async def search_for_device(mac: str):
-    """
-    Searches for a BLEDevice by MAC-Address and calls services.
-
-    Arguments
-    ----------
-    mac: str
-        MAC-Address of the Device.
-    """
-    device = None
-    while device is None:
-        logger.log_info("Trying to find device")
-        device = await BleakScanner.find_device_by_address(mac)
-    if device is not None:
-        await call_services(device, already_connected=True)
+    await client.disconnect()
+    db.remove_sensorstation_from_limits(CONN, dip)
+    CONNECTED_DEVICES.remove(device)
+    logger.log_info(f"Safely disconnected from {device.name}.")
