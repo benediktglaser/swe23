@@ -8,7 +8,6 @@ import at.qe.g1t2.restapi.exception.EntityNotFoundException;
 import at.qe.g1t2.restapi.exception.VisibleMapException;
 import at.qe.g1t2.restapi.model.LimitsDTO;
 import at.qe.g1t2.restapi.model.SensorStationDTO;
-import at.qe.g1t2.restapi.model.SensorStationRegisterDTO;
 import at.qe.g1t2.restapi.model.SensorStationStatusDTO;
 import at.qe.g1t2.services.*;
 import jakarta.validation.Valid;
@@ -59,68 +58,45 @@ public class SensorStationConnectController {
      * each request confirms the connection of the accessPoint
      *
      * @param sensorStationDTO
-     * @return ResponseEntity<SensorStationRegisterDTO>
+     * @return ResponseEntity<Boolean>
      */
     @PostMapping("/register")
-    public ResponseEntity<SensorStationRegisterDTO> addVisibleSensorStations(@Valid @RequestBody SensorStationDTO sensorStationDTO) {
+    public ResponseEntity<Boolean> addVisibleSensorStations(@Valid @RequestBody SensorStationDTO sensorStationDTO) {
         AccessPoint accessPoint = getAuthAccessPoint();
 
         satisFyConnection(accessPoint);
         LogMsg<String, SensorStation> msg;
-        SensorStation existingSensorStation = sensorStationService.getSensorStation(sensorStationDTO.getMac());
-        SensorStationRegisterDTO sensorStationRegisterDTO = new SensorStationRegisterDTO();
-        SensorStation existingStationDipId = sensorStationService.getSensorStationByAccessPointIdAndDipId(accessPoint.getAccessPointID(), sensorStationDTO.getDipId());
+
+//        DipId is already advertised for this AccessPoint
         SensorStationDTO existingDTO = visibleSensorStationsService.getSensorStationByAccessPointAndDipId(accessPoint, Long.toString(sensorStationDTO.getDipId()));
         if (existingDTO != null) {
-            sensorStationRegisterDTO.setAvailable(false);
-            sensorStationRegisterDTO.setAlreadyConnected(false);
             msg = new LogMsg<>(LogMsg.LogType.OTHER, SensorStation.class, "SensorStation: DipId", "DipId of requesting SensorStation is already registered", "Access point: " + accessPoint.getAccessPointID());
             LOGGER.warn(msg.getMessage());
-            return new ResponseEntity<>(sensorStationRegisterDTO, HttpStatus.OK);
+            return new ResponseEntity<>(false, HttpStatus.OK);
         }
-        //Checks if the DipId of the requesting sensorStation is already in database
-        if (existingStationDipId != null && (!existingStationDipId.getMac().equals(sensorStationDTO.getMac()))) {
-            sensorStationRegisterDTO.setAvailable(false);
-            sensorStationRegisterDTO.setAlreadyConnected(false);
-            msg = new LogMsg<>(LogMsg.LogType.OTHER, SensorStation.class, "SensorStation: DipId" + existingSensorStation.getId(), "DipId of requesting SensorStation is already used", "Access point: " + accessPoint.getAccessPointID());
+
+//        DipId is already used in this AccessPoint
+        SensorStation existingStationDipId = sensorStationService.getSensorStationByAccessPointIdAndDipId(accessPoint.getAccessPointID(), sensorStationDTO.getDipId());
+        if (existingStationDipId != null) {
+            msg = new LogMsg<>(LogMsg.LogType.OTHER, SensorStation.class, "SensorStation: DipId" + existingStationDipId.getId(), "DipId of requesting SensorStation is already used", "Access point: " + accessPoint.getAccessPointID());
             LOGGER.warn(msg.getMessage());
-            return new ResponseEntity<>(sensorStationRegisterDTO, HttpStatus.OK);
+            return new ResponseEntity<>(false, HttpStatus.OK);
         }
 
-        /*
-        If the sensor station is already in the database with the same access point, which asks for register
-        the response body indicates that the sensor station is not available for coupling because its already coupeld
-        */
-        if (existingSensorStation != null && existingSensorStation.getAccessPoint().equals(accessPoint)) {
-
-            sensorStationRegisterDTO.setAvailable(false);
-            sensorStationRegisterDTO.setAlreadyConnected(true);
-            msg = new LogMsg<>(LogMsg.LogType.OTHER, SensorStation.class, "SensorStation: DipId" + existingSensorStation.getId(), "Already Connected SensorStation asked for coupling", "Access point: " + accessPoint.getAccessPointID());
-            LOGGER.warn(msg.getMessage());
-            return new ResponseEntity<>(sensorStationRegisterDTO, HttpStatus.OK);
-        }
-
-        /*
-        If the sensor station is registered with a different access point,
-        the response body indicates that the sensor station is not available for registration
-
-         */
+//        Device with this MAC-Address is already connected
+        SensorStation existingSensorStation = sensorStationService.getSensorStation(sensorStationDTO.getMac());
         if (existingSensorStation != null) {
-            sensorStationRegisterDTO.setAvailable(false);
-            sensorStationRegisterDTO.setAlreadyConnected(false);
             msg = new LogMsg<>(LogMsg.LogType.OTHER, SensorStation.class, "SensorStation: DipId" + existingSensorStation.getId(), "Already Connected SensorStation with different AccessPoint asked for coupling", "Access point: " + accessPoint.getAccessPointID());
             LOGGER.warn(msg.getMessage());
-            return new ResponseEntity<>(sensorStationRegisterDTO, HttpStatus.OK);
+            return new ResponseEntity<>(false, HttpStatus.OK);
         }
 
         sensorStationDTO.setConnected(false);
         sensorStationDTO.setVerified(false);
-        sensorStationRegisterDTO.setAvailable(true);
-        sensorStationRegisterDTO.setAlreadyConnected(false);
         visibleSensorStationsService.addVisibleStation(accessPoint, sensorStationDTO);
         msg = new LogMsg<>(LogMsg.LogType.NEW_CONNECTION, SensorStation.class, "Dip Id: " + "SensorStation: DipId" + sensorStationDTO.getDipId(), "AccessPoint sends visible SensorStation for coupling", "Access point: " + accessPoint.getAccessPointID());
         LOGGER.info(msg.getMessage());
-        return new ResponseEntity<>(sensorStationRegisterDTO, HttpStatus.OK);
+        return new ResponseEntity<>(true, HttpStatus.OK);
 
     }
 
@@ -198,7 +174,7 @@ public class SensorStationConnectController {
             SensorDataTypeInfo sensorDataTypeInfo = new SensorDataTypeInfo();
             sensorDataTypeInfo.setType(type);
             sensorDataTypeInfo.setMinLimit(0.0);
-            sensorDataTypeInfo.setMaxLimit(0.0);
+            sensorDataTypeInfo.setMaxLimit(1000.0);
             sensorDataTypeInfoService.save(newSensorStation,sensorDataTypeInfo);
         }
         sensorStationDTO.setConnected(true);

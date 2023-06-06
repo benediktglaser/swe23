@@ -63,6 +63,7 @@ def create_tables(conn):
         print(e)
         logger.log_error(e)
 
+
 def init_limits(conn, station_id, mac):
     """
     Initialise the limits table with default values
