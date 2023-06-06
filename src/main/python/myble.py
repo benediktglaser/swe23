@@ -68,9 +68,13 @@ def start_ble(path, address, auth_header):
 
 async def ble_function():
     connected_sensorstations = db.get_all_sensorstations(CONN)
-    for (_, mac) in connected_sensorstations:
+    for (dip, mac) in connected_sensorstations:
+        if rc.request_sensorstation_status(ADDRESS, AUTH_HEADER, dip)["deleted"]:
+            db.remove_sensorstation_from_limits(CONN, dip)
+            continue
         TASKPOOL.apply(reconnect, args=[mac])
     await poll_for_coupling()
+    await TASKPOOL.gather_and_close()
 
 
 async def reconnect(mac: str):
@@ -85,9 +89,7 @@ async def reconnect(mac: str):
     """
 
     device = await search_for_device(mac)
-    logger.log_info("Calling Services")
     await call_services(device, True)
-    logger.log_info("After call services")
 
 
 async def search_for_device(mac: str):
@@ -100,9 +102,11 @@ async def search_for_device(mac: str):
         MAC-Address of the Device.
     """
     device = None
+    attempt = 1
     while device is None or device.name is None:
-        logger.log_info(f"Trying to find device with MAC {mac}")
+        logger.log_info(f"Trying to find device with MAC {mac}. Try #{attempt}")
         device = await BleakScanner.find_device_by_address(mac)
+        attempt += 1
     logger.log_info(f"Device with MAC {mac} found. Name: {device.name}")
     return device
 
@@ -113,6 +117,7 @@ async def poll_for_coupling():
         if coupling:
             await scan_for_devices()
         await asyncio.sleep(30)
+        await TASKPOOL.flush()
 
 
 async def scan_for_devices():
@@ -126,11 +131,15 @@ async def scan_for_devices():
     global SCANNED_DEVICES
     SCANNED_DEVICES = set()
     await scanner.start()
+    logger.log_info("Started Coupling Mode")
     timeout = time.time() + 60 * 5
     while time.time() <= timeout:
         if not rci.request_couple_mode(ADDRESS, AUTH_HEADER):
             break
         await asyncio.sleep(10)
+    if time.time() > timeout:
+        logger.log_info("Coupling Mode timed out")
+
     await scanner.stop()
 
 
@@ -314,10 +323,10 @@ async def call_services(device: BLEDevice, already_connected: bool):
             time.sleep(10)
             sensorstation_status = rc.request_sensorstation_status(ADDRESS, AUTH_HEADER, dip)
             if sensorstation_status:
-                if not sensorstation_status["enabled"]:
-                    continue
                 if sensorstation_status["deleted"]:
                     break
+                if not sensorstation_status["enabled"]:
+                    continue
             for data_type in DATA_UUIDS.keys():
                 try:
                     uuid = DATA_UUIDS[data_type]
