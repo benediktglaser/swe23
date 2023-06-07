@@ -189,9 +189,6 @@ def insert_sensor_data(conn, data):
         logger.log_error(e)
 
 
-
-
-
 def set_limits(conn, station_id, type, lower_limit, upper_limit):
     """
     Set new limits. Match was not used because of an older python-version

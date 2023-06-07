@@ -196,8 +196,7 @@ def is_new_sensor_station(device: BLEDevice, advertisement: AdvertisementData) -
 
     if any(dip == get_dip_from_device(device) for (dip, _) in db.get_all_sensorstations(CONN)):
         return False
-    # in order to avoid calling my_callback multiple times per device
-    if any(d.address == device.address for d in SCANNED_DEVICES):
+    if any(d.name == device.name for d in SCANNED_DEVICES):
         return False
     SCANNED_DEVICES.add(device)
     return True
@@ -236,7 +235,7 @@ async def poll_for_verification(device: BLEDevice) -> bool:
     verified = False
     dip = get_dip_from_device(device)
     available = rci.propose_new_sensorstation_at_server(ADDRESS, dip, device.address, AUTH_HEADER)
-    if available is not None and not available:
+    if available is None or not available:
         return False
     timeout = time.time() + 60 * 5
     while not verified:
@@ -263,10 +262,14 @@ def get_dip_from_device(device: BLEDevice) -> int:
         Dip-ID
     """
 
+    # If device is already in database return dip which is saved in database
+    # --> Can't plug out Station change DIP and then reconnect with different dip
+    dips = [dip for (dip, mac) in db.get_all_sensorstations(CONN) if mac == device.address]
+    if dips:
+        return dips[0]
     return int(re.split(device_name_prefix, device.name)[1])
 
 
-# TODO: Clean-Up (extract parts into own functions)
 async def call_services(device: BLEDevice, already_connected: bool):
     """
     Uses the services of the BLEDevice to read Data and send limit excess.
@@ -276,7 +279,7 @@ async def call_services(device: BLEDevice, already_connected: bool):
     device: BLEDevice
         SensorStation
     already_connected: bool
-        Whether SensorStation was already connected once with this AccessPoint
+        Whether SensorStation is being reconnected
 
     """
 
@@ -310,7 +313,7 @@ async def call_services(device: BLEDevice, already_connected: bool):
         if not await ensure_connection(client, device):
             continue
         sensor_station_status = rc.request_sensorstation_status(ADDRESS, AUTH_HEADER, dip)
-        if sensor_station_status:
+        if sensor_station_status != {}:
             if sensor_station_status["deleted"]:
                 break
             if not sensor_station_status["enabled"]:
@@ -320,37 +323,36 @@ async def call_services(device: BLEDevice, already_connected: bool):
                 uuid = DATA_UUIDS[data_type]
                 value = struct.unpack('d', await client.read_gatt_char(uuid))[0]
                 data.set_value(data_type, value)
-
-                if not active_excess:
-                    lower, upper = db.get_limits(CONN, dip, data_type)
-                    excess = db.calculate_limit(value, lower, upper)
-
-                    if abs(excess - 1.0) > 0.001:
-                        try:
-                            gardener_is_here = struct.unpack('?', await client.read_gatt_char(GARDENER_UUID))[0]
-                            if gardener_is_here:
-                                continue
-                        except Exception as e:
-                            logger.log_error(f"Couldn't read gardener characteristic: {e}")
-                        excesses[data_type] += 1
-                        # because it takes 10s to read data we can check for how many iterations there was an excess
-                        if excesses[data_type] >= EXCESS_LIMIT / 10:
-                            active_excess = True
-                            excesses = {"temp": 0,
-                                        "pressure": 0,
-                                        "humid": 0,
-                                        "quality": 0,
-                                        "soil": 0,
-                                        "light": 0}
-                            try:
-                                await client.write_gatt_char(LIMIT_UUIDS[data_type], struct.pack('I', int(excess * 100)))
-                                await client.read_gatt_char(LIMIT_UUIDS[data_type])
-                            except Exception as e:
-                                logger.log_error(f"Couldn't read limit characteristic of {data_type}: {e}")
-                    else:
-                        excesses[data_type] = 0
             except Exception as e:
                 logger.log_error(f"Couldn't read characteristic {data_type}: {e}")
+            if not active_excess:
+                lower, upper = db.get_limits(CONN, dip, data_type)
+                excess = db.calculate_limit(value, lower, upper)
+
+                if abs(excess - 1.0) > 0.001:
+                    try:
+                        gardener_is_here = struct.unpack('?', await client.read_gatt_char(GARDENER_UUID))[0]
+                        if gardener_is_here:
+                            continue
+                    except Exception as e:
+                        logger.log_error(f"Couldn't read gardener characteristic: {e}")
+                    excesses[data_type] += 1
+                    # because it takes 10s to read data we can check for how many iterations there was an excess
+                    if excesses[data_type] >= EXCESS_LIMIT / 10:
+                        active_excess = True
+                        excesses = {"temp": 0,
+                                    "pressure": 0,
+                                    "humid": 0,
+                                    "quality": 0,
+                                    "soil": 0,
+                                    "light": 0}
+                        try:
+                            await client.write_gatt_char(LIMIT_UUIDS[data_type], struct.pack('I', int(excess * 100)))
+                            await client.read_gatt_char(LIMIT_UUIDS[data_type])
+                        except Exception as e:
+                            logger.log_error(f"Couldn't read limit characteristic of {data_type}: {e}")
+                else:
+                    excesses[data_type] = 0
         if active_excess:
             try:
                 gardener_is_here = struct.unpack('?', await client.read_gatt_char(GARDENER_UUID))[0]
@@ -362,14 +364,31 @@ async def call_services(device: BLEDevice, already_connected: bool):
         db.insert_sensor_data(CONN, data)
     if await ensure_connection(client, device):
         try:
-            db.remove_sensorstation_from_limits(CONN, dip)
             await client.disconnect()
             logger.log_info(f"Safely disconnected from {device.name}.")
         except Exception as e:
             logger.log_error(f"Couldn't disconnect from {device.name}: {e}")
+    db.remove_sensorstation_from_limits(CONN, dip)
+    logger.log_info(f"Deleted {device.name}")
 
 
-async def ensure_connection(client: BleakClient, device: BLEDevice):
+async def ensure_connection(client: BleakClient, device: BLEDevice) -> bool:
+    """
+    Checks if device is connected and if not tries to reestablish connection.
+
+    Arguments
+    ---------
+    client: BleClient
+        BLEClient object of sensor_station
+    device: BLEDevice
+        BLEDevice object of sensor_station
+
+    Returns
+    ---------
+    bool:
+        True if device is connected after function call
+    """
+
     # if sensor_station loses power, client.is_connected is still true
     try:
         await client.read_gatt_char(DATA_UUIDS["temp"])
@@ -379,9 +398,9 @@ async def ensure_connection(client: BleakClient, device: BLEDevice):
         logger.log_info(f"Trying to reconnect to {device.name}")
         try:
             await client.connect()
+            logger.log_info(f"Successfully reconnected to {device.name}")
         except (asyncio.exceptions.CancelledError, asyncio.exceptions.TimeoutError,
                 bleak.exc.BleakDeviceNotFoundError):
             logger.log_error(f"Can't reconnect to {device.name}")
             return False
-        logger.log_info(f"Successfully reconnected to {device.name}")
     return True
