@@ -16,6 +16,16 @@ public class SensorStationDTO {
 
     private Boolean connected;
 
+    private boolean connectingTimeOut;
+
+    public boolean isConnectingTimeOut() {
+        return connectingTimeOut;
+    }
+
+    public void setConnectingTimeOut(boolean connectingTimeOut) {
+        this.connectingTimeOut = connectingTimeOut;
+    }
+
     public Long getDipId() {
         return dipId;
     }

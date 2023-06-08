@@ -214,6 +214,8 @@ public class SensorStationConnectController {
 
     }
 
+
+
     /**
      * This method is a help-method for getting the id of the requesting accessPoint
      *
@@ -238,6 +240,18 @@ public class SensorStationConnectController {
         return HttpStatus.OK;
     }
 
+    @GetMapping("/timeout/{dipId}")
+    public HttpStatus connectionTimeout(@PathVariable String dipId) {
+        AccessPoint accessPoint = getAuthAccessPoint();
+        if (visibleSensorStationsService.getVisibleMap().isEmpty() ||
+                visibleSensorStationsService.getSensorStationByAccessPointAndDipId(accessPoint, dipId) == null) {
+            throw new VisibleMapException("SensorStation not registered");
+        }
+        SensorStationDTO sensorStationDTO = visibleSensorStationsService.getSensorStationByAccessPointAndDipId(accessPoint, dipId);
+        sensorStationDTO.setVerified(false);
+        sensorStationDTO.setConnectingTimeOut(true);
+        return HttpStatus.OK;
+    }
 
     /**
      * This method confirms to the webserver that the accesspoint and sensorStation are connected.
