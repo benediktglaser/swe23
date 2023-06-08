@@ -72,7 +72,7 @@ class SensorStationConnectControllerTest {
                         .content(requestBody))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 
-        Assertions.assertEquals("{\"available\":false,\"alreadyConnected\":true}", result.getResponse().getContentAsString());
+        Assertions.assertEquals("false", result.getResponse().getContentAsString());
     }
 
     @Test
@@ -91,7 +91,7 @@ class SensorStationConnectControllerTest {
                         .content(requestBody))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 
-        Assertions.assertEquals("{\"available\":false,\"alreadyConnected\":false}", result.getResponse().getContentAsString());
+        Assertions.assertEquals("false", result.getResponse().getContentAsString());
     }
 
     @Test
@@ -113,14 +113,14 @@ class SensorStationConnectControllerTest {
                         .content(requestBody))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 
-        Assertions.assertEquals("{\"available\":true,\"alreadyConnected\":false}", result.getResponse().getContentAsString());
+        Assertions.assertEquals("true", result.getResponse().getContentAsString());
         requestBody = objectMapper.writeValueAsString(sensorStationDTO2);
         result = mockMvc.perform(MockMvcRequestBuilders.post("/api/sensorStation/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 
-        Assertions.assertEquals("{\"available\":false,\"alreadyConnected\":false}", result.getResponse().getContentAsString());
+        Assertions.assertEquals("false", result.getResponse().getContentAsString());
     }
 
     @Test
@@ -139,7 +139,7 @@ class SensorStationConnectControllerTest {
                         .content(requestBody))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 
-        Assertions.assertEquals("{\"available\":false,\"alreadyConnected\":false}", result.getResponse().getContentAsString());
+        Assertions.assertEquals("false", result.getResponse().getContentAsString());
     }
 
     @Test

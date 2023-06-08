@@ -2,6 +2,7 @@ package at.qe.g1t2.ui.controllers;
 
 import at.qe.g1t2.model.AccessPoint;
 import at.qe.g1t2.restapi.model.SensorStationDTO;
+import at.qe.g1t2.services.AccessPointService;
 import at.qe.g1t2.services.VisibleSensorStationsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -20,6 +21,8 @@ import java.util.Map;
 public class VisibleSensorStationController {
     @Autowired
     private VisibleSensorStationsService visibleSensorStationsService;
+    @Autowired
+    private AccessPointService accessPointService;
 
     public Map<AccessPoint, Map<Long, SensorStationDTO>> getVisibleMap() {
         return visibleSensorStationsService.getVisibleMap();
@@ -48,6 +51,7 @@ public class VisibleSensorStationController {
      * @param dipId
      */
     public void selectSensorStation(AccessPoint accessPoint, Long dipId){
+
         SensorStationDTO sensorStationDTO = getSensorStationsByAccessPointAndDipId(accessPoint,dipId);
         sensorStationDTO.setVerified(true);
         visibleSensorStationsService.replaceSensorStationDTO(accessPoint,dipId.toString(),sensorStationDTO);

@@ -101,12 +101,8 @@ def main(args: dict):
         db_path: str
     """
 
-    # Reconnect to already connected SensorStations after restart of AccessPoint
-    for (_, mac) in db.get_all_sensorstations(db.access_database(args["db_path"])):
-        Thread(target=myble.reconnect_thread, args=(args["db_path"], args["address"], args["authentication_header"], mac)).start()
-
-    polling_for_couple_mode_thread = Thread(
-        target=poll_couple_mode,
+    ble_thread = Thread(
+        target=myble.start_ble,
         args=(args["db_path"], args["address"], args["authentication_header"]),
     )
     polling_for_interval_thread = Thread(
@@ -132,49 +128,15 @@ def main(args: dict):
         ),
     )
 
-    #polling_enable_for_sensorstation_thread = Thread(
-        #target=poll_sensorstation_enabled,
-        #args=(
-            #arguments["address"],
-            #arguments["authentication_header"],
-        #),
-    #)
-    polling_for_couple_mode_thread.start()
+    ble_thread.start()
     polling_for_interval_thread.start()
     polling_for_limits_thread.start()
     sending_sensor_data_thread.start()
-    #polling_enable_for_sensorstation_thread.start()
 
-    polling_for_couple_mode_thread.join()
+    ble_thread.join()
     polling_for_interval_thread.join()
     polling_for_limits_thread.join()
     sending_sensor_data_thread.join()
-    #polling_enable_for_sensorstation_thread.join()
-
-
-def poll_couple_mode(path: str, address: str, auth_header: str):
-    """
-    This function polls and checks
-    if the couple mode has been activated.
-
-    Arguments
-    ---------
-    path: str
-        Path to Database
-    address: str
-        Address of the Webserver
-    auth_header: str
-        the auth_header for the rest-connection
-    ---------
-    Returns None
-    """
-    
-    while True:
-        start_coupling = rci.request_couple_mode(address, auth_header)
-        if start_coupling is True:
-            logger.log_info("Starting coupling mode")
-            myble.ble_function(path, address, auth_header)
-        time.sleep(30)
 
 
 def poll_interval(address: str, auth_header: str):
@@ -310,33 +272,6 @@ def send_sensor_data(address: str, auth_header: str):
         finally:
             lock.release()
         time.sleep(my_interval)
-
-
-def poll_sensorstation_enabled(address: str, auth_header: str):
-    """
-    This function poll if the sensorstations 
-    are enabled.
-
-    Arguments
-    ---------
-    address: str
-        Address of the Webserver
-    auth_header: str
-        the auth_header for the rest-connection
-    ---------
-    Returns None
-    """
-    path = "database.db"
-    conn = db.access_database(path)
-
-    while True:
-        list_of_sensorstations = db.get_all_sensorstations(conn)
-        for (sensorstation_id, _) in list_of_sensorstations:
-            response = rest.request_if_is_sensorstation_enabled(
-                address, auth_header, int(sensorstation_id)
-            )
-
-        time.sleep(60)
 
 
 def register_accesspoint(address: str, interval: int, name: str):

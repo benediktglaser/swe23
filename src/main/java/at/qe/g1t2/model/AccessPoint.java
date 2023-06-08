@@ -45,6 +45,10 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
     private Double sendingInterval;
     private Double thresholdInterval;
     private Boolean coupleMode;
+
+
+
+
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime updateDate;
     @OneToMany(mappedBy = "accessPoint", fetch = FetchType.EAGER)

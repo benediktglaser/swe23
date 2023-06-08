@@ -6,6 +6,7 @@ import at.qe.g1t2.services.AccessPointService;
 import at.qe.g1t2.services.LogMsg;
 import at.qe.g1t2.services.SensorDataTypeInfoService;
 import at.qe.g1t2.services.SensorStationService;
+import org.primefaces.PrimeFaces;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -120,5 +121,14 @@ public class AccessPointConnectionController {
         LogMsg<String, AccessPoint> msg = new LogMsg<>(LogMsg.LogType.CONNECTED, AccessPoint.class, "Access point: " + accessPoint.getAccessPointID(), "AccessPoint is Connected", "Access point: " + accessPoint.getAccessPointID());
         LOGGER.error(msg.getMessage());
         return accessPointService.saveAccessPoint(accessPoint);
+    }
+    @GetMapping("/couplingTimeout")
+    public HttpStatus isTimerCoupleMode(){
+        AccessPoint accessPoint = getAuthAccessPoint();
+        accessPoint.setCoupleMode(false);
+        accessPointService.saveAccessPoint(accessPoint);
+
+
+        return HttpStatus.OK;
     }
 }

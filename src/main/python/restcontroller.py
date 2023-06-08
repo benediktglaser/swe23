@@ -273,7 +273,7 @@ def request_limits(address: str, auth_header: str, dipId: int):
         return None
 
 
-def request_if_is_sensorstation_enabled(address: str, auth_header: str, dipId: int)->dict[bool, bool] :
+def request_sensorstation_status(address: str, auth_header: str, dip_id: int) -> dict[str, bool]:
     """
     Request if SensorStation is still enabled (true) and
     if SensorStation is deleted
@@ -283,7 +283,7 @@ def request_if_is_sensorstation_enabled(address: str, auth_header: str, dipId: i
         The ip-address of the Server
     auth_header : str
         The auth_header for the rest-connection
-    dipId : int
+    dip_id : int
         The dipId of the SensorStation of which the limits should be changed
     Returns
     -------
@@ -293,21 +293,21 @@ def request_if_is_sensorstation_enabled(address: str, auth_header: str, dipId: i
 
     try:
         resp = requests.get(
-            f"{address}/api/sensorStation/enabled/{dipId}", auth=auth_header
+            f"{address}/api/sensorStation/enabled/{dip_id}", auth=auth_header
         )
         if resp.status_code != 200:
             logger.log_error(
                 "Error when requesting if sensorstation is enabled: "
                 + str(resp.status_code)
             )
-            return None
+            return {}
         else:
             return resp.json()
 
     except Exception as e:
         print(e)
         logger.log_error(e)
-        return (None, None)
+        return {}
 
 
 def gardener_is_at_station(address: str, dipId: int, auth_header: str) -> bool:
