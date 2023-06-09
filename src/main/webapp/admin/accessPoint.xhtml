@@ -88,6 +88,9 @@
                         <p:column headerText="DIP Id" sortBy="#{sensorStation.dipId}" filterBy="#{sensorStation.dipId}">
                             <h:outputText value="#{sensorStation.dipId}"/>
                         </p:column>
+                        <p:column headerText="Online" sortBy="#{sensorStation.connected}" filterBy="#{sensorStation.connected}">
+                            <p:selectBooleanButton value="#{sensorStation.connected}" onLabel="Yes" offLabel="No" disabled="true"/>
+                        </p:column>
                         <p:column headerText="Plant Name" sortBy="#{sensorStation.name}"
                                   filterBy="#{sensorStation.name}">
                             <h:outputText value="#{sensorStation.name}"/>
@@ -129,7 +132,7 @@
                                              action="#{QRCodeDownloadController.doUpdate(sensorStation.id)}"/>
                         </p:column>
                         <p:column>
-                            <p:splitButton id="splitButton" icon="pi pi-cog">
+                            <p:splitButton id="splitButton" icon="pi pi-cog" style="width:auto;text-align: center">
                                 <p:menuitem id="deleteSensorStation" update="connectTable" icon="pi pi-trash"
                                             action="#{sensorStationDetailController.deleteSensorStation(sensorStation)}"/>
                                 <p:menuitem id="edit" icon="pi pi-pencil"
@@ -241,7 +244,7 @@
                     <p:commandButton value="Deactivate Couplemode" widgetVar="deactivateButton"
                                      actionListener="#{accessPointCoupleController.endCouplingMode(sensorStationListController.accessPoint)}"
                                      action="#{visibleSensorStationController.resetVisibleList(sensorStationListController.accessPoint)}"
-                                     oncomplete="endCoupleMode()" update="accessPointLinkData">
+                                     oncomplete="endCoupleMode()" update="accessPointLinkData connectMsg">
                     </p:commandButton>
 
                 </p:outputPanel>

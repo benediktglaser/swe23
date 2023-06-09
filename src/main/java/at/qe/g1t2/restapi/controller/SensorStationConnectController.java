@@ -183,17 +183,6 @@ public class SensorStationConnectController {
         return new ResponseEntity<>(newSensorStation.getConnected(), HttpStatus.OK);
     }
 
-    @GetMapping("/timeout/{dipId}")
-    public HttpStatus connectionTimeout(@PathVariable String dipId) {
-        AccessPoint accessPoint = getAuthAccessPoint();
-        if (visibleSensorStationsService.getVisibleMap().isEmpty() ||
-                visibleSensorStationsService.getSensorStationByAccessPointAndDipId(accessPoint, dipId) == null) {
-            throw new VisibleMapException("SensorStation not registered");
-        }
-        visibleSensorStationsService.removeSensorStationDTO(accessPoint, dipId);
-        return HttpStatus.OK;
-    }
-
     /**
      * This endpoint has two functionalities:
      * On the one hand it informs the accessPoint about new Limits for the sensors and on the other
