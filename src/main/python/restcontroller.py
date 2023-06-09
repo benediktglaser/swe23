@@ -193,6 +193,42 @@ def prepare_for_jsf(data: List) -> List[dict]:
     return list_of_dicts
 
 
+def coupling_timed_out(address: str, auth_header: str):
+    """
+    Informs the Webserver that the coupling mode timed out.
+
+    Arguments
+    ---------
+    address : str
+        The ip-address of the Server
+    auth_header : str
+        The auth_header for the rest-connection
+    """
+
+    try:
+        requests.head(f"{address}/api/accessPoint/coupling", auth=auth_header)
+    except requests.exceptions.ConnectionError:
+        logger.log_error(f"Unable to inform server about coupling timeout")
+
+
+def refresh_connection_sensor_station(address: str, auth_header: str, dipId: int):
+    """
+    Informs the Webserver that SensorStation is still reachable.
+
+    address : str
+        The ip-address of the Server
+    auth_header : str
+        The auth_header for the rest-connection
+    dipId : int
+        The dipId of the SensorStation
+    """
+
+    try:
+        requests.head(f"{address}/api/sensorStation/refresh/{dipId}", auth_header)
+    except requests.exceptions.ConnectionError:
+        logger.log_error(f"Unable to refresh connection status of Station {dipId}")
+
+
 def delete_send_sensor_data(conn, list_of_tuples) -> None:
     """
     Remove a specific sensorData entry from the database

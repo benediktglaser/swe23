@@ -127,14 +127,13 @@ public class SensorStationConnectController {
 
         SensorStation sensorStation = sensorStationService.getSensorStationByAccessPointIdAndDipId(getAuthAccessPoint().getId(), Long.parseLong(dipId));
         SensorStationStatusDTO sensorStationStatusDTO = new SensorStationStatusDTO();
-        if(sensorStation == null){
+        if(sensorStation == null) {
             sensorStationStatusDTO.setDeleted(true);
             sensorStationStatusDTO.setEnabled(false);
             return new ResponseEntity<>(sensorStationStatusDTO, HttpStatus.OK);
         }
         sensorStationStatusDTO.setDeleted(false);
         sensorStationStatusDTO.setEnabled(sensorStation.getEnabled());
-        satisFyConnection(getAuthAccessPoint(), dipId);
         LogMsg<String, SensorStation> msg = new LogMsg<>(LogMsg.LogType.OTHER, SensorStation.class, "SensorStation: DipId" + sensorStation.getDipId(), "AccessPoint asks if SensorStation with DipId " + sensorStation.getId() + " is enabled", "Access point: " + getAuthAccessPoint().getAccessPointID());
         LOGGER.info(msg.getMessage());
         return new ResponseEntity<>(sensorStationStatusDTO, HttpStatus.OK);
@@ -184,6 +183,17 @@ public class SensorStationConnectController {
         return new ResponseEntity<>(newSensorStation.getConnected(), HttpStatus.OK);
     }
 
+    @GetMapping("/timeout/{dipId}")
+    public HttpStatus connectionTimeout(@PathVariable String dipId) {
+        AccessPoint accessPoint = getAuthAccessPoint();
+        if (visibleSensorStationsService.getVisibleMap().isEmpty() ||
+                visibleSensorStationsService.getSensorStationByAccessPointAndDipId(accessPoint, dipId) == null) {
+            throw new VisibleMapException("SensorStation not registered");
+        }
+        visibleSensorStationsService.removeSensorStationDTO(accessPoint, dipId);
+        return HttpStatus.OK;
+    }
+
     /**
      * This endpoint has two functionalities:
      * On the one hand it informs the accessPoint about new Limits for the sensors and on the other
@@ -215,6 +225,19 @@ public class SensorStationConnectController {
     }
 
 
+
+    /**
+     * Refreshes the connection of the SensorStation
+     *
+     * @param dipId
+     * @return HTTPStatus
+     */
+    @GetMapping("/refresh/{dipId}")
+    public HttpStatus refreshConnectionSensorStation(@PathVariable String dipId) {
+        AccessPoint accessPoint = getAuthAccessPoint();
+        satisFyConnection(accessPoint, dipId);
+        return HttpStatus.OK;
+    }
 
     /**
      * This method is a help-method for getting the id of the requesting accessPoint
