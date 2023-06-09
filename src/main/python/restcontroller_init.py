@@ -274,13 +274,12 @@ def request_if_accesspoint_exists(address:str, name:str):
         )
         if resp.status_code != 200:
             logger.log_error("Error when requesting if accessPoint does exist: " + str(resp.status_code))
-            return resp.status_code
+            return None
         else:
             return resp.json()
 
     except Exception as e:
-        print(e)
-        logger.log_error(e)
+        logger.log_error(f"Couldn't request if AccessPoint exists: {e}")
         return None
 
 

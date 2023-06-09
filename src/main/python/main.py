@@ -55,9 +55,12 @@ def init() -> dict:
 
     # Check if accesspoint exists on webserver, if not create a new one
     if login is not None and login[0] is not None:
-        verify_credentials = rci.request_if_accesspoint_exists(address, login[0])
-        if verify_credentials != True:
-            print("Credentials not recognized, register as new accesspoint")
+        access_point_exists = None
+        while access_point_exists is None:
+            access_point_exists = rci.request_if_accesspoint_exists(address, login[0])
+            time.sleep(5)
+        if not access_point_exists:
+            logger.log_info("Credentials not recognized, register as new accesspoint")
             login = None
 
     # Register new accesspoint if necessary

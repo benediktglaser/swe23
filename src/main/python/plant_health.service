@@ -1,0 +1,11 @@
+[Unit]
+Description=Autostart python script for PlantHealthProject on boot
+After=multi-user.target
+
+[Service]
+ExecStart=/usr/bin/python3 /home/pi/python/main.py
+User=pi
+WorkingDirectory=/home/pi/python
+
+[Install]
+WantedBy=multi-user.target
