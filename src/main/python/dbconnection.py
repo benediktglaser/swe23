@@ -598,8 +598,8 @@ def delete_all_from_limits(conn: str):
 
 def delete_database(path):
     """
-    DEBUG ONLY
     Deletes the database file
+    
     Arguments
     ---------
     path : str

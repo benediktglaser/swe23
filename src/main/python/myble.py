@@ -2,6 +2,7 @@ import asyncio
 import time
 import re
 
+from threading import Event
 import bleak.exc
 from asyncio_taskpool import TaskPool
 from bleak import BleakScanner, BLEDevice, BleakClient
@@ -24,6 +25,8 @@ ADDRESS = ""
 AUTH_HEADER = ""
 # Taskpool for all sensor_stations
 TASKPOOL = TaskPool()
+# Event that AccessPoint was deleted
+EVENT = Event()
 # UUIDS of BLE characteristics
 DATA_UUIDS = {"temp": "00000000-0000-0000-0000-0000004102a0",
               "pressure": "00000000-0000-0000-0000-0000004102b0",
@@ -43,7 +46,7 @@ GARDENER_UUID = "00000000-0000-0000-0000-000000410290"
 EXCESS_LIMIT = 20
 
 
-def start_ble(path, address, auth_header):
+def start_ble(path, address, auth_header, event):
     """
     Function which sets the DB-Connection and the authentication for REST and starts the BLE function.
 
@@ -55,6 +58,8 @@ def start_ble(path, address, auth_header):
         Address of the Webserver
     auth_header: str
         Authentication-Header for HTTP-Basic
+    event: threading.Event
+        Event that AccessPoint was deleted on Webserver
     """
 
     global CONN
@@ -63,7 +68,10 @@ def start_ble(path, address, auth_header):
     ADDRESS = address
     global AUTH_HEADER
     AUTH_HEADER = auth_header
+    global EVENT
+    EVENT = event
     asyncio.run(ble_function())
+    logger.log_info("BLE Thread finished")
 
 
 async def ble_function():
@@ -132,6 +140,8 @@ async def poll_for_coupling():
             await scan_for_devices()
         await asyncio.sleep(30)
         await TASKPOOL.flush()
+        if EVENT.is_set():
+            break
 
 
 async def scan_for_devices():
@@ -308,6 +318,8 @@ async def call_services(device: BLEDevice, already_connected: bool):
     data = SensorData(dip, 0, 0, 0, 0, 0, 0)
     value = 0
     while True:
+        if EVENT.is_set():
+            break
         time.sleep(10)
         sensor_station_status = rc.request_sensorstation_status(ADDRESS, AUTH_HEADER, dip)
         if sensor_station_status != {}:

@@ -2,7 +2,7 @@ import configparser
 import time
 import restcontroller as rest
 import logger
-from threading import Thread
+from threading import Thread, Event
 import threading
 import credentials
 import dbconnection as db
@@ -16,10 +16,10 @@ interval = 20
 
 def init() -> dict:
     """
-    This function initialises the database,
+    This function initializes the database,
     checks the credentials, asks if the
     accesspoint is enabled.
-    If the accesspoint has no credentails
+    If the accesspoint has no credentials
     or has some which are not known
     to the webserver it will register
     a new one
@@ -27,7 +27,7 @@ def init() -> dict:
     Returns
     ---------
     dict:
-        auth_head, DB-Path, Webserver-Address
+        auth_head, DB-Path, webserver-Address
     """
 
     # read the conf.yaml file
@@ -86,7 +86,7 @@ def init() -> dict:
         "authentication_header": auth_header,
         "address": address,
         "db_path": path,
-        # "interval": interval,
+        "name": login[0],
     }
     return argument_list
 
@@ -104,30 +104,31 @@ def main(args: dict):
         db_path: str
     """
 
+    event = Event()
     ble_thread = Thread(
         target=myble.start_ble,
-        args=(args["db_path"], args["address"], args["authentication_header"]),
+        args=(args["db_path"], args["address"], args["authentication_header"], event),
     )
+
     polling_for_interval_thread = Thread(
         target=poll_interval,
-        args=(
-            args["address"],
-            args["authentication_header"],
-        ),
+        args=(args["address"], args["authentication_header"], event),
     )
 
     polling_for_limits_thread = Thread(
         target=poll_limits,
-        args=(
-            args["address"],
-            args["authentication_header"],
-        ),
+        args=(args["address"], args["authentication_header"], event),
     )
     sending_sensor_data_thread = Thread(
         target=send_sensor_data,
+        args=(args["address"], args["authentication_header"], event),
+    )
+
+    poll_if_accesspoint_still_exists_thread = Thread(
+        target=poll_accesspoint_exists,
         args=(
             args["address"],
-            args["authentication_header"],
+            args["name"],
         ),
     )
 
@@ -135,27 +136,38 @@ def main(args: dict):
     polling_for_interval_thread.start()
     polling_for_limits_thread.start()
     sending_sensor_data_thread.start()
+    poll_if_accesspoint_still_exists_thread.start()
+    poll_if_accesspoint_still_exists_thread.join()
 
-    ble_thread.join()
+    # Preparing clean shutdown
+    event.set()
     polling_for_interval_thread.join()
     polling_for_limits_thread.join()
     sending_sensor_data_thread.join()
+    ble_thread.join()
+    db.delete_database(args["db_path"])
+
+    logger.log_info("Shutting down")
+    logger.log_info("Shutdown complete")
+    return
 
 
-def poll_interval(address: str, auth_header: str):
+def poll_interval(address: str, auth_header: str, event: Event):
     """
     This function polls an checks
     if the interval has changed
     Arguments
     ---------
     address: str
-        Address of the Webserver
+        Address of the webserver
     auth_header: str
         the auth_header for the rest-connection
+    event: threading.Event
+        Event that AccessPoint was deleted on Webserver
     ---------
     Returns None
     """
-    
+
     lock.acquire()
     try:
         global interval
@@ -169,7 +181,6 @@ def poll_interval(address: str, auth_header: str):
 
     while True:
         new_interval = rest.request_interval(address, auth_header)
-        print("interval:",new_interval)
         if new_interval is not None and new_interval is not current_interval:
             current_interval = new_interval
             lock.acquire()
@@ -183,10 +194,14 @@ def poll_interval(address: str, auth_header: str):
             finally:
                 lock.release()
 
+        if event.is_set():
+            break
         time.sleep(30)
+    logger.log_info("Request interval thread quit")
+    return
 
 
-def poll_limits(address: str, auth_header: str):
+def poll_limits(address: str, auth_header: str, event: Event):
     """
     This function polls to check
     if the limits have changed.
@@ -194,9 +209,11 @@ def poll_limits(address: str, auth_header: str):
     Arguments
     ---------
     address: str
-        Address of the Webserver
+        Address of the webserver
     auth_header: str
         the auth_header for the rest-connection
+    event: threading.Event
+        Event that AccessPoint was deleted on Webserver
     ---------
     Returns None
     """
@@ -217,15 +234,18 @@ def poll_limits(address: str, auth_header: str):
                 type_limit = list["dataType"]
                 min_limit = list["minLimit"]
                 max_limit = list["maxLimit"]
-                
+
                 db.update_limits(
                     conn, int(sensorstation_id), type_limit, min_limit, max_limit
                 )
-                    
+        if event.is_set():
+            break
         time.sleep(60)
+    logger.log_info("Limit thread quit")
+    return
 
 
-def send_sensor_data(address: str, auth_header: str):
+def send_sensor_data(address: str, auth_header: str, event: Event):
     """
     This function sends sensor_data
     and then deletes them from the database.
@@ -236,6 +256,8 @@ def send_sensor_data(address: str, auth_header: str):
         Address of the Webserver
     auth_header: str
         the auth_header for the rest-connection
+    event: threading.Event
+        Event that AccessPoint was deleted on Webserver
     ---------
     Returns None
     """
@@ -250,7 +272,6 @@ def send_sensor_data(address: str, auth_header: str):
             list = db.get_sensor_data(conn, sensorstation_id)
             if len(list) != 0:
                 sensor_data_delete = rest.post_measurement(address, list, auth_header)
-                print("delete: ", sensor_data_delete)
                 logger.log_info(
                     "delete this amount of data from database "
                     + "for sensorstation_id:"
@@ -270,11 +291,41 @@ def send_sensor_data(address: str, auth_header: str):
             my_interval = interval
             logger.log_info("interval in send_data: " + str(my_interval))
 
-        except Exception as e:  
-            logger.log_error("Reading global interval in sending_data failed: " + str(e))
+        except Exception as e:
+            logger.log_error(
+                "Reading global interval in sending_data failed: " + str(e)
+            )
         finally:
             lock.release()
+        if event.is_set():
+            break
         time.sleep(my_interval)
+    logger.log_info("Send data thread quit")
+    return 
+
+
+def poll_accesspoint_exists(address: str, name: str) -> bool:
+    """
+    This function checks if the accesspoint still exists
+    on the webserver.
+
+    Arguments
+    ---------
+    address: str
+        Address of the Webserver
+    name: str
+        name of the accesspoint
+    ---------
+    Returns bool
+    """
+    while True:
+        verify_credentials = rci.request_if_accesspoint_exists(address, name)
+        if verify_credentials != True:
+            logger.log_error("AccessPoint has been deleted")
+            break
+        time.sleep(30)
+    logger.log_info("Deletion of AccessPoint has been noted")
+    return True
 
 
 def register_accesspoint(address: str, interval: int, name: str):

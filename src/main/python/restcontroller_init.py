@@ -286,12 +286,6 @@ def request_if_accesspoint_exists(address:str, name:str):
 
 
 if __name__ == "__main__":
-    pass
-    # normally these two values come from the config-file
-    # address = "http://localhost:8080"
-    # data = register_access_point_at_server(address, 40.9, "Kappl")
-    # my_id = data[0]
-    # my_password = data[1]
-    # auth = prepare_auth_headers(my_id, my_password)
-    # print(request_approval(address, auth))
-    # print(register_new_sensorstation_at_server(address, 93, auth))
+    #pass
+    address = "http://localhost:8080"
+    print(request_if_accesspoint_exists(address, "set"))
