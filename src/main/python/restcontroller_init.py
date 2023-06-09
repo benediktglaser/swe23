@@ -245,7 +245,7 @@ def connection_timed_out(address: str, dipId: int, auth_header: str):
     """
 
     try:
-        requests.head(f"{address}/api/accessPoint/timeout/{dipId}", auth=auth_header)
+        requests.get(f"{address}/api/sensorStation/timeout/{dipId}", auth=auth_header)
     except requests.exceptions.ConnectionError:
         logger.log_error(f"Unable to inform Webserver about connection timeout of Station {dipId}")
 
