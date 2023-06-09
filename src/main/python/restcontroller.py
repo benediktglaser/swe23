@@ -263,7 +263,7 @@ def request_interval(address: str, auth_header):
     try:
         resp = requests.get(f"{address}/api/accessPoint/interval", auth=auth_header)
         if resp.status_code != 200:
-            logger.log_error("Error when requesting interval: " + str(resp.status_code))
+            logger.log_error("Requesting interval failed: " + str(resp.status_code))
             return None
         else:
             return resp.json()
@@ -298,7 +298,7 @@ def request_limits(address: str, auth_header: str, dipId: int):
             f"{address}/api/sensorStation/limits/{dipId}", auth=auth_header
         )
         if resp.status_code != 200:
-            logger.log_error("Error when requesting interval: " + str(resp.status_code))
+            logger.log_error("Requesting limits failed: " + str(resp.status_code))
             return None
         else:
             return resp.json()
@@ -333,7 +333,7 @@ def request_sensorstation_status(address: str, auth_header: str, dip_id: int) ->
         )
         if resp.status_code != 200:
             logger.log_error(
-                "Error when requesting if sensorstation is enabled: "
+                "Requesting if sensorstation is enabled failed: "
                 + str(resp.status_code)
             )
             return {}
@@ -371,7 +371,7 @@ def gardener_is_at_station(address: str, dipId: int, auth_header: str) -> bool:
         )
         if resp.status_code != 200:
             logger.log_error(
-                "Error when requesting if sensorstation is enabled: "
+                "Requesting if sensorstation is enabled failed: "
                 + str(resp.status_code)
             )
             return False

@@ -1,90 +1,24 @@
-2023-05-15 21:12:41,123  log_info  INFO start interval: 20
-2023-05-15 21:12:41,727  log_info  INFO Login as: 2b49d2d1-01ac-415a-810c-a3bda7d84331 d296ba1e-604b-43c2-8d4e-d789cb30dbcc
-2023-05-15 21:12:41,737  log_error  ERROR Reading global interval in sending_data failed: module 'logger' has no attribute 'info'
-2023-05-15 21:12:42,199  log_info  INFO New Interval = 30.0
-2023-05-15 21:13:01,756  log_error  ERROR Reading global interval in sending_data failed: module 'logger' has no attribute 'info'
-2023-05-15 21:13:12,557  log_info  INFO New Interval = 30.0
-2023-05-15 21:13:31,787  log_error  ERROR Reading global interval in sending_data failed: module 'logger' has no attribute 'info'
-2023-05-15 21:13:42,962  log_info  INFO New Interval = 30.0
-2023-05-15 21:14:01,816  log_error  ERROR Reading global interval in sending_data failed: module 'logger' has no attribute 'info'
-2023-05-15 21:14:13,277  log_info  INFO New Interval = 40.0
-2023-05-15 21:14:31,832  log_error  ERROR Reading global interval in sending_data failed: module 'logger' has no attribute 'info'
-2023-05-15 21:14:43,581  log_info  INFO New Interval = 40.0
-2023-05-15 21:15:11,873  log_error  ERROR Reading global interval in sending_data failed: module 'logger' has no attribute 'info'
-2023-05-15 21:15:13,870  log_info  INFO New Interval = 40.0
-2023-06-01 13:09:37,587  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/sensorData (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fee4046df30>: Failed to establish a new connection: [Errno 111] Connection refused'))
-2023-06-01 13:09:37,597  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/sensorData (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fee4046d750>: Failed to establish a new connection: [Errno 111] Connection refused'))
-2023-06-01 13:09:37,600  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/sensorData (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fee4046d000>: Failed to establish a new connection: [Errno 111] Connection refused'))
-2023-06-01 13:09:37,610  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/sensorData (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fee4046c8b0>: Failed to establish a new connection: [Errno 111] Connection refused'))
-2023-06-01 13:09:37,613  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/sensorData (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fee4046cc70>: Failed to establish a new connection: [Errno 111] Connection refused'))
-2023-06-01 13:09:37,624  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/sensorData (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fee4046d3c0>: Failed to establish a new connection: [Errno 111] Connection refused'))
-2023-06-01 18:24:23,483  log_error  ERROR table limits has 13 columns but 14 values were supplied
-2023-06-01 18:24:23,485  log_error  ERROR table limits has 13 columns but 14 values were supplied
-2023-06-01 18:27:24,974  log_error  ERROR table limits has 13 columns but 14 values were supplied
-2023-06-01 18:27:24,976  log_error  ERROR table limits has 13 columns but 14 values were supplied
-2023-06-01 18:30:08,824  log_error  ERROR table limits has 13 columns but 14 values were supplied
-2023-06-01 18:30:08,824  log_error  ERROR table limits has 13 columns but 14 values were supplied
-2023-06-01 18:35:56,613  log_info  INFO start interval: 20
-2023-06-01 18:36:07,547  log_info  INFO Login as: c1dfa95b-4e67-4e34-9147-8da5112c258a ae667bf2-5d08-44d7-b21f-3e01d03a369d
-2023-06-01 18:36:07,547  log_error  ERROR no such column: mac
-2023-06-01 18:36:44,220  log_info  INFO start interval: 20
-2023-06-01 18:36:44,560  log_info  INFO Login as: c1dfa95b-4e67-4e34-9147-8da5112c258a ae667bf2-5d08-44d7-b21f-3e01d03a369d
-2023-06-01 18:36:44,571  log_info  INFO interval in send_data: 20
-2023-06-01 18:36:45,210  log_info  INFO New Interval = 30.0
-2023-06-01 18:37:04,594  log_info  INFO interval in send_data: 30.0
-2023-06-01 18:37:15,500  log_info  INFO New Interval = 30.0
-2023-06-01 18:40:35,607  log_info  INFO start interval: 20
-2023-06-01 18:40:57,048  log_info  INFO Login as: 168e10fa-9502-43c2-8830-2b1909691bec e66524ef-abc7-4d31-9674-32d560108e8c
-2023-06-01 18:40:57,061  log_info  INFO interval in send_data: 20
-2023-06-01 18:40:57,663  log_info  INFO New Interval = 30.0
-2023-06-01 18:41:17,076  log_info  INFO interval in send_data: 30.0
-2023-06-01 18:41:27,981  log_info  INFO New Interval = 30.0
-2023-06-01 18:41:47,100  log_info  INFO interval in send_data: 30.0
-2023-06-01 18:41:58,582  log_info  INFO New Interval = 30.0
-2023-06-01 18:42:17,131  log_info  INFO interval in send_data: 30.0
-2023-06-01 18:42:28,926  log_info  INFO New Interval = 30.0
-2023-06-01 18:43:49,783  log_info  INFO start interval: 20
-2023-06-01 18:44:01,006  log_info  INFO Login as: 3fa4f0dd-354c-44cc-ae07-1e211dae554c 3a846a43-922a-4ef2-aff2-12bea48008f4
-2023-06-01 18:44:01,019  log_info  INFO interval in send_data: 20
-2023-06-01 18:44:01,630  log_info  INFO New Interval = 30.0
-2023-06-01 18:44:21,037  log_info  INFO interval in send_data: 30.0
-2023-06-01 18:44:32,219  log_info  INFO New Interval = 30.0
-2023-06-01 18:44:51,065  log_info  INFO interval in send_data: 30.0
-2023-06-01 18:45:02,552  log_info  INFO New Interval = 30.0
-2023-06-01 18:45:21,093  log_info  INFO interval in send_data: 30.0
-2023-06-01 18:45:32,861  log_info  INFO New Interval = 30.0
-2023-06-01 18:45:51,118  log_info  INFO interval in send_data: 30.0
-2023-06-01 18:46:03,194  log_info  INFO New Interval = 30.0
-2023-06-01 18:46:21,145  log_info  INFO interval in send_data: 30.0
-2023-06-01 18:46:33,536  log_info  INFO New Interval = 30.0
-2023-06-01 18:46:51,173  log_info  INFO interval in send_data: 30.0
-2023-06-01 18:47:03,843  log_info  INFO New Interval = 30.0
-2023-06-01 18:47:21,202  log_info  INFO interval in send_data: 30.0
-2023-06-01 18:47:34,341  log_info  INFO New Interval = 30.0
-2023-06-01 18:47:51,230  log_info  INFO interval in send_data: 30.0
-2023-06-01 18:48:49,096  log_info  INFO start interval: 20
-2023-06-01 18:49:01,620  log_info  INFO Login as: d1396d65-f210-4912-a9c2-19d3454125f5 e41b5cd5-7fa5-4144-9759-6ffa4f8decc2
-2023-06-01 18:49:01,639  log_info  INFO interval in send_data: 20
-2023-06-01 18:49:02,408  log_info  INFO New Interval = 30.0
-2023-06-01 18:49:21,659  log_info  INFO interval in send_data: 30.0
-2023-06-01 18:49:32,933  log_info  INFO New Interval = 30.0
-2023-06-01 18:49:51,674  log_info  INFO interval in send_data: 30.0
-2023-06-01 18:50:03,558  log_info  INFO New Interval = 30.0
-2023-06-01 18:50:21,702  log_info  INFO interval in send_data: 30.0
-2023-06-01 18:50:34,635  log_info  INFO New Interval = 30.0
-2023-06-01 18:50:51,729  log_info  INFO interval in send_data: 30.0
-2023-06-01 18:51:05,291  log_info  INFO New Interval = 40.0
-2023-06-01 18:51:21,759  log_info  INFO interval in send_data: 40.0
-2023-06-01 18:51:36,112  log_info  INFO New Interval = 40.0
-2023-06-01 18:52:01,797  log_info  INFO interval in send_data: 40.0
-2023-06-01 18:52:05,856  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/accessPoint/couple (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fb703009a80>: Failed to establish a new connection: [Errno 111] Connection refused'))
-2023-06-01 18:52:06,140  log_error  ERROR HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /api/accessPoint/interval (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fb7030098a0>: Failed to establish a new connection: [Errno 111] Connection refused'))
-2023-06-01 20:04:06,243  log_info  INFO start interval: 20
-2023-06-01 20:04:29,199  log_info  INFO Login as: a05f471b-c5c9-4ed5-a779-a8f4f5f963ae b12b3150-78bb-4a80-a37b-36e7d90e635b
-2023-06-01 20:04:29,214  log_info  INFO interval in send_data: 20
-2023-06-01 20:04:29,938  log_info  INFO New Interval = 20.0
-2023-06-01 20:04:49,235  log_info  INFO interval in send_data: 20.0
-2023-06-01 20:05:01,259  log_info  INFO New Interval = 30.0
-2023-06-01 20:05:09,254  log_info  INFO interval in send_data: 30.0
-2023-06-01 20:05:31,624  log_info  INFO New Interval = 30.0
-2023-06-01 20:05:39,284  log_info  INFO interval in send_data: 30.0
+2023-06-09 18:23:42,916  log_info  INFO start interval: 20
+2023-06-09 18:23:54,473  log_info  INFO Login as: 834f5fcd-e294-4340-9278-0317448d1636 eb402413-6ac2-43fc-b07f-15408ae0f8f9
+2023-06-09 18:23:54,496  log_info  INFO interval in send_data: 20
+2023-06-09 18:23:54,925  log_info  INFO New Interval = 20.0
+2023-06-09 18:24:14,512  log_info  INFO interval in send_data: 20.0
+2023-06-09 18:24:24,575  log_error  ERROR AccessPoint has been deleted
+2023-06-09 18:24:25,290  log_error  ERROR Error when requesting interval: 401
+2023-06-09 18:24:34,530  log_info  INFO interval in send_data: 20.0
+2023-06-09 18:24:54,540  log_info  INFO Shutting down
+2023-06-09 18:30:31,908  log_info  INFO start interval: 20
+2023-06-09 18:30:42,689  log_info  INFO Login as: 213ce118-e652-4cff-ba81-7364a1e2be65 179132ae-7d17-4f5a-ad01-77564bf5b880
+2023-06-09 18:30:42,703  log_info  INFO interval in send_data: 20
+2023-06-09 18:30:43,229  log_info  INFO New Interval = 20.0
+2023-06-09 18:31:02,711  log_info  INFO interval in send_data: 20.0
+2023-06-09 18:31:13,654  log_info  INFO New Interval = 20.0
+2023-06-09 18:31:22,747  log_info  INFO interval in send_data: 20.0
+2023-06-09 18:31:42,768  log_info  INFO interval in send_data: 20.0
+2023-06-09 18:31:42,912  log_error  ERROR AccessPoint has been deleted
+2023-06-09 18:31:42,912  log_info  INFO Deletion of AccessPoint has been noted
+2023-06-09 18:31:43,978  log_error  ERROR Error when requesting interval: 401
+2023-06-09 18:31:43,978  log_info  INFO Request interval thread quit
+2023-06-09 18:32:02,788  log_info  INFO interval in send_data: 20.0
+2023-06-09 18:32:42,816  log_info  INFO Limit thread quit
+2023-06-09 18:32:42,817  log_info  INFO Shutting down
