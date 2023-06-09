@@ -206,7 +206,7 @@ def coupling_timed_out(address: str, auth_header: str):
     """
 
     try:
-        requests.head(f"{address}/api/accessPoint/coupling", auth=auth_header)
+        requests.get(f"{address}/api/accessPoint/coupling", auth=auth_header)
     except requests.exceptions.ConnectionError:
         logger.log_error(f"Unable to inform server about coupling timeout")
 
@@ -224,7 +224,7 @@ def refresh_connection_sensor_station(address: str, auth_header: str, dipId: int
     """
 
     try:
-        requests.head(f"{address}/api/sensorStation/refresh/{dipId}", auth_header)
+        requests.get(f"{address}/api/sensorStation/refresh/{dipId}", auth=auth_header)
     except requests.exceptions.ConnectionError:
         logger.log_error(f"Unable to refresh connection status of Station {dipId}")
 
