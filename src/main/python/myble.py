@@ -150,9 +150,9 @@ async def scan_for_devices():
         if not rci.request_couple_mode(ADDRESS, AUTH_HEADER):
             break
         await asyncio.sleep(10)
-    # TODO: send message to Webserver that Coupling Mode timed out
     if time.time() > timeout:
         logger.log_info("Coupling Mode timed out")
+        rc.coupling_timed_out(ADDRESS, AUTH_HEADER)
     else:
         logger.log_info("Stopped Coupling Mode")
     await scanner.stop()
@@ -294,30 +294,30 @@ async def call_services(device: BLEDevice, already_connected: bool):
     # client == sensor_station
     client = BleakClient(device, timeout=30)
     # Try initial Connection
-    try:
-        await client.connect()
-        logger.log_info(f"Successfully established connection to {device.name}")
-    except (asyncio.exceptions.CancelledError, asyncio.exceptions.TimeoutError):
-        logger.log_error(f"Establishing BLE connection to {device.name} timed out")
-        # TODO: Send Message to Webserver that connection timed out
-        return
     if not already_connected:
-        rci.register_new_sensorstation_at_server(ADDRESS, dip, AUTH_HEADER)
-        db.init_limits(CONN, dip, device.address)
+        SCANNED_DEVICES.remove(device)
+        try:
+            await client.connect()
+            rci.register_new_sensorstation_at_server(ADDRESS, dip, AUTH_HEADER)
+            db.init_limits(CONN, dip, device.address)
+            logger.log_info(f"Successfully established connection to {device.name}")
+        except (asyncio.exceptions.CancelledError, asyncio.exceptions.TimeoutError):
+            logger.log_error(f"Establishing BLE connection to {device.name} timed out")
+            rci.connection_timed_out(ADDRESS, dip, AUTH_HEADER)
+            return
     data = SensorData(dip, 0, 0, 0, 0, 0, 0)
+    value = 0
     while True:
         time.sleep(10)
-        # TODO: Remove acknowledgement from rc.request_sensorstation_status
-        # so that checking if the sensor_station should be deleted is also possible when there is no active connection
-        # Then move ensure_connection after request_sensorstation_status
-        if not await ensure_connection(client, device):
-            continue
         sensor_station_status = rc.request_sensorstation_status(ADDRESS, AUTH_HEADER, dip)
         if sensor_station_status != {}:
             if sensor_station_status["deleted"]:
                 break
             if not sensor_station_status["enabled"]:
                 continue
+        if not await ensure_connection(client, device):
+            continue
+        rc.refresh_connection_sensor_station(ADDRESS, AUTH_HEADER, dip)
         for data_type in DATA_UUIDS.keys():
             try:
                 uuid = DATA_UUIDS[data_type]

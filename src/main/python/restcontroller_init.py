@@ -229,6 +229,27 @@ def register_new_sensorstation_at_server(address:str, dipId: int, auth_header:st
         logger.log_error(e)
         return None
 
+
+def connection_timed_out(address: str, dipId: int, auth_header: str):
+    """
+    Informs the Webserver that establishing the initial connection to a sensor_station timed out.
+
+    Arguments
+    ---------
+    address : str
+        The ip-address of the Server
+    dipId : int
+        The dip id of the SensorStation for which we ask
+    auth_header : str
+        the auth_header for the rest-connection
+    """
+
+    try:
+        requests.head(f"{address}/api/accessPoint/timeout/{dipId}", auth=auth_header)
+    except requests.exceptions.ConnectionError:
+        logger.log_error(f"Unable to inform Webserver about connection timeout of Station {dipId}")
+
+
 def request_if_accesspoint_exists(address:str, name:str):
     """
     Checks if a accesspoint exists at the webserver. 
