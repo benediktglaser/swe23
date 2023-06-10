@@ -236,7 +236,7 @@
                         <p:column headerText="Connect">
                             <p:commandButton icon="pi pi-link"
                                              action="#{visibleSensorStationController.selectSensorStation(sensorStationListController.accessPoint,dipIds)}"
-                                             onstart="PF('statusDialog').show()">
+                                             onstart="PF('statusDialog').show()" rendered="#{visibleSensorStationController.getSensorStationsByAccessPointAndDipId(sensorStationListController.accessPoint,dipIds).getConnected()==false}">
 
                             </p:commandButton>
                         </p:column>
