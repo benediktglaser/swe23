@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -45,6 +46,7 @@ class ExceptionHandlingServiceTest {
         assertEquals(1, errors.size());
         assertEquals("null is not allowed", errors.get("testField"));
     }
+
     @Test
     public void testHandleAccessPointNotFound() {
         EntityNotFoundException ex = new EntityNotFoundException("Entity not found");
@@ -72,12 +74,21 @@ class ExceptionHandlingServiceTest {
 
     @Test
     public void testHandleQRException() {
-        QRException ex = new QRException("QR code error");
-        exceptionHandlingService.handleQRException(ex);
+        try {
+            QRException ex = new QRException("QR code error");
+            exceptionHandlingService.handleQRException(ex);
+        } catch (Exception e) {
+            fail("Unexpected exception was thrown " + e.getMessage());
+        }
     }
+
     @Test
     public void testVisibleMapException() {
-        VisibleMapException ex = new VisibleMapException("SensorStation is not registered");
-        exceptionHandlingService.handleVisibleMapException(ex);
+        try {
+            VisibleMapException ex = new VisibleMapException("SensorStation is not registered");
+            exceptionHandlingService.handleVisibleMapException(ex);
+        } catch (Exception e) {
+            fail("Unexpected exception was thrown " + e.getMessage());
+        }
     }
 }

@@ -9,7 +9,7 @@ import java.io.Serializable;
  */
 public class LogMsg<K, T extends Persistable<K> & Serializable> {
 
-    public static enum LogType {
+    public enum LogType {
         CRUD_CREATE,
         CRUD_READ,
         CRUD_UPDATE,

@@ -22,7 +22,6 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Service for accessing and manipulating user data.
@@ -140,7 +139,6 @@ public class UserService implements Serializable {
     }
     public void removeSensorStationToUser(SensorStation sensorStation){
         Userx userx = getAuthenticatedUser();
-       //System.out.println(sensorStation.getUserx());
         userx.getSensorStations().remove(sensorStation);
        // sensorStation.getUserx().remove(userx);
         userRepository.save(userx);

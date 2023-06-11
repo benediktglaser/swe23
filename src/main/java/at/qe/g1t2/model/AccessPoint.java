@@ -47,8 +47,6 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
     private Boolean coupleMode;
 
 
-
-
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime updateDate;
     @OneToMany(mappedBy = "accessPoint", fetch = FetchType.EAGER)
@@ -83,7 +81,7 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
     }
 
     public Double getSendingInterval() {
-        if(sendingInterval < thresholdInterval){
+        if (sendingInterval < thresholdInterval) {
             sendingInterval = thresholdInterval;
         }
         return sendingInterval;
@@ -94,10 +92,10 @@ public class AccessPoint implements Persistable<String>, Serializable, Comparabl
     }
 
     public void setSendingInterval(Double interval) {
-        if(thresholdInterval == null){
+        if (thresholdInterval == null) {
             this.thresholdInterval = interval;
         }
-        if(interval < thresholdInterval){
+        if (interval < thresholdInterval) {
             this.sendingInterval = thresholdInterval;
             return;
         }
