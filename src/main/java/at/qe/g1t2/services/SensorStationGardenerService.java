@@ -24,11 +24,12 @@ public class SensorStationGardenerService implements Serializable {
 
 
     @Autowired
-    UserxRepository userxRepository;
-    @Autowired
-    SensorStationRepository sensorStationRepository;
+    private UserxRepository userxRepository;
 
-    Set<SensorStation> gardenerIsHere = new HashSet<>();
+    @Autowired
+    private SensorStationRepository sensorStationRepository;
+
+    private Set<SensorStation> gardenerIsHere = new HashSet<>();
 
 
     public void assignGardener(Userx userx, SensorStation sensorStation) {

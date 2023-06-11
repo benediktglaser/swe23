@@ -35,6 +35,7 @@ public class QRCodeService {
             socket.connect(new InetSocketAddress("google.com", 80));
             return socket.getLocalAddress().getHostAddress();
         } catch (IOException e) {
+
         }
         return null;
     }

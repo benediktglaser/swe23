@@ -2,6 +2,7 @@ package at.qe.g1t2.restapi.controller;
 
 import at.qe.g1t2.model.AccessPoint;
 import at.qe.g1t2.model.SensorStation;
+import at.qe.g1t2.restapi.exception.EntityNotFoundException;
 import at.qe.g1t2.restapi.model.SensorStationDTO;
 import at.qe.g1t2.services.AccessPointService;
 import at.qe.g1t2.services.SensorStationService;
@@ -24,6 +25,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @SpringBootTest
 @AutoConfigureMockMvc
 class SensorStationConnectControllerTest {
+
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -45,7 +47,6 @@ class SensorStationConnectControllerTest {
         sensorStationDTO.setDipId(23L);
         sensorStationDTO.setMac("1234");
 
-        int size = visibleSensorStationsService.getVisibleMap().size();
         ObjectMapper objectMapper = new ObjectMapper();
         String requestBody = objectMapper.writeValueAsString(sensorStationDTO);
         mockMvc.perform(MockMvcRequestBuilders.post("/api/sensorStation/register")
@@ -60,7 +61,6 @@ class SensorStationConnectControllerTest {
     @DirtiesContext
     @WithMockUser(username = "4294ba1b-f794-4e3d-b606-896b28237bcb", authorities = {"ACCESS_POINT"})
     void registerExistingSensorStation() throws Exception {
-        AccessPoint accessPoint = accessPointService.loadAccessPoint("4294ba1b-f794-4e3d-b606-896b28237bcb");
         SensorStationDTO sensorStationDTO = new SensorStationDTO();
         sensorStationDTO.setDipId(1L);
         sensorStationDTO.setMac("14");
@@ -79,7 +79,6 @@ class SensorStationConnectControllerTest {
     @DirtiesContext
     @WithMockUser(username = "4294ba1b-f794-4e3d-b606-896b28237bcb", authorities = {"ACCESS_POINT"})
     void registerSensorStationWithExistingDipId() throws Exception {
-        AccessPoint accessPoint = accessPointService.loadAccessPoint("4294ba1b-f794-4e3d-b606-896b28237bcb");
         SensorStationDTO sensorStationDTO = new SensorStationDTO();
         sensorStationDTO.setDipId(20L);
         sensorStationDTO.setMac("14");
@@ -98,7 +97,6 @@ class SensorStationConnectControllerTest {
     @DirtiesContext
     @WithMockUser(username = "4294ba1b-f794-4e3d-b606-896b28237bcb", authorities = {"ACCESS_POINT"})
     void registerTwoSensorStationWithSameDipId() throws Exception {
-        AccessPoint accessPoint = accessPointService.loadAccessPoint("4294ba1b-f794-4e3d-b606-896b28237bcb");
         SensorStationDTO sensorStationDTO = new SensorStationDTO();
         sensorStationDTO.setDipId(1L);
         sensorStationDTO.setMac("100");
@@ -127,7 +125,6 @@ class SensorStationConnectControllerTest {
     @DirtiesContext
     @WithMockUser(username = "43d5aba9-29c5-49b4-b4ec-2d430e34104f", authorities = {"ACCESS_POINT"})
     void registerExistingSensorStationOtherAccessPoint() throws Exception {
-        AccessPoint accessPoint = accessPointService.loadAccessPoint("43d5aba9-29c5-49b4-b4ec-2d430e34104f");
         SensorStationDTO sensorStationDTO = new SensorStationDTO();
         sensorStationDTO.setDipId(1L);
         sensorStationDTO.setMac("14");
@@ -147,7 +144,6 @@ class SensorStationConnectControllerTest {
     @WithMockUser(username = "4294ba1b-f794-4e3d-b606-896b28237bcb", authorities = {"ACCESS_POINT"})
     void testGetLimitsAndConnection() throws Exception {
         AccessPoint accessPoint = accessPointService.loadAccessPoint("4294ba1b-f794-4e3d-b606-896b28237bcb");
-        Long dipId = 3L;
 
         long x = Long.parseLong("100");
         mockMvc.perform(MockMvcRequestBuilders.get("/api/sensorStation/limits/" + x))
@@ -166,11 +162,6 @@ class SensorStationConnectControllerTest {
     @DirtiesContext
     @WithMockUser(username = "4294ba1b-f794-4e3d-b606-896b28237bcb", authorities = {"ACCESS_POINT"})
     void testCheckVerifiedSensorstationForCouple() throws Exception {
-        AccessPoint accessPoint = accessPointService.loadAccessPoint("4294ba1b-f794-4e3d-b606-896b28237bcb");
-        Long dipId = 3L;
-
-        long x = Long.parseLong("100");
-
         SensorStationDTO sensorStationDTO = new SensorStationDTO();
         sensorStationDTO.setDipId(93L);
         sensorStationDTO.setMac("1234");
@@ -261,8 +252,69 @@ class SensorStationConnectControllerTest {
         visibleSensorStationsService.addVisibleStation(accessPointService.loadAccessPoint("4294ba1b-f794-4e3d-b606-896b28237bcb"), sensorStationDTO);
         mockMvc.perform(MockMvcRequestBuilders.get("/api/sensorStation/connected/100"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "4294ba1b-f794-4e3d-b606-896b28237bcb", authorities = {"ACCESS_POINT"})
+    void testRefreshConnectionSensorStation() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/sensorStation/refresh/3"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+        SensorStation sensorStation = sensorStationService.loadSensorStation("9f98b70c-4de7-46c0-a611-21160743be7e");
+        Assertions.assertEquals(true, sensorStation.getConnected());
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "4494ba1b-f794-4e3d-b606-896b28237bcb", authorities = {"ACCESS_POINT"})
+    void testUnregisteredAccessPoint() {
+        Assertions.assertThrows(EntityNotFoundException.class, () -> sensorStationConnectController.getAuthAccessPoint());
+    }
 
 
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "4294ba1b-f794-4e3d-b606-896b28237bcb", authorities = {"ACCESS_POINT"})
+    void testGardnerIsHere() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/sensorStation/gardenerHere/3"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "4294ba1b-f794-4e3d-b606-896b28237bcb", authorities = {"ACCESS_POINT"})
+    void testTimeout() throws Exception {
+        SensorStationDTO sensorStationDTO = new SensorStationDTO();
+        sensorStationDTO.setMac("345456");
+        sensorStationDTO.setDipId(100L);
+        visibleSensorStationsService.addVisibleStation(accessPointService.loadAccessPoint("4294ba1b-f794-4e3d-b606-896b28237bcb"), sensorStationDTO);
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/sensorStation/timeout/100"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+        sensorStationDTO = visibleSensorStationsService.getSensorStationByAccessPointAndDipId(accessPointService.loadAccessPoint("4294ba1b-f794-4e3d-b606-896b28237bcb"), "100");
+        Assertions.assertTrue(sensorStationDTO.getConnectingTimeOut());
+        Assertions.assertEquals(false, sensorStationDTO.getVerified());
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "4294ba1b-f794-4e3d-b606-896b28237bcb", authorities = {"ACCESS_POINT"})
+    void testTimeoutEmptyMap() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/sensorStation/timeout/120"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "4494ba1b-f794-4e3d-b606-896b28237bcb", authorities = {"ACCESS_POINT"})
+    void testSatisfyConnectionNoAccessPoint() {
+        Assertions.assertThrows(EntityNotFoundException.class, () -> sensorStationConnectController.satisFyConnection(null, "100"));
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "4494ba1b-f794-4e3d-b606-896b28237bcb", authorities = {"ACCESS_POINT"})
+    void testUnregisteredAccessPoint2() {
+        Assertions.assertThrows(EntityNotFoundException.class, () -> sensorStationConnectController.satisFyConnection(null));
     }
 
 

@@ -6,7 +6,6 @@ import at.qe.g1t2.services.AccessPointService;
 import at.qe.g1t2.services.LogMsg;
 import at.qe.g1t2.services.SensorDataTypeInfoService;
 import at.qe.g1t2.services.SensorStationService;
-import org.primefaces.PrimeFaces;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

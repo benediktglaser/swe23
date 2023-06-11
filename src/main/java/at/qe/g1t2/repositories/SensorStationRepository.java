@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Repository for managing {@link SensorStation} entities.

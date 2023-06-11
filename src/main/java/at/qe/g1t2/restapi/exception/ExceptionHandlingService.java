@@ -31,7 +31,7 @@ public class ExceptionHandlingService {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = "null is not allowed";
             errors.put(fieldName, errorMessage);
-            LOGGER.error("Request Body not complete " + errorMessage);
+            LOGGER.error("Request Body not complete %s", errorMessage);
         });
 
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
@@ -39,19 +39,19 @@ public class ExceptionHandlingService {
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<String> handleAccessPointNotFound(@NotNull EntityNotFoundException ex) {
-        LOGGER.error("Entity not Found exception / Message: " + ex.getMessage());
+        LOGGER.error("Entity not Found exception / Message: %s", ex.getMessage());
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(FileUploadException.class)
     public ResponseEntity<String> handleFileUploadException(@NotNull FileUploadException ex) {
-        LOGGER.error("File Upload exception / Message: " + ex.getMessage());
+        LOGGER.error("File Upload exception / Message:  %s", ex.getMessage());
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(JsonProcessingException.class)
     public String handleJsonProcessingException(@NotNull JsonProcessingException ex) {
-        LOGGER.error("Processing JSON Error / Message: " + ex.getMessage());
+        LOGGER.error("Processing JSON Error / Message: %s", ex.getMessage());
         return "Error JSON Processing";
     }
 
@@ -62,7 +62,7 @@ public class ExceptionHandlingService {
 
     @ExceptionHandler(InvalidAccessException.class)
     public ResponseEntity<String> handleInvalidAccess(@NotNull InvalidAccessException ex) {
-        LOGGER.error("Try invalid access: " + ex.getMessage());
+        LOGGER.error("Try invalid access: %s", ex.getMessage());
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
