@@ -15,7 +15,7 @@ from sensordata import SensorData
 import logger
 
 device_name_prefix = "Station G1T2 "
-# all newly scanned SensorStations
+# all newly scanned sensor_stations
 SCANNED_DEVICES = set()
 # Database connection
 CONN = None
@@ -25,7 +25,7 @@ ADDRESS = ""
 AUTH_HEADER = ""
 # Taskpool for all sensor_stations
 TASKPOOL = TaskPool()
-# Event that AccessPoint was deleted
+# Event that access_point was deleted
 EVENT = Event()
 # UUIDS of BLE characteristics
 DATA_UUIDS = {"temp": "00000000-0000-0000-0000-0000004102a0",
@@ -40,9 +40,9 @@ LIMIT_UUIDS = {"temp": "00000000-0000-0000-0000-0000004102aa",
                "quality": "00000000-0000-0000-0000-0000004102dd",
                "soil": "00000000-0000-0000-0000-0000004102ee",
                "light": "00000000-0000-0000-0000-0000004102ff"}
-# UUID of characteristic whether gardener is at SensorStation
+# UUID of characteristic whether gardener is at sensor_station
 GARDENER_UUID = "00000000-0000-0000-0000-000000410290"
-# How long the limit should be exceeded so that it's displayed on the SensorStation (in sec)
+# How long the limit should be exceeded so that it's displayed on the sensor_station (in sec)
 EXCESS_LIMIT = 20
 
 
@@ -59,7 +59,7 @@ def start_ble(path, address, auth_header, event):
     auth_header: str
         Authentication-Header for HTTP-Basic
     event: threading.Event
-        Event that AccessPoint was deleted on Webserver
+        Event that access_point was deleted on Webserver
     """
 
     global CONN
@@ -79,10 +79,10 @@ async def ble_function():
     Reconnects all sensor_stations from database.db and starts polling for coupling.
     """
 
-    connected_sensor_stations = db.get_all_sensorstations(CONN)
+    connected_sensor_stations = db.get_all_sensor_stations(CONN)
     for (dip, mac) in connected_sensor_stations:
-        if rc.request_sensorstation_status(ADDRESS, AUTH_HEADER, dip)["deleted"]:
-            db.remove_sensorstation_from_limits(CONN, dip)
+        if rc.request_sensor_station_status(ADDRESS, AUTH_HEADER, dip)["deleted"]:
+            db.remove_sensor_station_from_limits(CONN, dip)
             logger.log_info(f"Deleted Station with ID {dip}")
             continue
         TASKPOOL.apply(reconnect, args=[mac])
@@ -92,7 +92,7 @@ async def ble_function():
 
 async def reconnect(mac: str):
     """
-    Reconnect to device after restarting of AccessPoint.
+    Reconnect to device after restarting of access_point.
 
     Arguments
     ----------
@@ -170,7 +170,7 @@ async def scan_for_devices():
 
 async def my_callback(device: BLEDevice, advertisement: AdvertisementData):
     """
-    Calls connection establishment function if the found BLEDevice is a SensorStation with available DIP-ID
+    Calls connection establishment function if the found BLEDevice is a sensor_station with available DIP-ID
 
     Arguments
     ----------
@@ -186,8 +186,8 @@ async def my_callback(device: BLEDevice, advertisement: AdvertisementData):
 
 def is_new_sensor_station(device: BLEDevice, advertisement: AdvertisementData) -> bool:
     """
-    Checks if the Advertisement is of one of our SensorStations based on the local_name with a DIP-ID
-    which is available on this AccessPoint and hasn't already been advertised.
+    Checks if the Advertisement is of one of our sensor_stations based on the local_name with a DIP-ID
+    which is available on this access_point and hasn't already been advertised.
 
     Arguments
     ----------
@@ -204,7 +204,7 @@ def is_new_sensor_station(device: BLEDevice, advertisement: AdvertisementData) -
     if advertisement.local_name is None or not advertisement.local_name.startswith(device_name_prefix):
         return False
 
-    if any(dip == get_dip_from_device(device) for (dip, _) in db.get_all_sensorstations(CONN)):
+    if any(dip == get_dip_from_device(device) for (dip, _) in db.get_all_sensor_stations(CONN)):
         return False
     if any(d.name == device.name for d in SCANNED_DEVICES):
         return False
@@ -214,12 +214,12 @@ def is_new_sensor_station(device: BLEDevice, advertisement: AdvertisementData) -
 
 async def establish_connection(device: BLEDevice):
     """
-    Function for each SensorStation which polls for Verification and calls services.
+    Function for each sensor_station which polls for Verification and calls services.
 
     Arguments
     ----------
     device: BLEDevice
-        SensorStation
+        sensor_station
     """
 
     verified = await poll_for_verification(device)
@@ -229,12 +229,12 @@ async def establish_connection(device: BLEDevice):
 
 async def poll_for_verification(device: BLEDevice) -> bool:
     """
-    Poll for the verification of this SensorStation on the Webserver.
+    Poll for the verification of this sensor_station on the Webserver.
 
     Arguments
     ----------
     device: BLEDevice
-        SensorStation
+        sensor_station
 
     Returns
     -------
@@ -244,12 +244,12 @@ async def poll_for_verification(device: BLEDevice) -> bool:
 
     verified = False
     dip = get_dip_from_device(device)
-    available = rci.propose_new_sensorstation_at_server(ADDRESS, dip, device.address, AUTH_HEADER)
+    available = rci.propose_new_sensor_station_at_server(ADDRESS, dip, device.address, AUTH_HEADER)
     if available is None or not available:
         return False
     timeout = time.time() + 60 * 5
     while not verified:
-        verified = rci.request_sensorstation_if_verified(ADDRESS, dip, AUTH_HEADER)
+        verified = rci.request_sensor_station_if_verified(ADDRESS, dip, AUTH_HEADER)
         await asyncio.sleep(5)
         if time.time() > timeout:
             logger.log_info(f"Polling for Verification of {device.name} timed out")
@@ -264,7 +264,7 @@ def get_dip_from_device(device: BLEDevice) -> int:
     Arguments
     ----------
     device: BLEDevice
-        SensorStation
+        sensor_station
 
     Returns
     -------
@@ -273,8 +273,8 @@ def get_dip_from_device(device: BLEDevice) -> int:
     """
 
     # If device is already in database return dip which is saved in database
-    # --> Can't plug out Station change DIP and then reconnect with different dip
-    dips = [dip for (dip, mac) in db.get_all_sensorstations(CONN) if mac == device.address]
+    # --> Can't plug out Station change dip and then reconnect with different dip
+    dips = [dip for (dip, mac) in db.get_all_sensor_stations(CONN) if mac == device.address]
     if dips:
         return dips[0]
     return int(re.split(device_name_prefix, device.name)[1])
@@ -287,9 +287,9 @@ async def call_services(device: BLEDevice, already_connected: bool):
     Arguments
     ----------
     device: BLEDevice
-        SensorStation
+        sensor_station
     already_connected: bool
-        Whether SensorStation is being reconnected
+        Whether sensor_station is being reconnected
 
     """
 
@@ -308,7 +308,7 @@ async def call_services(device: BLEDevice, already_connected: bool):
         SCANNED_DEVICES.remove(device)
         try:
             await client.connect()
-            rci.register_new_sensorstation_at_server(ADDRESS, dip, AUTH_HEADER)
+            rci.register_new_sensor_station_at_server(ADDRESS, dip, AUTH_HEADER)
             db.init_limits(CONN, dip, device.address)
             logger.log_info(f"Successfully established connection to {device.name}")
         except (asyncio.exceptions.CancelledError, asyncio.exceptions.TimeoutError):
@@ -321,7 +321,7 @@ async def call_services(device: BLEDevice, already_connected: bool):
         if EVENT.is_set():
             break
         time.sleep(10)
-        sensor_station_status = rc.request_sensorstation_status(ADDRESS, AUTH_HEADER, dip)
+        sensor_station_status = rc.request_sensor_station_status(ADDRESS, AUTH_HEADER, dip)
         if sensor_station_status != {}:
             if sensor_station_status["deleted"]:
                 break
@@ -380,7 +380,7 @@ async def call_services(device: BLEDevice, already_connected: bool):
             logger.log_info(f"Safely disconnected from {device.name}.")
         except Exception as e:
             logger.log_error(f"Couldn't disconnect from {device.name}: {e}")
-    db.remove_sensorstation_from_limits(CONN, dip)
+    db.remove_sensor_station_from_limits(CONN, dip)
     logger.log_info(f"Deleted {device.name}")
 
 
@@ -390,8 +390,8 @@ async def ensure_connection(client: BleakClient, device: BLEDevice) -> bool:
 
     Arguments
     ---------
-    client: BleClient
-        BLEClient object of sensor_station
+    client: BleakClient
+        Client object of sensor_station
     device: BLEDevice
         BLEDevice object of sensor_station
 
