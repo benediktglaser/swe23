@@ -18,16 +18,16 @@ def init() -> dict:
     """
     This function initializes the database,
     checks the credentials, asks if the
-    accesspoint is enabled.
-    If the accesspoint has no credentials
+    access_point is enabled.
+    If the access_point has no credentials
     or has some which are not known
-    to the webserver it will register
+    to the Webserver it will register
     a new one
 
     Returns
     ---------
     dict:
-        auth_head, DB-Path, webserver-Address
+        auth_head, DB-Path, Webserver-Address
     """
 
     # read the conf.yaml file
@@ -53,33 +53,31 @@ def init() -> dict:
             "Error when reading identification.yaml. Please make sure that the file is in the same directory as this script"
         )
 
-    # Check if accesspoint exists on webserver, if not create a new one
+    # Check if access_point exists on Webserver, if not create a new one
     if login is not None and login[0] is not None:
         access_point_exists = None
         while access_point_exists is None:
-            access_point_exists = rci.request_if_accesspoint_exists(address, login[0])
+            access_point_exists = rci.request_if_access_point_exists(address, login[0])
             time.sleep(5)
         if not access_point_exists:
-            logger.log_info("Credentials not recognized, register as new accesspoint")
+            logger.log_info("Credentials not recognized, register as new access_point")
             login = None
 
-    # Register new accesspoint if necessary
+    # Register new access_point if necessary
     if login is None or login[0] is None or login[1] is None:
-        print("Register as new accesspoint")
-        login = register_accesspoint(address, interval, name)
-    print(login)
+        logger.log_info("Register as new access_point")
+        login = register_access_point(address, interval, name)
     auth_header = rci.prepare_auth_headers(login[0], login[1])
 
-    # This loop checks for approval from the webserver
+    # This loop checks for approval from the Webserver
     while True:
         enabled = rci.request_approval(address, auth_header)
         if enabled is True:
-            print("Successfully authenticated")
+            logger.log_info("Successfully authenticated")
             break
-        print("waiting for authentication")
+        logger.log_info("waiting for authentication")
         time.sleep(10)
 
-    print(login)
     logger.log_info("Login as: " + login[0] + " " + login[1])
     auth_header = rci.prepare_auth_headers(login[0], login[1])
     argument_list = {
@@ -124,8 +122,8 @@ def main(args: dict):
         args=(args["address"], args["authentication_header"], event),
     )
 
-    poll_if_accesspoint_still_exists_thread = Thread(
-        target=poll_accesspoint_exists,
+    poll_if_access_point_still_exists_thread = Thread(
+        target=poll_access_point_exists,
         args=(
             args["address"],
             args["name"],
@@ -136,8 +134,8 @@ def main(args: dict):
     polling_for_interval_thread.start()
     polling_for_limits_thread.start()
     sending_sensor_data_thread.start()
-    poll_if_accesspoint_still_exists_thread.start()
-    poll_if_accesspoint_still_exists_thread.join()
+    poll_if_access_point_still_exists_thread.start()
+    poll_if_access_point_still_exists_thread.join()
 
     # Preparing clean shutdown
     event.set()
@@ -154,16 +152,16 @@ def main(args: dict):
 
 def poll_interval(address: str, auth_header: str, event: Event):
     """
-    This function polls an checks
+    This function polls and checks
     if the interval has changed
     Arguments
     ---------
     address: str
-        Address of the webserver
+        Address of the Webserver
     auth_header: str
         the auth_header for the rest-connection
     event: threading.Event
-        Event that AccessPoint was deleted on Webserver
+        Event that access_point was deleted on Webserver
     ---------
     Returns None
     """
@@ -209,11 +207,11 @@ def poll_limits(address: str, auth_header: str, event: Event):
     Arguments
     ---------
     address: str
-        Address of the webserver
+        Address of the Webserver
     auth_header: str
         the auth_header for the rest-connection
     event: threading.Event
-        Event that AccessPoint was deleted on Webserver
+        Event that access_point was deleted on Webserver
     ---------
     Returns None
     """
@@ -222,10 +220,10 @@ def poll_limits(address: str, auth_header: str, event: Event):
     conn = db.access_database(path)
 
     while True:
-        list_of_sensorstations = db.get_all_sensorstations(conn)
-        for (sensorstation_id, mac) in list_of_sensorstations:
+        list_of_sensor_stations = db.get_all_sensor_stations(conn)
+        for (sensor_station_id, mac) in list_of_sensor_stations:
             new_limits = rest.request_limits(
-                address, auth_header, int(sensorstation_id)
+                address, auth_header, int(sensor_station_id)
             )
 
             if new_limits is None:
@@ -236,7 +234,7 @@ def poll_limits(address: str, auth_header: str, event: Event):
                 max_limit = list["maxLimit"]
 
                 db.update_limits(
-                    conn, int(sensorstation_id), type_limit, min_limit, max_limit
+                    conn, int(sensor_station_id), type_limit, min_limit, max_limit
                 )
         if event.is_set():
             break
@@ -257,7 +255,7 @@ def send_sensor_data(address: str, auth_header: str, event: Event):
     auth_header: str
         the auth_header for the rest-connection
     event: threading.Event
-        Event that AccessPoint was deleted on Webserver
+        Event that access_point was deleted on Webserver
     ---------
     Returns None
     """
@@ -266,16 +264,16 @@ def send_sensor_data(address: str, auth_header: str, event: Event):
     conn = db.access_database(path)
 
     while True:
-        list_of_sensorstations = db.get_all_sensorstations(conn)
-        for (sensorstation_id, _) in list_of_sensorstations:
+        list_of_sensor_stations = db.get_all_sensor_stations(conn)
+        for (sensor_station_id, _) in list_of_sensor_stations:
 
-            list = db.get_sensor_data(conn, sensorstation_id)
+            list = db.get_sensor_data(conn, sensor_station_id)
             if len(list) != 0:
                 sensor_data_delete = rest.post_measurement(address, list, auth_header)
                 logger.log_info(
                     "delete this amount of data from database "
-                    + "for sensorstation_id:"
-                    + str(sensorstation_id)
+                    + "for sensor_station_id:"
+                    + str(sensor_station_id)
                     + " :"
                     + str(len(sensor_data_delete))
                 )
@@ -283,7 +281,7 @@ def send_sensor_data(address: str, auth_header: str, event: Event):
             else:
                 logger.log_info(
                     "Found no records to send for station with id "
-                    + str(sensorstation_id)
+                    + str(sensor_station_id)
                 )
 
         lock.acquire()
@@ -304,33 +302,33 @@ def send_sensor_data(address: str, auth_header: str, event: Event):
     return 
 
 
-def poll_accesspoint_exists(address: str, name: str) -> bool:
+def poll_access_point_exists(address: str, name: str) -> bool:
     """
-    This function checks if the accesspoint still exists
-    on the webserver.
+    This function checks if the access_point still exists
+    on the Webserver.
 
     Arguments
     ---------
     address: str
         Address of the Webserver
     name: str
-        name of the accesspoint
+        name of the access_point
     ---------
     Returns bool
     """
     while True:
-        verify_credentials = rci.request_if_accesspoint_exists(address, name)
-        if verify_credentials != True:
-            logger.log_error("AccessPoint has been deleted")
+        exists = rci.request_if_access_point_exists(address, name)
+        if not exists:
+            logger.log_error("access_point has been deleted")
             break
         time.sleep(30)
-    logger.log_info("Deletion of AccessPoint has been noted")
+    logger.log_info("Deletion of access_point has been noted")
     return True
 
 
-def register_accesspoint(address: str, interval: int, name: str):
+def register_access_point(address: str, interval: int, name: str):
     """
-    Register a new accesspoint.
+    Register a new access_point.
 
     Arguments
     ---------
@@ -339,7 +337,7 @@ def register_accesspoint(address: str, interval: int, name: str):
     interval: int
         Interval in which registration is attempted.
     name: str
-        Name of the accesspoint
+        Name of the access_point
     ---------
     Returns None
     """
@@ -350,8 +348,8 @@ def register_accesspoint(address: str, interval: int, name: str):
             login = rci.register_access_point_at_server(address, interval, name)
             credentials.write_to_yaml(login[0], login[1])
         except:
-            print("No connection possible, trying again in 5sec...")
-            print(
+            logger.log_info("No connection possible, trying again in 5sec...")
+            logger.log_info(
                 "To change the credentials, modify the identification.yaml file and restart the program"
             )
             time.sleep(15)

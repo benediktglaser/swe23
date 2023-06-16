@@ -1,8 +1,8 @@
 import os
 import sqlite3
-import sensordata
 import logger
 from datetime import datetime
+from sensordata import SensorData
 
 
 def access_database(path):
@@ -44,7 +44,6 @@ def create_tables(conn):
             "PRIMARY KEY(station_id))"
         )
     except sqlite3.Error as e:
-        print(e)
         logger.log_error(e)
 
     try:
@@ -60,7 +59,6 @@ def create_tables(conn):
             "PRIMARY KEY(station_id, time_stamp));"
         )
     except sqlite3.Error as e:
-        print(e)
         logger.log_error(e)
 
 
@@ -72,7 +70,7 @@ def init_limits(conn, station_id, mac):
     conn : sqlite3.Connection
         The connection to the database
     station_id : int
-        The station_id of the station of which the limits should be initialized
+        The station_id of the station of which the limits should be initialised
     mac : str
         MAC-Address of station
     """
@@ -101,7 +99,6 @@ def init_limits(conn, station_id, mac):
         conn.commit()
         cursor.close()
     except sqlite3.Error as e:
-        print(e)
         logger.log_error(e)
 
 
@@ -123,17 +120,17 @@ def calculate_limit(value, lower_limit, upper_limit):
     limit : float
         By how much the upper_limit or lower_limit are exceeded or undercut
     """
-
     if value >= lower_limit:
+
         if value <= upper_limit:
             return 1.0
-
+        
         return abs(value - upper_limit) / (upper_limit - lower_limit)
 
     return abs(lower_limit - value) / (upper_limit - lower_limit)
 
 
-def insert_sensor_data(conn, data):
+def insert_sensor_data(conn: sqlite3.Connection, data: SensorData) -> None:
     """
     Inserts data into the sensor_data table. The station_id is located in the data-struct.
     Arguments
@@ -144,7 +141,7 @@ def insert_sensor_data(conn, data):
     """
 
     limits = get_limits(conn, data.station_id, "all")
-    if limits == []:
+    if not limits:
         logger.log_error(
             "Found no limits for station "
             + str(data.station_id)
@@ -185,11 +182,10 @@ def insert_sensor_data(conn, data):
         conn.commit()
         cursor.close()
     except sqlite3.Error as e:
-        print(e)
         logger.log_error(e)
 
 
-def set_limits(conn, station_id, type, lower_limit, upper_limit):
+def set_limits(conn: sqlite3.Connection, station_id: int, type: str, lower_limit: float, upper_limit: float) -> None:
     """
     Set new limits. Match was not used because of an older python-version
     running on the raspberry pi not supporting it.
@@ -198,7 +194,7 @@ def set_limits(conn, station_id, type, lower_limit, upper_limit):
     conn : sqlite3.Connection
         The connection to the database
     station_id : int
-        The (dip)id of the SensorStation
+        The (dip)id of the sensor_station
     type : str
         The type of data of which the limits should be changed.
     lower_limit : float
@@ -278,11 +274,10 @@ def set_limits(conn, station_id, type, lower_limit, upper_limit):
         conn.commit()
         cursor.close()
     except sqlite3.Error as e:
-        print(e)
         logger.log_error(e)
 
 
-def get_limits(conn:str, station_id:int, type_limit: str):
+def get_limits(conn: sqlite3.Connection, station_id: int, type_limit: str):
     """
     Return a list of the limits if type_limit == ALL,
     otherwise a tuple (min, max) for the given type
@@ -291,10 +286,11 @@ def get_limits(conn:str, station_id:int, type_limit: str):
     conn : sqlite3.Connection
         The connection to the database
     station_id : int
-        The (dip)id of the SensorStation
+        The (dip)id of the sensor_station
     type_limit : str
         The type of the limit
-    Returns:
+    Returns
+    ---------
         a list of the limits if type_limit == ALL,
         a tuple (min, max) for the given type otherwise
     """
@@ -305,34 +301,33 @@ def get_limits(conn:str, station_id:int, type_limit: str):
         record = cursor.fetchone()
         # convert the record into a list
         result = []
-        if record == None:
+        if record is None:
             logger.log_error(
                 "Found no record for station with id "
                 + str(station_id)
                 + " in get_limits"
             )
             return []
-        if record != None:
+        if record is not None:
             for value in record:
                 result.append(value)
-        print(result)
         if type_limit == "temp":
-            return (result[2], result[3])
+            return result[2], result[3]
 
         if type_limit == "pressure":
-            return (result[4], result[5])
+            return result[4], result[5]
 
         if type_limit == "quality":
-            return (result[6], result[7])
+            return result[6], result[7]
 
         if type_limit == "humid":
-            return (result[8], result[9])
+            return result[8], result[9]
 
         if type_limit == "soil":
-            return (result[10], result[11])
+            return result[10], result[11]
 
         if type_limit == "light":
-            return (result[12], result[13])
+            return result[12], result[13]
 
         if type_limit == "all":
             return result[2:]
@@ -344,7 +339,7 @@ def get_limits(conn:str, station_id:int, type_limit: str):
 
 
 def update_limits(
-    conn:str, station_id: int, type_limit: str, lower_bound: float, upper_bound: float
+    conn: sqlite3.Connection, station_id: int, type_limit: str, lower_bound: float, upper_bound: float
 ):
     """
     Updates the limits of the given type
@@ -353,12 +348,12 @@ def update_limits(
     conn : sqlite3.Connection
         The connection to the database
     station_id : int
-        The (dip)id of the SensorStation
+        The (dip)id of the sensor_station
     type_limit : str
         The type of the limit
     lower_bound: float
         The new lower limit
-    lower_bound: float
+    upper_bound: float
         The new upper limit
     """
 
@@ -424,11 +419,10 @@ def update_limits(
         cursor.close()
 
     except sqlite3.Error as e:
-        print(e)
         logger.log_error(e)
 
 
-def get_sensor_data(conn, station_id):
+def get_sensor_data(conn: sqlite3.Connection, station_id: int) -> list[SensorData]:
     """
     Retrieve sensor_data from database
     Arguments
@@ -436,10 +430,10 @@ def get_sensor_data(conn, station_id):
     conn : sqlite3.Connection
         The connection to the database
     station_id : int
-        The (dip)id of the SensorStation
+        The (dip)id of the sensor_station
     Returns
-    -------
-    result : [SensorData]
+    ---------
+    result : list(SensorData)
     """
 
     cursor = conn.cursor()
@@ -452,11 +446,10 @@ def get_sensor_data(conn, station_id):
         result = [list(x) for x in record]
         return result
     except sqlite3.Error as e:
-        print(e)
         logger.log_error(e)
 
 
-def remove_sensor_data(conn, station_id, time):
+def remove_sensor_data(conn: sqlite3.Connection, station_id: int, time: str) -> None:
     """
     Remove sensor_data according to station_id and time
     Arguments
@@ -464,7 +457,7 @@ def remove_sensor_data(conn, station_id, time):
     conn : sqlite3.Connection
         The connection to the database
     station_id : int
-        The (dip)id of the SensorStation
+        The (dip)id of the sensor_station
     time : str
     """
 
@@ -477,19 +470,18 @@ def remove_sensor_data(conn, station_id, time):
         conn.commit()
         cursor.close()
     except sqlite3.Error as e:
-        print(e)
         logger.log_error(e)
 
 
-def remove_sensorstation_from_limits(conn:str, station_id:int):
+def remove_sensor_station_from_limits(conn: sqlite3.Connection, station_id: int) -> None:
     """
-    Remove sensorstation according to station_id from the limits table
+    Remove sensor_station according to station_id from the limits table
     Arguments
     ---------
     conn : sqlite3.Connection
         The connection to the database
     station_id : int
-        The (dip)id of the SensorStation
+        The (dip)id of the sensor_station
     """
 
     cursor = conn.cursor()
@@ -502,11 +494,10 @@ def remove_sensorstation_from_limits(conn:str, station_id:int):
         conn.commit()
         cursor.close()
     except sqlite3.Error as e:
-        print(e)
         logger.log_error(e)
 
 
-def get_all_sensorstations(conn: sqlite3.Connection):
+def get_all_sensor_stations(conn: sqlite3.Connection) -> list[tuple[int, str]]:
     """
     Returns the station_id from all stations from the limits table.
     Arguments
@@ -514,8 +505,8 @@ def get_all_sensorstations(conn: sqlite3.Connection):
     conn : sqlite3.Connection
         The connection to the database
     Returns
-    -------
-    result : [int]
+    ---------
+    result : [(int, str)]
     """
 
     cursor = conn.cursor()
@@ -528,12 +519,11 @@ def get_all_sensorstations(conn: sqlite3.Connection):
         return result
 
     except sqlite3.Error as e:
-        print(e)
         logger.log_error(e)
         return []
 
 
-def drop_sensor_data(conn):
+def drop_sensor_data(conn: sqlite3.Connection) -> None:
     """
     DEBUG ONLY
     Deletes the entire sensor_data table
@@ -550,11 +540,10 @@ def drop_sensor_data(conn):
         cursor.close()
 
     except sqlite3.Error as e:
-        print(e)
         logger.log_error(e)
 
 
-def drop_limits(conn):
+def drop_limits(conn: sqlite3.Connection) -> None:
     """
     DEBUG ONLY
     Deletes the entire limits table
@@ -571,11 +560,10 @@ def drop_limits(conn):
         cursor.close()
 
     except sqlite3.Error as e:
-        print(e)
         logger.log_error(e)
 
 
-def delete_all_from_limits(conn: str):
+def delete_all_from_limits(conn: sqlite3.Connection) -> None:
     """
     DEBUG ONLY
     Deletes all entries from the limits table
@@ -592,11 +580,10 @@ def delete_all_from_limits(conn: str):
         cursor.close()
 
     except sqlite3.Error as e:
-        print(e)
         logger.log_error(e)
 
 
-def delete_database(path):
+def delete_database(path: str) -> None:
     """
     Deletes the database file
     
@@ -607,8 +594,3 @@ def delete_database(path):
     """
 
     os.remove(path)
-
-
-"""Just for testing"""
-if __name__ == "__main__":
-    host = "http://localhost:8080"

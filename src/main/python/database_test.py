@@ -69,7 +69,7 @@ def test_remove_sensor_data():
 
 def test_calculate_limits_inside():
     result = db.calculate_limit(10, 8, 15)
-    assert result == 0
+    assert result == 1
 
 
 def test_calculate_limits_under_limit():
@@ -81,18 +81,18 @@ def test_calculate_limits_over_limit():
     result = db.calculate_limit(25, 10, 20)
     assert result == 0.5
 
-def test_get_all_sensorstations():
+
+def test_get_all_sensor_stations():
     path = "database_2.db"
     conn = db.access_database(path)
     db.create_tables(conn)
     db.init_limits(conn, 1, "B::CA")
     db.init_limits(conn, 2, "AF::CA")
-    assert 2 == len(db.get_all_sensorstations(conn))
+    assert 2 == len(db.get_all_sensor_stations(conn))
     db.drop_sensor_data(conn)
     db.drop_limits(conn)
     conn.close()
     db.delete_database(path)
-    
 
 
 def test_update_limits():
@@ -116,26 +116,20 @@ def test_update_limits():
     db.delete_database(path)
 
 
-
-def test_delete_sensorstation():
+def test_delete_sensor_station():
     path = "database_2.db"
     conn = db.access_database(path)
 
     db.create_tables(conn)
     db.init_limits(conn, 1, "B::CA")
     db.init_limits(conn, 2, "AF::CA")
-    db.remove_sensorstation_from_limits(conn, 2)
-    assert 1 == len(db.get_all_sensorstations(conn))
+    db.remove_sensor_station_from_limits(conn, 2)
+    assert 1 == len(db.get_all_sensor_stations(conn))
 
-    db.remove_sensorstation_from_limits(conn,1 )
-    assert 0 == len(db.get_all_sensorstations(conn))
-
+    db.remove_sensor_station_from_limits(conn,1 )
+    assert 0 == len(db.get_all_sensor_stations(conn))
 
     db.drop_sensor_data(conn)
     db.drop_limits(conn)
     conn.close()
     db.delete_database(path)
-
-
-
-

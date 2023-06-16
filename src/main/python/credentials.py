@@ -40,7 +40,3 @@ def read_from_yaml() -> (str, str):
         print(e)
         logger.log_error("error reading to identification.yaml")
         raise e
-
-
-if __name__ == "__main__":
-    print(read_from_yaml()[0])
