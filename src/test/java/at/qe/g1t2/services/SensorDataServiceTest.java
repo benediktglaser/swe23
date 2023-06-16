@@ -54,7 +54,7 @@ public class SensorDataServiceTest {
         SensorData test = sensorDataService.loadSensorData("0718665a-5c08-4580-a4de-d8089d8756db");
         Assertions.assertEquals("0718665a-5c08-4580-a4de-d8089d8756db", test.getId().toString());
         Assertions.assertEquals(20.34, test.getMeasurement());
-        Assertions.assertEquals("%", test.getType().getUnit());
+        Assertions.assertEquals("", test.getType().getUnit());
     }
 
     @Test

@@ -8,11 +8,11 @@ import java.io.Serializable;
 
 public enum SensorDataType implements Serializable {
     TEMPERATURE("°C"),
-    PRESSURE("Pa"),
+    PRESSURE("hPa"),
     HUMIDITY("%"),
-    SOIL("%"),
+    SOIL(""),
     LIGHT(""),
-    AIRQUALITY("");
+    AIRQUALITY("kOhm");
 
     private final String unit;
 
