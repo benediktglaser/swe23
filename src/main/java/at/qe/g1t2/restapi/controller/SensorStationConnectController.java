@@ -172,7 +172,7 @@ public class SensorStationConnectController {
         for(SensorDataType type: SensorDataType.values()){
             SensorDataTypeInfo sensorDataTypeInfo = new SensorDataTypeInfo();
             sensorDataTypeInfo.setType(type);
-            sensorDataTypeInfo.setMinLimit(0.0);
+            sensorDataTypeInfo.setMinLimit(-10.0);
             sensorDataTypeInfo.setMaxLimit(1000.0);
             sensorDataTypeInfoService.save(newSensorStation,sensorDataTypeInfo);
         }
