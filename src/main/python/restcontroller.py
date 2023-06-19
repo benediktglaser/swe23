@@ -165,7 +165,7 @@ def coupling_timed_out(address: str, auth_header: str):
     """
 
     try:
-        requests.get(f"{address}/api/accessPoint/coupling", auth=auth_header)
+        requests.get(f"{address}/api/accessPoint/couplingTimeout", auth=auth_header)
     except requests.exceptions.ConnectionError:
         logger.log_error(f"Unable to inform server about coupling timeout")
 
