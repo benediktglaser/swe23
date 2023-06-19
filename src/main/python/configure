@@ -3,5 +3,5 @@
 chmod +x main.py
 sudo -- sh -c 'cp plant_health.service /lib/systemd/system; systemctl daemon-reload; systemctl enable plant_health.service; systemctl start plant_health.service'
 
-echo "Setup complete. To see Output of the python script, execute 'journalctl -u plant_health.service -f'."
+echo "Setup complete. To see the status of the service, execute 'systemctl status plant_health.service'."
 echo "If you want to restart the python script, execute 'sudo systemctl restart plant_health.service'."
