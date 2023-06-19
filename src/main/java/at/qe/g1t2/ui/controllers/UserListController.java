@@ -29,11 +29,6 @@ public class UserListController extends AbstractListController<String, Userx> im
         return userService.getAllGardenerUsernames().stream().filter(x -> x.toLowerCase().startsWith(query.toLowerCase())).collect(Collectors.toList());
     }
 
-    /**
-     * Returns a list of all users.
-     *
-     * @return
-     */
     public UserListController() {
         this.setListToPageFunction((spec, page) -> userService.getAllUsers(spec, page));
     }

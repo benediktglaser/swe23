@@ -43,7 +43,7 @@ public class FileUploadController {
      * @param sensorStationId
      * @param request
      * @param redirectAttributes
-     * @return ResponseEntity<Picture>
+     * @return {@code ResponseEntity<Picture>}
      */
     @PostMapping(value = "/upload")
     public ResponseEntity<Picture> handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("sensorStationId") String sensorStationId,

@@ -1,0 +1,12 @@
+at.qe.g1t2
+at.qe.g1t2.configs
+at.qe.g1t2.controller
+at.qe.g1t2.model
+at.qe.g1t2.repositories
+at.qe.g1t2.restapi.controller
+at.qe.g1t2.restapi.exception
+at.qe.g1t2.restapi.model
+at.qe.g1t2.services
+at.qe.g1t2.tests
+at.qe.g1t2.ui.beans
+at.qe.g1t2.ui.controllers

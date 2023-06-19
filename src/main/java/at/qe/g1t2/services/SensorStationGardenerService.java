@@ -50,7 +50,7 @@ public class SensorStationGardenerService implements Serializable {
      * This method returns a set of all sensorstations where the button has been pressed,
      * indicating that a gardener is on site.
      *
-     * @return Set<SensorStation>
+     * @return {@code Set<SensorStation>}
      */
     public Set<SensorStation> getGardenerIsHere() {
         return gardenerIsHere;
