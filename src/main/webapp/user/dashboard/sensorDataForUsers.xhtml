@@ -14,10 +14,11 @@
                 <f:viewAction
                         action="#{sensorDataListController.filterSensorDataBySensorStation(sessionSensorStationBean.sensorStation)}"/>
             </f:metadata>
-            <link href="/resources/css/theme.css" rel="stylesheet" type="text/css"/>
+
             <script src="https://code.highcharts.com/highcharts.js"></script>
             <script src="https://code.highcharts.com/modules/stock.js"></script>
-            <script src="https://code.highcharts.com/modules/scrollbar.js"></script>
+            <script src="https://code.highcharts.com/modules/exporting.js"></script>
+            <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
         </h:head>
         <p:growl id="msgs"/>
@@ -32,7 +33,7 @@
             </div>
             <p:separator style="border-color: transparent; opacity: 0;"></p:separator>
             <p:dataTable id="sensorDataTable" var="sensorData" value="#{sensorDataListController}"
-                         class="sensorDataTable" lazy="true" rows="3" paginator="true">
+                         class="sensorDataTable" lazy="true" rows="3" paginator="true" style="margin-top:20px" reflow="true" >
                 <p:column headerText="Measurement" style="text-align: center" sortBy="#{sensorData.measurement}"
                           filterBy="#{sensorData.measurement}">
                     <h:outputText value="#{sensorData.measurement}" style="color: #{sensorDataListController.checkLimit(sensorData)};"/>
@@ -110,8 +111,17 @@
                                         }
                                     },
                                     xAxis: {
-                                        title: {
-                                            text: 'Measure Date'
+                                        labels: {
+                                            color:'white'
+                                            ,style: {
+                                                color: 'white'
+                                            }
+                                        }
+                                        , title: {
+                                            style: {
+                                                color: 'white'
+                                            }
+                                            ,text: 'Measure Date'
                                         },
                                         type: 'datetime',
                                         maxZoom: 24 * 3600000,
@@ -120,7 +130,12 @@
                                         stickOnContact: true
                                     },
                                     yAxis: {
-                                        plotBands: [{
+                                        labels: {
+                                            color:'white'
+                                            ,style: {
+                                                color: 'white'
+                                            }
+                                        }, plotBands: [{
                                             color: 'rgba(120,243,120,0.2)', // green with 20% opacity
                                             from: min,
                                             to: max
@@ -151,9 +166,18 @@
                                             }
                                         }],
                                         title: {
-                                            text: 'Measurement'
+                                            style: {
+                                                color: 'white'
+                                            }
+                                            , text: 'Measurement'
                                         },
-                                        gridLineColor: '#090101',
+                                        labels: {
+                                            color:'white'
+                                            ,style: {
+                                                color: 'white'
+                                            }
+                                        }
+                                        , gridLineColor: '#090101',
                                         gridLineWidth: 1,
                                         gridLineDashStyle: 'solid'
                                     },
@@ -174,6 +198,9 @@
                                         menuStyle: {
                                             background: '#01243f'
                                         }
+                                        , menuItemStyle: {
+                                            color: 'white'
+                                        }
                                     }
                                 });
                                 let lastTimestamp = transformedData[transformedData.length - 1][0];
@@ -192,8 +219,12 @@
                                                 chartsi.series[0].addPoint([timestamp, point[1]]);
                                                 return [timestamp,point[1]];
                                             });
-
-                                            lastTimestamp = transformedDataNew[transformedDataNew.length - 1][0];
+                                            if (transformedData.length===0){
+                                                lastTimestamp = Date.now();
+                                            }
+                                            else {
+                                                lastTimestamp = transformedData[transformedData.length - 1][0];
+                                            }
                                             chartsi.redraw(true);
 
 

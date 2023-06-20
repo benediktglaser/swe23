@@ -41,6 +41,8 @@ public class SensorStationService implements Serializable {
     @Autowired
     AccessPointRepository accessPointRepository;
 
+    private Random randomGenerator = new Random();
+
 
     public SensorStation loadSensorStation(String uuid) {
         return sensorStationRepository.findSensorStationById(uuid);
@@ -57,12 +59,16 @@ public class SensorStationService implements Serializable {
         sensorStation = sensorStationRepository.save(sensorStation);
         accessPoint.getSensorStation().add(sensorStation);
         accessPointRepository.save(accessPoint);
-        return  sensorStation;
+        return sensorStation;
 
     }
 
     @PreAuthorize("hasAnyAuthority('ACCESS_POINT','ADMIN')")
     public void deleteSensorStation(SensorStation sensorStation) {
+        if (sensorStation.getAccessPoint() != null) {
+            sensorStation.getAccessPoint().getSensorStation().remove(sensorStation);
+            accessPointRepository.save(sensorStation.getAccessPoint());
+        }
         sensorStationRepository.delete(sensorStation);
     }
 
@@ -89,17 +95,13 @@ public class SensorStationService implements Serializable {
         deleteSensorStation(sensorStation);
     }
 
-    private Userx getAuthenticatedUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return userRepository.findFirstByUsername(auth.getName());
-    }
-
     public SensorStation getSensorStation(String mac) {
         return sensorStationRepository.getSensorStationsByMac(mac);
 
     }
-    public String getRandomPicture(SensorStation sensorStation){
-        return sensorStation.getPictures().get(new Random().nextInt(sensorStation.getPictures().size())).getPath();
+
+    public String getRandomPicture(SensorStation sensorStation) {
+        return sensorStation.getPictures().get(randomGenerator.nextInt(sensorStation.getPictures().size())).getPath();
     }
 
 }

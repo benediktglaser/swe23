@@ -1,3 +1,4 @@
 bleak==0.20.2
 pyyaml==5.4.1
 requests==2.25.1
+asyncio-taskpool==1.1.4

@@ -2,7 +2,7 @@ package at.qe.g1t2.ui.controllers;
 
 
 import at.qe.g1t2.services.CollectionToPageConverter;
-import jakarta.persistence.criteria.Path;
+import jakarta.persistence.criteria.Expression;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortMeta;
@@ -97,19 +97,29 @@ public abstract class AbstractListController<K, T extends Persistable<K> & Seria
      */
     private Specification<T> createSpecification(Map<String, FilterMeta> filterBy) {
         if (!filterBy.isEmpty()) {
-            FilterMeta filterMeta = filterBy.values().stream().toList().get(0);
-            String filterField = filterMeta.getField();
-            String filterValue = filterMeta.getFilterValue().toString();
-            return Specification.where((root, query, criteriaBuilder) -> {
-                if (filterValue.isEmpty()) {
-                    return null;
-                }
-                Path<String> field = root.get(filterField);
-                return criteriaBuilder.like(criteriaBuilder.lower(field), "%" + filterValue.toLowerCase() + "%");
-            });
+            List<Specification<T>> specifications = new ArrayList<>();
+
+            for (FilterMeta filterMeta : filterBy.values()) {
+                String filterField = filterMeta.getField();
+                String filterValue = filterMeta.getFilterValue().toString();
+
+                Specification<T> spec = (root, query, criteriaBuilder) -> {
+                    if (filterValue.isEmpty()) {
+                        return null;
+                    }
+                    Expression<String> field = root.get(filterField).as(String.class);
+                    return criteriaBuilder.like(criteriaBuilder.lower(field), "%" + filterValue.trim().toLowerCase() + "%");
+                };
+
+                specifications.add(spec);
+            }
+
+            return specifications.stream().reduce(Specification::and).orElse(null);
         }
+
         return null;
     }
+
 
     /**
      * @param spec

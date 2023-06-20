@@ -16,12 +16,11 @@
                             action="#{sensorDataListController.filterSensorDataBySensorStation(sessionSensorStationBean.sensorStation)}"/>
                 </f:metadata>
             </h:body>
-            <link href="/resources/css/theme.css" rel="stylesheet" type="text/css"/>
+
             <script src="https://code.highcharts.com/highcharts.js"></script>
             <script src="https://code.highcharts.com/modules/stock.js"></script>
-            <script src="https://code.highcharts.com/modules/scrollbar.js"></script>
-            <script src="https://code.highcharts.com/stock/highstock.js"></script>
             <script src="https://code.highcharts.com/modules/exporting.js"></script>
+            <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
         </h:head>
 
@@ -35,8 +34,9 @@
                 </p:cascadeSelect>
             </div>
             <p:separator/>
+
             <p:dataTable id="sensorDataTable" var="sensorData" value="#{sensorDataListController}"
-                         class="sensorDataTable" lazy="true" rows="3" paginator="true">
+                         class="sensorDataTable" lazy="true" rows="3" paginator="true" style="margin-top:20px" reflow="true" >
                 <p:column headerText="Measurement" class="ui-datatable-header" sortBy="#{sensorData.measurement}"
                           filterBy="#{sensorData.measurement}">
                     <h:outputText value="#{sensorData.measurement}" style="color: #{sensorDataListController.checkLimit(sensorData)};"/>
@@ -66,6 +66,7 @@
                     <h:outputText value="#{(sensorData.getLimitDate()).toLocalDate()}"/>
                 </p:column>
             </p:dataTable>
+
             <p:poll interval="40" update=":sensorDataForm:sensorDataTable"></p:poll>
             <p:separator/>
         </h:form>
@@ -115,8 +116,17 @@
                                         }
                                     },
                                     xAxis: {
-                                        title: {
-                                            text: 'Measure Date'
+                                        labels: {
+                                            color:'white'
+                                            ,style: {
+                                                color: 'white'
+                                            }
+                                        }
+                                        ,title: {
+                                            style: {
+                                                color: 'white'
+                                            }
+                                            ,text: 'Measure Date'
                                         },
                                         type: 'datetime',
                                         maxZoom: 24 * 36000000,
@@ -156,9 +166,18 @@
                                             }
                                         }],
                                         title: {
-                                            text: 'Measurement'
+                                            style: {
+                                                color: 'white'
+                                            }
+                                            , text: 'Measurement'
                                         },
-                                        gridLineColor: '#090101',
+                                        labels: {
+                                            color:'white'
+                                            ,style: {
+                                                color: 'white'
+                                            }
+                                        }
+                                        ,gridLineColor: '#090101',
                                         gridLineWidth: 1,
                                         gridLineDashStyle: 'solid'
                                     },
@@ -178,6 +197,9 @@
                                     navigation: {
                                         menuStyle: {
                                             background: '#01243f'
+                                        }
+                                        , menuItemStyle: {
+                                            color: 'white'
                                         }
                                     }
                                 });
@@ -204,7 +226,11 @@
                                                 return [timestamp,point[1]];
                                             });
 
-                                            lastTimestamp = transformedDataNew[transformedDataNew.length - 1][0];
+                                            if (transformedDataNew.length === 0) {
+                                                lastTimestamp = Date.now();
+                                            } else {
+                                                lastTimestamp = transformedDataNew[transformedDataNew.length - 1][0];
+                                            }
                                             chartsi.redraw(true);
 
 

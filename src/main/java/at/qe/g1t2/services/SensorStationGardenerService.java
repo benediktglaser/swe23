@@ -24,11 +24,12 @@ public class SensorStationGardenerService implements Serializable {
 
 
     @Autowired
-    UserxRepository userxRepository;
-    @Autowired
-    SensorStationRepository sensorStationRepository;
+    private UserxRepository userxRepository;
 
-    Set<SensorStation> gardenerIsHere = new HashSet<>();
+    @Autowired
+    private SensorStationRepository sensorStationRepository;
+
+    private Set<SensorStation> gardenerIsHere = new HashSet<>();
 
 
     public void assignGardener(Userx userx, SensorStation sensorStation) {
@@ -37,7 +38,7 @@ public class SensorStationGardenerService implements Serializable {
     }
 
     public Collection<SensorStation> getAllSensorStationsOfUser() {
-        return sensorStationRepository.getSensorStationsByGardenerAndEnabledTrue(getAuthenticatedUser());
+        return sensorStationRepository.getSensorStationsByGardener(getAuthenticatedUser());
     }
 
     private Userx getAuthenticatedUser() {
@@ -49,7 +50,7 @@ public class SensorStationGardenerService implements Serializable {
      * This method returns a set of all sensorstations where the button has been pressed,
      * indicating that a gardener is on site.
      *
-     * @return Set<SensorStation>
+     * @return {@code Set<SensorStation>}
      */
     public Set<SensorStation> getGardenerIsHere() {
         return gardenerIsHere;

@@ -1,55 +1,20 @@
+import sqlite3
+
 import logger
-from typing import List
-
 import requests
-from requests.auth import HTTPBasicAuth
-
 import dbconnection
 
 
-def prepare_auth_headers(id: str, password: str):
-    """DEPRECATED!"""
-    return HTTPBasicAuth(id, password)
-
-
-def post_measurement_original_single(
-    address: str, measurement: dict, auth_header
-) -> dict:
-    """
-    DEBUG ONLY.
-    Post the given measurement.
-    Arguments
-    ---------
-    address : str
-        The ip-address of the Server
-    measurement: dict
-        The measurements. The key is the datatype, the data is the value
-    auth_header : str
-        The auth_header for the rest-connection
-    Returns
-    -------
-    response : JSON object
-        the response of the rest-request
-    """
-
-    # auth_header = prepare_auth_headers()
-    resp = requests.post(
-        f"{address}/api/sensorData", json=measurement, auth=auth_header
-    )
-    # return the deserialized measurement object here
-    return resp.json()
-
-
-def post_measurement(address: str, list_of_measurements: List, auth_header):
+def post_measurement(address: str, list_of_measurements: list, auth_header: str):
     """
     Post the given measurement.
     Arguments
     ---------
     address : str
         The ip-address of the Server
-    list_of_measurements: List
-        The measurements int he order station_id : int, temperature : float, pressure : float
-    quality : float, humidity : float, soil : float, light : float.
+    list_of_measurements: list
+        The measurements in the order station_id : int, temperature : float, pressure : float
+        quality : float, humidity : float, soil : float, light : float.
     auth_header : str
         The auth_header for the rest-connection
     Returns
@@ -57,7 +22,6 @@ def post_measurement(address: str, list_of_measurements: List, auth_header):
     The inserted dictionary
     """
 
-    # auth_header = prepare_auth_headers()
     list_of_responses = []
     measurements = prepare_for_jsf(list_of_measurements)
 
@@ -67,7 +31,6 @@ def post_measurement(address: str, list_of_measurements: List, auth_header):
             resp = requests.post(
                 f"{address}/api/sensorData", json=measurement, auth=auth_header
             )
-            # print(resp.json())
             if resp.__bool__:
                 list_of_responses.append(
                     (
@@ -79,25 +42,23 @@ def post_measurement(address: str, list_of_measurements: List, auth_header):
                 )
 
         except Exception as e:
-            print(e)
             logger.log_error(e)
 
-    # return the deserialized measurement object here
     return list_of_responses
 
 
-def adjust_timestamp_for_transfer(data: str) -> str:
+def adjust_timestamp_for_transfer(data: list[str]) -> list[str]:
     """
     This function takes the list from the database
     and convert the data into a String, which is readable
     for jsf-transmission.
     Arguments
     ---------
-    data : str
+    data : list[str]
        The data
     Returns
     -------
-    data : str
+    data : list[str]
     """
 
     for list_data in data:
@@ -123,14 +84,14 @@ def adjust_timestamp_for_database_access(date_string: str) -> str:
     return date_string
 
 
-def prepare_for_jsf(data: List) -> List[dict]:
+def prepare_for_jsf(data: list) -> list[dict]:
     """
     Prepare the data from the database to
     be sent via jsf by breaking it down
     into a dictionary
     Arguments
     ---------
-    data : List
+    data : list
         The data as a list
     Returns
     -------
@@ -191,14 +152,50 @@ def prepare_for_jsf(data: List) -> List[dict]:
     return list_of_dicts
 
 
-def delete_send_sensor_data(conn, list_of_tuples) -> None:
+def coupling_timed_out(address: str, auth_header: str):
+    """
+    Informs the Webserver that the coupling mode timed out.
+
+    Arguments
+    ---------
+    address : str
+        The ip-address of the Server
+    auth_header : str
+        The auth_header for the rest-connection
+    """
+
+    try:
+        requests.get(f"{address}/api/accessPoint/couplingTimeout", auth=auth_header)
+    except requests.exceptions.ConnectionError:
+        logger.log_error(f"Unable to inform server about coupling timeout")
+
+
+def refresh_connection_sensor_station(address: str, auth_header: str, dip_id: int):
+    """
+    Informs the Webserver that sensor_station is still reachable.
+
+    address : str
+        The ip-address of the Server
+    auth_header : str
+        The auth_header for the rest-connection
+    dip_id : int
+        The dip_id of the sensor_station
+    """
+
+    try:
+        requests.get(f"{address}/api/sensorStation/refresh/{dip_id}", auth=auth_header)
+    except requests.exceptions.ConnectionError:
+        logger.log_error(f"Unable to refresh connection status of Station {dip_id}")
+
+
+def delete_send_sensor_data(conn: sqlite3.Connection, list_of_tuples: list) -> None:
     """
     Remove a specific sensorData entry from the database
     Arguments
     ---------
     conn : sqlite3.Connection
         The connection to the database
-    list_of_tuples
+    list_of_tuples:
         The data
     """
 
@@ -206,7 +203,7 @@ def delete_send_sensor_data(conn, list_of_tuples) -> None:
         dbconnection.remove_sensor_data(conn, sensor_data[0], sensor_data[1])
 
 
-def request_interval(address: str, auth_header):
+def request_interval(address: str, auth_header: str):
     """
     Requests the interval from the Server
     Arguments
@@ -225,19 +222,17 @@ def request_interval(address: str, auth_header):
     try:
         resp = requests.get(f"{address}/api/accessPoint/interval", auth=auth_header)
         if resp.status_code != 200:
-            logger.log_error("Error when requesting interval: " + str(resp.status_code))
+            logger.log_error("Requesting interval failed: " + str(resp.status_code))
             return None
         else:
             return resp.json()
 
     except Exception as e:
-
-        print(e)
         logger.log_error(e)
         return None
 
 
-def request_limits(address: str, auth_header: str, dipId: int):
+def request_limits(address: str, auth_header: str, dip_id: int):
     """
     Requests the limits from the Server
     Arguments
@@ -246,8 +241,8 @@ def request_limits(address: str, auth_header: str, dipId: int):
         The ip-address of the Server
     auth_header : str
         The auth_header for the rest-connection
-    dipId : int
-        The dipId of the SensorStation of which the limits should be changed
+    dip_id : int
+        The dip_id of the sensor_station of which the limits should be changed
     Returns
     -------
     response : JSON object
@@ -257,79 +252,81 @@ def request_limits(address: str, auth_header: str, dipId: int):
 
     try:
         resp = requests.get(
-            f"{address}/api/sensorStation/limits/{dipId}", auth=auth_header
+            f"{address}/api/sensorStation/limits/{dip_id}", auth=auth_header
         )
         if resp.status_code != 200:
-            logger.log_error("Error when requesting interval: " + str(resp.status_code))
+            logger.log_error("Requesting limits failed: " + str(resp.status_code))
             return None
         else:
             return resp.json()
 
     except Exception as e:
-        print(e)
         logger.log_error(e)
         return None
 
 
-def request_if_is_sensorstation_enabled(address: str, auth_header: str, dipId: int):
+def request_sensor_station_status(address: str, auth_header: str, dip_id: int) -> dict[str, bool]:
     """
-    Request if SensorStation is still enabled
+    Request if sensor_station is still enabled and
+    if sensor_station is deleted
     Arguments
     ---------
     address : str
         The ip-address of the Server
     auth_header : str
         The auth_header for the rest-connection
-    dipId : int
-        The dipId of the SensorStation of which the limits should be changed
+    dip_id : int
+        The dip_id of the sensor_station
     Returns
     -------
-    response : boolean
-        Whether the SensorStation is still enabled
+    response : dictionary with two booleans
+       
     """
 
     try:
         resp = requests.get(
-            f"{address}/api/sensorStation/enabled/{dipId}", auth=auth_header
+            f"{address}/api/sensorStation/enabled/{dip_id}", auth=auth_header
         )
         if resp.status_code != 200:
             logger.log_error(
-                "Error when requesting if sensorstation is enabled: "
+                "Requesting if sensor_station is enabled failed: "
                 + str(resp.status_code)
             )
-            return None
+            return {}
         else:
             return resp.json()
 
     except Exception as e:
-        print(e)
         logger.log_error(e)
-        return None
+        return {}
 
 
-def gardener_is_at_station(address: str, dipId: int, auth_header: str) -> bool:
+def gardener_is_at_station(address: str, dip_id: int, auth_header: str) -> bool:
     """
-    Method to inform webserver via REST, that a gardener is at the sensorstation.
+    Method to inform webserver via REST, that a gardener is at the sensor_station.
     Arguments
     ---------
     address : str
         The ip-address of the Server
-    dipId: int
-        DipId of the sensorstation
+    dip_id: int
+        dip_id of the sensor_station
     auth_header : str
         The auth_header for the rest-connection
     Returns
     -------
     response : boolean
         Whether the Message was successfully received.
+        resp["enabled"] = true if the station is enabled, false otherwise
+        resp["deleted"] = true if the station has been deleted, false otherwise
+    
     """
     try:
         resp = requests.get(
-            f"{address}/api/sensorStation/gardenerHere/{dipId}", auth=auth_header
+            f"{address}/api/sensorStation/gardenerHere/{dip_id}", auth=auth_header
         )
         if resp.status_code != 200:
             logger.log_error(
-                "Error when requesting if sensorstation is enabled: "
+                "Requesting if sensor_station is enabled failed: "
                 + str(resp.status_code)
             )
             return False
@@ -337,45 +334,5 @@ def gardener_is_at_station(address: str, dipId: int, auth_header: str) -> bool:
             return True
 
     except Exception as e:
-        print(e)
         logger.log_error(e)
         return None
-
-
-"""Just for testing"""
-if __name__ == "__main__":
-    host = "http://localhost:8080"
-    conn = dbconnection.access_database("database.db")
-    auth = prepare_auth_headers("43d5aba9-29c5-49b4-b4ec-2d430e34104f", "passwd")
-
-    # dbconnection.insert_sensor_data(conn, sensordata.SensorData(3, 10, 2, 3, 4, 5, 17))
-
-    # dbconnection.drop_sensor_data(conn)
-    # dbconnection.drop_limits(conn)
-    dbconnection.init_limits(conn, 3)
-    dbconnection.init_limits(conn, 0)
-    dbconnection.init_limits(conn, 1)
-    dbconnection.init_limits(conn, 2)
-    # answer = request_limits(host, auth, 1)
-    print(dbconnection.get_limits(conn, 1, "temp"))
-    dbconnection.update_limits(conn, 1, "TEMPERATURE", 12, 23)
-    print(dbconnection.get_limits(conn, 1, "temp"))
-    # print("data", data)
-    # data = adjust_timestamp_for_transfer(data)
-
-    # data = prepare_for_jsf(data)
-
-    # print(data)
-    # for i in range(3):
-    # dbconnection.insert_sensor_data(
-    # conn, sensordata.SensorData(i, (i + 1) * 20, 10, 2, 3, 4, 5)
-    # )
-    # data = dbconnection.get_sensor_data(conn, 3)
-    # response = post_measurement(host, data, auth)
-    # print("resp", response)
-    # delete_send_sensor_data(conn, response)
-
-    # print(dbconnection.get_all_sensorstations(conn))
-    # delete_send_sensor_data(conn, response)
-    # dbconnection.drop_limits(conn)
-    # dbconnection.drop_sensor_data(conn)

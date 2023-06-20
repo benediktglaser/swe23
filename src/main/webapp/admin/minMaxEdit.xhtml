@@ -11,7 +11,7 @@
     <ui:define name="content">
         <h:form id="form">
             <p:outputPanel id="sensorStationTypeData">
-                <p:dataTable id="dataTable"
+                <p:dataTable id="dataTable" style="margin-top:20px" reflow="true"
                              value="#{sensorDataTypeListController.getAllSensorDataTypeBySensorStation(sessionSensorStationBean.sensorStation)}"
                              var="type" scrollable="true" scrollHeight="400">
 

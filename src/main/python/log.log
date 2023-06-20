@@ -1,14 +1,1 @@
-2023-05-15 21:12:41,123  log_info  INFO start interval: 20
-2023-05-15 21:12:41,727  log_info  INFO Login as: 2b49d2d1-01ac-415a-810c-a3bda7d84331 d296ba1e-604b-43c2-8d4e-d789cb30dbcc
-2023-05-15 21:12:41,737  log_error  ERROR Reading global interval in sending_data failed: module 'logger' has no attribute 'info'
-2023-05-15 21:12:42,199  log_info  INFO New Interval = 30.0
-2023-05-15 21:13:01,756  log_error  ERROR Reading global interval in sending_data failed: module 'logger' has no attribute 'info'
-2023-05-15 21:13:12,557  log_info  INFO New Interval = 30.0
-2023-05-15 21:13:31,787  log_error  ERROR Reading global interval in sending_data failed: module 'logger' has no attribute 'info'
-2023-05-15 21:13:42,962  log_info  INFO New Interval = 30.0
-2023-05-15 21:14:01,816  log_error  ERROR Reading global interval in sending_data failed: module 'logger' has no attribute 'info'
-2023-05-15 21:14:13,277  log_info  INFO New Interval = 40.0
-2023-05-15 21:14:31,832  log_error  ERROR Reading global interval in sending_data failed: module 'logger' has no attribute 'info'
-2023-05-15 21:14:43,581  log_info  INFO New Interval = 40.0
-2023-05-15 21:15:11,873  log_error  ERROR Reading global interval in sending_data failed: module 'logger' has no attribute 'info'
-2023-05-15 21:15:13,870  log_info  INFO New Interval = 40.0
+

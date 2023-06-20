@@ -7,23 +7,15 @@
                 template="/WEB-INF/templates/main.xhtml">
     <ui:define name="content">
         <style>
-            :root {
-                color-scheme: dark;
-                --surface-a:#1f2d40;
-                --surface-b:#17212f;
-                --surface-c:rgba(255, 255, 255, 0.03);
-                --surface-d:#304562;
-                --surface-e:#1f2d40;
-                --surface-f:#1f2d40;
-                --text-color:rgba(255, 255, 255, 0.87);
-                --text-color-secondary:rgba(255, 255, 255, 0.6);
-                --primary-color:#90CAF9;
-                --primary-color-text:#212529;
-                --font-family:-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+            .centering{
+                margin-left: auto;
+                margin-right: auto;
+                width: 30%;
             }
+
             body {
                 font-family: Arial, sans-serif;
-                background-color: #17212f;
+                background-color: rgba(0, 0, 0, 0.4);
             }
 
             h1 {
@@ -41,25 +33,59 @@
             input[type="text"],
             input[type="file"],
             input[type="submit"]{
-                background : #4d87b6;
+                background : #aed581;
                 font-size: 16px;
                 padding: 10px;
                 border-radius: 5px;
                 border: none;
-                box-shadow:  #1f2d40;
+                box-shadow: #aed581;
                 margin-bottom: 20px;
             }
 
         </style>
         <body>
+        <style>
+            .loader {
+                border: 16px solid #f3f3f3;
+                border-top: 16px solid #3498db;
+                border-radius: 50%;
+                width: 120px;
+                height: 120px;
+                animation: spin 2s linear infinite;
+                margin: 0 auto;
+                margin-top: 20px;
+            }
+
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+
+            .hide-on-upload {
+                display: none;
+            }
+        </style>
+
         <h1>Upload your picture of a plant here:</h1>
 
         <form id="myForm" enctype="multipart/form-data" action="/upload">
             <input type="file" name="file"/>
             <p:separator/>
             <input type="hidden" id="sensorStationId" name="sensorStationId" value="#{QRCodeController.sensorStation.id}"/>
-            <input type="submit" value="Upload" onclick="submitForm(); return false;"/>
+            <input type="submit" value="Upload" onclick="showLoader(); submitForm(); return false;"/>
+            <div id="loader" class="loader hide-on-upload"></div>
         </form>
+
+        <script>
+            function submitForm() {
+                document.getElementById("loader").classList.remove("hide-on-upload");
+                document.getElementById("myForm").submit();
+            }
+
+            function showLoader() {
+                document.getElementById("loader").style.display = "block";
+            }
+        </script>
         <script>
             function submitForm() {
                 var form = document.getElementById("myForm");

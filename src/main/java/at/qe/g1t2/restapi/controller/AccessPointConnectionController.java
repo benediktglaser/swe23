@@ -121,4 +121,13 @@ public class AccessPointConnectionController {
         LOGGER.error(msg.getMessage());
         return accessPointService.saveAccessPoint(accessPoint);
     }
+    @GetMapping("/couplingTimeout")
+    public HttpStatus isTimerCoupleMode(){
+        AccessPoint accessPoint = getAuthAccessPoint();
+        accessPoint.setCoupleMode(false);
+        accessPointService.saveAccessPoint(accessPoint);
+
+
+        return HttpStatus.OK;
+    }
 }

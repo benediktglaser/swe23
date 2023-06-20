@@ -4,6 +4,7 @@ import at.qe.g1t2.model.AccessPointRole;
 import at.qe.g1t2.model.UserRole;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -48,6 +49,8 @@ public class WebSecurityConfig {
         this.authenticationEntryPoint = authenticationEntryPoint;
     }
 
+
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         try {
@@ -70,7 +73,7 @@ public class WebSecurityConfig {
                             .requestMatchers("/admin/**").hasAnyAuthority(ADMIN)
                             .requestMatchers("/secured/**").hasAnyAuthority(ADMIN, GARDENER, USER)
                             .requestMatchers("/gardener/**").hasAnyAuthority(ADMIN, GARDENER)
-                            .requestMatchers("/user/**").hasAnyAuthority(USER,ADMIN)
+                            .requestMatchers("/user/**").hasAnyAuthority(USER,ADMIN,GARDENER)
                             .requestMatchers("/omnifaces.push/**").hasAnyAuthority(ADMIN, GARDENER, USER)
                             .anyRequest().authenticated())
                     .formLogin()
@@ -94,7 +97,14 @@ public class WebSecurityConfig {
         }
 
     }
+    @Bean
+    public ServletContextInitializer servletContextInitializer() {
+        return servletContext -> {
+            servletContext.setInitParameter("javax.faces.PROJECT_STAGE", "Production");
+            servletContext.setInitParameter("primefaces.THEME", "luna-green");
 
+        };
+    }
     @Bean
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration configuration) throws Exception {

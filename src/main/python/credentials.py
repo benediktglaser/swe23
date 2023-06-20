@@ -16,7 +16,7 @@ def write_to_yaml(name: str, password: str) -> None:
     credentials = {"name": name, "password": password}
 
     try:
-        with open(r"identification.yaml", "w+") as file:  # TODO: change on raspberry
+        with open(r"identification.yaml", "w+") as file:
             docs = yaml.dump(credentials, file)
     except:
         logger.log_error("error writing to identification.yaml")
@@ -31,7 +31,7 @@ def read_from_yaml() -> (str, str):
     """
 
     try:
-        with open(r"identification.yaml", "r") as file:  # TODO: change on raspberry
+        with open(r"identification.yaml", "r") as file:
             data = list(yaml.load_all(file, Loader=yaml.FullLoader))
             if len(data) == 0:
                 return None
@@ -40,7 +40,3 @@ def read_from_yaml() -> (str, str):
         print(e)
         logger.log_error("error reading to identification.yaml")
         raise e
-
-
-if __name__ == "__main__":
-    print(read_from_yaml()[0])

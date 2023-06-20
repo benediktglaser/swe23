@@ -45,16 +45,15 @@ public class SensorDataService implements Serializable {
     @PreAuthorize("hasAnyAuthority('ACCESS_POINT','GARDENER')")
     public SensorData saveSensorData(SensorStation sensorStation, SensorData sensorData) {
         if (sensorData.isNew()) {
-            if(sensorData.getTimestamp()==null){
+            if (sensorData.getTimestamp() == null) {
                 sensorData.setTimestamp(LocalDateTime.now());
             }
-            SensorDataTypeInfo sensorDataTypeInfo = sensorDataTypeInfoRepository.findSensorDataTypeInfoByCreateDateMax(sensorStation,sensorData.getType());
-            if(sensorDataTypeInfo == null){
+            SensorDataTypeInfo sensorDataTypeInfo = sensorDataTypeInfoRepository.findSensorDataTypeInfoByCreateDateMax(sensorStation, sensorData.getType());
+            if (sensorDataTypeInfo == null) {
                 sensorData.setLimitDate(null);
                 sensorData.setMinLimit(null);
                 sensorData.setMaxLimit(null);
-            }
-            else{
+            } else {
                 sensorData.setLimitDate(sensorDataTypeInfo.getCreateDate());
                 sensorData.setMinLimit(sensorDataTypeInfo.getMinLimit());
                 sensorData.setMaxLimit(sensorDataTypeInfo.getMaxLimit());
@@ -65,15 +64,15 @@ public class SensorDataService implements Serializable {
             sensorData.setSensorStation(sensorStation);
             sensorData = sensorDataRepository.save(sensorData);
             sensorStation.getSensorData().add(sensorData);
-            sensorStation = sensorStationRepository.save(sensorStation);
+            sensorStationRepository.save(sensorStation);
             return sensorData;
         }
 
         return sensorDataRepository.save(sensorData);
     }
 
-    public Page<SensorData> getAllSensorData(Specification<SensorData> spec, Pageable page){
-        return sensorDataRepository.findAll(spec,page);
+    public Page<SensorData> getAllSensorData(Specification<SensorData> spec, Pageable page) {
+        return sensorDataRepository.findAll(spec, page);
     }
 
 
@@ -84,18 +83,20 @@ public class SensorDataService implements Serializable {
     public Collection<SensorData> getAllSensorDataByType(SensorDataType type) {
         return sensorDataRepository.findByType(type);
     }
-    public Collection<SensorData> getAllSensorDataBySensorStationType(SensorStation sensorStation,SensorDataType type) {
-        return sensorDataRepository.findSensorDataBySensorStationAndType(sensorStation,type);
+
+    public Collection<SensorData> getAllSensorDataBySensorStationType(SensorStation sensorStation, SensorDataType type) {
+        return sensorDataRepository.findSensorDataBySensorStationAndType(sensorStation, type);
     }
 
-    public List<Object[]> getAllSensorDataByStationForChart(SensorStation sensorStation){
+    public List<Object[]> getAllSensorDataByStationForChart(SensorStation sensorStation) {
         return sensorDataRepository.getSensorDataBySensorStation(sensorStation);
     }
 
-    public List<Object[]> getAllSensorDataByStationAndTypeForChart(SensorStation sensorStation, SensorDataType sensorDataType){
-        return sensorDataRepository.getSensorDataBySensorStationAndType(sensorStation,sensorDataType);
+    public List<Object[]> getAllSensorDataByStationAndTypeForChart(SensorStation sensorStation, SensorDataType sensorDataType) {
+        return sensorDataRepository.getSensorDataBySensorStationAndType(sensorStation, sensorDataType);
     }
-    public List<Object[]> getAllNewSensorDataByStationAndTypeForChart(SensorStation sensorStation, SensorDataType sensorDataType,LocalDateTime lastDate){
-        return sensorDataRepository.getNewSensorDataBySensorStationAndType(sensorStation,sensorDataType,lastDate);
+
+    public List<Object[]> getAllNewSensorDataByStationAndTypeForChart(SensorStation sensorStation, SensorDataType sensorDataType, LocalDateTime lastDate) {
+        return sensorDataRepository.getNewSensorDataBySensorStationAndType(sensorStation, sensorDataType, lastDate);
     }
 }

@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Repository for managing {@link SensorStation} entities.
@@ -26,7 +25,7 @@ public interface SensorStationRepository extends JpaRepository<SensorStation, St
     List<SensorStation> getSensorStationsByGardenerAndEnabledTrue(Userx gardener);
 
     List<SensorStation> getSensorStationByEnabledTrue();
-    Set<SensorStation> getSensorStationsByUserxAndEnabledTrue(Userx user);
+    List<SensorStation> getSensorStationsByGardener(Userx user);
 
     SensorStation getSensorStationsByMac(String mac);
 

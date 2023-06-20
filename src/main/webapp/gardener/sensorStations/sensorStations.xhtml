@@ -11,12 +11,27 @@
     <ui:define name="content">
         <form id="downloadForm" method="get">
         </form>
+        <div class="ui-fluid">
         <h:form id="sensorStationForm">
-            <div class="card">
+            <style>
+                .sensorStation-item .sensorStation-item-content {
+                    border: 1px solid var(--surface-d);
+                    border-radius: 3px;
+                    margin: .3rem;
+                    text-align: center;
+                    padding: 2rem 0;
+                    background-color: #5b7c30;
+                }
+
+                .sensorStation-item {
+                    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
+                }
+            </style>
+            <div class="ui-fluid">
                 <p:carousel id="sensorstationCarousel"
                             value="#{sensorStationListController.getAllSensorStationByOwner()}"
                             var="sensorStation"
-                            numVisible="3" numScroll="3">
+                            numVisible="3" numScroll="3" >
                     <div class="sensorStation-item">
                         <div class="sensorStation-item-content">
                             <div class="mb-3">
@@ -27,21 +42,28 @@
                             <p:outputPanel id="carossel">
 
                                 <h4 class="mb-1">#{sensorStation.name}</h4>
-                             <p:commandButton id="minmax" value="Min/Max edit"
-                                                 update=":sensorStationForm"
-                                                 action="#{sensorStationDetailController.redirectToMinMaxEdit(sensorStation)}"
-                                />
-                                <p:commandButton id="edit" icon="pi pi-pencil"
+                                <div>
+
+                                <p:selectBooleanCheckbox id="stationEnabeld"  title="When disabled all functions are still active but the station recieves no data anymore. Only admins can change the state!" value="#{sensorStation.enabled}" disabled="true"/>
+                                    <p:tooltip for="stationEnabeld" position="top" />
+                                </div>
+                                <p:separator/>
+                                <p:commandButton title="Edit sensorstation" id="edit" icon="pi pi-pencil"
                                                  update=":sensorStationForm:sensorStationFormEditDialog"
                                                  oncomplete="PF('sensorStationFormEditDialog').show()"
                                                  action="#{sensorStationDetailController.setSensorStation(sensorStation)}"
                                 />
-                                <p:commandButton id="sensordata" value="Sensordata"
+                                <p:commandButton title="Sensordata" id="sensordata" icon="pi pi-chart-bar"
                                                  action="#{sensorStationListController.redirectToSensorDataPage(sensorStation)}"/>
-                                <p:commandButton id="gallery" value="Gallery"
+                                <p:commandButton title="Gallery" id="gallery" icon="pi pi-image"
                                                  action="#{sensorStationListController.redirectToGallery(sensorStation)}"/>
-                                <p:commandButton id="download" value="DownloadQRCode"
+                                <p:commandButton title="Download QR Code" id="download" icon="pi pi-qrcode"
                                                  action="#{QRCodeDownloadController.doUpdate(sensorStation.id)}"/>
+                                <p:separator/>
+                                <p:commandButton id="minmax" value="Min/Max edit"
+                                                 update=":sensorStationForm"
+                                                 action="#{sensorStationDetailController.redirectToMinMaxEdit(sensorStation)}"
+                                />
                             </p:outputPanel>
                             <script>
                                 function sent(param) {
@@ -53,13 +75,15 @@
                             </script>
                         </div>
                     </div>
+
                 </p:carousel>
             </div>
+            <p:growl id="msgs"/>
             <p:dialog header="Sensor Station Details" id="sensorStationFormEditDialog"
-                      widgetVar="sensorStationFormEditDialog" modal="true" showEffect="fade" hideEffect="fade"
+                      widgetVar="sensorStationFormEditDialog" modal="true" showEffect="fade"
                       resizable="false" dynamic="true" autoUpdate="true">
-                <p:messages id="msgs"/>
                 <p:defaultCommand target="saveButtonEdit"/>
+                <p:outputPanel id="editOutputPanel">
                 <h:panelGrid id="editMinMax" columns="2">
                     <p:outputLabel for="plant_name" value="Plant Name: "/>
                     <p:inputText id="plant_name" value="#{sensorStationDetailController.sensorStation.name}"/>
@@ -67,15 +91,17 @@
                     <p:inputText id="plant_category" value="#{sensorStationDetailController.sensorStation.category}">
                     </p:inputText>
                     <p:outputLabel for="plant_interval"
-                                   value="Interval(min Value is #{sensorStationDetailController.sensorStation.accessPoint.thresholdInterval}): "/>
-                    <p:inputText id="plant_interval"
-                                 value="#{sensorStationDetailController.sensorStation.accessPoint.sendingInterval}">
-                    </p:inputText>
+                                   value="Interval(min value is #{sensorStationDetailController.sensorStation.accessPoint.thresholdInterval}): "/>
+                    <p:inputNumber id="plant_interval"
+                                 value="#{sensorStationDetailController.sensorStation.accessPoint.sendingInterval}" symbol="s" symbolPosition="s">
+                    </p:inputNumber>
                 </h:panelGrid>
                 <p:commandButton id="saveButtonEdit" value="Save"
-                                 update=":sensorStationForm"
+                                 update=":sensorStationForm editOutputPanel msgs"
                                  action="#{sensorStationDetailController.saveSensorStation(sensorStationDetailController.sensorStation)}"/>
+                </p:outputPanel>
             </p:dialog>
         </h:form>
+        </div>
     </ui:define>
 </ui:composition>

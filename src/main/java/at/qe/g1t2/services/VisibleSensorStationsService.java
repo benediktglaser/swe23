@@ -41,6 +41,10 @@ public class VisibleSensorStationsService {
         visibleMap.get(accessPoint).put(Long.parseLong(dipId), sensorStationDTO);
     }
 
+    public void removeSensorStationDTO(AccessPoint accessPoint, String dipId) {
+        visibleMap.get(accessPoint).remove(Long.parseLong(dipId));
+    }
+
     public Map<AccessPoint, Map<Long, SensorStationDTO>> getVisibleMap() {
         return visibleMap;
     }
@@ -52,4 +56,6 @@ public class VisibleSensorStationsService {
     public void resetVisibleList(AccessPoint accessPoint) {
         visibleMap.remove(accessPoint);
     }
+
+
 }

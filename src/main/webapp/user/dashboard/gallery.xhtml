@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml">
+    <ui:define name="content">
+        <style>
+            .centering{
+                margin-left: auto;
+                margin-right: auto;
+                width: 30%;
+            }
+
+            body {
+                font-family: Arial, sans-serif;
+                background-color: rgba(0, 0, 0, 0.4);
+            }
+
+            h1 {
+                font-size: 32px;
+                margin-top: 20px;
+            }
+
+            label {
+                display: block;
+                font-size: 18px;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+
+            input[type="text"],
+            input[type="file"],
+            input[type="submit"]{
+                background : #aed581;
+                font-size: 16px;
+                padding: 10px;
+                border-radius: 5px;
+                border: none;
+                box-shadow: #aed581;
+                margin-bottom: 20px;
+            }
+
+        </style>
+        <body>
+        <style>
+            .loader {
+                border: 16px solid #f3f3f3;
+                border-top: 16px solid #3498db;
+                border-radius: 50%;
+                width: 120px;
+                height: 120px;
+                animation: spin 2s linear infinite;
+                margin: 0 auto;
+                margin-top: 20px;
+            }
+
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+
+            .hide-on-upload {
+                display: none;
+            }
+        </style>
+        <h1>Upload your picture of a plant here:</h1>
+
+        <form id="myForm" enctype="multipart/form-data" action="/upload">
+            <input type="file" name="file"/>
+            <p:separator/>
+            <input type="hidden" id="sensorStationId" name="sensorStationId" value="#{sessionSensorStationBean.sensorStation.id}"/>
+            <input type="submit" value="Upload" onclick="showLoader(); submitForm(); return false;"/>
+            <div id="loader" class="loader hide-on-upload"></div>
+        </form>
+
+        <script>
+            function submitForm() {
+                document.getElementById("loader").classList.remove("hide-on-upload");
+                document.getElementById("myForm").submit();
+            }
+
+            function showLoader() {
+                document.getElementById("loader").style.display = "block";
+            }
+        </script>
+        <script>
+            function submitForm() {
+                var form = document.getElementById("myForm");
+                var formData = new FormData(form);
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/upload");
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                            window.location.href = window.location.href;
+                        } else {
+                            alert("The Picture you tried uploading is either too large or has a invalid format.(Try uploading another format like .jpeg, .png or check if picture size is not larger then  10 MB)")
+
+                        }
+                    }
+                };
+                xhr.send(formData);
+            }
+        </script>
+        </body>
+        <h:form>
+            <style>
+                .watermark-overlay {
+                    position: relative;
+                }
+
+                .watermark-overlay .delete-button {
+                    position: absolute;
+                    top: 5px;
+                    right: 5px;
+                    opacity: 0.5;
+                    background-color: rgba(255, 255, 255, 0.5);
+                    padding: 5px;
+                    border-radius: 5px;
+                    z-index: 1;
+                    transition: opacity 0.2s;
+                }
+
+                .watermark-overlay:hover .delete-button {
+                    opacity: 1;
+                }
+            </style>
+
+            <p:galleria value="#{pictureController.getAllPictureBySensorStation(sessionSensorStationBean.sensorStation)}" var="photo" numVisible="5"
+                        showItemNavigators="true" circular="true" showItemNavigatorsOnHover="true" showThumbnails="false" showIndicators="true">
+                <p:graphicImage library="images" name="#{photo.path}" style="width: 60%; display: block;" />
+
+                <div class="watermark-overlay">
+                    <p:column>
+                        <p:commandButton update="@form" icon="pi pi-trash" styleClass="delete-button"
+                                         action="#{pictureController.deletePicture(photo)}" rendered="#{sessionInfoBean.hasRole('GARDENER') || sessionInfoBean.hasRole('ADMIN')}"/>
+                    </p:column>
+                </div>
+            </p:galleria>
+        </h:form>
+    </ui:define>
+</ui:composition>

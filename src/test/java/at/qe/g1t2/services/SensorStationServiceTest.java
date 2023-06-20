@@ -71,7 +71,7 @@ class SensorStationServiceTest {
                 .loadSensorStation("9f98b70c-4de7-46c0-a611-21160743be7e");
 
         sensorStationService.removeSensorStationFromAccessPoint(accessPoint, sensorStation);
-        assertFalse(accessPoint.getSensorStation().contains(sensorStation));
+        assertFalse(accessPointService.loadAccessPoint(accessPoint.getAccessPointID()).getSensorStation().contains(sensorStation));
         sensorStation = sensorStationService
                 .loadSensorStation("9f98b70c-4de7-46c0-a611-21160743be7e");
 

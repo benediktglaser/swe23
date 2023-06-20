@@ -2,7 +2,7 @@ import configparser
 import time
 import restcontroller as rest
 import logger
-from threading import Thread
+from threading import Thread, Event
 import threading
 import credentials
 import dbconnection as db
@@ -16,12 +16,12 @@ interval = 20
 
 def init() -> dict:
     """
-    This function initialises the database,
+    This function initializes the database,
     checks the credentials, asks if the
-    accesspoint is enabled.
-    If the accesspoint has no credentails
+    access_point is enabled.
+    If the access_point has no credentials
     or has some which are not known
-    to the webserver it will register
+    to the Webserver it will register
     a new one
 
     Returns
@@ -53,37 +53,38 @@ def init() -> dict:
             "Error when reading identification.yaml. Please make sure that the file is in the same directory as this script"
         )
 
-    # Check if accesspoint exists on webserver, if not create a new one
+    # Check if access_point exists on Webserver, if not create a new one
     if login is not None and login[0] is not None:
-        verify_credentials = rci.request_if_accesspoint_exists(address, login[0])
-        if verify_credentials != True:
-            print("Credentials not recognized, register as new accesspoint")
+        access_point_exists = None
+        while access_point_exists is None:
+            access_point_exists = rci.request_if_access_point_exists(address, login[0])
+            time.sleep(5)
+        if not access_point_exists:
+            logger.log_info("Credentials not recognized, register as new access_point")
             login = None
 
-    # Register new accesspoint if necessary
+    # Register new access_point if necessary
     if login is None or login[0] is None or login[1] is None:
-        print("Register as new accesspoint")
-        login = register_accesspoint(address, interval, name)
-    print(login)
+        logger.log_info("Register as new access_point")
+        login = register_access_point(address, interval, name)
     auth_header = rci.prepare_auth_headers(login[0], login[1])
 
-    # This loop checks for approval from the webserver
+    # This loop checks for approval from the Webserver
     while True:
         enabled = rci.request_approval(address, auth_header)
         if enabled is True:
-            print("Successfully authenticated")
+            logger.log_info("Successfully authenticated")
             break
-        print("waiting for authentication")
+        logger.log_info("waiting for authentication")
         time.sleep(10)
 
-    print(login)
     logger.log_info("Login as: " + login[0] + " " + login[1])
     auth_header = rci.prepare_auth_headers(login[0], login[1])
     argument_list = {
         "authentication_header": auth_header,
         "address": address,
         "db_path": path,
-        # "interval": interval,
+        "name": login[0],
     }
     return argument_list
 
@@ -101,85 +102,57 @@ def main(args: dict):
         db_path: str
     """
 
-    # Reconnect to already connected SensorStations after restart of AccessPoint
-    for (_, mac) in db.get_all_sensorstations(db.access_database(args["db_path"])):
-        Thread(target=myble.reconnect_thread, args=(args["db_path"], args["address"], args["authentication_header"], mac)).start()
-
-    polling_for_couple_mode_thread = Thread(
-        target=poll_couple_mode,
-        args=(args["db_path"], args["address"], args["authentication_header"]),
+    event = Event()
+    ble_thread = Thread(
+        target=myble.start_ble,
+        args=(args["db_path"], args["address"], args["authentication_header"], event),
     )
+
     polling_for_interval_thread = Thread(
         target=poll_interval,
-        args=(
-            args["address"],
-            args["authentication_header"],
-        ),
+        args=(args["address"], args["authentication_header"], event),
     )
 
     polling_for_limits_thread = Thread(
         target=poll_limits,
-        args=(
-            args["address"],
-            args["authentication_header"],
-        ),
+        args=(args["address"], args["authentication_header"], event),
     )
     sending_sensor_data_thread = Thread(
         target=send_sensor_data,
+        args=(args["address"], args["authentication_header"], event),
+    )
+
+    poll_if_access_point_still_exists_thread = Thread(
+        target=poll_access_point_exists,
         args=(
             args["address"],
-            args["authentication_header"],
+            args["name"],
         ),
     )
 
-    polling_enable_for_sensorstation_thread = Thread(
-        target=poll_sensorstation_enabled,
-        args=(
-            arguments["address"],
-            arguments["authentication_header"],
-        ),
-    )
-    polling_for_couple_mode_thread.start()
+    ble_thread.start()
     polling_for_interval_thread.start()
     polling_for_limits_thread.start()
     sending_sensor_data_thread.start()
-    polling_enable_for_sensorstation_thread.start()
+    poll_if_access_point_still_exists_thread.start()
+    poll_if_access_point_still_exists_thread.join()
 
-    polling_for_couple_mode_thread.join()
+    # Preparing clean shutdown
+    event.set()
     polling_for_interval_thread.join()
     polling_for_limits_thread.join()
     sending_sensor_data_thread.join()
-    polling_enable_for_sensorstation_thread.join()
+    ble_thread.join()
+    db.delete_database(args["db_path"])
+
+    logger.log_info("Shutting down")
+    logger.log_info("Shutdown complete")
+    return
 
 
-def poll_couple_mode(path: str, address: str, auth_header: str):
+def poll_interval(address: str, auth_header: str, event: Event):
     """
     This function polls and checks
-    if the couple mode has been activated.
-
-    Arguments
-    ---------
-    path: str
-        Path to Database
-    address: str
-        Address of the Webserver
-    auth_header: str
-        the auth_header for the rest-connection
-    ---------
-    Returns None
-    """
-    
-    while True:
-        start_coupling = rci.request_couple_mode(address, auth_header)
-        if start_coupling is True:
-            logger.log_info("Starting coupling mode")
-            myble.ble_function(path, address, auth_header)
-        time.sleep(30)
-
-
-def poll_interval(address: str, auth_header: str):
-    """
-    This function polls an checks
     if the interval has changed
     Arguments
     ---------
@@ -187,10 +160,12 @@ def poll_interval(address: str, auth_header: str):
         Address of the Webserver
     auth_header: str
         the auth_header for the rest-connection
+    event: threading.Event
+        Event that access_point was deleted on Webserver
     ---------
     Returns None
     """
-    
+
     lock.acquire()
     try:
         global interval
@@ -204,7 +179,6 @@ def poll_interval(address: str, auth_header: str):
 
     while True:
         new_interval = rest.request_interval(address, auth_header)
-        print("interval:",new_interval)
         if new_interval is not None and new_interval is not current_interval:
             current_interval = new_interval
             lock.acquire()
@@ -218,10 +192,14 @@ def poll_interval(address: str, auth_header: str):
             finally:
                 lock.release()
 
+        if event.is_set():
+            break
         time.sleep(30)
+    logger.log_info("Request interval thread quit")
+    return
 
 
-def poll_limits(address: str, auth_header: str):
+def poll_limits(address: str, auth_header: str, event: Event):
     """
     This function polls to check
     if the limits have changed.
@@ -232,6 +210,8 @@ def poll_limits(address: str, auth_header: str):
         Address of the Webserver
     auth_header: str
         the auth_header for the rest-connection
+    event: threading.Event
+        Event that access_point was deleted on Webserver
     ---------
     Returns None
     """
@@ -240,10 +220,10 @@ def poll_limits(address: str, auth_header: str):
     conn = db.access_database(path)
 
     while True:
-        list_of_sensorstations = db.get_all_sensorstations(conn)
-        for (sensorstation_id, mac) in list_of_sensorstations:
+        list_of_sensor_stations = db.get_all_sensor_stations(conn)
+        for (sensor_station_id, mac) in list_of_sensor_stations:
             new_limits = rest.request_limits(
-                address, auth_header, int(sensorstation_id)
+                address, auth_header, int(sensor_station_id)
             )
 
             if new_limits is None:
@@ -252,15 +232,18 @@ def poll_limits(address: str, auth_header: str):
                 type_limit = list["dataType"]
                 min_limit = list["minLimit"]
                 max_limit = list["maxLimit"]
-                
+
                 db.update_limits(
-                    conn, int(sensorstation_id), type_limit, min_limit, max_limit
+                    conn, int(sensor_station_id), type_limit, min_limit, max_limit
                 )
-                    
+        if event.is_set():
+            break
         time.sleep(60)
+    logger.log_info("Limit thread quit")
+    return
 
 
-def send_sensor_data(address: str, auth_header: str):
+def send_sensor_data(address: str, auth_header: str, event: Event):
     """
     This function sends sensor_data
     and then deletes them from the database.
@@ -271,6 +254,8 @@ def send_sensor_data(address: str, auth_header: str):
         Address of the Webserver
     auth_header: str
         the auth_header for the rest-connection
+    event: threading.Event
+        Event that access_point was deleted on Webserver
     ---------
     Returns None
     """
@@ -279,17 +264,16 @@ def send_sensor_data(address: str, auth_header: str):
     conn = db.access_database(path)
 
     while True:
-        list_of_sensorstations = db.get_all_sensorstations(conn)
-        for (sensorstation_id, _) in list_of_sensorstations:
+        list_of_sensor_stations = db.get_all_sensor_stations(conn)
+        for (sensor_station_id, _) in list_of_sensor_stations:
 
-            list = db.get_sensor_data(conn, sensorstation_id)
+            list = db.get_sensor_data(conn, sensor_station_id)
             if len(list) != 0:
                 sensor_data_delete = rest.post_measurement(address, list, auth_header)
-                print("delete: ", sensor_data_delete)
                 logger.log_info(
                     "delete this amount of data from database "
-                    + "for sensorstation_id:"
-                    + str(sensorstation_id)
+                    + "for sensor_station_id:"
+                    + str(sensor_station_id)
                     + " :"
                     + str(len(sensor_data_delete))
                 )
@@ -297,7 +281,7 @@ def send_sensor_data(address: str, auth_header: str):
             else:
                 logger.log_info(
                     "Found no records to send for station with id "
-                    + str(sensorstation_id)
+                    + str(sensor_station_id)
                 )
 
         lock.acquire()
@@ -305,43 +289,46 @@ def send_sensor_data(address: str, auth_header: str):
             my_interval = interval
             logger.log_info("interval in send_data: " + str(my_interval))
 
-        except Exception as e:  
-            logger.log_error("Reading global interval in sending_data failed: " + str(e))
+        except Exception as e:
+            logger.log_error(
+                "Reading global interval in sending_data failed: " + str(e)
+            )
         finally:
             lock.release()
+        if event.is_set():
+            break
         time.sleep(my_interval)
+    logger.log_info("Send data thread quit")
+    return 
 
 
-def poll_sensorstation_enabled(address: str, auth_header: str):
+def poll_access_point_exists(address: str, name: str) -> bool:
     """
-    This function poll if the sensorstations 
-    are enabled.
+    This function checks if the access_point still exists
+    on the Webserver.
 
     Arguments
     ---------
     address: str
         Address of the Webserver
-    auth_header: str
-        the auth_header for the rest-connection
+    name: str
+        name of the access_point
     ---------
-    Returns None
+    Returns bool
     """
-    path = "database.db"
-    conn = db.access_database(path)
-
     while True:
-        list_of_sensorstations = db.get_all_sensorstations(conn)
-        for (sensorstation_id, _) in list_of_sensorstations:
-            response = rest.request_if_is_sensorstation_enabled(
-                address, auth_header, int(sensorstation_id)
-            )
+        exists = rci.request_if_access_point_exists(address, name)
+        if not exists:
+            logger.log_error("access_point has been deleted")
+            break
+        time.sleep(30)
+    logger.log_info("Deletion of access_point has been noted")
+    return True
 
-        time.sleep(60)
 
-
-def register_accesspoint(address: str, interval: int, name: str):
+def register_access_point(address: str, interval: int, name: str):
     """
-    Register a new accesspoint.
+    Register a new access_point.
 
     Arguments
     ---------
@@ -350,7 +337,7 @@ def register_accesspoint(address: str, interval: int, name: str):
     interval: int
         Interval in which registration is attempted.
     name: str
-        Name of the accesspoint
+        Name of the access_point
     ---------
     Returns None
     """
@@ -361,8 +348,8 @@ def register_accesspoint(address: str, interval: int, name: str):
             login = rci.register_access_point_at_server(address, interval, name)
             credentials.write_to_yaml(login[0], login[1])
         except:
-            print("No connection possible, trying again in 5sec...")
-            print(
+            logger.log_info("No connection possible, trying again in 5sec...")
+            logger.log_info(
                 "To change the credentials, modify the identification.yaml file and restart the program"
             )
             time.sleep(15)
