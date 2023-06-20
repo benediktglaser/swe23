@@ -40,8 +40,8 @@ public class SensorDataController {
      * It returns True if the data has successfully been saved.
      * If the sensorstation does not exist, False and Http.Status.BAD_REQUEST will be returned.
      *
-     * @param SensorDataDTO data
-     * @return ResponseEntity<Boolean>
+     * @param data{@code SensorDataDTO}
+     * @return {@code ResponseEntity<Boolean>}
      */
     @PostMapping
     public ResponseEntity<Boolean> createMeasurement(@Valid @RequestBody SensorDataDTO data) {

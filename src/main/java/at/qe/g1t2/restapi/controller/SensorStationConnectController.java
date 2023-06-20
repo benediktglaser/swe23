@@ -18,7 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
+import java.lang.Boolean;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ import java.util.List;
  * This class handles the connection and coupling of the sensorStation and the Webserver
  * Each action on the connection of the SensorStation is logged
  *
- * @Valid checks if all NotNull attributes of the DTOs have a value otherwise it throws an exception
+ * Valid checks if all NotNull attributes of the DTOs have a value otherwise it throws an exception
  */
 
 
@@ -58,7 +58,7 @@ public class SensorStationConnectController {
      * each request confirms the connection of the accessPoint
      *
      * @param sensorStationDTO
-     * @return ResponseEntity<Boolean>
+     * @return {@code ResponseEntity<Boolean>}
      */
     @PostMapping("/register")
     public ResponseEntity<Boolean> addVisibleSensorStations(@Valid @RequestBody SensorStationDTO sensorStationDTO) {

@@ -13,8 +13,8 @@ import java.util.Objects;
  * This class represents an Entity for managing SensorData. Therefore, it contains a "many to one" connection to SensorStation.
  * Additionally, this class contains a measurement, which is being sent from the SensorStation including its-own SensorDataType.
  *
- * @timestamp is being sent via the AccessPoint
- * @createDate once the entity is being created in webserver the LocalDateTime is being generated.
+ * timestamp is being sent via the AccessPoint
+ * createDate once the entity is being created in webserver the LocalDateTime is being generated.
  */
 
 @Entity
